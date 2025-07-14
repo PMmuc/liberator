@@ -96,6 +96,7 @@ tests/libfuzzer/driver0
 # tool/misc/extract_param_names/param_names_extractor.py
 condition_extractor/package-lock.json
 
+cpu_features_analysis_time.txt
 
 # Fuzzing Campaigns
 fuzzing_campaigns/workdir_*
