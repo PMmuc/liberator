@@ -1,34 +1,37 @@
 #!/usr/bin/env python3
 
 import argparse
-from prettytable import PrettyTable
 
-def parse(report):
+def parse(report_part):
+
     s = {}
 
-    with open(report) as f:
+    with open(report_part) as f:
         lib = None
         for l in f:
-            if not l.strip():
+            if not l:
                 continue
 
-            row_arr = l.split(",")
+            if l[0] == '\t':
+                if lib is None:
+                    raise Exception("lib unset at: {l}")
 
-            lib = row_arr[0]
+                x = s[lib]
+                
+                l = l.strip()
 
-            cov = float(row_arr[2].replace("%",""))
+                if l.startswith("cov >  0%:"):
+                    x["cov>0"] = l.split()[-1]
+                elif l.startswith("cov > 10%:"):
+                    x["cov>10"] = l.split()[-1]
+                elif l.startswith("#crashes (cov != 0):"):
+                    x["#crash"] = l.split()[-1]
 
-            covs = s.get(lib, [])
+            else:
+                lib = l.strip()[:-1]
+                s[lib] = {}
 
-            covs.append(cov)
-
-            s[lib] = covs
-
-    s_norm = {}
-    for lib, covs in s.items():
-        s_norm[lib] = sum(covs) / len(covs)
-
-    return s_norm
+    return s
 
 def win(tkn, a, b):
     an = float(a.replace("%",""))
@@ -39,35 +42,30 @@ def win(tkn, a, b):
 
 def _main():
     parser = argparse.ArgumentParser(description='Produce table for ablation study')
-    parser.add_argument('--field', '-f', help="Coverage results w/ field bias", required=True)
-    parser.add_argument('--none', '-n', help="Coverage results w/o bias", required=True)
+    parser.add_argument('--full', '-f', required=True)
+    parser.add_argument('--part', '-p', required=True)
 
     args = parser.parse_args()
     
-    field = args.field
-    none = args.none
+    full = args.full
+    part = args.part
 
-    field_s = parse(field)
-    none_s = parse(none)
+    full_s = parse(full)
+    part_s = parse(part)
 
-    # check if the keys are the same
-    field_k = set(field_s.keys())
-    none_k = set(none_s.keys())
-    if field_k != none_k:
-        print("[ERROR] Liberaries are not the same!")
-        print("Field keys: ", field_k)
-        print("None keys: ", none_k)
-        exit(1)
-    
-    t = PrettyTable(['Library', 'w/o field bias', 'full liberator', 'delta'])
-    for lib in sorted(field_s.keys()):
-        f = field_s[lib]
-        n = none_s[lib]
-        d = f-n
+    for lib in sorted(full_s.keys()):
+        f = full_s[lib]
+        p = part_s[lib]
 
-        t.add_row([lib, f"{n}%", f"{f}%", f"{d:.2f}%"])
+        # from IPython import embed; embed(); exit(1)
 
-    print(t)
+        r = [lib.replace("_", "\_")]
+        r += [win(f["cov>0"].replace("%", "\%"), f["cov>0"], p["cov>0"])]
+        r += [win(p["cov>0"].replace("%", "\%"), p["cov>0"], f["cov>0"])]
+        r += [win(f["cov>10"].replace("%", "\%"), f["cov>10"], p["cov>10"])]
+        r += [win(p["cov>10"].replace("%", "\%"), p["cov>10"], f["cov>10"])]
+
+        print(" & ".join(r) + " \\\\")
 
     # print("end!")
     # from IPython import embed; embed(); exit(1)
