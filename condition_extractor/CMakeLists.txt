@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.3)
+cmake_minimum_required(VERSION 3.5)
 project("Condition Extractor")
 if (DEFINED LLVM_DIR)
         set(ENV{LLVM_DIR} "${LLVM_DIR}")
@@ -6,11 +6,11 @@ if (DEFINED LLVM_DIR)
     if (DEFINED ENV{LLVM_DIR})
         # We need to match the build environment for LLVM:
         # In particular, we need C++11 and the -fno-rtti flag
-        set(CMAKE_CXX_STANDARD 14)
+        set(CMAKE_CXX_STANDARD 17)
 	if(CMAKE_BUILD_TYPE MATCHES "Debug")
-		set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++14 -O0 -fno-rtti -Wno-deprecated -Wfatal-errors")
+		set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++17 -O0 -fno-rtti -Wno-deprecated -Wfatal-errors")
 	else()
-		set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++14 -O0 -fno-rtti -Wno-deprecated -Wfatal-errors")
+		set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++17 -O0 -fno-rtti -Wno-deprecated -Wfatal-errors")
 	endif()
 	set(CMAKE_C_FLAGS "-fPIC")
 
@@ -54,7 +54,8 @@ else()
 endif()
 set(SVF_HEADER "${SVF_DIR}/svf/include")
 set(SVF_LLVM_HEADER "${SVF_DIR}/svf-llvm/include")
-set(SVF_LIB "${SVF_BIN}/svf-llvm/libSvfLLVM.a")
+message(STATUS "Found SVF_LLVM include: ${SVF_LLVM_HEADER}")
+set(SVF_LIB "${SVF_BIN}/lib/libSvfLLVM.a")
 set(SVF_BIN_HEADER "${SVF_BIN}/include")
 include_directories(${SVF_HEADER}
                     ${SVF_LLVM_HEADER}

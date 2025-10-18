@@ -3,65 +3,57 @@
 
 #include "FastCluster/fastcluster.h"
 #include "Graphs/SVFGOPT.h"
-#include "MemoryModel/PointerAnalysisImpl.h"
-#include "MemoryModel/PointerAnalysis.h"
 #include "MSSA/SVFGBuilder.h"
+#include "MemoryModel/PointerAnalysis.h"
+#include "MemoryModel/PointerAnalysisImpl.h"
 #include "WPA/WPAFSSolver.h"
 
 using namespace SVF;
 using namespace SVFUtil;
 
-class GlobalStruct : public FlowSensitive
-{
+class GlobalStruct : public FlowSensitive {
 
 public:
-    /// Constructor
-    explicit GlobalStruct(SVFIR* _pag): FlowSensitive(_pag) { }
+  /// Constructor
+  explicit GlobalStruct(SVFIR *_pag) : FlowSensitive(_pag) {}
 
-    /// Destructor
-    ~GlobalStruct() override = default;
+  /// Destructor
+  ~GlobalStruct() override = default;
 
-    /// Create single instance of flow-sensitive pointer analysis
-    static GlobalStruct* createSGWPA(SVFIR* _pag)
-    {
-        if (gspta == nullptr)
-        {
-            gspta = std::unique_ptr<GlobalStruct>(new GlobalStruct(_pag));
-            gspta->analyze();
-        }
-        return gspta.get();
+  /// Create single instance of flow-sensitive pointer analysis
+  static GlobalStruct *createSGWPA(SVFIR *_pag) {
+    if (gspta == nullptr) {
+      gspta = std::unique_ptr<GlobalStruct>(new GlobalStruct(_pag));
+      gspta->analyze();
     }
+    return gspta.get();
+  }
 
-    /// Release flow-sensitive pointer analysis
-    static void releaseFSWPA()
-    {
-        gspta = nullptr;
-    }
+  /// Release flow-sensitive pointer analysis
+  static void releaseFSWPA() { gspta = nullptr; }
 
-    /// We start from here
-    virtual bool runOnModule(SVFModule*)
-    {
-        return false;
-    }
+  /// We start from here
+  virtual bool runOnModule(Module *) { return false; }
 
-    /// GlobalStruct analysis
-    void analyze() override;
+  /// GlobalStruct analysis
+  void analyze() override;
 
-    /// Initialize analysis
-    void initialize() override;
+  /// Initialize analysis
+  void initialize() override;
 
-    /// Finalize analysis
-    void finalize() override;
+  /// Finalize analysis
+  void finalize() override;
 
-    CallEdgeMap get_new_edges() {return new_edges;}
+  CallEdgeMap get_new_edges() { return new_edges; }
 
 protected:
-    static std::unique_ptr<GlobalStruct> gspta;
+  static std::unique_ptr<GlobalStruct> gspta;
 
-    CallEdgeMap new_edges;
+  CallEdgeMap new_edges;
 
-    void get_function_pointers(const llvm::Value*,
-            std::map<std::string, std::set<const llvm::Function*>>*);
+  void get_function_pointers(
+      const llvm::Value *,
+      std::map<std::string, std::set<const llvm::Function *>> &);
 };
 
 #endif /* GLOBALSTRUCTANALYSIS_H_ */
