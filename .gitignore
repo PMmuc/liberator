@@ -11,6 +11,7 @@ llvm-project/
 llvm-16/
 libfuzz/
 build/
+.gdb_history
 
 LLVM/llvm-build
 *.bc
