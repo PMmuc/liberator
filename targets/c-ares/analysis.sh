@@ -3,9 +3,11 @@
 set -e
 set -x
 
+echo "IN ANALYSIS.sh"
+
 # NOTE: if TOOLD_DIR is unset, I assume to find stuffs in LIBFUZZ folder
 if [ -z "$TOOLS_DIR" ]; then
-    TOOLS_DIR=$LIBFUZZ
+  TOOLS_DIR=$LIBFUZZ
 fi
 
 WORK="$TARGET/work"
@@ -13,6 +15,8 @@ rm -rf "$WORK"
 mkdir -p "$WORK"
 mkdir -p "$WORK/lib" "$WORK/include"
 
+# set up wllvm that is used to compile cares
+# this is for wllvm so that it can find llvm-link
 export CC=wllvm
 export CXX=wllvm++
 export LLVM_COMPILER=clang
@@ -24,18 +28,17 @@ export LLVM_COMPILER_PATH=$LLVM_DIR/bin
 export LIBFUZZ_LOG_PATH=$WORK/apipass
 # export CFLAGS="-mllvm -get-api-pass"
 
-
+echo $LIBFUZZ_LOG_PATH
 mkdir -p "$LIBFUZZ_LOG_PATH"
 
 echo "make 1"
 mkdir -p "$TARGET/repo/cares_build"
 cd "$TARGET/repo/cares_build"
 
-
 cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug -DCARES_STATIC=on \
-        -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
-        -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
+  -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug -DCARES_STATIC=on \
+  -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+  -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 # configure compiles some shits for testing, better remove it
 rm -rf "$LIBFUZZ_LOG_PATH"/apis.log
 
@@ -52,23 +55,29 @@ make -j"$(nproc)"
 echo "make install"
 make install
 
+# WLLVM tool to generate .bc file from a static library
+echo "Start extract in $WORK/lib/"
 extract-bc -b "$WORK"/lib/libcares_static.a
+echo "Finish extract"
 
+echo $TOOLS_DIR
 # this extracts the exported functions in a file, to be used later for grammar
 # generations
-"$TOOLS_DIR"/tool/misc/extract_included_functions.py -i "$WORK/include" \
-    -p "$LIBFUZZ/targets/${TARGET_NAME}/public_headers.txt" \
-    -e "$LIBFUZZ_LOG_PATH/exported_functions.txt" \
-    -t "$LIBFUZZ_LOG_PATH/incomplete_types.txt" \
-    -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
-    -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
+echo "Start excluding function names with clang"
+$TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
+  -p "$LIBFUZZ/targets/${TARGET_NAME}/public_headers.txt" \
+  -e "$LIBFUZZ_LOG_PATH/exported_functions.txt" \
+  -t "$LIBFUZZ_LOG_PATH/incomplete_types.txt" \
+  -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
+  -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
+echo "Finish Extract Included Functions"
 
 # extract fields dependency from the library itself, repeat for each object
 # produced
-"$TOOLS_DIR"/condition_extractor/bin/extractor \
-    "$WORK"/lib/libcares_static.a.bc \
-    -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
-    -output "$LIBFUZZ_LOG_PATH/conditions.json" \
-    -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
-    -v v0 -t json -do_indirect_jumps \
-    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+"$TOOLS_DIR"/condition_extractor/build/bin/extractor \
+  "$WORK"/lib/libcares_static.a.bc \
+  -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
+  -output "$LIBFUZZ_LOG_PATH/conditions.json" \
+  -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
+  -v v0 -t json -do_indirect_jumps \
+  -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"

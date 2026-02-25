@@ -18,6 +18,7 @@ using namespace SVFUtil;
 std::unique_ptr<GlobalStruct> GlobalStruct::gspta;
 
 /// GlobalStruct analysis
+// Makes Points To Analysis
 void GlobalStruct::analyze() {
 
   // I always keep a string variable
@@ -28,28 +29,38 @@ void GlobalStruct::analyze() {
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
   Module *svfModule = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
-  Module *m = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
 
-  // TODO: Is this actually necessary? As modules has all functions
   std::map<std::string, std::set<const llvm::Function *>> fncs;
 
+  // svfGlobalList returns functions and global variables
+  SVFUtil::outs() << "--------------- Global Variables: -------------------\n";
   for (auto &g : svfModule->getGlobalList()) {
+    int count = 0;
     if (SVFUtil::isa<llvm::Constant>(g)) {
-      // SVFUtil::outs() << g->toString() << "\n";
+      count++;
+      SVFUtil::outs() << count << ". " << g.getName().str() << "\n";
       auto *llvm_constant = llvm::cast<llvm::Constant>(&g);
       get_function_pointers(llvm_constant, fncs);
     }
   }
 
-  SVFIR::CallSiteToFunPtrMap map = pag->getIndirectCallsites();
+  // get callsites to function pointers
+  // CallSite -> CallSiteId
+  // (CallICFGNode* -> NodeId)
+  SVFIR::CallSiteToFunPtrMap indirect_calls = pag->getIndirectCallsites();
 
   std::set<const CallICFGNode *> unresolved_calls;
   unsigned int tot_indirect_calls = 0;
-  for (auto el : map) {
-    auto icfg_node = el.first;
-    auto node_id = el.second;
-    auto target_set = pag->getIndCallSites(node_id);
-    auto x = this->getPts(node_id);
+  for (auto call : indirect_calls) {
+    // Call Site of indirect call
+    auto icfg_node = call.first;
+    // id of callsite node
+    auto node_id = call.second;
+    // All Call Sites
+    CallSiteSet target_set = pag->getIndCallSites(node_id);
+    // the points to set that the indirect call can point to
+    PointsTo x = this->getPts(node_id);
+    // if x is empty the ptr points to nothing
     if (x.empty())
       unresolved_calls.insert(icfg_node);
     tot_indirect_calls++;
@@ -60,11 +71,13 @@ void GlobalStruct::analyze() {
   SVFGEdgeSetTy svfgEdges;
   CallEdgeMap newEdges;
 
-  // SVFUtil::outs() << "My unresolved calls:\n";
-  // Actually resolving call targets
-  for (const CallICFGNode *cnode : unresolved_calls) {
+  // Try to analyze why the points to set is empty for this indirect call.
+  // Do a signature based matching where we match the signature of the call site
+  // function, with the signature that we got from retrieving funcs from the all
+  // constants in the program.
+  for (const CallICFGNode *callsite : unresolved_calls) {
     // SVFUtil::outs() << cnode->toString() << "\n";
-    auto llvm_inst = llvmModuleSet->getLLVMValue(cnode->getCaller());
+    auto llvm_inst = llvmModuleSet->getLLVMValue(callsite->getCaller());
     if (llvm_inst == nullptr)
       continue;
 
@@ -75,9 +88,11 @@ void GlobalStruct::analyze() {
 
     // llvm::raw_string_ostream(str) << *llvm_cs;
     // SVFUtil::outs() << str << "\n";
-
-    auto fun_type = llvm_cs->getFunctionType();
+    // TOOD: what does this actually do?
+    FunctionType *fun_type = llvm_cs->getFunctionType();
+    // TODO: why?????
     auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
+    // TODO: Compute unique string but why because it isn't used
     auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
 
     // llvm::raw_string_ostream(str) << *fun_type << "\n";
@@ -87,12 +102,13 @@ void GlobalStruct::analyze() {
     // SVFUtil::outs() << fun_type_hash_str << "\n";
 
     // auto fun_caller = cnode->getFun();
-    const FunObjVar *fun_caller = cnode->getCaller();
+    // returns function containg the call
+    const FunObjVar *fun_caller = callsite->getCaller();
 
     // FIXME: Maybe this needs a fix as i don't know if the changes I have done
-    // are correct
-
-    const CallBase *llvm_cs1 = SVFUtil::dyn_cast<CallBase>(cnode);
+    // are correct getCallsite retrives the llvm::CallBase instruction so maybe
+    // the line 90 in the orginal code is redundant.
+    // I am assuming that callBlockNode in the orginal code is just cnode.
 
     unsigned int x = 0;
     // SVFUtil::outs() << "callBlockNode: " << callBlockNode->toString() <<
@@ -104,9 +120,9 @@ void GlobalStruct::analyze() {
       //     SVFUtil::outs() << "it is external!\n";
       // else
       //     SVFUtil::outs() << "it is internal!\n";
-      newEdges[cnode].insert(fun_callee);
-      getIndCallMap()[cnode].insert(fun_callee);
-      ptacg->addIndirectCallGraphEdge(cnode, fun_caller, fun_callee);
+      newEdges[callsite].insert(fun_callee);
+      getIndCallMap()[callsite].insert(fun_callee);
+      ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);
     }
     // SVFUtil::outs() << "connected to: " << x << "\n";
     // SVFUtil::outs() << "----\n";
@@ -127,9 +143,19 @@ void GlobalStruct::initialize() { FlowSensitive::initialize(); }
 /// Finalize analysis
 void GlobalStruct::finalize() { FlowSensitive::finalize(); }
 
+/**
+ * @param in_value variable that is either a global variable, a constant
+ * aggregate or a function.
+ * @return map (md5(function_type) -> set Function*) where the set contains all
+ * functions that in_value has as an initializer of a GlobalVariable or operand
+ * of a ConstantAggregate.
+ */
 void GlobalStruct::get_function_pointers(
     const llvm::Value *in_value,
     std::map<std::string, std::set<const llvm::Function *>> &fncs) {
+
+  SVFUtil::outs() << "--------- get_function_pointers("
+                  << in_value->getName().str() << ")\n";
 
   std::stack<const llvm::Value *> working;
   working.push(in_value);
@@ -149,11 +175,13 @@ void GlobalStruct::get_function_pointers(
         working.push(init);
       }
     } else if (auto ca = SVFUtil::dyn_cast<ConstantAggregate>(value)) {
+      SVFUtil::outs() << ca->getName().str() << "\n";
       for (unsigned int i = 0; i < ca->getNumOperands(); ++i) {
         auto op = ca->getOperand(i);
         working.push(op);
       }
     } else if (auto f = SVFUtil::dyn_cast<Function>(value)) {
+      SVFUtil::outs() << "Found function " << f->getName().str() << "\n";
       auto fun_type = f->getFunctionType();
       auto k = TypeMatcher::compute_hash(fun_type);
       fncs[k].insert(f);

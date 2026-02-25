@@ -9,8 +9,8 @@ set -e
 # copied from SVF/build.sh build_llvm_from_source
 # mkdir "$LLVMHome"
 echo "Downloading LLVM source..."
-wget https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-14.0.0.zip -O llvm.zip
+wget https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-16.0.0.zip -O llvm.zip
 echo "Unzipping LLVM source..."
-unzip llvm.zip &> /dev/null
-mv llvm-project-llvmorg-14.0.0 llvm-project
+unzip llvm.zip &>/dev/null
+mv llvm-project-llvmorg-16.0.0 llvm-project
 rm llvm.zip

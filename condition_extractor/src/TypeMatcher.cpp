@@ -95,6 +95,8 @@ std::string TypeMatcher::compute_unique_string(const llvm::Type *t,
   } break;
   case llvm::Type::TypeID::PointerTyID: {
     const llvm::PointerType *pt = SVFUtil::dyn_cast<PointerType>(t);
+    // FIXME: here we would add compute_unique_string(pt->getElementType(),
+    // ids_done) + "]";
     hash += "PN";
   } break;
   case llvm::Type::TypeID::StructTyID: {
@@ -150,6 +152,9 @@ std::string TypeMatcher::compute_unique_string(const llvm::Type *t,
   return hash;
 }
 
+/**
+ * Compute MD5 hash of the llvm::Type
+ */
 std::string TypeMatcher::compute_hash(const llvm::Type *t) {
 
   std::string hash = TypeMatcher::compute_unique_string(t);

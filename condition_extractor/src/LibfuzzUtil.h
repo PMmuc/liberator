@@ -21,6 +21,7 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
 #include <algorithm>
+#include <format>
 #include <list>
 #include <set>
 #include <string>
@@ -28,9 +29,9 @@
 
 using namespace llvm;
 
-namespace libfuzz {
+std::string remove_quotes(std::string s);
 
-// extern cl::opt<bool> ClCreateCastRelatedTypeList;
+namespace liberator {
 
 struct argument_record {
 public:
@@ -42,7 +43,7 @@ public:
 
     if (arg_type->isPtrOrPtrVectorTy()) {
 
-      llvm::PointerType *a_ptype = dyn_cast<llvm::PointerType>(arg_type);
+      llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(arg_type);
 
       /*if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
         this->flag = "fun";
@@ -67,16 +68,17 @@ public:
     else {
       if (a_type->isPtrOrPtrVectorTy()) {
 
-        llvm::PointerType *a_ptype = dyn_cast<llvm::PointerType>(a_type);
+        llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(a_type);
 
         if (a_ptype == nullptr) {
           this->flag = "ref";
         } else {
-          if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
+          // FIXME: opaque pointers
+          /*if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
             this->flag = "fun";
           } else {
             this->flag = "ref";
-          }
+          } */
         }
 
       } else {
@@ -87,22 +89,10 @@ public:
     llvm::raw_string_ostream ostream(this->type);
     a_type->print(ostream);
   }
-  std::string to_json() {
+  std::string to_json() const {
     std::string str_ret;
 
-    str_ret += "{";
-    str_ret += "\"name\": \"" + this->name + "\", ";
-    str_ret += "\"flag\": \"" + this->flag + "\", ";
-    str_ret += "\"size\": " + std::to_string(this->size) + ", ";
-    str_ret += "\"type\": \"" + remove_quotes(this->type) + "\"";
-    str_ret += "}";
-
     return str_ret;
-  }
-
-  std::string remove_quotes(std::string s) {
-    s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
-    return s;
   }
 };
 
@@ -113,12 +103,12 @@ struct function_record {
   std::vector<argument_record> arguments_info;
   std::string to_json() {
     std::string str_ret;
-
-    str_ret += "{";
-    str_ret += "\"function_name\": \"" + this->function_name + "\", ";
-    str_ret += "\"return_info\": " + this->return_info.to_json() + ", ";
-    str_ret += "\"is_vararg\": " + this->is_vararg + ", ";
-    str_ret += "\"arguments_info\": [";
+    /*
+        str_ret += "{";
+        str_ret += "\"function_name\": \"" + this->function_name + "\", ";
+        str_ret += "\"return_info\": " + this->return_info.to_json() + ", ";
+        str_ret += "\"is_vararg\": " + this->is_vararg + ", ";
+        str_ret += "\"arguments_info\": ["; */
 
     int max_arg = this->arguments_info.size();
     int n_arg = 0;
@@ -144,8 +134,40 @@ void dumpCoerceMap(llvm::Function *func, unsigned arg_pos,
                    llvm::Argument *arg_coerce);
 void dumpApiInfo(function_record a_fun);
 
-uint64_t estimate_size(llvm::Argument *arg, llvm::DataLayout *DL);
-uint64_t estimate_size(llvm::Type *type, llvm::DataLayout *DL);
+uint64_t estimate_size(const llvm::Argument *arg, const llvm::DataLayout *DL);
+uint64_t estimate_size(llvm::Type *type, const llvm::DataLayout *DL);
 
-} // namespace libfuzz
+} // namespace liberator
+  //
+template <> struct std::formatter<liberator::argument_record> {
+  constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
+  auto format(const liberator::argument_record &arg, std::format_context &ctx) {
+    auto out = ctx.out();
+
+    /*str_ret += "{";
+    str_ret += "\"name\": \"" + this->name + "\", ";
+    str_ret += "\"flag\": \"" + this->flag + "\", ";
+    str_ret += "\"size\": " + std::to_string(this->size) + ", ";
+    str_ret += "\"type\": \"" + remove_quotes(this->type) + "\"";
+    str_ret += "}";*/
+    out =
+        std::format_to(out,
+                       "{{\"name\": \"{}\", \"flag\": \"{}\", \"size\": \"{}\""
+                       "\"type\": \"{}\"}}",
+                       arg.name, arg.flag, arg.size, remove_quotes(arg.type));
+  }
+};
+
+template <> struct std::formatter<liberator::function_record> {
+  constexpr auto parse(std::format_parse_context &ctx) { return ctx.begin(); }
+  auto format(const liberator::function_record &fun, std::format_context &ctx) {
+    auto out = ctx.out();
+
+    out = std::format_to(
+        out,
+        "{{\"function_name\": \"{}\", \"return_info\": {}, \"is_vararg\": "
+        "\"{}\", \"arguments_info\": [",
+        fun.function_name, fun.return_info.to_json(), fun.is_vararg);
+  }
+};
 #endif // LLVM_TRANSFORMS_UTILS_HEXTYPE_H

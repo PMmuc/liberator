@@ -1,0 +1,19 @@
+void
+const char *
+cJSON *
+const double
+int
+const int
+cJSON *const
+const char *const *
+cJSON_Hooks *
+void *
+const char **
+const char *const
+double
+const cJSON *const
+const int *
+const double *
+const float *
+const cJSON *
+char *

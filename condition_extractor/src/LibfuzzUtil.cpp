@@ -8,6 +8,7 @@
 ////===--------------------------------------------------------------------===//
 
 #include "LibfuzzUtil.h"
+#include "FileLogger.h"
 #include "llvm/IR/Argument.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
@@ -33,14 +34,13 @@
 
 using namespace llvm;
 
-namespace libfuzz {
+namespace liberator {
 // cl::opt<bool> ClCreateCastRelatedTypeList(
 // "create-cast-related-type-list",
 // cl::desc("create casting related object list"),
 // cl::Hidden, llvm::cl::init(false));
 
 std::string CoerceFilePath = "";
-std::string ApiFilePath = "";
 
 std::string getCoerceFileLog() {
   if (CoerceFilePath == "") {
@@ -55,25 +55,10 @@ std::string getCoerceFileLog() {
   }
   return CoerceFilePath;
 }
-
-std::string getApiFileLog() {
-  if (ApiFilePath == "") {
-    if (getenv("LIBFUZZ_LOG_PATH")) {
-      char buff[1000];
-      strcpy(buff, getenv("LIBFUZZ_LOG_PATH"));
-      ApiFilePath = std::string(buff) + "/apis_llvm.json";
-    } else {
-      errs() << "LIBFUZZ_LOG_PATH not found, set it!\n";
-      exit(1);
-    }
-  }
-  return ApiFilePath;
-}
-
 void dumpLine(std::string line, std::string fileName) {
-  std::ofstream log(fileName, std::ios_base::app | std::ios_base::out);
-  log << line;
-  log.close();
+  // std::ofstream log(fileName, std::ios_base::app | std::ios_base::out);
+  // log << line;
+  // log.close();
 }
 
 void dumpCoerceMap(llvm::Function *func, unsigned arg_pos,
@@ -97,13 +82,17 @@ void dumpCoerceMap(llvm::Function *func, unsigned arg_pos,
   dumpLine(line, fileName);
 }
 
-void dumpApiInfo(function_record a_fun) {
-  std::string fileName = getApiFileLog();
-  std::string line = a_fun.to_json() + "\n";
-  dumpLine(line, fileName);
+std::string remove_quotes(std::string s) {
+  s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
+  return s;
 }
 
-uint64_t estimate_size(llvm::Argument *arg, llvm::DataLayout *DL) {
+void dumpApiInfo(function_record a_fun) {
+  std::string line = a_fun.to_json() + "\n";
+  // dumpLine(line, fileName);
+}
+
+uint64_t estimate_size(const llvm::Argument *arg, const llvm::DataLayout *DL) {
   llvm::Type *type_to_size = nullptr;
 
   if (arg->hasByValAttr()) {
@@ -114,8 +103,8 @@ uint64_t estimate_size(llvm::Argument *arg, llvm::DataLayout *DL) {
 
   return type_to_size->isSized() ? DL->getTypeSizeInBits(type_to_size) : 0;
 }
-uint64_t estimate_size(llvm::Type *type, llvm::DataLayout *DL) {
+uint64_t estimate_size(llvm::Type *type, const llvm::DataLayout *DL) {
   return type->isSized() ? DL->getTypeSizeInBits(type) : 0;
 }
 
-} // namespace libfuzz
+} // namespace liberator

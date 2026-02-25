@@ -7,6 +7,10 @@ analysis_old/*
 results
 crashes
 libfuzz.code-workspace
+llvm-project/
+llvm-16/
+libfuzz/
+build/
 
 LLVM/llvm-build
 *.bc

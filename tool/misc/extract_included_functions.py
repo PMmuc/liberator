@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
+# program arguments
+# include folder -i - should point to the library include path
+# public headers -p - should point to a file containg additional header files that should be considered in the analysis
+# exported_functions -e - name of the file, that will contain the function declarations and its return types
+# incomplete_types -t - name of the file, that will contain incomplete types
+# apis_list -t - name of the file, that will contain the list of api functions declarations
+# enum_list -n - name of the file, that will contain the enum declarations
+#
 
 import argparse, tempfile, json, copy, os, re
+from pathlib import Path
 import clang.cindex
 
 
@@ -239,9 +248,10 @@ def get_stub_file(include_folder, public_headers):
 def _main():
 
     parser = argparse.ArgumentParser(description='Extract list of exprted function from header files.')
+    parser.add_argument('-target', '-t', type=str, help='Target name', required=True)
     parser.add_argument('-include_folder', '-i', type=str, help='Folder with header files!', required=True)
     parser.add_argument('-exported_functions', '-e', type=str, help='List of exported functions', required=True)
-    parser.add_argument('-incomplete_types', '-t', type=str, help='List of incomplete types', required=True)
+    parser.add_argument('-incomplete_types', '-I', type=str, help='List of incomplete types', required=True)
     parser.add_argument('-apis_list', '-a', type=str, help='List of APIs with types from the AST', required=True)
     parser.add_argument('-public_headers', '-p', type=str, help='List of public header files', required=True)
     parser.add_argument('-enum_list', '-n', type=str, help='List of enum types', required=False)
@@ -254,8 +264,10 @@ def _main():
     apis_list = args.apis_list
     public_headers = args.public_headers
     enum_list = args.enum_list
+    target = args.target
 
-    target = os.environ["TARGET_NAME"]
+    if len(target) == 0:
+        target = os.environ["TARGET_NAME"]
 
     type_log = f"./alltypes_{target}.txt"
 
@@ -264,10 +276,24 @@ def _main():
     print(tmp_file)
 
     # exit()
+    possible_clang_paths = [ ".conda/envs/liberator/lib/python3.14/site-packages/clang/native/libclang.so",
+        ".local/lib/python3.12/site-packages/clang/native/libclang.so"]
+
+    clang_lib = ""
+
+    for s in possible_clang_paths:
+        print(Path.home() / s)
+        if os.path.isfile(Path.home() / s):
+            clang_lib = s
+            break
+
+    if len(clang_lib) == 0:
+        print("[ERROR] Could not find the right clang lib")
+        return -1
 
     # Eventually, tell clang.cindex where libclang.dylib is -- or else apt install and good luck
     # clang.cindex.Config.set_library_path("/Users/tomgong/Desktop/build/lib")
-    clang.cindex.Config.set_library_file(os.path.join(os.path.expanduser('~'), ".local/lib/python3.8/site-packages/clang/native/libclang.so"))
+    clang.cindex.Config.set_library_file(os.path.join(os.path.expanduser('~'), clang_lib)),
     index = clang.cindex.Index.create()
 
     # Generate AST from filepath passed in the command line

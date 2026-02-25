@@ -92,7 +92,7 @@ $LIBFUZZ/tool/misc/extract_included_functions.py \
 
 ## Condition Extractor
 
-The analyzer is in `./condition_extractor` folder and extract fields constraints plus other rinformation.
+The analyzer is in `./condition_extractor` folder and extract fields constraints plus other information.
 
 Preparation and compilation:
 ```bash
@@ -108,10 +108,10 @@ Output:
 Options:
 - \<arg1\> -- a `.bc` file containing LLVM bit code
 - `-h` -- show the help prompt
-- `-interafce <flie path>` -- analyze all the APIs extracted from `./extract_included_functions.py` (e.g., `-interafce apis_clang.json`)
+- `-interface <file path>` -- analyze all the APIs extracted from `./extract_included_functions.py` (e.g., `-interafce apis_clang.json`)
 - `-function <string>` -- limit the analysis on a single function indicated as string (e.g., `-function TIFFCheckpointDirectory`)
 - `-output <file path>` -- output file containing the field's constraints (e.g., `-output condition.json`)
-- `-v [v0|v1|v2|v3]` -- verbosisty:
+- `-v [v0|v1|v2|v3]` -- verbosity:
     - `v0` - No verbose (smallest `-output` file)
     - `v1` - Report ICFG nodes
     - `v2` - Report Paths if `-debug_condition` is met (experimental)

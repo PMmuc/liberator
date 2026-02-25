@@ -1,14 +1,16 @@
 #include "PhiFunction.h"
 #include "SVF-LLVM/LLVMModule.h"
 
-void getPhiFunction(LLVMModuleSet *module, ICFG *icfg, PHIFun *phi,
+void getPhiFunction(Module *svfModule, ICFG *icfg, PHIFun *phi,
                     PHIFunInv *phi_inv) {
-  auto svfModule = module->getMainLLVMModule();
   SVF::Module::const_iterator it = svfModule->begin();
   SVF::Module::const_iterator eit = svfModule->end();
 
   for (; it != eit; ++it) {
-    auto fun = module->getFunObjVar(&(*it));
+    if (it->isDeclaration() || it->isIntrinsic())
+      continue;
+
+    auto fun = LLVMModuleSet::getLLVMModuleSet()->getFunObjVar(&(*it));
 
     // outs() << fun->getName() << " [in DOM]\n";
     CallCFGEdge *call_edge;
@@ -16,8 +18,15 @@ void getPhiFunction(LLVMModuleSet *module, ICFG *icfg, PHIFun *phi,
     ICFGNode::const_iterator it_fun_entry, eit_fun_entry;
     ICFGNode::const_iterator it_fun_exit, eit_fun_exit;
 
+    // when a function is declared in LLVM IR and is called this will still
+    // return nullptr without definition.
     FunEntryICFGNode *fun_entry = icfg->getFunEntryICFGNode(fun);
     FunExitICFGNode *fun_exit = icfg->getFunExitICFGNode(fun);
+
+    if (fun_entry == nullptr) {
+      outs() << fun->toString() << " has no incoming edges.\n";
+      continue;
+    }
 
     it_fun_entry = fun_entry->InEdgeBegin();
     eit_fun_entry = fun_entry->InEdgeEnd();

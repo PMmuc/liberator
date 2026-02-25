@@ -3,6 +3,7 @@
 
 #include "Graphs/ICFG.h"
 #include "Graphs/SVFG.h"
+#include "SVFIR/SVFVariables.h"
 #include "WPA/Andersen.h"
 #include <Graphs/GenericGraph.h>
 #include <llvm/Analysis/LoopInfo.h>
@@ -18,6 +19,8 @@
 using namespace SVF;
 using namespace llvm;
 using namespace std;
+
+namespace liberator {
 
 class AccessType {
 public:
@@ -396,7 +399,8 @@ public:
     if (at_iter != ats_set.end()) {
       AccessType at_prev = *at_iter;
       at_prev.addICFGNode(inst);
-      ats_set.erase(at_prev);
+      ats_set.erase(at_iter);
+      // ats_set.erase(at_prev);
       ats_set.insert(at_prev);
     } else {
       at.addICFGNode(inst);
@@ -466,6 +470,7 @@ public:
   //     prevValue = nullptr;
   // }
 
+  // BUG: this is probably a bug where val is not used in the constructor.
   Path(const VFGNode *p_node, const llvm::Value *val, const llvm::Type *type)
       : access_type(type) {
     node = p_node;
@@ -558,305 +563,6 @@ public:
   }
 };
 
-class ValueMetadata {
-  AccessTypeSet ats;
-  bool is_array;
-  bool is_malloc_size;
-  bool is_file_path;
-  std::string len_depends_on;
-  std::vector<std::string> set_by;
-
-  const llvm::Value *val;
-  std::vector<llvm::Value *> indexes;
-  std::vector<std::pair<llvm::Value *, Path>> fun_params;
-
-public:
-  ValueMetadata() {
-    val = nullptr;
-    is_array = false;
-    is_malloc_size = false;
-    is_file_path = false;
-    len_depends_on = "";
-  }
-
-  void setValue(const llvm::Value *p_val) { val = p_val; }
-  const llvm::Value *getValue() { return val; }
-
-  void addIndex(const llvm::Value *idx) {
-    indexes.push_back(const_cast<llvm::Value *>(idx));
-  }
-  std::vector<llvm::Value *> getIndexes() { return indexes; }
-
-  void addFunParam(const llvm::Value *fp, Path *pp) {
-    auto fp_v = const_cast<llvm::Value *>(fp);
-    if (pp == nullptr) {
-      Path p(nullptr, nullptr, nullptr);
-      auto el = std::make_pair(fp_v, p);
-      fun_params.push_back(el);
-    } else {
-      auto el = std::make_pair(fp_v, *pp);
-      fun_params.push_back(el);
-    }
-  }
-  std::vector<std::pair<llvm::Value *, Path>> getFunParams() {
-    return fun_params;
-  }
-
-  void setAccessTypeSet(AccessTypeSet p_ats) { ats = p_ats; }
-  AccessTypeSet *getAccessTypeSet() { return &ats; }
-  int getAccessNum() { return ats.size(); }
-
-  void setIsArray(bool p_is_array) { is_array = p_is_array; }
-  bool isArray() { return is_array; }
-
-  void setMallocSize(bool p_malloc_size) { is_malloc_size = p_malloc_size; }
-  bool isMallocSize() { return is_malloc_size; }
-
-  void setIsFilePath(bool p_is_file_path) { is_file_path = p_is_file_path; }
-  bool isFilePath() { return is_file_path; }
-
-  void setLenDependency(std::string p_dep) { len_depends_on = p_dep; }
-  std::string getLenDependency() { return len_depends_on; }
-
-  void addSetByDependency(std::string p_dep) { set_by.push_back(p_dep); }
-  std::vector<std::string> getSetByDependency() { return set_by; }
-
-  Json::Value toJson(bool verbose) {
-
-    Json::Value medataResult;
-
-    medataResult["access_type_set"] = ats.toJson(verbose);
-    medataResult["is_array"] = this->is_array;
-    medataResult["is_malloc_size"] = this->is_malloc_size;
-    medataResult["is_file_path"] = this->is_file_path;
-    medataResult["len_depends_on"] = this->len_depends_on;
-
-    Json::Value setByJson(Json::arrayValue);
-    for (auto d : this->set_by)
-      setByJson.append(d);
-
-    medataResult["set_by"] = setByJson;
-
-    return medataResult;
-  }
-
-  std::string toString(bool verbose) {
-
-    std::stringstream sstream;
-
-    sstream << "is_array: " << std::to_string(this->is_array) << "\n";
-    sstream << "is_malloc_size: " << std::to_string(this->is_malloc_size)
-            << "\n";
-    sstream << "is_file_path: " << std::to_string(this->is_file_path) << "\n";
-    sstream << "len_depends_on: " << this->len_depends_on << "\n";
-
-    std::string set_by_str = "";
-    for (auto d : this->set_by)
-      set_by_str += d + " ";
-
-    sstream << "set_by: " << set_by_str << "\n";
-    sstream << "access_type_set:\n" << ats.toString(verbose) << "\n";
-
-    return sstream.str();
-  }
-
-  std::string getSummary() {
-
-    std::stringstream sstream;
-
-    sstream << "ATS " << this->ats.size() << ", ";
-    sstream << "array " << std::to_string(this->is_array) << ", ";
-    sstream << "malloc " << std::to_string(this->is_malloc_size) << ", ";
-    sstream << "path " << std::to_string(this->is_file_path) << ", ";
-    sstream << "depends '" << len_depends_on << "'\n";
-
-    return sstream.str();
-  }
-
-  // // copy assignment operator
-  // ValueMetadata& operator=(const ValueMetadata &rhs) {
-
-  //     this->val = rhs.val;
-  //     this->is_array = rhs.is_array;
-  //     this->is_malloc_size = rhs.is_malloc_size;
-  //     this->is_file_path = rhs.is_file_path;
-  //     this->len_depends_on = rhs.len_depends_on;
-
-  //     // this->fields = rhs.fields;
-  //     // this->access = rhs.access;
-  //     // this->type = rhs.type;
-
-  //     // // hope this does not make a mess!
-  //     // this->icfg_set = rhs.icfg_set;
-
-  //     // // parent
-  //     // this->has_parent = rhs.has_parent;
-  //     // this->p_fields = rhs.p_fields;
-  //     // this->p_access = rhs.p_access;
-  //     // this->p_type = rhs.p_type;
-
-  //     // // visited types for GEP recursion
-  //     // this->visited_types = rhs.visited_types;
-
-  //     return *this;
-  // };
-
-public: // static functions/data!
-  // handle debug information
-  static bool debug;
-  static std::string debug_condition;
-  static bool consider_indirect_calls;
-
-  typedef std::map<const CallICFGNode *, std::set<const Function *>>
-      MyCallEdgeMap;
-
-  static MyCallEdgeMap myCallEdgeMap_inst;
-
-  static ValueMetadata extractParameterMetadata(const SVFG *, const Value *,
-                                                const Type *);
-  static ValueMetadata extractReturnMetadata(const SVFG *, const Value *);
-  static std::string extractLenDependencyParameter(const SVF::SVFVar *,
-                                                   ValueMetadata *, SVF::SVFG *,
-                                                   const Function *);
-  static std::vector<std::string>
-  extractDependencyAmongParameters(const SVF::SVFVar *, ValueMetadata *,
-                                   SVF::SVFG *, const Function *);
-};
-
-class FunctionConditions {
-private:
-  // std::vector<AccessTypeSet> parameter_ats;
-  // AccessTypeSet return_ats;
-  std::vector<ValueMetadata> parameter_metadata;
-  ValueMetadata return_metadata;
-  std::string function_name;
-
-public:
-  void setFunctionName(std::string f) { function_name = f; }
-  std::string getFunctionName() { return function_name; }
-
-  void addParameterMetadata(ValueMetadata par) {
-    parameter_metadata.push_back(par);
-  }
-
-  int getParameterNum() { return parameter_metadata.size(); }
-
-  void replaceParameterMetadata(int parm, ValueMetadata new_par) {
-    parameter_metadata[parm] = new_par;
-  }
-
-  ValueMetadata getParameterMetadata(int idx) {
-    if (idx < 0 || idx >= parameter_metadata.size())
-      assert("idx out of bounds!");
-
-    return parameter_metadata[idx];
-  }
-
-  void setReturnMetadata(ValueMetadata ret) { return_metadata = ret; }
-  ValueMetadata getReturnMetadata() { return return_metadata; }
-
-  // for using it in std::set
-  bool operator<(const FunctionConditions &rhs) const {
-    return function_name < rhs.function_name;
-  }
-
-  Json::Value toJson(bool verbose) {
-
-    Json::Value functionResult;
-
-    functionResult["function_name"] = function_name;
-
-    int pn = 0;
-    for (auto param : parameter_metadata) {
-      auto param_key = "param_" + std::to_string(pn);
-      functionResult[param_key] = param.toJson(verbose);
-      pn++;
-      std::vector<ValueMetadata> parameter_metadata;
-    }
-
-    functionResult["return"] = return_metadata.toJson(verbose);
-
-    return functionResult;
-  }
-
-  std::string toString(bool verbose) {
-
-    std::stringstream sstream;
-
-    sstream << "Function: " << function_name << "\n";
-
-    int pn = 0;
-    for (auto param : parameter_metadata) {
-      sstream << "param_" + std::to_string(pn) << ":\n";
-      sstream << param.toString(verbose);
-      pn++;
-    }
-
-    sstream << "return:\n";
-    sstream << return_metadata.toString(verbose);
-
-    return sstream.str();
-  }
-  std::string getSummary() {
-    std::stringstream sstream;
-
-    sstream << "[INFO] Summary " << function_name << ":\n";
-
-    int pn = 0;
-    for (auto param : parameter_metadata) {
-      sstream << "param_" + std::to_string(pn) << ": " << param.getAccessNum()
-              << " access types\n";
-      pn++;
-    }
-
-    sstream << "return: " << return_metadata.getAccessNum()
-            << " access types\n";
-
-    return sstream.str();
-  }
-};
-
-class FunctionConditionsSet {
-private:
-  std::map<std::string, FunctionConditions> fun_cond_set;
-
-public:
-  void addFunctionConditions(FunctionConditions fun_cond) {
-    fun_cond_set.insert(std::pair<std::string, FunctionConditions>(
-        fun_cond.getFunctionName(), fun_cond));
-  }
-
-  Json::Value toJson(bool verbose) {
-    Json::Value funCondJson(Json::arrayValue);
-
-    for (auto fc : fun_cond_set)
-      funCondJson.append(fc.second.toJson(verbose));
-
-    return funCondJson;
-  }
-
-  std::string toString(bool verbose) {
-
-    std::stringstream sstream;
-
-    for (auto fc : fun_cond_set)
-      sstream << fc.second.toString(verbose);
-
-    return sstream.str();
-  }
-
-  std::string getSummary() {
-    std::stringstream sstream;
-
-    for (auto fc : fun_cond_set)
-      sstream << fc.second.getSummary();
-
-    return sstream.str();
-  }
-
-public: // static functions
-  static void storeIntoJsonFile(FunctionConditionsSet, std::string, bool);
-  static void storeIntoTextFile(FunctionConditionsSet, std::string, bool);
-};
+} // namespace liberator
 
 #endif /* INCLUDE_DOM_ACCESSTYPE_H_ */

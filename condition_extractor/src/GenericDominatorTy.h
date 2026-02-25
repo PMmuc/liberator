@@ -276,7 +276,7 @@ struct DOTGraphTraits<GenericDominatorTy *> : public DOTGraphTraits<ICFG *> {
       } else if (!has_intra && has_call && has_ret) {
         rawstr << "color=purple";
       } else {
-        outs() << node->toString() << "\n";
+        SVFUtil::outs() << node->toString() << "\n";
         assert(false && "not sure how to color this node!");
       }
     }

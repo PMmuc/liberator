@@ -7,6 +7,8 @@
 #include "MemoryModel/PointerAnalysis.h"
 #include "MemoryModel/PointerAnalysisImpl.h"
 #include "WPA/WPAFSSolver.h"
+#include <WPA/FlowSensitive.h>
+#include <llvm/IR/Value.h>
 
 using namespace SVF;
 using namespace SVFUtil;
@@ -33,7 +35,7 @@ public:
   static void releaseFSWPA() { gspta = nullptr; }
 
   /// We start from here
-  virtual bool runOnModule(Module *) { return false; }
+  virtual bool runOnModule(llvm::Module *) { return false; }
 
   /// GlobalStruct analysis
   void analyze() override;

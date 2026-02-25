@@ -1,0 +1,33 @@
+REPO_URL="https://github.com/c-ares/c-ares.git"
+REPO_COMMIT="25ad4ca231054ba210ea5a31a5a15195d03e70b6"
+BC_FILE_NAME="libcares_static.a"
+
+target_configure() {
+  mkdir -p "$TARGET/repo/cares_build"
+  cd "$TARGET/repo/cares_build"
+
+  cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+    -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug -DCARES_STATIC=on \
+    -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+    -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
+}
+
+target_build() {
+  # We are already in build dir from configure step
+  make -j"$(nproc)" clean
+  make -j"$(nproc)"
+}
+
+target_install() {
+  make install
+}
+
+target_preinstall() {
+    
+}
+
+
+target_preinstall_docker() {
+    sudo apt-get -y install --no-install-suggests --no-install-recommends cmake git
+}
+
