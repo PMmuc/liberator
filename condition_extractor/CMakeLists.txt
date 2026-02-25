@@ -16,6 +16,7 @@ if (DEFINED LLVM_DIR)
 
 find_package(LLVM REQUIRED CONFIG)
     
+option(ENABLE_GPROF "Enable gprof profiling" OFF)
     list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
     include(AddLLVM)
 

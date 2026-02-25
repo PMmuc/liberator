@@ -82,10 +82,19 @@ FROM libfuzzpp_dev_image AS libfuzzpp_debug
 
 ENV TOOLS_DIR ${HOME}
 ARG target_name=simple_connection
+ARG USERNAME=libfuzz
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
 ENV TARGET_NAME ${target_name}
 
-COPY --link ./llvm-project/build ${HOME}/LLVM/
+# download llvm-14
+RUN wget https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
+    && tar -xvf clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
+    && mkdir -p ${HOME}/LLVM \
+    && mv clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04/* ${HOME}/LLVM \
+    && rm -rf clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
+    && rm -rf clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04
 ENV LLVM_DIR ${HOME}/LLVM
 # ENV LLVM_DIR ${LIBFUZZ}/llvm-project/build
 ENV TARGET ${HOME}/library
@@ -94,6 +103,7 @@ ENV DRIVER "*"
 
 RUN mkdir -p ${HOME}/${TARGET_NAME}
 WORKDIR ${HOME}/${TARGET_NAME}
+RUN sudo chown ${USERNAME}:${USERNAME} ${HOME}
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/preinstall.sh ${HOME}/${TARGET_NAME}
 RUN sudo ./preinstall.sh
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/fetch.sh ${HOME}/${TARGET_NAME}
@@ -163,6 +173,7 @@ ENV DRIVER_FOLDER ${LIBFUZZ}/workdir/${TARGET_NAME}/drivers
 # I want to install the library at building time, so later I only need to build
 # the drivers
 WORKDIR ${LIBFUZZ}/targets/${TARGET_NAME}
+RUN sudo chown ${USERNAME}:${USERNAME} ${HOME}
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/preinstall.sh ${LIBFUZZ}/targets/${TARGET_NAME}
 RUN sudo ./preinstall.sh
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/fetch.sh ${LIBFUZZ}/targets/${TARGET_NAME}
