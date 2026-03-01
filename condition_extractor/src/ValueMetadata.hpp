@@ -14,6 +14,7 @@ class Value;
 
 namespace liberator {
 class ValueMetadata {
+  friend Json::Value to_json(const ValueMetadata &, bool);
   AccessTypeSet ats;
   bool is_array;
   bool is_malloc_size;
@@ -24,6 +25,8 @@ class ValueMetadata {
   const llvm::Value *val;
   std::vector<llvm::Value *> indexes;
   std::vector<std::pair<llvm::Value *, Path>> fun_params;
+  friend std::string to_string(const ValueMetadata &, bool);
+  friend std::string print_summary(const ValueMetadata &);
 
 public:
   ValueMetadata() {
@@ -36,6 +39,9 @@ public:
 
   void setValue(const llvm::Value *p_val) { val = p_val; }
   const llvm::Value *getValue() { return val; }
+
+  AccessTypeSet &get_access_type_set() { return ats; }
+  const AccessTypeSet &get_access_type_set() const { return ats; }
 
   void addIndex(const llvm::Value *idx) {
     indexes.push_back(const_cast<llvm::Value *>(idx));
@@ -64,10 +70,6 @@ public:
 
   void addSetByDependency(std::string p_dep) { set_by.push_back(p_dep); }
   std::vector<std::string> getSetByDependency() { return set_by; }
-
-  Json::Value toJson(bool verbose);
-  std::string toString(bool verbose);
-  std::string getSummary();
 
   // // copy assignment operator
   // ValueMetadata& operator=(const ValueMetadata &rhs) {

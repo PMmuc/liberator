@@ -12,7 +12,6 @@
 
 #include "PhiFunction.h"
 #include "TypeMatcher.h"
-#include "json/json.h"
 #include <fstream>
 #include <utility>
 
@@ -20,32 +19,37 @@ using namespace SVF;
 using namespace llvm;
 using namespace std;
 
+namespace Json {
+class Value;
+}
+
 namespace liberator {
 
 class AccessType {
 public:
-  typedef enum _access {
+  enum class kind_e {
+    none,
     read,
     write,
     ret,
     del,
     create,
-    none,
     file,
     input_stream,
     output_stream
-  } Access;
+  };
 
 private:
+  friend Json::Value to_json(const AccessType &, bool);
   std::set<const ICFGNode *> icfg_set;
   std::vector<int> fields;
-  Access access;
+  kind_e access;
   const llvm::Type *type;
 
   // fake parent
-  bool has_parent;
+  bool has_parent_;
   std::vector<int> p_fields;
-  Access p_access;
+  kind_e p_access;
   const llvm::Type *p_type;
 
   // original casted type
@@ -54,21 +58,11 @@ private:
   // remember the types extracted from previous GEP
   std::set<const llvm::Type *> visited_types;
 
-  static std::string type_to_string(const llvm::Type *typ) {
-    std::string str;
-    llvm::raw_string_ostream(str) << *typ;
-    return str;
-  }
-
-  static std::string type_to_hash(const llvm::Type *typ) {
-    return TypeMatcher::compute_hash(typ);
-  }
-
 public:
   AccessType(const llvm::Type *t) {
-    access = none;
-    p_access = none;
-    has_parent = false;
+    access = kind_e::none;
+    p_access = kind_e::none;
+    has_parent_ = false;
     type = t;
     p_type = nullptr;
     c_type = nullptr;
@@ -80,6 +74,10 @@ public:
   bool is_visited(llvm::Type *a_type) {
     return visited_types.find(a_type) != visited_types.end();
   }
+  const std::vector<int> &get_parent_fields() const { return p_fields; }
+
+  kind_e get_parent_kind() const { return p_access; }
+  const llvm::Type *get_parent_llvm_type() const { return p_type; }
 
   // copy assignment operator
   AccessType &operator=(const AccessType &rhs) {
@@ -91,7 +89,7 @@ public:
     this->icfg_set = rhs.icfg_set;
 
     // parent
-    this->has_parent = rhs.has_parent;
+    this->has_parent_ = rhs.has_parent_;
     this->p_fields = rhs.p_fields;
     this->p_access = rhs.p_access;
     this->p_type = rhs.p_type;
@@ -115,35 +113,36 @@ public:
     p_fields = fields;
     p_access = access;
     p_type = type;
-    has_parent = true;
+    has_parent_ = true;
     fields.push_back(a_field);
   }
 
-  std::vector<int> getFields() { return fields; }
+  std::vector<int> &get_fields() { return fields; }
+  const std::vector<int> &get_fields() const { return fields; }
 
-  int getNumFields() { return fields.size(); }
+  int get_num_fields() const { return fields.size(); }
 
   void removeLastField() {
-    if (getNumFields() == 0)
+    if (get_num_fields() == 0)
       return;
     fields.pop_back();
   }
 
   int getLastField() {
-    if (getNumFields() == 0)
+    if (get_num_fields() == 0)
       return -1;
     return fields.back();
   }
 
-  void setAccess(Access a_access) { access = a_access; }
+  void set_kind(kind_e a_access) { access = a_access; }
 
-  Access getAccess() { return access; }
+  kind_e get_kind() const { return access; }
 
-  void setType(const llvm::Type *typ) { type = typ; }
+  void set_llvm_type(const llvm::Type *typ) { type = typ; }
 
-  const llvm::Type *getType() { return type; }
+  const llvm::Type *get_llvm_type() const { return type; }
 
-  inline bool hasParent() { return has_parent; }
+  inline bool has_parent() const { return has_parent_; }
 
   // void clone() {
   //     unsigned int new_ID = ++global_object_id;
@@ -151,7 +150,7 @@ public:
   //     ID = new_ID;
   // }
 
-  bool equals(std::string s) { return s == toString(false); }
+  bool equals(std::string s) const;
 
   bool operator==(const AccessType &other) const {
     if (other.fields != fields)
@@ -173,203 +172,6 @@ public:
     rawstr << "\n";
 
     return rawstr.str();
-  }
-
-  std::string toStringParent() {
-    std::string str;
-    raw_string_ostream rawstr(str);
-
-    // example of output:
-    // (., write) -> write the whole pointer (all the fields)
-    // (.1, read) -> read field in position 1
-    // (.0.1, write) -> write subfield 1 of the field 0
-
-    rawstr << "(.";
-    int max_fields = getNumFields();
-    int i = 0;
-    for (int f : getFields()) {
-      if (f == -1)
-        rawstr << "*";
-      else
-        rawstr << f;
-      if (i < max_fields - 1)
-        rawstr << ".";
-      i++;
-    }
-
-    rawstr << ", ";
-    if (access == Access::read)
-      rawstr << "read";
-    else if (access == Access::write)
-      rawstr << "write";
-    else if (access == Access::ret)
-      rawstr << "return";
-    else if (access == Access::none)
-      rawstr << "none";
-    else if (access == Access::del)
-      rawstr << "delete";
-    else if (access == Access::create)
-      rawstr << "create";
-    else {
-      outs() << "[ERROR] Access:: " << access << " unknown!!\n";
-      exit(1);
-    }
-    rawstr << ", " << type_to_string(type);
-    rawstr << ", " << type_to_hash(type) << ")";
-
-    return rawstr.str();
-  }
-
-  std::string toString(bool verbose = false) {
-
-    std::string str;
-    raw_string_ostream rawstr(str);
-
-    // example of output:
-    // (., write) -> write the whole pointer (all the fields)
-    // (.1, read) -> read field in position 1
-    // (.0.1, write) -> write subfield 1 of the field 0
-
-    rawstr << "(";
-
-    if (has_parent) {
-      AccessType p(p_type);
-      // AccessType p;
-      // p.setType(p_type);
-      p.setAccess(p_access);
-      for (auto f : p_fields)
-        p.addField(f);
-      rawstr << p.toStringParent() << ",";
-    } else
-      rawstr << "(0),";
-
-    rawstr << ".";
-    int max_fields = getNumFields();
-    int i = 0;
-    for (int f : getFields()) {
-      if (f == -1)
-        rawstr << "*";
-      else
-        rawstr << f;
-      if (i < max_fields - 1)
-        rawstr << ".";
-      i++;
-    }
-
-    rawstr << ", ";
-    if (access == Access::read)
-      rawstr << "read";
-    else if (access == Access::write)
-      rawstr << "write";
-    else if (access == Access::ret)
-      rawstr << "return";
-    else if (access == Access::none)
-      rawstr << "none";
-    else if (access == Access::del)
-      rawstr << "delete";
-    else if (access == Access::create)
-      rawstr << "create";
-    else {
-      outs() << "[ERROR] Access:: " << access << " unknown!!\n";
-      exit(1);
-    }
-    rawstr << ", " << type_to_string(type);
-    rawstr << ", " << type_to_hash(type) << ")";
-
-    if (verbose) {
-      rawstr << "\n";
-      rawstr << dumpICFGNodes();
-    }
-
-    return rawstr.str();
-  }
-
-  Json::Value dumpICFGNodesJson() const {
-
-    Json::Value debugInfo(Json::arrayValue);
-
-    // for (auto inst: getICFGNodes())
-    //     debugInfo.append(inst->toString());
-
-    return debugInfo;
-  }
-
-  Json::Value toJsonParent() {
-    Json::Value accessTypeJson;
-
-    if (access == Access::read)
-      accessTypeJson["access"] = "read";
-    else if (access == Access::write)
-      accessTypeJson["access"] = "write";
-    else if (access == Access::ret)
-      accessTypeJson["access"] = "return";
-    else if (access == Access::none)
-      accessTypeJson["access"] = "none";
-    else if (access == Access::del)
-      accessTypeJson["access"] = "delete";
-    else if (access == Access::create)
-      accessTypeJson["access"] = "create";
-    else {
-      outs() << "[ERROR] Access:: " << access << " unknown!!\n";
-      exit(1);
-    }
-
-    Json::Value fieldsJson(Json::arrayValue);
-
-    for (auto field : fields)
-      fieldsJson.append(field);
-
-    accessTypeJson["fields"] = fieldsJson;
-    accessTypeJson["type"] = type_to_hash(type);
-    accessTypeJson["type_string"] = type_to_string(type);
-
-    return accessTypeJson;
-  }
-
-  Json::Value toJson(bool verbose) {
-    Json::Value accessTypeJson;
-
-    if (has_parent) {
-      AccessType p(p_type);
-      // AccessType p;
-      // p.setType(p_type);
-      p.setAccess(p_access);
-      for (auto f : p_fields)
-        p.addField(f);
-      accessTypeJson["parent"] = p.toJsonParent();
-    } else
-      accessTypeJson["parent"] = 0;
-
-    if (access == Access::read)
-      accessTypeJson["access"] = "read";
-    else if (access == Access::write)
-      accessTypeJson["access"] = "write";
-    else if (access == Access::ret)
-      accessTypeJson["access"] = "return";
-    else if (access == Access::none)
-      accessTypeJson["access"] = "none";
-    else if (access == Access::del)
-      accessTypeJson["access"] = "delete";
-    else if (access == Access::create)
-      accessTypeJson["access"] = "create";
-    else {
-      outs() << "[ERROR] Access:: " << access << " unknown!!\n";
-      exit(1);
-    }
-
-    Json::Value fieldsJson(Json::arrayValue);
-
-    for (auto field : fields)
-      fieldsJson.append(field);
-
-    accessTypeJson["fields"] = fieldsJson;
-    accessTypeJson["type"] = type_to_hash(type);
-    accessTypeJson["type_string"] = type_to_string(type);
-
-    if (verbose)
-      accessTypeJson["debug"] = dumpICFGNodesJson();
-
-    return accessTypeJson;
   }
 
   // for std:set
@@ -429,26 +231,7 @@ public:
     return allNodes;
   }
 
-  Json::Value toJson(bool verbose) {
-    Json::Value result(Json::arrayValue);
-
-    for (auto at : ats_set)
-      result.append(at.toJson(verbose));
-
-    return result;
-  }
-
-  std::string toString(bool verbose = false) {
-    std::stringstream sstream;
-
-    for (auto at : ats_set)
-      sstream << at.toString(verbose) << std::endl;
-
-    return sstream.str();
-  }
-
   std::set<AccessType>::iterator begin() const { return ats_set.begin(); }
-
   std::set<AccessType>::iterator end() const { return ats_set.end(); }
 
   bool operator<(const AccessTypeSet &rhs) const {
@@ -463,6 +246,7 @@ private:
   const Value *prevValue;
   std::stack<const CallICFGNode *> stack;
   std::vector<std::pair<const ICFGNode *, AccessType>> history;
+  friend std::string to_string(const Path &);
 
 public:
   // Path(const VFGNode* p_node) {
@@ -550,17 +334,6 @@ public:
 
     return *this;
   };
-
-  std::string toString() {
-
-    std::string str;
-    raw_string_ostream rawstr(str);
-
-    rawstr << "<" << access_type.toString() << ", ";
-    rawstr << node->toString() << ">";
-
-    return rawstr.str();
-  }
 };
 
 } // namespace liberator

@@ -1,23 +1,24 @@
 #include "FunctionConditions.hpp"
+#include "AccessTypeIO.h"
 
 namespace liberator {
 
-Json::Value FunctionConditions::toJson(bool verbose) {
-  Json::Value functionResult;
+Json::Value to_json(const FunctionConditions &f, bool verbose) {
+  Json::Value res;
 
-  functionResult["function_name"] = function_name;
+  res["function_name"] = f.getFunctionName();
 
   int pn = 0;
-  for (auto param : parameter_metadata) {
+
+  for (auto param : f.get_parameters()) {
     auto param_key = "param_" + std::to_string(pn);
-    functionResult[param_key] = param.toJson(verbose);
+    res[param_key] = to_json(param, verbose);
     pn++;
-    std::vector<ValueMetadata> parameter_metadata;
   }
 
-  functionResult["return"] = return_metadata.toJson(verbose);
+  res["return"] = to_json(f.getReturnMetadata(), verbose);
 
-  return functionResult;
+  return res;
 }
 
 std::string FunctionConditions::toString(bool verbose) {
@@ -29,12 +30,12 @@ std::string FunctionConditions::toString(bool verbose) {
   int pn = 0;
   for (auto param : parameter_metadata) {
     sstream << "param_" + std::to_string(pn) << ":\n";
-    sstream << param.toString(verbose);
+    sstream << to_string(param, verbose);
     pn++;
   }
 
   sstream << "return:\n";
-  sstream << return_metadata.toString(verbose);
+  sstream << to_string(return_metadata, verbose);
 
   return sstream.str();
 }
@@ -78,7 +79,7 @@ Json::Value to_json(const function_condition_set_t &cs, bool verbose) {
   Json::Value funCondJson(Json::arrayValue);
 
   for (auto fc : cs)
-    funCondJson.append(fc.second.toJson(verbose));
+    funCondJson.append(to_json(fc.second, verbose));
 
   return funCondJson;
 }

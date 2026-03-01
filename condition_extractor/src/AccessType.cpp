@@ -1,5 +1,6 @@
 #include "AccessType.h"
 #include "AccessTypeHandler.h"
+#include "AccessTypeIO.h"
 #include "Config.h"
 #include "ValueMetadata.hpp"
 
@@ -319,9 +320,15 @@ bool doesReturnGlobalVarConst(const ICFGNode *icfgNode) {
 
   return itReturnGlobalVarConst;
 }
+
 } // namespace
 
 namespace liberator {
+
+bool AccessType::equals(std::string s) const {
+  return s == to_string(*this, false);
+}
+
 bool handlerDispatcher(liberator::ValueMetadata *, std::string,
                        const ICFGNode *, const CallICFGNode *, int, AccessType,
                        H_SCOPE h_scope, liberator::Path *path);
@@ -436,8 +443,8 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
           allocainst_set.insert(alloca);
         }
       } else if (auto callinst = SVFUtil::dyn_cast<CallInst>(llvminst)) {
-        // FIXME: is this code ever called or not? Because the instruction is a
-        // CallICFGNode not an IntraICFGNode
+        // FIXME: is this code ever called or not? Because the instruction is
+        // a CallICFGNode not an IntraICFGNode
         outs() << "[INFO] callinst " << *callinst << "\n";
         FunctionType *ftype = callinst->getFunctionType();
         if (ftype->getReturnType() == retType) {
@@ -532,11 +539,11 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
             handlerDispatcher(&mdata_tmp, fun, node, call_node, -1, acNode,
                               C_RETURN, nullptr);
             outs() << "[INFO] After handlerDispatcher\nmeta_tmp:\n";
-            outs() << mdata_tmp.toString(false) << "\n";
+            outs() << to_string(mdata_tmp, false) << "\n";
             // check if mdata_tmp has "create"
             bool added_create = false;
             for (auto at : *mdata_tmp.getAccessTypeSet()) {
-              if (at.getAccess() == AccessType::create) {
+              if (at.get_kind() == AccessType::kind_e::create) {
                 outs() << "I added a create!!!\n";
                 added_create = true;
                 break;
@@ -665,8 +672,8 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
     outs() << "no llvm instruction\n";
   }
 
-  // outs() << "[INFO] Visited " << visited_functions.size() << " functions\n";
-  // for (auto f: visited_functions)
+  // outs() << "[INFO] Visited " << visited_functions.size() << "
+  // functions\n"; for (auto f: visited_functions)
   //     outs() << "fun: " << f->getName() << "\n";
 
   // std::set<const VFGNode*> defA = getDefinitionSet(XX);
@@ -764,7 +771,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
     bool do_not_return = true;
     for (auto at : *mdata.getAccessTypeSet()) {
       // for (auto at: *mdata_xx.getAccessTypeSet()) {
-      if (at.getAccess() == AccessType::Access::ret) {
+      if (at.get_kind() == AccessType::kind_e::ret) {
         auto l_ats_all_nodes = at.getICFGNodes();
         for (auto inst : l_ats_all_nodes) {
           if (inst == fun_exit) {
@@ -807,8 +814,8 @@ If exists, call the predefined handler for function fun.
 @param: param_num: the parameter number
 
 @return: boolean value indicating if the analysis should continue on the
-subfield. For example, it might be false for a cast to indicate we do not try to
-follow further child of the node. default true.
+subfield. For example, it might be false for a cast to indicate we do not try
+to follow further child of the node. default true.
 */
 bool handlerDispatcher(ValueMetadata *mdata, std::string fun,
                        const ICFGNode *icfgNode, const CallICFGNode *cs,
@@ -841,7 +848,8 @@ It checks if the target function is handled by our dispatchers.
 @param: fun: the name of the function
 @param: node: the node currently analyzed
 
-@return: boolean value indicating if the function is handled by our dispacthers
+@return: boolean value indicating if the function is handled by our
+dispacthers
 */
 bool hasHandlerDispatcher(ValueMetadata *mdata, std::string fun,
                           const ICFGNode *icfgNode, const CallICFGNode *cs,
@@ -905,7 +913,7 @@ extractDependencyAmongParameters(const SVF::SVFVar *current_parm,
   for (; ats_it != ats_end; ++ats_it) {
     auto at = *ats_it;
     // outs() << at.toString() << "\n";
-    if (at.getAccess() == AccessType::Access::write) {
+    if (at.get_kind() == AccessType::kind_e::write) {
       // outs() << at.toString() << "\n";
       // outs() << "the instructions:\n";
       for (auto node : at.getICFGNodes()) {
@@ -1186,22 +1194,22 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
       outs() << "A.->" << vNode->toString() << "\n";
       outs() << "B.->" << vNode->getFun()->getName() << "\n";
       // outs() << "Stack size: " << p.getStackSize() << "\n";
-      outs() << "AT: " << acNode.toString() << "\n";
+      outs() << "AT: " << to_string(acNode) << "\n";
 
-      if (acNode.toString().rfind(config_t::instance()->debug_condition, 0) ==
+      if (to_string(acNode).rfind(config_t::instance()->debug_condition, 0) ==
           std::string::npos) {
         outs() << "[STOP]\n";
         for (auto h : p.getSteps()) {
           outs() << h.first->toString() << "\n";
           outs() << h.first->getFun()->getName() << "\n";
-          outs() << h.second.toString() << "\n";
+          outs() << to_string(h.second) << "\n";
           outs() << "\n";
         }
 
         outs() << "-> last node <-\n";
         outs() << vNode->toString() << "\n";
         outs() << vNode->getFun()->getName() << "\n";
-        outs() << acNode.toString() << "\n\n";
+        outs() << to_string(acNode) << "\n\n";
 
         outs() << "[IN EDGES]\n";
         for (VFGNode::const_iterator it = vNode->InEdgeBegin(),
@@ -1250,7 +1258,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
       // process the node!
       if (vNode->getNodeKind() == VFGNode::VFGNodeK::Load) {
-        acNode.setAccess(AccessType::Access::read);
+        acNode.set_kind(AccessType::kind_e::read);
         ats->insert(acNode, vNode->getICFGNode());
       } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::Store) {
 
@@ -1264,10 +1272,10 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           auto inst = SVFUtil::dyn_cast<StoreInst>(llvm_val);
 
           if (inst->getPointerOperand() == prevValue) {
-            acNode.setAccess(AccessType::Access::write);
+            acNode.set_kind(AccessType::kind_e::write);
             ats->insert(acNode, vNode->getICFGNode());
           } else if (inst->getValueOperand() == prevValue) {
-            acNode.setAccess(AccessType::Access::read);
+            acNode.set_kind(AccessType::kind_e::read);
             ats->insert(acNode, vNode->getICFGNode());
           }
 
@@ -1323,7 +1331,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           // that look like field access
           // if (SVFUtil::isa<llvm::StructType>(sType) &&
           //  AccessTypeSet::isSameType(pType, acNode.getType()) ) {
-          if (TypeMatcher::compare_types(pType, acNode.getType()) &&
+          if (TypeMatcher::compare_types(pType, acNode.get_llvm_type()) &&
               !acNode.is_visited(pType)) {
             // SVFUtil::isa<PointerType>(dType)) {
             if (inst->hasAllConstantIndices() && inst->getNumIndices() > 1) {
@@ -1334,17 +1342,17 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
                 if (pos == 1) {
                   AccessType tmpAcNode = acNode;
                   tmpAcNode.addField(-1);
-                  tmpAcNode.setAccess(AccessType::Access::read);
+                  tmpAcNode.set_kind(AccessType::kind_e::read);
                   ats->insert(tmpAcNode, vNode->getICFGNode());
                 } else {
                   ConstantInt *CI =
                       dyn_cast<ConstantInt>(inst->getOperand(pos));
                   uint64_t idx = CI->getZExtValue();
                   acNode.addField(idx);
-                  acNode.setType(dType);
+                  acNode.set_llvm_type(dType);
                 }
               }
-            } else if (acNode.getNumFields() == 0) {
+            } else if (acNode.get_num_fields() == 0) {
 
               // is_array = !SVFUtil::isa<ConstantInt>(
               //     inst->getOperand(1)) ||
@@ -1403,7 +1411,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
         // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
 
-        acNode.setAccess(AccessType::Access::read);
+        acNode.set_kind(AccessType::kind_e::read);
         ats->insert(acNode, vNode->getICFGNode());
 
         // XXX: casting operations complitate things a lot. For the time
@@ -1438,10 +1446,10 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
         // if (Instruction::isCast(inst->getOpcode()))
         //     skipNode = true;
       } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::Cmp) {
-        acNode.setAccess(AccessType::Access::read);
+        acNode.set_kind(AccessType::kind_e::read);
         ats->insert(acNode, vNode->getICFGNode());
       } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::BinaryOp) {
-        acNode.setAccess(AccessType::Access::read);
+        acNode.set_kind(AccessType::kind_e::read);
         ats->insert(acNode, vNode->getICFGNode());
       } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::AParm) {
         // outs() << "****: " << vNode->toString() << "\n";
@@ -1472,7 +1480,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
       // else if (vNode->getNodeKind() == VFGNode::VFGNodeK::FRet) {
       //     // outs() << "[INFO] I found a FormalRet\n";
       //     // outs() << vNode->toString() << "\n";
-      //     acNode.setAccess(AccessType::Access::ret);
+      //     acNode.set_kind(AccessType::Access::ret);
       //     ats->insert(acNode, vNode->getICFGNode());
       // }
 

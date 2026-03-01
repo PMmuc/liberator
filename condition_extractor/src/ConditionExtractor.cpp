@@ -188,21 +188,21 @@ void pruneAccessTypes(Dominator *dom, PostDominator *pDom,
   std::set<std::pair<liberator::AccessType, liberator::AccessType>>
       pairs_create_delete;
   for (auto at1 : *meta->getAccessTypeSet()) {
-    if (at1.getAccess() != liberator::AccessType::Access::create &&
-        at1.getAccess() != liberator::AccessType::Access::del)
+    if (at1.get_kind() != liberator::AccessType::kind_e::create &&
+        at1.get_kind() != liberator::AccessType::kind_e::del)
       continue;
 
     for (auto at2 : *meta->getAccessTypeSet()) {
-      if (at2.getAccess() != liberator::AccessType::Access::create &&
-          at2.getAccess() != liberator::AccessType::Access::del)
+      if (at2.get_kind() != liberator::AccessType::kind_e::create &&
+          at2.get_kind() != liberator::AccessType::kind_e::del)
         continue;
 
       if (at1 == at2)
         continue;
 
-      if (at1.getFields() == at2.getFields())
+      if (at1.get_fields() == at2.get_fields())
         // be sure create comes first
-        if (at1.getAccess() == liberator::AccessType::Access::create)
+        if (at1.get_kind() == liberator::AccessType::kind_e::create)
           pairs_create_delete.insert(std::make_pair(at1, at2));
     }
   }
@@ -220,21 +220,21 @@ void pruneAccessTypes(Dominator *dom, PostDominator *pDom,
   std::set<std::pair<liberator::AccessType, liberator::AccessType>>
       pairs_write_read;
   for (auto at1 : *meta->getAccessTypeSet()) {
-    if (at1.getAccess() != liberator::AccessType::Access::write &&
-        at1.getAccess() != liberator::AccessType::Access::read)
+    if (at1.get_kind() != liberator::AccessType::kind_e::write &&
+        at1.get_kind() != liberator::AccessType::kind_e::read)
       continue;
 
     for (auto at2 : *meta->getAccessTypeSet()) {
-      if (at2.getAccess() != liberator::AccessType::Access::write &&
-          at2.getAccess() != liberator::AccessType::Access::read)
+      if (at2.get_kind() != liberator::AccessType::kind_e::write &&
+          at2.get_kind() != liberator::AccessType::kind_e::read)
         continue;
 
       if (at1 == at2)
         continue;
 
-      if (at1.getFields() == at2.getFields())
+      if (at1.get_fields() == at2.get_fields())
         // be sure write comes first
-        if (at1.getAccess() == liberator::AccessType::Access::write)
+        if (at1.get_kind() == liberator::AccessType::kind_e::write)
           pairs_write_read.insert(std::make_pair(at1, at2));
     }
   }

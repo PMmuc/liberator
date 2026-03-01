@@ -251,7 +251,7 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
 
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
-    tmpAcNode.setAccess(AccessType::Access::write);
+    tmpAcNode.set_kind(AccessType::kind_e::write);
     mdata->getAccessTypeSet()->insert(tmpAcNode, icfgNode);
   }
 
@@ -260,9 +260,9 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
     for (int f = 0; f < st->getNumElements(); f++) {
       auto ft = st->getElementType(f);
       AccessType atField = atNode;
-      atField.setAccess(AccessType::Access::write);
+      atField.set_kind(AccessType::kind_e::write);
       atField.addField(f);
-      atField.setType(ft);
+      atField.set_llvm_type(ft);
       mdata->getAccessTypeSet()->insert(atField, icfgNode);
     }
   }
@@ -274,12 +274,12 @@ bool malloc_handler(liberator::ValueMetadata *mdata, std::string fun_name,
 
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
-    atNode.setAccess(AccessType::Access::create);
+    atNode.set_kind(AccessType::kind_e::create);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
     return true;
   }
-  if (param_num == 0 && atNode.getNumFields() == 0 && scope & C_PARAM) {
-    atNode.setAccess(AccessType::Access::read);
+  if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    atNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
     mdata->setMallocSize(true);
     return false;
@@ -292,8 +292,8 @@ bool free_handler(ValueMetadata *mdata, std::string fun_name,
                   const ICFGNode *icfgNode, const CallICFGNode *cs,
                   int param_num, AccessType atNode, H_SCOPE scope, Path *path) {
 
-  if (param_num == 0 && atNode.getNumFields() == 0 && scope & C_PARAM) {
-    atNode.setAccess(AccessType::Access::del);
+  if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    atNode.set_kind(AccessType::kind_e::del);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
   }
 
@@ -304,9 +304,9 @@ bool open_handler(ValueMetadata *mdata, std::string fun_name,
                   const ICFGNode *icfgNode, const CallICFGNode *cs,
                   int param_num, AccessType atNode, H_SCOPE scope, Path *path) {
 
-  if ((param_num == 0 || param_num == 1) && atNode.getNumFields() == 0 &&
+  if ((param_num == 0 || param_num == 1) && atNode.get_num_fields() == 0 &&
       scope & C_PARAM) {
-    atNode.setAccess(AccessType::Access::read);
+    atNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
     mdata->setIsFilePath(true);
 
@@ -328,12 +328,12 @@ bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
   // outs() << icfgNode->toString() << "\n";
   // exit(1);
 
-  if ((param_num == 0 || param_num == 1) && atNode.getNumFields() == 0 &&
+  if ((param_num == 0 || param_num == 1) && atNode.get_num_fields() == 0 &&
       scope & C_PARAM) {
 
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
-    tmpAcNode.setAccess(AccessType::Access::read);
+    tmpAcNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(tmpAcNode, icfgNode);
 
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
@@ -357,10 +357,10 @@ bool strlen_handler(ValueMetadata *mdata, std::string fun_name,
 
   // outs() << "strlen_handler\n";
 
-  if (param_num == 0 && atNode.getNumFields() == 0 && scope & C_PARAM) {
+  if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
-    tmpAcNode.setAccess(AccessType::Access::read);
+    tmpAcNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(tmpAcNode, icfgNode);
     mdata->setIsArray(true);
     // outs() << "HOOK IT!\n";
@@ -376,11 +376,11 @@ bool strcpy_handler(ValueMetadata *mdata, std::string fun_name,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
 
-  if ((param_num == 0 || param_num == 1) && atNode.getNumFields() == 0 &&
+  if ((param_num == 0 || param_num == 1) && atNode.get_num_fields() == 0 &&
       scope & C_PARAM) {
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
-    tmpAcNode.setAccess(AccessType::Access::read);
+    tmpAcNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(tmpAcNode, icfgNode);
     mdata->setIsArray(true);
   }
@@ -398,11 +398,11 @@ bool memset_hander(ValueMetadata *mdata, std::string fun_name,
   // outs() << "memset_hander\n";
   // outs() << icfgNode->toString() << "\n";
 
-  if (param_num == 0 && atNode.getNumFields() == 0 && scope & C_PARAM) {
+  if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
 
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
-    tmpAcNode.setAccess(AccessType::Access::read);
+    tmpAcNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(tmpAcNode, icfgNode);
     mdata->setIsArray(true);
 
@@ -414,7 +414,7 @@ bool memset_hander(ValueMetadata *mdata, std::string fun_name,
     if (auto par_const = dyn_cast<ConstantInt>(i->getArgOperand(1))) {
       uint64_t actual_const = par_const->getZExtValue();
       if (actual_const == 0) {
-        atNode.setAccess(AccessType::Access::del);
+        atNode.set_kind(AccessType::kind_e::del);
         mdata->getAccessTypeSet()->insert(atNode, icfgNode);
       }
     }
@@ -432,15 +432,15 @@ bool calloc_handler(ValueMetadata *mdata, std::string fun_name,
 
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
-    atNode.setAccess(AccessType::Access::create);
+    atNode.set_kind(AccessType::kind_e::create);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
 
     addWrteToAllFields(mdata, atNode, icfgNode);
 
     return true;
   }
-  if (param_num == 1 && atNode.getNumFields() == 0 && scope & C_PARAM) {
-    atNode.setAccess(AccessType::Access::read);
+  if (param_num == 1 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    atNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
     mdata->setMallocSize(true);
     return false;
@@ -456,7 +456,7 @@ bool posix_memalign_handler(ValueMetadata *mdata, std::string fun_name,
 
   if (param_num == 0 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
-    atNode.setAccess(AccessType::Access::create);
+    atNode.set_kind(AccessType::kind_e::create);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
 
     return true;
@@ -476,7 +476,7 @@ bool posix_memalign_handler(ValueMetadata *mdata, std::string fun_name,
 
 //     if (param_num == 0 && scope & C_RETURN) {
 //         // no need to set field, empty field set is what I need
-//         atNode.setAccess(AccessType::Access::create);
+//         atNode.set_kind(AccessType::kind_e::create);
 //         mdata->getAccessTypeSet()->insert(atNode, icfgNode);
 
 //         return true;
@@ -492,7 +492,7 @@ bool strdup_handler(ValueMetadata *mdata, std::string fun_name,
 
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
-    atNode.setAccess(AccessType::Access::create);
+    atNode.set_kind(AccessType::kind_e::create);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
 
     addWrteToAllFields(mdata, atNode, icfgNode);
@@ -500,11 +500,11 @@ bool strdup_handler(ValueMetadata *mdata, std::string fun_name,
     return true;
   }
 
-  if ((param_num == 0 || param_num == 1) && atNode.getNumFields() == 0 &&
+  if ((param_num == 0 || param_num == 1) && atNode.get_num_fields() == 0 &&
       scope & C_PARAM) {
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
-    tmpAcNode.setAccess(AccessType::Access::read);
+    tmpAcNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(tmpAcNode, icfgNode);
     mdata->setIsArray(true);
   }

@@ -11,16 +11,16 @@ namespace liberator {
 
 class FunctionConditions {
 private:
+  typedef std::vector<ValueMetadata> params_metadata_t;
   // std::vector<AccessTypeSet> parameter_ats;
   // AccessTypeSet return_ats;
-  std::vector<ValueMetadata> parameter_metadata;
+  params_metadata_t parameter_metadata;
   ValueMetadata return_metadata;
   std::string function_name;
 
 public:
   void setFunctionName(std::string f) { function_name = f; }
   std::string getFunctionName() const { return function_name; }
-  Json::Value toJson(bool verbose);
 
   void addParameterMetadata(ValueMetadata par) {
     parameter_metadata.push_back(par);
@@ -32,6 +32,8 @@ public:
     parameter_metadata[parm] = new_par;
   }
 
+  params_metadata_t get_parameters() const { return parameter_metadata; }
+
   ValueMetadata getParameterMetadata(int idx) {
     if (idx < 0 || idx >= parameter_metadata.size())
       assert("idx out of bounds!");
@@ -40,7 +42,7 @@ public:
   }
 
   void setReturnMetadata(ValueMetadata ret) { return_metadata = ret; }
-  ValueMetadata getReturnMetadata() { return return_metadata; }
+  ValueMetadata getReturnMetadata() const { return return_metadata; }
 
   // for using it in std::set
   bool operator<(const FunctionConditions &rhs) const {
