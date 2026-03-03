@@ -59,6 +59,8 @@ $TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
     -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
 
 # extract fields dependency from the library itself, repeat for each object produced
+    cd "$WORK"/apipass
+
 $TOOLS_DIR/condition_extractor/bin/extractor \
     $WORK/lib/libhtp.a.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \

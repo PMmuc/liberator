@@ -65,6 +65,8 @@ extract-bc -b "$WORK"/lib/libcjson.a
 
 # extract fields dependency from the library itself, repeat for each object
 # produced
+    cd "$WORK"/apipass
+
 "$TOOLS_DIR"/condition_extractor/bin/extractor \
     "$WORK"/lib/libcjson.a.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \

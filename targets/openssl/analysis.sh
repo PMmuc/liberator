@@ -57,8 +57,12 @@ $LIBFUZZ/tool/misc/extract_included_functions.py -i "$WORK/include/openssl" \
                                                  -a "$LIBFUZZ_LOG_PATH/apis_clang.json"
 
 # TODO: this should get the list of apis, not a single functions
+    cd "$WORK"/apipass
+
 # $LIBFUZZ/condition_extractor/bin/extractor $WORK/lib/libssl.a.bc -function ssl3_get_cipher_by_id -output $LIBFUZZ_LOG_PATH/conditions.json -v v0 -t json
 # echo "$LIBFUZZ_LOG_PATH/conditions.json"
+    cd "$WORK"/apipass
+
 # $LIBFUZZ/condition_extractor/bin/extractor $WORK/lib/libssl.a.bc -interface $LIBFUZZ_LOG_PATH/apis_clang.json -output $LIBFUZZ_LOG_PATH/conditions.json -v v0 -t json -do_indirect_jumps -data_layout $LIBFUZZ_LOG_PATH/data_layout.txt
 
 # echo "$LIBFUZZ_LOG_PATH/conditions.json"
