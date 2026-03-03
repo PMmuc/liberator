@@ -58,6 +58,8 @@ $TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
     -a "$LIBFUZZ_LOG_PATH/apis_clang.json"
 
 # extract fields dependency from the library itself, repeat for each object produced
+    cd "$WORK"/apipass
+
 $TOOLS_DIR/condition_extractor/bin/extractor \
     $WORK/lib/liburiparser.a.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \

@@ -61,9 +61,10 @@ extract-bc -b "$WORK"/lib/libcares_static.a
   -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
 
-cd $WORK
 # extract fields dependency from the library itself, repeat for each object
 # produced
+cd "$WORK"/apipass
+
 "$TOOLS_DIR"/condition_extractor/bin/extractor \
   "$WORK"/lib/libcares_static.a.bc \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \

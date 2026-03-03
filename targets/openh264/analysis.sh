@@ -66,6 +66,8 @@ $TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
 
 # extract fields dependency from the library itself, repeat for each object
 # produced
+    cd "$WORK"/apipass
+
 echo $TOOLS_DIR/condition_extractor/bin/extractor \
     $LIBLOCATION.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
