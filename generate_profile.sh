@@ -2,7 +2,7 @@
 set -e
 set -x
 
-# Usage: ./generate_profile.sh <target_name>
+# Usage: ./generate_profile.sh <target_name> [--as-excel]
 
 if [ -z "$1" ]; then
   echo "Usage: $0 <target_name> [--as-excel <file>]"
