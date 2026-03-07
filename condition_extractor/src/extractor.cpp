@@ -516,8 +516,16 @@ int main(int argc, char **argv) {
     point_to_analysys->analyze();
 
     SVFUtil::outs() << "[INFO] Analysis done!\n";
-  }
 
+    // for (auto x: funmap_par) {
+    //     SVFUtil::outs() << x.first << "\n";
+    //     SVFUtil::outs() << x.second.size() << "\n";
+    // }
+    // exit(1);
+
+    PTACallGraph *callgraph = point_to_analysys->getPTACallGraph();
+    builder.updateCallGraph(callgraph);
+  }
   GlobalStruct::CallEdgeMap newEdges = point_to_analysys->get_new_edges();
   // NOTE: copy callsite->target relation in a neutral structure
   for (auto x : newEdges) {
@@ -525,22 +533,10 @@ int main(int argc, char **argv) {
     for (auto t : x.second)
       ValueMetadata::myCallEdgeMap_inst[cs].insert(t);
   }
-
+  PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
+  PAG::FunToRetMap funmap_ret = pag->getFunRets();
   Dominator *dom = nullptr;
   PostDominator *pDom = nullptr;
-
-  PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
-
-  // for (auto x: funmap_par) {
-  //     SVFUtil::outs() << x.first << "\n";
-  //     SVFUtil::outs() << x.second.size() << "\n";
-  // }
-  // exit(1);
-
-  PAG::FunToRetMap funmap_ret = pag->getFunRets();
-
-  PTACallGraph *callgraph = point_to_analysys->getPTACallGraph();
-  builder.updateCallGraph(callgraph);
   icfg = pag->getICFG();
   icfg->updateCallGraph(callgraph);
 
