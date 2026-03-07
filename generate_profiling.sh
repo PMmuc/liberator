@@ -9,18 +9,16 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-# Source setup_target.sh to load configuration and environment variables
-# This will set TARGET, TOOLS_DIR, etc.
-source setup_target.sh "$1"
-
 SAVE_AS_EXCEL=False
 if [ $2 == "--as-excel" ]; then
   SAVE_AS_EXCEL=True
 fi
 
-WORK="$TARGET/work"
+TARGET=$1
+ROOT_DIR=$(dirname $(realpath generate_profiling.sh))
+WORK="$ROOT_DIR/analysis/$TARGET/work"
 GMON_OUT="$WORK/gmon.out"
-EXTRACTOR="$TOOLS_DIR/condition_extractor/build/bin/extractor"
+EXTRACTOR="$ROOT_DIR/condition_extractor/build/bin/extractor"
 OUTPUT_FILE="$WORK/analysis_profile.txt"
 
 # Check if gmon.out exists
