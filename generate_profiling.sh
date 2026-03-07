@@ -42,7 +42,7 @@ echo "Success! Profile output saved to:"
 echo "$OUTPUT_FILE"
 
 if [ $SAVE_AS_EXCEL ]; then
-  python3 $PROJECT/gprof_to_excel.py -i $WORK/analysis_profile.txt -o $WORK/results.xlsx
+  python3 $ROOT_DIR/gprof_to_excel.py -i $WORK/analysis_profile.txt -o $WORK/results.xlsx
   echo "Success! Excel file saved to:"
   echo "$WORK/results.xlsx"
 fi
