@@ -814,6 +814,14 @@ int main(int argc, char **argv) {
     SVFUtil::outs() << "[INFO] struct data layout done!\n";
   }
 
+  std::error_code EC;
+  llvm::raw_fd_ostream OS("liberator_trace.JSON", EC);
+  if (!EC) {
+    llvm::timeTraceProfilerWrite(OS);
+  }
+
+  llvm::timeTraceProfilerCleanup();
+
   // clean up memory
   if (dom)
     delete dom;
