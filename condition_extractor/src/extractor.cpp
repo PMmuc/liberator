@@ -499,6 +499,7 @@ int main(int argc, char **argv) {
   /// Build Program Assignment Graph (SVFIR)
   SVFIR *pag = nullptr;
   ICFG *icfg = nullptr;
+  PTACallGraph *callgraph;
   GlobalStruct *point_to_analysys = nullptr;
   {
     llvm::TimeTraceScope scope("SVFIR Analysis Builder");
@@ -523,7 +524,7 @@ int main(int argc, char **argv) {
     // }
     // exit(1);
 
-    PTACallGraph *callgraph = point_to_analysys->getPTACallGraph();
+    callgraph = point_to_analysys->getPTACallGraph();
     builder.updateCallGraph(callgraph);
   }
   GlobalStruct::CallEdgeMap newEdges = point_to_analysys->get_new_edges();
