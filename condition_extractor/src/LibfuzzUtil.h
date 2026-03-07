@@ -42,9 +42,9 @@ namespace libfuzz {
 
         if (arg_type->isPtrOrPtrVectorTy()) {
 
-          llvm::PointerType *a_ptype = dyn_cast<llvm::PointerType>(arg_type);
+          llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(arg_type);
 
-          if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
+          if (llvm::isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
             this->flag = "fun";
           } else {
             this->flag = "ref";
@@ -67,12 +67,12 @@ namespace libfuzz {
         else {
           if (a_type->isPtrOrPtrVectorTy()) {
 
-            llvm::PointerType *a_ptype = dyn_cast<llvm::PointerType>(a_type);
+            llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(a_type);
 
             if (a_ptype == nullptr) {
                 this->flag = "ref";
             } else {
-              if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
+              if (llvm::isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
                 this->flag = "fun";
               } else {
                 this->flag = "ref";
