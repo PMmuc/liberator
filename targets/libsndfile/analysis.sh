@@ -67,7 +67,7 @@ extract-bc -b "$WORK"/lib/libsndfile.a
 # produced
     cd "$WORK"/apipass
 
-perf record -g --call-graph dwarf -F 99 "$TOOLS_DIR"/condition_extractor/bin/extractor \
+$PROF_EXTRACTOR "$TOOLS_DIR"/condition_extractor/bin/extractor \
     "$WORK"/lib/libsndfile.a.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \

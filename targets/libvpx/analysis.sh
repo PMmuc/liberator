@@ -89,7 +89,7 @@ $TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
 # produced
     cd "$WORK"/apipass
 
-perf record -g --call-graph dwarf -F 99 $TOOLS_DIR/condition_extractor/bin/extractor \
+$PROF_EXTRACTOR $TOOLS_DIR/condition_extractor/bin/extractor \
     $WORK/lib/libvpx.a.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \
