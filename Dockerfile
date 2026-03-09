@@ -141,6 +141,7 @@ COPY LLVM/update-alternatives-clang.sh .
 RUN sudo ./update-alternatives-clang.sh 12 200
 ENV PATH $PATH:${HOME}/.local/bin
 RUN echo $PATH
+USER ${USER_UID}:${USER_GID}
 CMD ${LIBFUZZ}/targets/start_analysis.sh
 
 # ------------------------------------------------------------------------------------------------------------------
