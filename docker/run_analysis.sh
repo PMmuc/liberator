@@ -33,18 +33,18 @@ DOCKER_BUILDKIT=1 docker build \
 echo "$IMG_NAME"
 
 # Parse arguments
-PROF_FLAG=""
+PROF_FLAG=()
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --prof) PROF_FLAG="-e PROF_EXTRACTOR='perf record -g --call-graph dwarf -F 99'"; shift ;;
+        --prof) PROF_FLAG=("PROF_EXTRACTOR=perf record -g --call-graph dwarf -F 99"); shift ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
 done
 
 if [[ "${DEVENV}" ]]; then
-  docker run ${PROF_FLAG} --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
+  docker run --env PROF_FLAG=${PROF_FLAG} --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
-  docker run ${PROF_FLAG} --rm -d --name "${IMG_NAME}-${TARGET}" \
+  docker run --env PROF_FLAG=${PROF_FLAG} --rm -d --name "${IMG_NAME}-${TARGET}" \
     --env TARGET=${TARGET} -v "$ROOT_DIR:/workspaces/libfuzz" "$IMG_NAME"
 fi
