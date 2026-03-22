@@ -45,6 +45,6 @@ if [[ "${DEVENV}" ]]; then
   docker run --env PROF_FLAG=${PROF_FLAG} --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
-  docker run --env PROF_FLAG=${PROF_FLAG} --rm -d --name "${IMG_NAME}-${TARGET}" \
+  docker run --env PROF_FLAG=${PROF_FLAG} --rm -d --name "${IMG_NAME}-${TARGET}" --user root \
     --env TARGET=${TARGET} -v "$ROOT_DIR:/workspaces/libfuzz" "$IMG_NAME"
 fi
