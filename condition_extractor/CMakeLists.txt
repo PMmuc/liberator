@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 project("Condition Extractor")
 if (DEFINED LLVM_DIR)
   set(ENV{LLVM_DIR} "${LLVM_DIR}")
@@ -58,5 +58,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 enable_testing()
+
+set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/tests/assets")
+configure_file(
+  "${CMAKE_SOURCE_DIR}/src/Config.h.in"
+  "${CMAKE_BINARY_DIR}/include/Config.h"
+)
+include_directories("${CMAKE_BINARY_DIR}/include")
+
 add_subdirectory(src)
 add_subdirectory(tests)

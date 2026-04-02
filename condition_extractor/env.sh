@@ -16,10 +16,10 @@
 # echo "export PATH=$LLVM_DIR/bin:$PROJECTHOME/bin:$PATH" >> ~/.bashrc
 # if [[ $sysOS == "Darwin" ]]
 # then
-#     export SVF_DIR=$SVF_install_path/SVF/
+#     export SVF_DIR=/home/mashmallow/lib/SVF/build/lib/cmake/SVF
 # elif [[ $sysOS == "Linux" ]]
 # then
-#     export SVF_DIR=$SVF_install_path/SVF/
+#     export SVF_DIR=/home/mashmallow/lib/SVF/build/lib/cmake/SVF
 # fi
 
 # echo "LLVM_DIR="$LLVM_DIR
@@ -41,9 +41,9 @@ fi
 
 if [ -z "${SVF_DIR}"]; then
   if [[ $sysOS == "Darwin" ]]; then
-    export SVF_DIR=$SVF_cmake_path/
+    export SVF_DIR=/home/mashmallow/lib/SVF/build/lib/cmake/SVF
   elif [[ $sysOS == "Linux" ]]; then
-    export SVF_DIR=$SVF_cmake_path/
+    export SVF_DIR=/home/mashmallow/lib/SVF/build/lib/cmake/SVF
   fi
 fi
 

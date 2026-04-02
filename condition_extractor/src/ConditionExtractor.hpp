@@ -26,6 +26,8 @@ public:
 
   function_condition_set_t extract_function_conditions();
 
+  SVFG *get_svfg() const { return svfg_builder_->getSVFG(); }
+
 private:
   std::set<std::string> functions_;
   SVF::Module *module_;

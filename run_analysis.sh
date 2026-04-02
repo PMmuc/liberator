@@ -97,6 +97,8 @@ time $DEBUG "$TOOLS_DIR/condition_extractor/build/bin/extractor" \
   -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
   ${EXTRA_EXTRACTOR_FLAGS}
 
+echo "Saved to ${LIBFUZZ_LOG_PATH}/conditions.json"
+
 # Post-analysis hook (optional)
 if type target_post_analysis &>/dev/null; then
   target_post_analysis
