@@ -174,7 +174,7 @@ public:
     return rawstr.str();
   }
 
-  // for std:set
+  // for std::set
   bool operator<(const AccessType &rhs) const {
     if (fields == rhs.fields) {
       if (access == rhs.access)

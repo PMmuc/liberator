@@ -9,6 +9,8 @@
 #include <llvm/IR/Type.h>
 #include <llvm/Support/raw_ostream.h>
 
+#include "Config.h"
+
 namespace {
 
 llvm::Type *deduce_type(llvm::Value *v) {
@@ -271,14 +273,16 @@ bool malloc_handler(liberator::ValueMetadata *mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
-
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
     atNode.set_kind(AccessType::kind_e::create);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
+    HANDLER_LOG("Function {} is a possible malloc return value", fun_name);
     return true;
   }
   if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    HANDLER_LOG("Parameter of {} is a possible malloc size parameter",
+                fun_name);
     atNode.set_kind(AccessType::kind_e::read);
     mdata->getAccessTypeSet()->insert(atNode, icfgNode);
     mdata->setMallocSize(true);
@@ -339,15 +343,16 @@ bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
     auto c = SVFUtil::dyn_cast<CallBase>(llvm_val);
     mdata->setIsArray(isAnArray(c));
-    // if (param_num == 1) {
-    //  outs() << cs->getCallSite()->toString() << "\n";
-    auto i = SVFUtil::dyn_cast<CallBase>(llvm_val);
-    Value *v = i->getArgOperand(2);
-    mdata->addFunParam(v, path);
-    // }
-  }
+    if (param_num == 1) {
+      // outs() << cs->getCallSite()->toString() << "\n";
+      outs() << cs->toString() << "\n";
+      Value *v = c->getArgOperand(2);
+      mdata->addFunParam(v, path);
+      // }
+    }
 
-  return false;
+    return false;
+  }
 }
 
 bool strlen_handler(ValueMetadata *mdata, std::string fun_name,
@@ -358,6 +363,7 @@ bool strlen_handler(ValueMetadata *mdata, std::string fun_name,
   // outs() << "strlen_handler\n";
 
   if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    HANDLER_LOG("Called strlen handler. Setting AccessType to read.");
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);

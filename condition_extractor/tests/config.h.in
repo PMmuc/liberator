@@ -1,0 +1,4 @@
+#pragma once
+
+#define ASSETS_DIR "@CMAKE_SOURCE_DIR@/tests/assets"
+#define BINARY_DIR "@CMAKE_CURRENT_BINARY_DIR@"

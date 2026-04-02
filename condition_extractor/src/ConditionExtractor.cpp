@@ -358,18 +358,19 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
     // callsite
     auto cs = x.first;
     // callee
-    for (auto t : x.second)
+    for (auto t : x.second) {
       // typedef std::map<const CallICFGNode *, std::set<const FunObjVar *>>
+      APARM_LOG("Found an indirect call in {} to {}",
+                t->getICFGNode()->getName(), t->getName());
       ValueMetadata::myCallEdgeMap_inst[cs].insert(t);
+    }
   }
 
   // update both callgraphs with added new edges from GlobalStruct::analyze
   CallGraph *callgraph = point_to_analyses->getCallGraph();
   ir_builder.updateCallGraph(callgraph);
   icfg->updateCallGraph(callgraph);
-
   // icfg->dump("icfg_extractor");
-
   /// Sparse value-flow graph (SVFG)
   auto svfBuilder = make_unique<SVFGBuilder>();
   auto svfg = svfBuilder->buildFullSVFG(point_to_analyses);
@@ -522,8 +523,8 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
 
         std::string fun_name = fun.getName().str();
 
-        SVFUtil::outs() << "[INFO] computing dominators for: " << fun_name
-                        << "\n";
+        tag_log<StdoutLogger>("dom", "computing dominators for: {}\n",
+                              fun_name);
 
         auto svf_fun = pag->getFunObjVar(fun_name);
         FunEntryICFGNode *fun_entry = icfg->getFunEntryICFGNode(svf_fun);
@@ -650,6 +651,7 @@ condition_extractor_t::~condition_extractor_t() noexcept {
   // I am not sure I need this
   // LLVMModuleSet::getLLVMModuleSet()->dumpModulesToFile(".svf.bc");
   SVF::LLVMModuleSet::releaseLLVMModuleSet();
-  llvm::llvm_shutdown();
+  // llvm::llvm_shutdown(); // This breaks testing since it destroys LLVM
+  // parsing state globally
 }
 } // namespace liberator

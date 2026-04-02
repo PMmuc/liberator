@@ -7,12 +7,6 @@ usage() {
 
 source setup.sh
 
-usage() {
-  echo "Usage: $0 <target_name>"
-  echo "Available targets are listed in targets.txt"
-  return 1
-}
-
 if [[ -z "$1" && -z "$TARGET" ]]; then
   usage
 fi

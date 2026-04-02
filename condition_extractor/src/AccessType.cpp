@@ -23,10 +23,13 @@
 #include <MSSA/SVFGBuilder.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/Metadata.h>
+#include <llvm/IR/Type.h>
 #include <llvm/Support/Casting.h>
 #include <vector>
 
 #define MAX_STACKSIZE 20
+#define PARAM_META_LOG(...) tag_log<StdoutLogger>("paramMetadata", __VA_ARGS__)
 
 namespace {
 bool leadsToBitCastOfType(const VFGNode *vn, Type *targetType) {
@@ -205,9 +208,7 @@ std::set<const VFGNode *> getDefinitionSetCtx(const VFGNode *n,
     int n_parents = 0;
     for (auto in : n->getInEdges()) {
       if (auto src = SVFUtil::dyn_cast<ActualParmVFGNode>(in->getSrcNode())) {
-
         auto cs = src->getCallSite();
-
         if (path.isCorrect(cs)) {
           path.popFrame();
           // outs() << "This is correct!!!\n";
@@ -1131,6 +1132,212 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
   return dependent_param;
 }
 
+std::string getType(llvm::Type *t) {
+  auto &dl =
+      LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule()->getDataLayout();
+  auto size_bytes = std::to_string(dl.getTypeStoreSize(t));
+  switch (t->getTypeID()) {
+  case Type::IntegerTyID:
+    return "Integer " + size_bytes;
+  case Type::FloatTyID:
+    return "Float " + size_bytes;
+  case Type::DoubleTyID:
+    return "Double " + size_bytes;
+  case Type::HalfTyID:
+    return "Half " + size_bytes;
+  case Type::PointerTyID:
+    return "Ptr " + size_bytes;
+  case Type::StructTyID:
+    return "Struct " + t->getStructName().str() + " with size " + size_bytes;
+  case Type::ArrayTyID:
+    return "Array " + size_bytes;
+  }
+
+  return "";
+}
+
+bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
+               ValueMetadata &mdata, Path &p) {
+  auto llvmModuleSet = SVF::LLVMModuleSet::getLLVMModuleSet();
+  if (auto gep_stmt = SVFUtil::dyn_cast<GepVFGNode>(vNode)) {
+
+    auto llvm_inst = llvmModuleSet->getLLVMValue(gep_stmt->getValue());
+
+    if (auto gep_inst = SVFUtil::dyn_cast<GetElementPtrInst>(llvm_inst)) {
+
+      // outs() << "[DEBUG] GEP under analysis:\n";
+      // outs() << *inst << "\n";
+      // outs() << vNode->toString() << "\n";
+      //
+      /* %struct.Point = type { i32, i32 }
+       * %gep = getelementptr %struct.Point
+       * , ptr %points, i32 0, i64 5, i32 1
+       *
+       * TODO: this is a problem because getPointerOperand() is returning
+       * just 'ptr' in LLVM 16+.
+       */
+
+      auto sType = gep_inst->getSourceElementType();
+      auto dType = gep_inst->getResultElementType();
+
+      // outs() << "[DEBUG]\n";
+
+      // outs() << "sType:\n";
+      // outs() << *sType << "\n";
+      // outs() << TypeMatcher::compute_hash(sType) << "\n";
+
+      // outs() << "dType:\n";
+      // outs() << *dType << "\n";
+      // outs() << TypeMatcher::compute_hash(dType) << "\n";
+
+      // outs() << "pType:\n";
+      // outs() << *pType << "\n";
+      // outs() << TypeMatcher::compute_hash(pType) << "\n";
+
+      // outs() << "acNode.getType():\n";
+      // outs() << *acNode.getType() << "\n";
+      // outs() << TypeMatcher::compute_hash(acNode.getType()) << "\n";
+      // exit(1);
+
+      // outs() << "compare_types(pType, acNode.getType()) "
+      //     << TypeMatcher::compare_types(pType, acNode.getType())
+      //     << "\n";
+
+      // outs() << "[DEBUG END]\n";
+
+      // this avoids us to move into strange pointer-offset operations
+      // that look like field access
+      // if (SVFUtil::isa<llvm::StructType>(sType) &&
+      //  AccessTypeSet::isSameType(pType, acNode.getType()) ) {
+      auto printType = [](llvm::Type *t, std::string_view msg) {
+        if (t->isStructTy()) {
+          GEP_LOG("{} {}\n", msg, getType(t));
+        } else if (t->isArrayTy()) {
+          GEP_LOG("{} {}[]", msg, getType(t));
+        }
+      };
+
+      printType(sType, "Source type:");
+      printType(dType, "Result type:");
+
+      if (TypeMatcher::compare_types(sType, acNode.get_llvm_type()) &&
+          !acNode.is_visited(sType)) {
+        // SVFUtil::isa<PointerType>(dType)) {
+        // Here we only consider struct or constant array accesses
+        if (gep_inst->hasAllConstantIndices() &&
+            gep_inst->getNumIndices() > 1) {
+          int pos = 1;
+          // Note: getNumIndices returns the number of indices after the
+          // base pointer. EXAMPLE: ... i32 0, i32 1, i32 3 will return 2
+          for (; pos <= gep_inst->getNumIndices(); pos++) {
+            // pos == 1 is the field offset or the constant arry offset
+            if (pos == 1) {
+              AccessType tmpAcNode = acNode;
+              GEP_LOG("Adding a temporary AccessType to the AccessTypeSet.\n");
+              GEP_LOG("The AccessTypeSet now has {} entries.\n",
+                      ats.size() + 1);
+              tmpAcNode.addField(-1);
+              tmpAcNode.set_kind(AccessType::kind_e::read);
+              ats.insert(tmpAcNode, vNode->getICFGNode());
+            } else {
+              ConstantInt *CI =
+                  dyn_cast<ConstantInt>(gep_inst->getOperand(pos));
+              uint64_t idx = CI->getZExtValue();
+              GEP_LOG("Adding a constant to the AccesType {}\n",
+                      CI->getZExtValue());
+              acNode.addField(idx);
+              acNode.set_llvm_type(dType);
+            }
+          }
+        } else if (acNode.get_num_fields() == 0) {
+
+          // is_array = !SVFUtil::isa<ConstantInt>(
+          //     inst->getOperand(1)) ||
+          //     inst->getNumIndices() == 1;
+          // if (is_array) {
+          //     auto d = inst->getOperand(1);
+          //     mdata.addIndex(d);
+          // }
+
+          bool is_array = false;
+
+          auto d = gep_inst->getOperand(1);
+          if (!SVFUtil::isa<ConstantInt>(d)) {
+            GEP_LOG("Adding index {} to mdata\n", d->getName());
+            GEP_LOG("Setting is_array to true\n");
+            is_array = true;
+            mdata.addIndex(d);
+            mdata.addFunParam(d, &p);
+          } else if (gep_inst->getNumIndices() == 1) {
+            is_array = true;
+            GEP_LOG("Array index {}\n", gep_inst->getName());
+            mdata.addIndex(gep_inst);
+          }
+
+        } else {
+          return true;
+        }
+        acNode.add_visited_type(sType);
+      }
+      // else {
+      //     outs() << "[DEBUG] GEP incoherent: \n";
+
+      //     outs() << "instruction:\n";
+      //     outs() << vNode->toString() << "\n";
+
+      //     outs() << "sType:\n";
+      //     outs() << *sType << "\n";
+
+      //     outs() << "dType:\n";
+      //     outs() << *dType << "\n";
+
+      //     outs() << "pType:\n";
+      //     outs() << *pType << "\n";
+
+      //     outs() << "acNode.getType():\n";
+      //     outs() << *acNode.getType() << "\n";
+      //     outs() << "\n";
+      //     exit(1);
+      // }
+    } // end GEP Processing
+    else {
+      // when GEP converts to an constant expression, we can skip it
+      return true;
+    }
+  }
+
+  return false;
+}
+
+void handleActualParam(const VFGNode *vNode, AccessType &acNode,
+                       ValueMetadata &mdata, Path &p) {
+  // outs() << "****: " << vNode->toString() << "\n";
+  auto actual_param = SVFUtil::dyn_cast<ActualParmSVFGNode>(vNode);
+  // 1 - get icfg node from vNode
+  auto icfg_node = actual_param->getICFGNode();
+  // 2 - check it is a call inst
+  auto cs = actual_param->getCallSite();
+  auto param = actual_param->getParam();
+  // 3 - check it is in the newedge relation
+  auto m = ValueMetadata::myCallEdgeMap_inst;
+  if (m.find(cs) != m.end() && param != nullptr) {
+    // 4 - for each target check handling
+    for (auto t : m[cs]) {
+      APARM_LOG("Found indirect call to function {}\n", t->getName());
+      int n_param = 0;
+      // determine index of the our parameter
+      for (auto p : cs->getActualParms()) {
+        if (p == param)
+          break;
+        n_param++;
+      }
+
+      handlerDispatcher(&mdata, t->getName(), vNode->getICFGNode(), cs, n_param,
+                        acNode, C_PARAM, &p);
+    }
+  }
+}
+
 ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
                                        const Type *seek_type,
                                        unsigned paramId) {
@@ -1152,7 +1359,6 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
     ValueMetadata mdata_empty;
     return mdata_empty;
   }
-  const VFGNode *vNode = vfg.getDefSVFGNode(pNode);
 
   ValueMetadata mdata;
   mdata.setValue(val);
@@ -1163,7 +1369,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
   std::set<Path> visited;
   // S.push(v)
   // worklist.push_back(Path(vNode));
-  worklist.push_back(Path(vNode, val, seek_type));
+  worklist.push_back(Path(vfg.getDefSVFGNode(pNode), val, seek_type));
 
   // if (seek_type)
   //     outs() << "DEBUG: seek_type: " << *seek_type << "\n";
@@ -1189,56 +1395,54 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
     // visitedFunctions.insert(vNode->getFun()->getName());
 
     if (config_t::instance()->debug) {
-
-      outs() << "\nWorking node:\n";
-      outs() << "A.->" << vNode->toString() << "\n";
-      outs() << "B.->" << vNode->getFun()->getName() << "\n";
-      // outs() << "Stack size: " << p.getStackSize() << "\n";
-      outs() << "AT: " << to_string(acNode) << "\n";
+      PARAM_META_LOG("Working node:\n");
+      PARAM_META_LOG("A.-> {}\n", vNode->toString());
+      PARAM_META_LOG("B.-> {}\n", vNode->getFun()->getName());
+      PARAM_META_LOG("AT: {}\n", to_string(acNode));
+      // PARAM_META_LOG("Stack size: {}\n", p.getStackSize());
 
       if (to_string(acNode).rfind(config_t::instance()->debug_condition, 0) ==
           std::string::npos) {
-        outs() << "[STOP]\n";
+        PARAM_META_LOG("[STOP]\n");
         for (auto h : p.getSteps()) {
-          outs() << h.first->toString() << "\n";
-          outs() << h.first->getFun()->getName() << "\n";
-          outs() << to_string(h.second) << "\n";
-          outs() << "\n";
+          PARAM_META_LOG("{}\n", h.first->toString());
+          PARAM_META_LOG("{}\n", h.first->getFun()->getName());
+          PARAM_META_LOG("{}\n\n", to_string(h.second));
         }
 
-        outs() << "-> last node <-\n";
-        outs() << vNode->toString() << "\n";
-        outs() << vNode->getFun()->getName() << "\n";
-        outs() << to_string(acNode) << "\n\n";
+        PARAM_META_LOG("-> last node <-\n");
+        PARAM_META_LOG("{}\n", vNode->toString());
+        PARAM_META_LOG("{}\n", vNode->getFun()->getName());
+        PARAM_META_LOG("{}\n\n", to_string(acNode));
 
-        outs() << "[IN EDGES]\n";
+        PARAM_META_LOG("[IN EDGES]\n");
         for (VFGNode::const_iterator it = vNode->InEdgeBegin(),
                                      eit = vNode->InEdgeEnd();
              it != eit; ++it) {
           VFGEdge *edge = *it;
 
           if (SVFUtil::isa<SVF::DirectSVFGEdge>(edge))
-            outs() << "direct:\n";
+            PARAM_META_LOG("direct:\n");
           else
-            outs() << "indirect:\n";
+            PARAM_META_LOG("indirect:\n");
 
           VFGNode *succNode = edge->getSrcNode();
-          outs() << succNode->toString() << "\n";
+          PARAM_META_LOG("{}\n", succNode->toString());
         }
 
-        outs() << "[OUT EDGES]\n";
+        PARAM_META_LOG("[OUT EDGES]\n");
         for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
                                      eit = vNode->OutEdgeEnd();
              it != eit; ++it) {
           VFGEdge *edge = *it;
 
           if (SVFUtil::isa<SVF::DirectSVFGEdge>(edge))
-            outs() << "direct:\n";
+            PARAM_META_LOG("direct:\n");
           else
-            outs() << "indirect:\n";
+            PARAM_META_LOG("indirect:\n");
 
           VFGNode *succNode = edge->getDstNode();
-          outs() << succNode->toString() << "\n";
+          PARAM_META_LOG("{}\n", succNode->toString());
         }
 
         exit(1);
@@ -1256,227 +1460,106 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
       bool skipNode = false;
 
-      // process the node!
-      if (vNode->getNodeKind() == VFGNode::VFGNodeK::Load) {
+      switch (vNode->getNodeKind()) {
+      case VFGNode::VFGNodeK::Load: {
         acNode.set_kind(AccessType::kind_e::read);
         ats->insert(acNode, vNode->getICFGNode());
-      } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::Store) {
+      } break;
+      case VFGNode::VFGNodeK::Store: {
+        auto *prevValue = p.getPrevValue();
 
-        const Value *prevValue = p.getPrevValue();
-
-        auto val = vNode->getValue();
-        auto llvm_val = llvmModuleSet->getLLVMValue(val);
+        auto llvm_val = llvmModuleSet->getLLVMValue(vNode->getValue());
 
         if (prevValue != nullptr && SVFUtil::isa<StoreInst>(llvm_val)) {
+          auto inst = SVFUtil::cast<StoreInst>(llvm_val);
 
-          auto inst = SVFUtil::dyn_cast<StoreInst>(llvm_val);
-
-          if (inst->getPointerOperand() == prevValue) {
+          if (inst->getPointerOperand() == prevValue)
             acNode.set_kind(AccessType::kind_e::write);
-            ats->insert(acNode, vNode->getICFGNode());
-          } else if (inst->getValueOperand() == prevValue) {
+          else if (inst->getValueOperand() == prevValue)
             acNode.set_kind(AccessType::kind_e::read);
-            ats->insert(acNode, vNode->getICFGNode());
-          }
 
-          // // outs() << "Pointer is:\n";
-          // auto dest = inst->getPointerOperand();
-          // // outs() << *(inst->getPointerOperand()) << "\n";
-        }
+          ats->insert(acNode, vNode->getICFGNode());
 
-      } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::Gep &&
-                 SVFUtil::isa<StmtVFGNode>(vNode)) {
-
-        const StmtVFGNode *stmt_vfg_node =
-            SVFUtil::dyn_cast<StmtVFGNode>(vNode);
-        auto llvm_inst = llvmModuleSet->getLLVMValue(stmt_vfg_node->getValue());
-        auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(llvm_inst);
-
-        if (inst != nullptr) {
-
-          // outs() << "[DEBUG] GEP under analysis:\n";
-          // outs() << *inst << "\n";
-          // outs() << vNode->toString() << "\n";
-
-          auto sType = inst->getSourceElementType();
-          auto dType = inst->getResultElementType();
-          auto pType = inst->getPointerOperandType();
-
-          // outs() << "[DEBUG]\n";
-
-          // outs() << "sType:\n";
-          // outs() << *sType << "\n";
-          // outs() << TypeMatcher::compute_hash(sType) << "\n";
-
-          // outs() << "dType:\n";
-          // outs() << *dType << "\n";
-          // outs() << TypeMatcher::compute_hash(dType) << "\n";
-
-          // outs() << "pType:\n";
-          // outs() << *pType << "\n";
-          // outs() << TypeMatcher::compute_hash(pType) << "\n";
-
-          // outs() << "acNode.getType():\n";
-          // outs() << *acNode.getType() << "\n";
-          // outs() << TypeMatcher::compute_hash(acNode.getType()) << "\n";
-          // exit(1);
-
-          // outs() << "compare_types(pType, acNode.getType()) "
-          //     << TypeMatcher::compare_types(pType, acNode.getType())
-          //     << "\n";
-
-          // outs() << "[DEBUG END]\n";
-
-          // this avoids us to move into strange pointer-offset opreations
-          // that look like field access
-          // if (SVFUtil::isa<llvm::StructType>(sType) &&
-          //  AccessTypeSet::isSameType(pType, acNode.getType()) ) {
-          if (TypeMatcher::compare_types(pType, acNode.get_llvm_type()) &&
-              !acNode.is_visited(pType)) {
-            // SVFUtil::isa<PointerType>(dType)) {
-            if (inst->hasAllConstantIndices() && inst->getNumIndices() > 1) {
-
-              int pos = 1;
-              for (; pos <= inst->getNumIndices(); pos++) {
-
-                if (pos == 1) {
-                  AccessType tmpAcNode = acNode;
-                  tmpAcNode.addField(-1);
-                  tmpAcNode.set_kind(AccessType::kind_e::read);
-                  ats->insert(tmpAcNode, vNode->getICFGNode());
-                } else {
-                  ConstantInt *CI =
-                      dyn_cast<ConstantInt>(inst->getOperand(pos));
-                  uint64_t idx = CI->getZExtValue();
-                  acNode.addField(idx);
-                  acNode.set_llvm_type(dType);
+          if (vNode->hasIncomingEdge()) {
+            for (auto it : vNode->getInEdges()) {
+              if (auto node =
+                      SVFUtil::dyn_cast<AddrVFGNode>(it->getSrcNode())) {
+                if (auto call = SVFUtil::dyn_cast<llvm::CallInst>(
+                        llvmModuleSet->getLLVMValue(node->getValue()))) {
+                  llvm::Function *callee = call->getCalledFunction();
+                  if (callee && callee->getName() == "malloc") {
+                    // no need to set field, empty field set is what I need
+                    acNode.set_kind(AccessType::kind_e::create);
+                    mdata.getAccessTypeSet()->insert(acNode,
+                                                     vNode->getICFGNode());
+                    HANDLER_LOG("Function {} has a malloc return value",
+                                vNode->getICFGNode()->getFun()->getName());
+                  }
                 }
               }
-            } else if (acNode.get_num_fields() == 0) {
-
-              // is_array = !SVFUtil::isa<ConstantInt>(
-              //     inst->getOperand(1)) ||
-              //     inst->getNumIndices() == 1;
-              // if (is_array) {
-              //     auto d = inst->getOperand(1);
-              //     mdata.addIndex(d);
-              // }
-
-              is_array = false;
-
-              auto d = inst->getOperand(1);
-              if (!SVFUtil::isa<ConstantInt>(d)) {
-                is_array = true;
-                mdata.addIndex(d);
-                mdata.addFunParam(d, &p);
-              } else if (inst->getNumIndices() == 1) {
-                is_array = true;
-                mdata.addIndex(inst);
-              }
-
-            } else {
-              skipNode = true;
             }
-            acNode.add_visited_type(pType);
-          }
-          // else {
-          //     outs() << "[DEBUG] GEP incoherent: \n";
-
-          //     outs() << "instruction:\n";
-          //     outs() << vNode->toString() << "\n";
-
-          //     outs() << "sType:\n";
-          //     outs() << *sType << "\n";
-
-          //     outs() << "dType:\n";
-          //     outs() << *dType << "\n";
-
-          //     outs() << "pType:\n";
-          //     outs() << *pType << "\n";
-
-          //     outs() << "acNode.getType():\n";
-          //     outs() << *acNode.getType() << "\n";
-          //     outs() << "\n";
-          //     exit(1);
-          // }
-        } else {
-          skipNode = true;
-        }
-      } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::Copy &&
-                 SVFUtil::isa<StmtVFGNode>(vNode)) {
-
-        auto stmt_vfg_node = SVFUtil::dyn_cast<StmtVFGNode>(vNode);
-        auto inst = llvmModuleSet->getLLVMValue(stmt_vfg_node);
-        // auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(lllvm_inst);
-
-        // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
-
-        acNode.set_kind(AccessType::kind_e::read);
-        ats->insert(acNode, vNode->getICFGNode());
-
-        // XXX: casting operations complitate things a lot. For the time
-        // being I just leave it.
-
-        if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(inst)) {
-          auto dst_typ = bitcastinst->getDestTy();
-          auto src_typ = bitcastinst->getSrcTy();
-
-          // if (acNode.getNumFields() != 0 &&
-          //     TypeMatcher::compare_types(src_typ, acNode.getType())) {
-
-          // outs() << "src_typ " << *src_typ << "\n";
-          // outs() << "acNode.getType() " << *acNode.getType() << "\n";
-
-          // if (TypeMatcher::compare_types(src_typ, acNode.getType())) {
-          //     // I want the node the original type after the cast this
-          //     // may turn out useful for mem* api operations since
-          //     // they tend to cast to i8* before being invoked
-          //     acNode.setOriginalCastType(acNode.getType());
-          //     acNode.setType(dst_typ);
-          //     ats->insert(acNode, vNode->getICFGNode());
-          // }
-          // else {
-          //     skipNode = true;
-          // }
-
-          // if (dst_typ != seek_type && dst_typ != i8ptr_typ) {
-          //     skipNode = true;
-          // }
-        }
-        // if (Instruction::isCast(inst->getOpcode()))
-        //     skipNode = true;
-      } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::Cmp) {
-        acNode.set_kind(AccessType::kind_e::read);
-        ats->insert(acNode, vNode->getICFGNode());
-      } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::BinaryOp) {
-        acNode.set_kind(AccessType::kind_e::read);
-        ats->insert(acNode, vNode->getICFGNode());
-      } else if (vNode->getNodeKind() == VFGNode::VFGNodeK::AParm) {
-        // outs() << "****: " << vNode->toString() << "\n";
-        auto actual_param = SVFUtil::dyn_cast<ActualParmSVFGNode>(vNode);
-        // 1 - get icfg node from vNode
-        auto icfg_node = actual_param->getICFGNode();
-        // 2 - check it is a call inst
-        auto cs = actual_param->getCallSite();
-        auto param = actual_param->getParam();
-        // 3 - check it is in the newedge relation
-        auto m = ValueMetadata::myCallEdgeMap_inst;
-        if (m.find(cs) != m.end() && param != nullptr) {
-          // 4 - for each target check handling
-          for (auto t : m[cs]) {
-
-            int n_param = 0;
-            for (auto p : cs->getActualParms()) {
-              if (p == param)
-                break;
-              n_param++;
-            }
-
-            handlerDispatcher(&mdata, t->getName(), vNode->getICFGNode(), cs,
-                              n_param, acNode, C_PARAM, &p);
           }
         }
-      }
+      } break;
+      case SVF::VFGNode::VFGNodeK::Gep:
+        skipNode = handleGep(vNode, acNode, *ats, mdata, p);
+        break;
+      case VFGNode::VFGNodeK::Copy: {
+        if (auto stmt_vfg_node = SVFUtil::dyn_cast<StmtVFGNode>(vNode)) {
+          auto inst = llvmModuleSet->getLLVMValue(stmt_vfg_node);
+          // auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(lllvm_inst);
+
+          // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
+
+          acNode.set_kind(AccessType::kind_e::read);
+          ats->insert(acNode, vNode->getICFGNode());
+
+          // XXX: casting operations complitate things a lot. For the time
+          // being I just leave it.
+
+          if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(inst)) {
+            auto dst_typ = bitcastinst->getDestTy();
+            auto src_typ = bitcastinst->getSrcTy();
+
+            // if (acNode.getNumFields() != 0 &&
+            //     TypeMatcher::compare_types(src_typ, acNode.getType())) {
+
+            // outs() << "src_typ " << *src_typ << "\n";
+            // outs() << "acNode.getType() " << *acNode.getType() << "\n";
+
+            // if (TypeMatcher::compare_types(src_typ, acNode.getType())) {
+            //     // I want the node the original type after the cast this
+            //     // may turn out useful for mem* api operations since
+            //     // they tend to cast to i8* before being invoked
+            //     acNode.setOriginalCastType(acNode.getType());
+            //     acNode.setType(dst_typ);
+            //     ats->insert(acNode, vNode->getICFGNode());
+            // }
+            // else {
+            //     skipNode = true;
+            // }
+
+            // if (dst_typ != seek_type && dst_typ != i8ptr_typ) {
+            //     skipNode = true;
+            // }
+          }
+        }
+      } break;
+      case SVF::VFGNode::VFGNodeK::Cmp:
+        acNode.set_kind(AccessType::kind_e::read);
+        ats->insert(acNode, vNode->getICFGNode());
+        break;
+      case SVF::VFGNode::VFGNodeK::BinaryOp:
+        acNode.set_kind(AccessType::kind_e::read);
+        ats->insert(acNode, vNode->getICFGNode());
+        break;
+      case SVF::VFGNode::VFGNodeK::AParm:
+        handleActualParam(vNode, acNode, mdata, p);
+        break;
+      } // end switch statement
+
+      // if (Instruction::isCast(inst->getOpcode()))
+      //     skipNode = true;
       // else if (vNode->getNodeKind() == VFGNode::VFGNodeK::FRet) {
       //     // outs() << "[INFO] I found a FormalRet\n";
       //     // outs() << vNode->toString() << "\n";
@@ -1485,8 +1568,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
       // }
 
       if (skipNode) {
-        // outs() << "I skip\n";
-        // outs() << vNode->toString() << "\n";
+        GEP_LOG("Skipping node: {}", vNode->toString());
         continue;
       }
 
@@ -1504,11 +1586,12 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
              it != eit; ++it) {
           VFGEdge *edge = *it;
 
-          VFGNode *succNode2 = edge->getDstNode();
-          // outs() << "INSPECT?: " << succNode2->toString() << "\n";
+          // VFGNode *succNode2 = edge->getDstNode();
+          //  outs() << "INSPECT?: " << succNode2->toString() << "\n";
 
           // follow indirect jumps if a store or IntraMSSA
           // probably add a flag
+          // TODO: Whats up with this code?
           if (vNode->getNodeKind() != VFGNode::VFGNodeK::Store &&
               vNode->getNodeKind() != VFGNode::VFGNodeK::MIntraPhi) {
             // try to follow only Direct Edges
@@ -1521,13 +1604,14 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           // outs() << "I PROCEED WITH THIS\n";
 
           VFGNode *succNode = edge->getDstNode();
-
+          // Add the current ICFGNode to the history of the path
           Path p_succ = p;
           p_succ.addStep(vNode->getICFGNode());
 
           bool ok_continue = true;
 
           const CallICFGNode *cs = nullptr;
+
           bool isACall = false;
 
           if (auto call_node = SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
@@ -1540,16 +1624,37 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           } else if (auto ret_node =
                          SVFUtil::dyn_cast<ActualRetVFGNode>(succNode)) {
             cs = ret_node->getCallSite();
+            HANDLER_LOG(
+                "Returning to function {} from {}\n",
+                ret_node->getCaller()->getName(),
+                ret_node->getCallSite()->getCalledFunction()->getName());
             isACall = false;
           } else if (auto ret_node =
                          SVFUtil::dyn_cast<ActualOUTSVFGNode>(succNode)) {
             cs = ret_node->getCallSite();
             isACall = false;
+          } else if (auto addr_node =
+                         SVFUtil::dyn_cast<AddrVFGNode>(succNode)) {
+            if (auto *inst = llvm::dyn_cast<llvm::Instruction>(
+                    llvmModuleSet->getLLVMValue(addr_node->getValue()))) {
+              if (auto *call = llvm::dyn_cast<llvm::CallInst>(inst)) {
+                llvm::Function *callee = call->getCalledFunction();
+                if (callee && callee->getName() == "malloc") {
+                  HANDLER_LOG("Found a malloc in an AddrVFGNode\n");
+                }
+              }
+            }
           }
 
           if (cs && isACall) {
             // outs() << "[INFO] ActualParmVFGNode:\n";
+            HANDLER_LOG("Function {} calling {} with {} parameters\n",
+                        cs->getCaller()->getName(),
+                        cs->getCalledFunction()->getName(),
+                        cs->getActualParms().size());
             p_succ.pushFrame(cs);
+            HANDLER_LOG("The callstack now has {} entries.",
+                        p_succ.getStackSize());
             if (p_succ.getStackSize() >= MAX_STACKSIZE) {
               ok_continue = false;
               // outs() << "[INFO] Stack size too big!\n";
@@ -1560,11 +1665,8 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
               // it is a direct call, check for stubs
             } else {
               if (!cs->isIndirectCall()) {
+                HANDLER_LOG("Direct call: {}", cs->toString());
                 std::string fun = cs->getCalledFunction()->getName();
-
-                // outs() << "[DEBUG] I found this function: "
-                //        << fun << "\n";
-
                 bool can_handle_parameter = false;
 
                 SVF::PAGNode *param = nullptr;
@@ -1592,6 +1694,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
                       break;
                     n_param++;
                   }
+                  HANDLER_LOG("Parameter index: {}", n_param);
 
                   ok_continue =
                       handlerDispatcher(&mdata, fun, vNode->getICFGNode(), cs,
@@ -1604,15 +1707,22 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           // aka is a ret
           if (cs && !isACall) {
             ok_continue = p_succ.isCorrect(cs);
-            if (ok_continue)
+            if (ok_continue) {
+              HANDLER_LOG("Returning to matching function. Caller: {} and "
+                          "callee: {}\n",
+                          cs->getCaller()->getName(),
+                          cs->getCalledFunction()->getName());
               p_succ.popFrame();
+              HANDLER_LOG("Call Stack back to only {} entries.\n",
+                          p_succ.getStackSize());
+            }
           }
 
           if (ok_continue) {
             p_succ.setNode(succNode);
             worklist.push_back(p_succ);
           }
-        }
+        } // end out edge processing
       }
       // else {
       //     outs() << "I HAVE NOT OUT EDGES!\n";
@@ -1631,5 +1741,4 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
   return mdata;
 }
-
 } // namespace liberator

@@ -25,6 +25,7 @@ public:
   ~condition_extractor_t() noexcept;
 
   function_condition_set_t extract_function_conditions();
+  SVF::SVFG *get_svfg() { return svfg_builder_->getSVFG(); }
 
   SVFG *get_svfg() const { return svfg_builder_->getSVFG(); }
 

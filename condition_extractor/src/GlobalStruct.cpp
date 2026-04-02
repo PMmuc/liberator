@@ -73,7 +73,7 @@ void GlobalStruct::analyze() {
 
   // Try to analyze why the points to set is empty for this indirect call.
   // Do a signature based matching where we match the signature of the call site
-  // function, with the signature that we got from retrieving funcs from the all
+  // function, with the signature that we got from retrieving funcs from all the
   // constants in the program.
   for (const CallICFGNode *callsite : unresolved_calls) {
     // SVFUtil::outs() << cnode->toString() << "\n";
@@ -88,12 +88,10 @@ void GlobalStruct::analyze() {
 
     // llvm::raw_string_ostream(str) << *llvm_cs;
     // SVFUtil::outs() << str << "\n";
-    // TOOD: what does this actually do?
     FunctionType *fun_type = llvm_cs->getFunctionType();
-    // TODO: why?????
+    // This  will compute the hash of the signature of the function.
     auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
-    // TODO: Compute unique string but why because it isn't used
-    auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
+    // auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
 
     // llvm::raw_string_ostream(str) << *fun_type << "\n";
     // SVFUtil::outs() << str << "\n";

@@ -75,6 +75,10 @@ static llvm::cl::opt<std::string>
     minimizeApi("minimize_api", llvm::cl::desc("Minimize API <out_folder>"),
                 llvm::cl::init(""));
 
+static llvm::cl::list<std::string>
+    LogTags("log", llvm::cl::desc("Enable logging for specific tags"),
+            llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
+
 Verbosity verbose;
 
 int main(int argc, char **argv) {
@@ -103,6 +107,9 @@ int main(int argc, char **argv) {
   config->use_dominator = useDominator;
   config->extract_data_layout = ExtractDataLayout;
 
+  for (const auto &tag : LogTags) {
+    config->log_tags.insert(tag);
+  }
   if (config->verbose >= Verbosity::v2) {
     config->debug = true;
     config->debug_condition = DebugCondition;

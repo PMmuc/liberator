@@ -10,6 +10,7 @@ void ValueMetadata::addFunParam(const llvm::Value *fp, Path *pp) {
   auto fp_v = const_cast<llvm::Value *>(fp);
   if (pp == nullptr) {
     Path p(nullptr, nullptr, nullptr);
+    // Value and path
     auto el = std::make_pair(fp_v, p);
     fun_params.push_back(el);
   } else {

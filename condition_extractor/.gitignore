@@ -1,4 +1,9 @@
 bin
+.ninja_deps
+.ninja_log
+build/
+build.ninja
+_deps/
 CMakeFiles
 CMakeCache.*
 *.dot
