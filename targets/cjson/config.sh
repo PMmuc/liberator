@@ -1,5 +1,6 @@
 REPO_URL="https://github.com/DaveGamble/cJSON.git"
-REPO_COMMIT="324973008ced4ea03d1626a00915d0399ecbd9db"
+# Release 1.7.19
+REPO_COMMIT="c859b25da02955fef659d658b8f324b5cde87be3"
 BC_FILE_NAME="libcjson.a"
 
 target_configure() {

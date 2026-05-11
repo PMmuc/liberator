@@ -1,5 +1,6 @@
 REPO_URL="https://github.com/c-ares/c-ares.git"
-REPO_COMMIT="25ad4ca231054ba210ea5a31a5a15195d03e70b6"
+# 1.34.6
+REPO_COMMIT="3ac47ee46edd8ea40370222f91613fc16c434853"
 BC_FILE_NAME="libcares_static.a"
 
 target_configure() {

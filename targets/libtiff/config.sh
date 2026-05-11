@@ -1,5 +1,5 @@
 REPO_URL="https://gitlab.com/libtiff/libtiff.git"
-REPO_COMMIT="4e63559f2b7fa3ab5c8fa8ea0dbcc21e62286fe0"
+REPO_COMMIT="5fe20d0e9aba49a6a350ed533459d1505203838f"
 BC_FILE_NAME="libtiff.a"
 
 target_configure() {
