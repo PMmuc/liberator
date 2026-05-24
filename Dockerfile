@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:20.04 AS libfuzzpp_dev_image
+FROM ubuntu:20.04 AS libfuzzpp_dev_image_org
 
 RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
     DEBIAN_FRONTEND="noninteractive" \
@@ -79,7 +79,7 @@ RUN cd ${HOME}/python && python3 -m pip install -r requirements.txt
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR LIBRARY DEBUG
-FROM libfuzzpp_dev_image AS libfuzzpp_debug
+FROM libfuzzpp_dev_image AS libfuzzpp_debug_org
 
 ENV TOOLS_DIR ${HOME}
 ARG target_name=simple_connection
