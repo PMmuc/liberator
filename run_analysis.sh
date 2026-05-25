@@ -87,6 +87,7 @@ INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
 # Extractor
 # changing the working directory to $WORK will cause the gmon.out file to be stored in
 # the $WORK directory
+# specify following log tags: GEPHandler, Type, Handler
 cd "$WORK"
 time $DEBUG "$TOOLS_DIR/condition_extractor/build/bin/extractor" \
   "${ARCHIVE_PATH}.bc" \
@@ -95,7 +96,10 @@ time $DEBUG "$TOOLS_DIR/condition_extractor/build/bin/extractor" \
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
   -v v0 -t json -do_indirect_jumps \
   -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
-  ${EXTRA_EXTRACTOR_FLAGS}
+  -log Type \
+  -profiling \
+  \
+  ${EXTRA_EXTRACTOR_FLAGS} #-range 81-334 \
 
 echo "Saved to ${LIBFUZZ_LOG_PATH}/conditions.json"
 

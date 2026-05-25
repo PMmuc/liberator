@@ -117,8 +117,8 @@ public: // static functions/data!
  */
 ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval);
 /**
- * Retrieves the type information of a parameter and puts it into the
- * ValueMetadata struct.
+ * Retrieves the type information and accesses with locations, of a parameter
+ * and puts it into the ValueMetadata struct.
  *
  * @param svfg - the sparse value frow graph
  * @param Value - value (formal) parameter of a function to extract the
@@ -128,6 +128,8 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval);
  */
 ValueMetadata extractParameterMetadata(const SVFG &, const llvm::Value *,
                                        const llvm::Type *, unsigned);
+ValueMetadata my_extract_parameter_metadata(const SVFG &vfg, const Value *val,
+                                            const Type *seek_type);
 std::vector<std::string> extractDependencyAmongParameters(const SVF::SVFVar *,
                                                           ValueMetadata &,
                                                           SVF::SVFG &,

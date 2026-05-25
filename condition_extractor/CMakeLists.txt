@@ -40,6 +40,9 @@ if (DEFINED ENV{LLVM_DIR})
 
   include(AddLLVM)
 
+  include(CheckIPOSupported)
+  check_ipo_supported(RESULT lto_ok)
+
 else()
     message(FATAL_ERROR "\
   WARNING: The LLVM_DIR var was not set (required for an out-of-source build)!\n\
@@ -62,7 +65,7 @@ enable_testing()
 set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/tests/assets")
 configure_file(
   "${CMAKE_SOURCE_DIR}/src/Config.h.in"
-  "${CMAKE_BINARY_DIR}/include/Config.h"
+  "${CMAKE_SOURCE_DIR}/src/Config.h"
 )
 include_directories("${CMAKE_BINARY_DIR}/include")
 

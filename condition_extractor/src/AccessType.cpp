@@ -10,26 +10,36 @@
 #include "SVF-LLVM/BasicTypes.h"
 #include "SVF-LLVM/LLVMModule.h"
 #include "SVF-LLVM/LLVMUtil.h"
+#include "SVF-LLVM/ObjTypeInference.h"
 #include "SVFIR/SVFIR.h"
 #include "SVFIR/SVFStatements.h"
 #include "SVFIR/SVFVariables.h"
 #include "Util/Casting.h"
 #include "Util/SVFUtil.h"
+#include "llvm/Demangle/Demangle.h"
 #include "llvm/IR/GlobalVariable.h"
 #include "llvm/IR/InstrTypes.h"
 #include "llvm/IR/Instruction.h"
 #include "llvm/Support/raw_ostream.h"
 #include <Graphs/VFGNode.h>
 #include <MSSA/SVFGBuilder.h>
+#include <Util/GeneralType.h>
+#include <Util/WorkList.h>
+#include <chrono>
+#include <iostream>
 #include <llvm/IR/Constants.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Metadata.h>
 #include <llvm/IR/Type.h>
 #include <llvm/Support/Casting.h>
+#include <llvm/Support/TimeProfiler.h>
+#include <sstream>
+#include <string>
+#include <unistd.h>
 #include <vector>
 
 #define MAX_STACKSIZE 20
-#define PARAM_META_LOG(...) tag_log<StdoutLogger>("paramMetadata", __VA_ARGS__)
 
 namespace {
 bool leadsToBitCastOfType(const VFGNode *vn, Type *targetType) {
@@ -288,13 +298,6 @@ bool doesReturnGlobalVarConst(const ICFGNode *icfgNode) {
         itReturnGlobalVarConst = true;
       }
 
-      if (itReturnGlobalVarConst) {
-        SVFUtil::outs() << "Function: "
-                        << retinst->getParent()->getParent()->getName().str()
-                        << " returns global variable: "
-                        << retinst->getReturnValue()->getName().str() << "\n";
-      }
-
       /*if (SVFUtil::isa<llvm::ConstantExpr>(rv)) {
         // outs() << "is a ConstantExpr\n";
 
@@ -336,16 +339,68 @@ bool handlerDispatcher(liberator::ValueMetadata *, std::string,
 bool hasHandlerDispatcher(liberator::ValueMetadata *, std::string,
                           const ICFGNode *, const CallICFGNode *, int,
                           H_SCOPE h_scope);
+// TODO:
+// STATE: added profiling for extractReturnMetadata
+// NEXT_STEPS: AllocaInst seem to be the culprit, as for each allocainst in a
+// function we call extractParameterMetadata
+inline void
+handleIntraICFGNodes(IntraICFGNode *node, llvm::Type *retType,
+                     std::set<const Instruction *> &allocainst_set) {
+  auto llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
+  INTRA_LOG("IntraICFGNode: {}", node->toString());
+  if (!node->getSVFStmts().empty()) {
+    for (auto stmt : node->getSVFStmts()) {
+      INTRA_LOG("{}\n", stmt->toString());
+    }
+    const SVFStmt *stmt = node->getSVFStmts().front();
+    if (stmt == nullptr) {
+      cout << node->toString() << " has not statements.\n";
+    }
+    const SVFVar *var = stmt->getValue();
+    const auto llvminst = llvmModuleSet->getLLVMValue(var);
+
+    if (auto alloca = SVFUtil::dyn_cast<AllocaInst>(llvminst)) {
+      INTRA_LOG("alloca {}\n", alloca->getName());
+      if (alloca->getAllocatedType() == retType) {
+        // outs() << "[INFO] => type ok!\n";
+        // alloca_set.insert(vfgnode);
+        allocainst_set.insert(alloca);
+      }
+    } else if (auto callinst = SVFUtil::dyn_cast<CallInst>(llvminst)) {
+      // FIXME: is this code ever called or not? Because the instruction is
+      // a CallICFGNode not an IntraICFGNode
+      INTRA_LOG("callinst {}\n", callinst->getCaller()->getName());
+      FunctionType *ftype = callinst->getFunctionType();
+      if (ftype->getReturnType() == retType) {
+        // outs() << "[INFO] => type ok!\n";
+        // alloca_set.insert(vfgnode);
+        allocainst_set.insert(callinst);
+      }
+    } else if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(llvminst)) {
+      if (bitcastinst->getDestTy() == retType) {
+        INTRA_LOG("bitcastinst {}\n", bitcastinst->getName());
+        // outs() << "[INFO] => type ok!\n";
+        // alloca_set.insert(vfgnode);
+        allocainst_set.insert(bitcastinst);
+        // bitcastinst_set.insert(bitcastinst);
+      }
+    }
+  }
+}
 
 ValueMetadata::MyCallEdgeMap ValueMetadata::myCallEdgeMap_inst;
-
 ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
+  llvm::TimeTraceScope TimeScope("extractReturnMetadata", [llvmval]() {
+    if (auto *Inst = llvm::dyn_cast<llvm::Instruction>(llvmval)) {
+      return Inst->getFunction()->getName().str();
+    }
+    return llvmval->getName().str();
+  });
   // SVFValue *val = LLVMModuleSet::getLLVMModuleSet()->getSVFValue(llvmval);
   auto *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
   auto nodeid = llvmModuleSet->getValueNode(llvmval);
 
-  SVFUtil::outs()
-      << "-------------- extractReturnMetadata called --------------\n";
+  RETURN_LOG("---------- extractReturnMetadata called -------------\n");
 
   SVFIR *pag = SVFIR::getPAG();
 
@@ -383,7 +438,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
 
   if (!SVFUtil::isa<llvm::PointerType>(retType))
     return mdata;
-  SVFUtil::outs() << "--- RETURNS A POINTER\n";
+  RETURN_LOG("--- RETURNS A POINTER ---\n");
 
   if (doesReturnGlobalVarConst(fun_exit)) {
     AccessType acNodeConst(retType);
@@ -414,6 +469,13 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
 
   AccessTypeSet *ats = mdata.getAccessTypeSet();
 
+  uint64_t total_main_loop_ns = 0;
+  uint64_t total_def_set_ns = 0;
+  uint64_t total_def_loop_ns = 0;
+  uint64_t total_param_meta_ns = 0;
+  auto function_start = std::chrono::high_resolution_clock::now();
+
+  auto t_loop_start = std::chrono::high_resolution_clock::now();
   while (!working.empty()) {
 
     auto el = working.top();
@@ -423,49 +485,12 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
     std::stack<ICFGEdge *> curr_stack = el.second;
 
     if (auto intra_stmt = SVFUtil::dyn_cast<IntraICFGNode>(node)) {
-      SVFUtil::outs() << "IntraICFGNode: " << node->getName() << "\n";
-      // TODO: check if this is correct
-      for (auto stmt : intra_stmt->getSVFStmts()) {
-        SVFUtil::outs() << stmt->toString() << "\n";
-      }
-      const SVFStmt *stmt = intra_stmt->getSVFStmts().front();
-      if (stmt == nullptr) {
-        cout << intra_stmt->toString() << " has not statements.\n";
-        continue;
-      }
-      const SVFVar *var = stmt->getValue();
-      const auto llvminst = llvmModuleSet->getLLVMValue(var);
-
-      if (auto alloca = SVFUtil::dyn_cast<AllocaInst>(llvminst)) {
-        outs() << "[INFO] alloca " << *alloca << "\n";
-        if (alloca->getAllocatedType() == retType) {
-          // outs() << "[INFO] => type ok!\n";
-          // alloca_set.insert(vfgnode);
-          allocainst_set.insert(alloca);
-        }
-      } else if (auto callinst = SVFUtil::dyn_cast<CallInst>(llvminst)) {
-        // FIXME: is this code ever called or not? Because the instruction is
-        // a CallICFGNode not an IntraICFGNode
-        outs() << "[INFO] callinst " << *callinst << "\n";
-        FunctionType *ftype = callinst->getFunctionType();
-        if (ftype->getReturnType() == retType) {
-          // outs() << "[INFO] => type ok!\n";
-          // alloca_set.insert(vfgnode);
-          allocainst_set.insert(callinst);
-        }
-      } else if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(llvminst)) {
-        if (bitcastinst->getDestTy() == retType) {
-          outs() << "[INFO] bitcastinst " << *bitcastinst << "\n";
-          // outs() << "[INFO] => type ok!\n";
-          // alloca_set.insert(vfgnode);
-          allocainst_set.insert(bitcastinst);
-          // bitcastinst_set.insert(bitcastinst);
-        }
-      }
-    } else if (auto call_node = SVFUtil::dyn_cast<CallICFGNode>(node)) {
+      handleIntraICFGNodes(intra_stmt, retType, allocainst_set);
+    } // end IntraICFGNode
+    else if (auto call_node = SVFUtil::dyn_cast<CallICFGNode>(node)) {
       // Handling calls
       // outs() << "[INFO] " << call_node->toString() << " \n";
-      outs() << "CallICFGNode: " << call_node->toString() << "\n";
+      RETURN_LOG("CallICFGNode: {}\n", call_node->toString());
 
       if (!config_t::instance()->consider_indirect_calls &&
           call_node->isIndirectCall())
@@ -493,7 +518,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
           inst = SVFUtil::dyn_cast<CallBase>(val);
         }*/
 
-        outs() << "[INFO] callinst2 " << *inst << "\n";
+        // RETURN_LOG("[INFO] callinst2 {}\n", *inst);
         FunctionType *ftype = inst->getFunctionType();
         bool ret_type_is_ok = false;
 
@@ -512,15 +537,15 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
         } else if (ValueMetadata::myCallEdgeMap_inst.find(call_node) !=
                    ValueMetadata::myCallEdgeMap_inst.end()) {
           // outs() << "[DEBUG] -> call_node is in the edge map\n";
-          outs() << "[INFO] call_node: " << call_node->toString()
-                 << " has ind jump? \n";
+          RETURN_LOG("[INFO] call node: {} has ind jump? \n",
+                     call_node->toString());
           auto targets = ValueMetadata::myCallEdgeMap_inst[call_node];
           for (auto t : targets) {
             std::string fun = t->getName();
-            outs() << "[INFO] t->getName(): " << fun << "\n";
+            RETURN_LOG("[INFO] t->getName(): {}\n", fun);
             if (hasHandlerDispatcher(&mdata, fun, node, call_node, -1,
                                      C_RETURN)) {
-              outs() << "[INFO] has dispatcher!\n";
+              RETURN_LOG("[INFO] has dispatcher!\n");
               // allocainst_set.insert(inst);
               ret_type_is_ok = true;
             }
@@ -539,9 +564,9 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
             ValueMetadata mdata_tmp;
             handlerDispatcher(&mdata_tmp, fun, node, call_node, -1, acNode,
                               C_RETURN, nullptr);
-            outs() << "[INFO] After handlerDispatcher\nmeta_tmp:\n";
-            outs() << to_string(mdata_tmp, false) << "\n";
-            // check if mdata_tmp has "create"
+            RETURN_LOG("[INFO] After handlerDispatcher\nmeta_tmp:\n");
+            RETURN_LOG("{}\n", to_string(mdata_tmp, false));
+
             bool added_create = false;
             for (auto at : *mdata_tmp.getAccessTypeSet()) {
               if (at.get_kind() == AccessType::kind_e::create) {
@@ -562,10 +587,10 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
               PAGNode *zz = pag->getGNode(ret_node_val->getId());
               const VFGNode *vNode;
               if (!vfg.hasDefSVFGNode(zz)) {
-                outs() << "zz has not Def Nodes\n";
+                RETURN_LOG("zz has no Def Nodes\n");
               } else {
                 vNode = vfg.getDefSVFGNode(zz);
-                outs() << "vNode: " << vNode->toString() << "\n";
+                RETURN_LOG("vNode: {}\n", vNode->toString());
               }
 
               // if a "create" is added, I need to check it leads
@@ -573,7 +598,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
               // const Instruction **inst_bitcast;
               if (added_create && leadsToBitCastOfType(vNode, retType)) {
                 // allocainst_set.insert(*inst_bitcast);
-                outs() << "I allocated a bitcast!!\n";
+                RETURN_LOG("I allocated a bitcast!!\n");
                 // outs() << "bitcast: " << *(*inst_bitcast) << "\n";
                 AccessType acNode(retType);
                 // ValueMetadata mdata;
@@ -651,26 +676,33 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
       }
     }
   }
+  total_main_loop_ns =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::high_resolution_clock::now() - t_loop_start)
+          .count();
   // We have visited all the nodes
 
   for (auto v : visited)
     visited_functions.insert(v->getFun());
 
   auto pXX = fun_exit->getFormalRet();
-  outs() << "-----------------------------------\n";
-  outs() << pXX->toString() << "\n";
-  outs() << "-----------------------------------\n";
+  RETURN_LOG("-----------------------------------\n");
+  RETURN_LOG("{}\n", pXX->toString());
+  RETURN_LOG("-----------------------------------\n");
   const VFGNode *XX = vfg.getDefSVFGNode(pXX);
   if (LLVMModuleSet::getLLVMModuleSet()->hasLLVMValue(pXX)) {
     const llvm::Value *val =
         LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(pXX);
-    outs() << *val << "\n";
+    std::string buffer;
+    llvm::raw_string_ostream os(buffer);
+    val->print(os);
+    RETURN_LOG("{}\n", buffer);
   } else {
-    outs() << "VFGNode has an SVFVar but no LLVM Value\n";
+    RETURN_LOG("VFGNode has an SVFVar but no LLVM Value\n");
   }
   auto *value = LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(XX->getValue());
   if (value == nullptr) {
-    outs() << "no llvm instruction\n";
+    RETURN_LOG("no llvm instruction\n");
   }
 
   // outs() << "[INFO] Visited " << visited_functions.size() << "
@@ -678,12 +710,18 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
   //     outs() << "fun: " << f->getName() << "\n";
 
   // std::set<const VFGNode*> defA = getDefinitionSet(XX);
+  auto t_defset_start = std::chrono::high_resolution_clock::now();
   std::set<const VFGNode *> defA =
       getDefinitionSetForRet(XX, visited_functions);
+  total_def_set_ns =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::high_resolution_clock::now() - t_defset_start)
+          .count();
 
   // outs() << "ORIGINAL RETURN:\n";
   // outs() << XX->toString() << "\n";
   // outs() << "DEFINITION:\n";
+  auto t_defloop_start = std::chrono::high_resolution_clock::now();
   for (auto n : defA) {
     if (auto s = SVFUtil::dyn_cast<StmtVFGNode>(n)) {
       auto svfinst = SVFUtil::dyn_cast<Instruction>(
@@ -736,6 +774,10 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
       }
     }
   }
+  total_def_loop_ns =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::high_resolution_clock::now() - t_defloop_start)
+          .count();
   // outs() << "DONE!\n";
   // exit(0);
 
@@ -750,11 +792,26 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
 
   // std::map<const Instruction*, AccessTypeSet> all_ats;
   std::map<const Instruction *, ValueMetadata> all_ats;
+  auto t_param_start = std::chrono::high_resolution_clock::now();
+
+  uint64_t total_alloc_loop_ns = 0;
+  uint64_t total_merge_loop_ns = 0;
+  uint64_t total_extractParam_ns = 0;
+  uint64_t total_nestedCheck_ns = 0;
+
   for (auto a : allocainst_set) {
+    auto t_alloc_start = std::chrono::high_resolution_clock::now();
     // outs() << "[INFO] paramAT() " << *a << " -- ";
-    outs() << a->getFunction()->getName().str() << "\n";
+    RETURN_LOG("{}\n", a->getFunction()->getName().str());
+
     auto a_id = LLVMModuleSet::getLLVMModuleSet()->getValueNode(a);
+
+    // FIXME: This is performance critical when allocainst_set is huge
+    auto t2 = std::chrono::high_resolution_clock::now();
     ValueMetadata mdata = extractParameterMetadata(vfg, a, retType, a_id);
+    auto t3 = std::chrono::high_resolution_clock::now();
+    total_extractParam_ns +=
+        std::chrono::duration_cast<std::chrono::nanoseconds>(t3 - t2).count();
 
     // outs() << "mdata_xx [2] " << mdata_xx.getSummary();
     // if (mdata_xx.isFilePath()) {
@@ -788,10 +845,21 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
     }
     if (do_not_return)
       all_ats[a] = mdata;
+
+    auto t4 = std::chrono::high_resolution_clock::now();
+    total_nestedCheck_ns +=
+        std::chrono::duration_cast<std::chrono::nanoseconds>(t4 - t3).count();
+
+    auto t_alloc_end = std::chrono::high_resolution_clock::now();
+    total_alloc_loop_ns += std::chrono::duration_cast<std::chrono::nanoseconds>(
+                               t_alloc_end - t_alloc_start)
+                               .count();
   }
 
   // outs() << "Get Summary:\n";
   // I just merge all!
+  // FIXME: This is performance critical
+  auto t_merge_start = std::chrono::high_resolution_clock::now();
   for (auto el : all_ats) {
     // outs() << "Func: " << el.first->getFunction()->getName().str() << "\n";
     // outs() << "Inst: " << *el.first << "\n";
@@ -800,6 +868,52 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
     for (auto atx : *el.second.getAccessTypeSet())
       for (auto inst : atx.getICFGNodes())
         ats->insert(atx, inst);
+  }
+  auto t_merge_end = std::chrono::high_resolution_clock::now();
+  total_merge_loop_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                            t_merge_end - t_merge_start)
+                            .count();
+
+  total_param_meta_ns =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::high_resolution_clock::now() - t_param_start)
+          .count();
+  auto function_end = std::chrono::high_resolution_clock::now();
+  uint64_t total_func_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                               function_end - function_start)
+                               .count();
+
+  if (total_func_ns > 0) {
+    outs() << "\n[PROFILING] `extractReturnMetadata` Time Breakdown:\n";
+    outs() << "  Total Function Time: " << (total_func_ns / 1e6) << " ms\n";
+    outs() << "  1. Main ICFG Loop  : " << (total_main_loop_ns / 1e6) << " ms ("
+           << ((double)total_main_loop_ns / total_func_ns) * 100.0 << "%)\n";
+    outs() << "  2. getDefSetForRet : " << (total_def_set_ns / 1e6) << " ms ("
+           << ((double)total_def_set_ns / total_func_ns) * 100.0 << "%)\n";
+    outs() << "  3. Process Def Loop: " << (total_def_loop_ns / 1e6) << " ms ("
+           << ((double)total_def_loop_ns / total_func_ns) * 100.0 << "%)\n";
+    outs() << "  4. paramMeta Loop  : " << (total_param_meta_ns / 1e6)
+           << " ms (" << ((double)total_param_meta_ns / total_func_ns) * 100.0
+           << "%)\n";
+    outs() << "     - allocainst elems : " << allocainst_set.size() << "\n";
+    outs() << "     - alloc_loop total : " << (total_alloc_loop_ns / 1e6)
+           << " ms\n";
+    outs() << "       --> extractParam : " << (total_extractParam_ns / 1e6)
+           << " ms\n";
+    outs() << "       --> nested Check : " << (total_nestedCheck_ns / 1e6)
+           << " ms\n";
+    outs() << "       --> untimed overhead: "
+           << ((total_alloc_loop_ns - total_extractParam_ns -
+                total_nestedCheck_ns) /
+               1e6)
+           << " ms\n";
+    outs() << "     - merge loop total  : " << (total_merge_loop_ns / 1e6)
+           << " ms\n";
+    outs() << "  Other (Wait)       : "
+           << ((double)(total_func_ns - total_main_loop_ns - total_def_set_ns -
+                        total_def_loop_ns - total_param_meta_ns) /
+               1e6)
+           << " ms\n\n";
   }
 
   return mdata;
@@ -1219,6 +1333,7 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
 
       printType(sType, "Source type:");
       printType(dType, "Result type:");
+      vNode->getDefSVFVars();
 
       if (TypeMatcher::compare_types(sType, acNode.get_llvm_type()) &&
           !acNode.is_visited(sType)) {
@@ -1338,9 +1453,269 @@ void handleActualParam(const VFGNode *vNode, AccessType &acNode,
   }
 }
 
+struct access_path_t {
+public:
+  const Type *base_ty;
+  vector<int> indices;
+  vector<Type *> field_ty;
+  Value *v;
+  bool is_struct;
+  bool is_array;
+};
+
+struct param_access_site_t {
+  const ICFGNode *node; // where in the program the read happens
+  enum class kind_e {
+    e_direct_read,
+    e_indirect_read,
+    e_direct_write,
+    e_indirect_write
+  };
+};
+
+struct param_access_summary_t {
+  std::vector<param_access_site_t> sites;
+
+  // wich abstract objects this function reads/writes
+  NodeBS read_objs;
+  NodeBS write_objs;
+};
+
+// TODO: get other possible representations of keys.
+std::string make_key(const Function *F, NodeID param_id) {
+  std::string key = F->getName().str() + "#" + std::to_string(param_id);
+  return key;
+}
+
+class param_access_tracker_t {
+  SVFIR *pag;
+  PointerAnalysis *pta;
+  SVFG *svfg;
+  CallGraph *cg;
+
+  std::unordered_map<std::string, param_access_summary_t> memo;
+
+public:
+  param_access_tracker_t(SVFIR *p, PointerAnalysis *a, SVFG *s)
+      : pag(p), pta(a), svfg(s), cg(a->getCallGraph()) {}
+
+  param_access_summary_t analyze(const Function *F, NodeID param_id) {
+    std::string key = make_key(F, param_id);
+
+    auto it = memo.find(key);
+    if (it != memo.end())
+      return it->second;
+
+    memo[key] = param_access_summary_t{};
+
+    param_access_summary_t summary;
+
+    for (const auto &bb : *F) {
+      for (auto it = bb.begin(); it != bb.end(); ++it) {
+        const Instruction *i = &(*it);
+        // TODO: How is the CallICFGNode graph created
+        auto inst = LLVMModuleSet::getLLVMModuleSet()->getCallICFGNode(i);
+        for (const auto *stmt : pag->getSVFStmtList(inst)) {
+          if (const LoadStmt *ld = SVFUtil::dyn_cast<LoadStmt>(stmt)) {
+            SVFUtil::outs() << ld->toString() << "\n";
+          }
+        }
+      }
+    }
+  }
+};
+
+void my_proc(const SVFGNode *n, access_path_t &ap) {
+  LLVMModuleSet *module_set = LLVMModuleSet::getLLVMModuleSet();
+  if (auto formal_param = SVFUtil::dyn_cast<FormalParmVFGNode>(n)) {
+    auto callee = formal_param->getICFGNode()->getFun();
+    std::string mangled = callee->getName();
+    std::string demangle = llvm::demangle(mangled);
+    stringstream ss;
+    callee->getReturnType()->print(ss);
+    MY_EX_LOG(
+        "Argument is passed to function {} unmangled {} with return type: {}\n",
+        mangled, demangle, ss.str());
+  } else if (auto gep = SVFUtil::dyn_cast<GepVFGNode>(n)) {
+    if (gep->getType())
+      MY_EX_LOG("{}\n", gep->getType()->toString());
+    auto gepV = module_set->getLLVMValue(gep->getValue());
+    if (!gepV)
+      return;
+    auto gep_inst = dyn_cast<GetElementPtrInst>(gepV);
+    if (!gep_inst)
+      return;
+    if (gep_inst->hasAllConstantIndices() && gep_inst->getNumIndices() > 1) {
+      auto *CI = dyn_cast<ConstantInt>(gep_inst->getOperand(2));
+      uint64_t idx = CI->getZExtValue();
+      ap.indices.push_back(idx);
+      if (ap.base_ty) {
+        if (auto st = dyn_cast<StructType>(ap.base_ty)) {
+          // we have to store struct accesses
+          // we have to differentiate array accesses
+          if (st->getStructElementType(idx)->getTypeID() == Type::PointerTyID) {
+            ap.indices.push_back(idx);
+            // TODO: here we need to infer the type of the access again
+            for (auto I : gep_inst->users()) {
+              if (auto store = dyn_cast<StoreInst>(I)) {
+                if (auto global =
+                        dyn_cast<GlobalVariable>(store->getValueOperand())) {
+                  // TODO: wie mappe ich den Typ jetzt auf die Class A?
+                  auto gTy = global->getValueType();
+                  std::string buffer;
+                  raw_string_ostream os(buffer);
+                  gTy->print(os);
+                  MY_EX_LOG("Global Variable: {}\n", buffer);
+                  ap.field_ty.push_back(gTy);
+                }
+              }
+            }
+          }
+        }
+      }
+    } else if (auto store_inst = SVFUtil::dyn_cast<StoreVFGNode>(n)) {
+    }
+    if (gep_inst) {
+      std::string buffer;
+      raw_string_ostream os(buffer);
+      gep_inst->getSourceElementType()->print(os);
+      MY_EX_LOG("{}\n", buffer);
+      gep_inst->getResultElementType()->print(os);
+      MY_EX_LOG("{}\n", buffer);
+      // now what if the gep is followed by a store
+      // it can be a write to a struct or array
+      for (auto I : gep_inst->users()) {
+        if (auto store = dyn_cast<StoreInst>(I)) {
+          if (auto global =
+                  dyn_cast<GlobalVariable>(store->getValueOperand())) {
+            // wie mappe ich den Typ jetzt auf die Class A?
+            auto gTy = global->getValueType();
+          }
+        }
+      }
+    }
+  }
+}
+
+ValueMetadata my_extract_parameter_metadata(const SVFG &vfg, const Value *val,
+                                            const Type *seek_type) {
+  ValueMetadata res;
+  MY_EX_LOG("In EXTRACT PARAMETER\n");
+  PAG *pag = PAG::getPAG();
+  auto *module_set = LLVMModuleSet::getLLVMModuleSet();
+  // TODO: is there always a GNode to each LLVM value?
+  auto param_node = module_set->getValueNode(val);
+  PAGNode *arg_node = pag->getGNode(param_node);
+  // this is necessary to get the definition node of the SVFVar in the SVFG
+  // graph
+  auto vNode = vfg.getDefSVFGNode(arg_node);
+  if (config_t::instance()->debug) {
+    PARAM_META_LOG("Working node:\n");
+    PARAM_META_LOG("A.-> {}\n", vNode->toString());
+    PARAM_META_LOG("B.-> {}\n", vNode->getFun()->getName());
+    // PARAM_META_LOG("Stack size: {}\n", p.getStackSize());
+
+    PARAM_META_LOG("[IN EDGES]\n");
+    for (VFGNode::const_iterator it = vNode->InEdgeBegin(),
+                                 eit = vNode->InEdgeEnd();
+         it != eit; ++it) {
+      VFGEdge *edge = *it;
+
+      // TODO: Remove
+      // STATE: I wrote the my_extract_parameter_metadata function
+      // NEXT STEPS: implement the same functionalty as extractParameterMetadata
+      // but first try to understand of CHI and MU nodes are inserted and how
+      // the VFG is created of SVF and write it down in the thesis
+      if (SVFUtil::isa<SVF::DirectSVFGEdge>(edge))
+        PARAM_META_LOG("direct:\n");
+      else
+        PARAM_META_LOG("indirect:\n");
+
+      VFGNode *succNode = edge->getSrcNode();
+      PARAM_META_LOG("{}\n", succNode->toString());
+
+      PARAM_META_LOG("[OUT EDGES]\n");
+      for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
+                                   eit = vNode->OutEdgeEnd();
+           it != eit; ++it) {
+        VFGEdge *edge = *it;
+
+        if (SVFUtil::isa<SVF::DirectSVFGEdge>(edge))
+          PARAM_META_LOG("direct:\n");
+        else
+          PARAM_META_LOG("indirect:\n");
+
+        VFGNode *succNode = edge->getDstNode();
+        PARAM_META_LOG("{}\n", succNode->toString());
+      }
+    }
+  }
+
+  auto type_inference = module_set->getTypeInference();
+  auto param_type = type_inference->inferObjType(val);
+  std::string buffer;
+  raw_string_ostream os(buffer);
+  param_type->print(os);
+  MY_EX_LOG("Inferred Type of paramter: {}\n", buffer);
+
+  access_path_t path;
+  path.base_ty = param_type;
+
+  // val will be an formal argument when starting.
+  //
+  FILOWorkList<const SVFGNode *> worklist;
+  worklist.push(vNode);
+  Set<const SVFGNode *> visited;
+
+  while (!worklist.empty()) {
+    auto v = worklist.pop();
+    if (visited.count(v))
+      continue;
+    visited.insert(v);
+    MY_EX_LOG("Visited: {}\n", v->toString());
+    my_proc(v, path);
+    for (auto e : v->getOutEdges()) {
+      auto u = e->getDstNode();
+      worklist.push(u);
+    }
+  }
+
+  // here i can output the results
+  if (auto st = dyn_cast<StructType>(path.base_ty)) {
+    MY_EX_LOG("There are {} indices and {} field type(s)\n",
+              path.indices.size(), path.field_ty.size());
+    for (int i = 0; i < path.indices.size(); ++i) {
+      string buffer;
+      raw_string_ostream os(buffer);
+      st->print(os);
+      string type_buffer;
+      raw_string_ostream os1(type_buffer);
+      if (path.field_ty.size() > i)
+        path.field_ty[i]->print(os);
+      MY_EX_LOG("Found accesss to {} at index {} with type {}\n", buffer,
+                path.indices[i], type_buffer);
+    }
+  }
+
+  for (PAGEdge *edge : arg_node->getOutEdges()) {
+    if (GepStmt *gepEdge = SVFUtil::dyn_cast<GepStmt>(edge)) {
+      auto tst = gepEdge->getAccessPath();
+      MY_EX_LOG("{}\n", tst.dump());
+    }
+  }
+
+  return res;
+}
+
 ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
                                        const Type *seek_type,
                                        unsigned paramId) {
+  llvm::TimeTraceScope TimeScope("extractParameterMetadata", [val]() {
+    if (auto *Inst = llvm::dyn_cast<llvm::Instruction>(val)) {
+      return Inst->getFunction()->getName().str();
+    }
+    return val->getName().str();
+  });
   SVFIR *pag = SVFIR::getPAG();
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
@@ -1384,6 +1759,19 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
   /// Traverse along VFG
   // while S is not empty do
+
+  uint64_t total_visited_lookup_ns = 0;
+  uint64_t total_visited_insert_ns = 0;
+  uint64_t total_switch_ns = 0;
+  uint64_t total_out_edges_ns = 0;
+
+  uint64_t total_edge_path_copy_ns = 0;
+  uint64_t total_edge_call_ns = 0;
+  uint64_t total_edge_ret_ns = 0;
+  uint64_t total_edge_worklist_ns = 0;
+
+  auto loop_start_time = std::chrono::high_resolution_clock::now();
+
   while (!worklist.empty()) {
     // v = S.pop()
     Path p = worklist.back();
@@ -1449,114 +1837,145 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
       }
     }
 
+    bool not_visited = false;
+    {
+      llvm::TimeTraceScope TimeScope("Visited Set Lookup");
+      auto t_start = std::chrono::high_resolution_clock::now();
+      not_visited = visited.find(p) == visited.end();
+      auto t_end = std::chrono::high_resolution_clock::now();
+      total_visited_lookup_ns +=
+          std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start)
+              .count();
+    }
+
     // if v is not labeled as discovered then
-    if (visited.find(p) == visited.end()) {
+    if (not_visited) {
 
       // outs() << "Process:\n";
       // outs() << vNode->toString() << "\n";
 
       // label v as discovered
-      visited.insert(p);
+      {
+        llvm::TimeTraceScope TimeScope("Visited Set Insert");
+        auto t_start = std::chrono::high_resolution_clock::now();
+        visited.insert(p);
+        auto t_end = std::chrono::high_resolution_clock::now();
+        total_visited_insert_ns +=
+            std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
+                                                                 t_start)
+                .count();
+      }
 
       bool skipNode = false;
 
-      switch (vNode->getNodeKind()) {
-      case VFGNode::VFGNodeK::Load: {
-        acNode.set_kind(AccessType::kind_e::read);
-        ats->insert(acNode, vNode->getICFGNode());
-      } break;
-      case VFGNode::VFGNodeK::Store: {
-        auto *prevValue = p.getPrevValue();
-
-        auto llvm_val = llvmModuleSet->getLLVMValue(vNode->getValue());
-
-        if (prevValue != nullptr && SVFUtil::isa<StoreInst>(llvm_val)) {
-          auto inst = SVFUtil::cast<StoreInst>(llvm_val);
-
-          if (inst->getPointerOperand() == prevValue)
-            acNode.set_kind(AccessType::kind_e::write);
-          else if (inst->getValueOperand() == prevValue)
-            acNode.set_kind(AccessType::kind_e::read);
-
+      {
+        llvm::TimeTraceScope TimeScope("Node Type Switch");
+        auto t_start = std::chrono::high_resolution_clock::now();
+        switch (vNode->getNodeKind()) {
+        case VFGNode::VFGNodeK::Load: {
+          acNode.set_kind(AccessType::kind_e::read);
           ats->insert(acNode, vNode->getICFGNode());
+        } break;
+        case VFGNode::VFGNodeK::Store: {
+          auto *prevValue = p.getPrevValue();
 
-          if (vNode->hasIncomingEdge()) {
-            for (auto it : vNode->getInEdges()) {
-              if (auto node =
-                      SVFUtil::dyn_cast<AddrVFGNode>(it->getSrcNode())) {
-                if (auto call = SVFUtil::dyn_cast<llvm::CallInst>(
-                        llvmModuleSet->getLLVMValue(node->getValue()))) {
-                  llvm::Function *callee = call->getCalledFunction();
-                  if (callee && callee->getName() == "malloc") {
-                    // no need to set field, empty field set is what I need
-                    acNode.set_kind(AccessType::kind_e::create);
-                    mdata.getAccessTypeSet()->insert(acNode,
-                                                     vNode->getICFGNode());
-                    HANDLER_LOG("Function {} has a malloc return value",
-                                vNode->getICFGNode()->getFun()->getName());
+          auto llvm_val = llvmModuleSet->getLLVMValue(vNode->getValue());
+
+          if (prevValue != nullptr && SVFUtil::isa<StoreInst>(llvm_val)) {
+            auto inst = SVFUtil::cast<StoreInst>(llvm_val);
+
+            if (inst->getPointerOperand() == prevValue)
+              acNode.set_kind(AccessType::kind_e::write);
+            else if (inst->getValueOperand() == prevValue)
+              acNode.set_kind(AccessType::kind_e::read);
+
+            ats->insert(acNode, vNode->getICFGNode());
+
+            if (vNode->hasIncomingEdge()) {
+              for (auto it : vNode->getInEdges()) {
+                if (auto node =
+                        SVFUtil::dyn_cast<AddrVFGNode>(it->getSrcNode())) {
+                  if (auto call = SVFUtil::dyn_cast<llvm::CallInst>(
+                          llvmModuleSet->getLLVMValue(node->getValue()))) {
+                    llvm::Function *callee = call->getCalledFunction();
+                    if (callee && callee->getName() == "malloc") {
+                      // no need to set field, empty field set is what I need
+                      acNode.set_kind(AccessType::kind_e::create);
+                      mdata.getAccessTypeSet()->insert(acNode,
+                                                       vNode->getICFGNode());
+                      HANDLER_LOG("Function {} has a malloc return value",
+                                  vNode->getICFGNode()->getFun()->getName());
+                    }
                   }
                 }
               }
             }
           }
-        }
-      } break;
-      case SVF::VFGNode::VFGNodeK::Gep:
-        skipNode = handleGep(vNode, acNode, *ats, mdata, p);
-        break;
-      case VFGNode::VFGNodeK::Copy: {
-        if (auto stmt_vfg_node = SVFUtil::dyn_cast<StmtVFGNode>(vNode)) {
-          auto inst = llvmModuleSet->getLLVMValue(stmt_vfg_node);
-          // auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(lllvm_inst);
+        } break;
+        case SVF::VFGNode::VFGNodeK::Gep:
+          skipNode = handleGep(vNode, acNode, *ats, mdata, p);
+          break;
+        case VFGNode::VFGNodeK::Copy: {
+          if (auto stmt_vfg_node =
+                  SVFUtil::dyn_cast<StmtVFGNode>(vNode->getValue())) {
+            // this is for ptrtoint instructions.
+            COPY_LOG("{}\n", vNode->toString());
+            auto inst = llvmModuleSet->getLLVMValue(stmt_vfg_node);
+            // auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(lllvm_inst);
 
-          // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
+            // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
 
+            acNode.set_kind(AccessType::kind_e::read);
+            ats->insert(acNode, vNode->getICFGNode());
+
+            // XXX: casting operations complitate things a lot. For the time
+            // being I just leave it.
+
+            if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(inst)) {
+              auto dst_typ = bitcastinst->getDestTy();
+              auto src_typ = bitcastinst->getSrcTy();
+
+              // if (acNode.getNumFields() != 0 &&
+              //     TypeMatcher::compare_types(src_typ, acNode.getType())) {
+
+              // outs() << "src_typ " << *src_typ << "\n";
+              // outs() << "acNode.getType() " << *acNode.getType() << "\n";
+
+              // if (TypeMatcher::compare_types(src_typ, acNode.getType())) {
+              //     // I want the node the original type after the cast this
+              //     // may turn out useful for mem* api operations since
+              //     // they tend to cast to i8* before being invoked
+              //     acNode.setOriginalCastType(acNode.getType());
+              //     acNode.setType(dst_typ);
+              //     ats->insert(acNode, vNode->getICFGNode());
+              // }
+              // else {
+              //     skipNode = true;
+              // }
+
+              // if (dst_typ != seek_type && dst_typ != i8ptr_typ) {
+              //     skipNode = true;
+              // }
+            }
+          }
+        } break;
+        case SVF::VFGNode::VFGNodeK::Cmp:
           acNode.set_kind(AccessType::kind_e::read);
           ats->insert(acNode, vNode->getICFGNode());
-
-          // XXX: casting operations complitate things a lot. For the time
-          // being I just leave it.
-
-          if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(inst)) {
-            auto dst_typ = bitcastinst->getDestTy();
-            auto src_typ = bitcastinst->getSrcTy();
-
-            // if (acNode.getNumFields() != 0 &&
-            //     TypeMatcher::compare_types(src_typ, acNode.getType())) {
-
-            // outs() << "src_typ " << *src_typ << "\n";
-            // outs() << "acNode.getType() " << *acNode.getType() << "\n";
-
-            // if (TypeMatcher::compare_types(src_typ, acNode.getType())) {
-            //     // I want the node the original type after the cast this
-            //     // may turn out useful for mem* api operations since
-            //     // they tend to cast to i8* before being invoked
-            //     acNode.setOriginalCastType(acNode.getType());
-            //     acNode.setType(dst_typ);
-            //     ats->insert(acNode, vNode->getICFGNode());
-            // }
-            // else {
-            //     skipNode = true;
-            // }
-
-            // if (dst_typ != seek_type && dst_typ != i8ptr_typ) {
-            //     skipNode = true;
-            // }
-          }
-        }
-      } break;
-      case SVF::VFGNode::VFGNodeK::Cmp:
-        acNode.set_kind(AccessType::kind_e::read);
-        ats->insert(acNode, vNode->getICFGNode());
-        break;
-      case SVF::VFGNode::VFGNodeK::BinaryOp:
-        acNode.set_kind(AccessType::kind_e::read);
-        ats->insert(acNode, vNode->getICFGNode());
-        break;
-      case SVF::VFGNode::VFGNodeK::AParm:
-        handleActualParam(vNode, acNode, mdata, p);
-        break;
-      } // end switch statement
+          break;
+        case SVF::VFGNode::VFGNodeK::BinaryOp:
+          acNode.set_kind(AccessType::kind_e::read);
+          ats->insert(acNode, vNode->getICFGNode());
+          break;
+        case SVF::VFGNode::VFGNodeK::AParm:
+          handleActualParam(vNode, acNode, mdata, p);
+          break;
+        } // end switch statement
+        auto t_end = std::chrono::high_resolution_clock::now();
+        total_switch_ns += std::chrono::duration_cast<std::chrono::nanoseconds>(
+                               t_end - t_start)
+                               .count();
+      } // end Node Type Switch scope
 
       // if (Instruction::isCast(inst->getOpcode()))
       //     skipNode = true;
@@ -1579,6 +1998,8 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
         p.setPrevValue(llvmModuleSet->getLLVMValue(vNode->getValue()));
 
       if (vNode->hasOutgoingEdge()) {
+        llvm::TimeTraceScope TimeScope("Outgoing Edges Traversal");
+        auto t_start = std::chrono::high_resolution_clock::now();
         // outs() << "Children of: \n";
         // outs() << vNode->toString() << "\n";
         for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
@@ -1605,8 +2026,14 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
           VFGNode *succNode = edge->getDstNode();
           // Add the current ICFGNode to the history of the path
+          auto t_path_start = std::chrono::high_resolution_clock::now();
           Path p_succ = p;
           p_succ.addStep(vNode->getICFGNode());
+          auto t_path_end = std::chrono::high_resolution_clock::now();
+          total_edge_path_copy_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_path_end -
+                                                                   t_path_start)
+                  .count();
 
           bool ok_continue = true;
 
@@ -1616,18 +2043,16 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
           if (auto call_node = SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
             cs = call_node->getCallSite();
+            HANDLER_LOG("ActualParmVFGNode {}\n", succNode->toString());
             isACall = true;
           } else if (auto call_node =
                          SVFUtil::dyn_cast<ActualINSVFGNode>(succNode)) {
             cs = call_node->getCallSite();
+            HANDLER_LOG("ActualINSVFGNode {}\n", succNode->toString());
             isACall = true;
           } else if (auto ret_node =
                          SVFUtil::dyn_cast<ActualRetVFGNode>(succNode)) {
             cs = ret_node->getCallSite();
-            HANDLER_LOG(
-                "Returning to function {} from {}\n",
-                ret_node->getCaller()->getName(),
-                ret_node->getCallSite()->getCalledFunction()->getName());
             isACall = false;
           } else if (auto ret_node =
                          SVFUtil::dyn_cast<ActualOUTSVFGNode>(succNode)) {
@@ -1646,26 +2071,29 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
             }
           }
 
+          auto t_call_start = std::chrono::high_resolution_clock::now();
           if (cs && isACall) {
-            // outs() << "[INFO] ActualParmVFGNode:\n";
-            HANDLER_LOG("Function {} calling {} with {} parameters\n",
-                        cs->getCaller()->getName(),
-                        cs->getCalledFunction()->getName(),
-                        cs->getActualParms().size());
             p_succ.pushFrame(cs);
             HANDLER_LOG("The callstack now has {} entries.",
                         p_succ.getStackSize());
             if (p_succ.getStackSize() >= MAX_STACKSIZE) {
+              HANDLER_LOG("STACK SIZE REACHED\n");
               ok_continue = false;
               // outs() << "[INFO] Stack size too big!\n";
             } else if (!config_t::instance()->consider_indirect_calls &&
                        cs->isIndirectCall()) {
+              HANDLER_LOG("Indirect Call: {}\n", cs->toString());
               ok_continue = false;
               // outs() << "[INFO] Indirect call, I stop!\n";
               // it is a direct call, check for stubs
             } else {
               if (!cs->isIndirectCall()) {
-                HANDLER_LOG("Direct call: {}", cs->toString());
+                // outs() << "[INFO] ActualParmVFGNode:\n";
+                HANDLER_LOG("Direct Call: Function {} calling {} with {} "
+                            "parameters.\n {}\n",
+                            cs->getCaller()->getName(),
+                            cs->getCalledFunction()->getName(),
+                            cs->getActualParms().size(), cs->toString());
                 std::string fun = cs->getCalledFunction()->getName();
                 bool can_handle_parameter = false;
 
@@ -1703,30 +2131,56 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
               }
             }
           }
+          auto t_call_end = std::chrono::high_resolution_clock::now();
+          total_edge_call_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_call_end -
+                                                                   t_call_start)
+                  .count();
 
           // aka is a ret
+          auto t_ret_start = std::chrono::high_resolution_clock::now();
           if (cs && !isACall) {
             ok_continue = p_succ.isCorrect(cs);
             if (ok_continue) {
-              HANDLER_LOG("Returning to matching function. Caller: {} and "
-                          "callee: {}\n",
-                          cs->getCaller()->getName(),
-                          cs->getCalledFunction()->getName());
+              if (cs->getCaller() && cs->getCalledFunction())
+                HANDLER_LOG("Returning to matching function. Caller: {} and "
+                            "callee: {}\n",
+                            cs->getCaller()->getName(),
+                            cs->getCalledFunction()->getName());
               p_succ.popFrame();
               HANDLER_LOG("Call Stack back to only {} entries.\n",
                           p_succ.getStackSize());
             }
           }
+          auto t_ret_end = std::chrono::high_resolution_clock::now();
+          total_edge_ret_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_ret_end -
+                                                                   t_ret_start)
+                  .count();
 
+          auto t_wl_start = std::chrono::high_resolution_clock::now();
           if (ok_continue) {
             p_succ.setNode(succNode);
             worklist.push_back(p_succ);
           }
+          auto t_wl_end = std::chrono::high_resolution_clock::now();
+          total_edge_worklist_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_wl_end -
+                                                                   t_wl_start)
+                  .count();
         } // end out edge processing
-      }
+        auto t_end = std::chrono::high_resolution_clock::now();
+        total_out_edges_ns +=
+            std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
+                                                                 t_start)
+                .count();
+      } // if (hasOutgoingEdges)
       // else {
       //     outs() << "I HAVE NOT OUT EDGES!\n";
       // }
+    } // end if (visited.find(...))
+    else {
+      HANDLER_LOG("Node already visited: {}\n", vNode->toString());
     }
   }
 
@@ -1738,6 +2192,46 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
   if (!mdata.isArray()) {
     mdata.setIsArray(is_array);
   }
+
+  auto loop_end_time = std::chrono::high_resolution_clock::now();
+  uint64_t total_loop_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                               loop_end_time - loop_start_time)
+                               .count();
+#if defined(PROFILING)
+  if (total_loop_ns > 0) {
+    outs() << "\n[PROFILING] `extractParameterMetadata` Time Breakdown:\n";
+    outs() << "  Total Loop Time: " << (total_loop_ns / 1e6) << " ms\n";
+    outs() << "  Visited Lookup : " << (total_visited_lookup_ns / 1e6)
+           << " ms ("
+           << ((double)total_visited_lookup_ns / total_loop_ns) * 100.0
+           << "%)\n";
+    outs() << "  Visited Insert : " << (total_visited_insert_ns / 1e6)
+           << " ms ("
+           << ((double)total_visited_insert_ns / total_loop_ns) * 100.0
+           << "%)\n";
+    outs() << "  Node Switch    : " << (total_switch_ns / 1e6) << " ms ("
+           << ((double)total_switch_ns / total_loop_ns) * 100.0 << "%)\n";
+    outs() << "  Edge Traversal : " << (total_out_edges_ns / 1e6) << " ms ("
+           << ((double)total_out_edges_ns / total_loop_ns) * 100.0 << "%)\n";
+    outs() << "    - Path Copy  : " << (total_edge_path_copy_ns / 1e6)
+           << "ms\n";
+    outs() << "    - Call Check : " << (total_edge_call_ns / 1e6) << "ms\n";
+    outs() << "    - Ret Check  : " << (total_edge_ret_ns / 1e6) << "ms\n";
+    outs() << "    - Worklist   : " << (total_edge_worklist_ns / 1e6) << "ms\n";
+    outs() << "    - Unmeasured Overhead: "
+           << ((total_out_edges_ns - total_edge_path_copy_ns -
+                total_edge_call_ns - total_edge_ret_ns -
+                total_edge_worklist_ns) /
+               1e6)
+           << " ms\n";
+    outs() << "  Other (Wait)   : "
+           << ((total_loop_ns - total_visited_lookup_ns -
+                total_visited_insert_ns - total_switch_ns -
+                total_out_edges_ns) /
+               1e6)
+           << " ms\n\n";
+  }
+#endif
 
   return mdata;
 }

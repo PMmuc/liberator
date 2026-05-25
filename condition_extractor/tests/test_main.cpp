@@ -1,6 +1,7 @@
 #include <ConditionExtractor.hpp>
 #include <Config.h>
 #include <GlobalStruct.h>
+#include <Util/GeneralType.h>
 #include <ValueMetadata.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
@@ -8,21 +9,25 @@
 #include <fstream>
 #include <iostream>
 #include <json/json.h>
+#include <llvm/Support/raw_ostream.h>
+#include <string>
 #include <sys/wait.h>
 #include <unistd.h>
 
 #include "Util/Options.h"
 #include "WPA/Andersen.h"
+#include <Graphs/CallGraph.h>
 #include <MSSA/SVFGBuilder.h>
 #include <SVF-LLVM/LLVMModule.h>
 #include <SVF-LLVM/SVFIRBuilder.h>
 #include <SVFIR/SVFVariables.h>
+#include <llvm/Demangle/Demangle.h>
 
 #include <sys/wait.h>
 #include <unistd.h>
 
 #include "Config.h"
-
+#include "config.h"
 namespace fs = std::filesystem;
 
 TEST_CASE("Condition Extraction on .ll files", "[integration]") {
@@ -153,27 +158,87 @@ TEST_CASE("Condition Extraction on .ll files", "[integration]") {
   }
 }
 
+void write_mssa_file(SVFG *svfg, const std::string &filename) {
+  std::ofstream file(filename);
+
+  if (file.is_open()) {
+    svfg->getMSSA()->dumpMSSA(file);
+    file.close();
+  } else {
+    SVFUtil::errs() << "[ERROR] Failed to open file for writing.\n";
+  }
+}
+
+// Strip the parameter list and any trailing qualifiers from a demangled C++
+// signature so "testfunc(A*)" becomes "testfunc" and
+// "ns::C::foo(int) const" becomes "ns::C::foo".
+static std::string base_name_from_demangled(const std::string &demangled) {
+  size_t depth = 0;
+  for (size_t i = 0; i < demangled.size(); ++i) {
+    char c = demangled[i];
+    if (c == '<')
+      ++depth;
+    else if (c == '>' && depth > 0)
+      --depth;
+    else if (c == '(' && depth == 0)
+      return demangled.substr(0, i);
+  }
+  return demangled;
+}
+
+// Look up a function in the PAG by demangled base name, falling back to a
+// direct (mangled) match. Lets C++ tests reference functions by their source
+// name (e.g. "testfunc") rather than the mangled symbol.
+static const SVF::FunObjVar *
+find_fun_by_demangled_name(SVF::SVFIR *pag, const std::string &name) {
+  if (auto *direct = pag->getFunObjVar(name))
+    return direct;
+
+  for (const auto &item : *pag->getCallGraph()) {
+    const std::string &mangled = item.second->getName();
+    std::string demangled = llvm::demangle(mangled);
+    if (demangled == name || base_name_from_demangled(demangled) == name) {
+      return item.second->getFunction();
+    }
+  }
+  return nullptr;
+}
+
 void run_extract_parameter_test(const std::string &bitcode_filename,
                                 const std::string &function) {
   config_t::instance()->debug = true;
   config_t::instance()->log_tags.insert("paramMetadata");
-  config_t::instance()->log_tags.insert("handler");
-  config_t::instance()->log_tags.insert("GEPHandler");
+  // config_t::instance()->log_tags.insert("handler");
+  // config_t::instance()->log_tags.insert("GEPHandler");
+  config_t::instance()->log_tags.insert("MyExLog");
   setenv("LIBFUZZ_LOG_PATH", "/tmp/", 1);
 
-  std::vector<std::string> modules = {std::string(ASSETS_DIR) + "/" +
-                                      bitcode_filename};
+  std::string file_path = std::string(ASSETS_DIR) + "/" + bitcode_filename;
+  if (!fs::exists(file_path)) {
+    file_path = std::string(BINARY_DIR) + "/assets/" + bitcode_filename;
+  }
+  std::vector<std::string> modules = {file_path};
   std::set<std::string> functions = {function};
 
   std::string temp_log =
       "/tmp/svf_standalone_" + std::to_string(getpid()) + ".log";
-  auto pid = fork();
+
+  // Set LIBERATOR_TEST_NO_FORK=1 to skip the fork wrapper and run inline.
+  // The fork is normally there to isolate child crashes from Catch2, but it
+  // makes interactive debugging painful (gdb has to follow into the child).
+  bool no_fork = getenv("LIBERATOR_TEST_NO_FORK") != nullptr;
+  auto pid = no_fork ? 0 : fork();
 
   if (pid == 0) {
     // Child process: Redirect std::cout to a temporary file so the parent can
-    // read it back into Catch2's stream
-    std::ofstream out_file(temp_log);
-    std::streambuf *old_cout_buf = std::cout.rdbuf(out_file.rdbuf());
+    // read it back into Catch2's stream. In no_fork mode we don't redirect at
+    // all so output goes straight to the user's terminal/debugger.
+    std::ofstream out_file;
+    std::streambuf *old_cout_buf = nullptr;
+    if (!no_fork) {
+      out_file.open(temp_log);
+      old_cout_buf = std::cout.rdbuf(out_file.rdbuf());
+    }
 
     auto extractor = liberator::make_condition_extractor(modules, functions);
     REQUIRE(extractor != nullptr);
@@ -181,20 +246,28 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
     auto pag = SVF::SVFIR::getPAG();
     auto svfg = extractor->get_svfg();
 
+    std::string home_directory = "/mnt/c/Users/MaschPaul/Downloads/";
     // Strip .bc for dot path
     std::string bitcode_name =
         bitcode_filename.substr(0, bitcode_filename.find_last_of("."));
-    std::string dot_path =
-        "/mnt/c/Users/MaschPaul/Downloads/" + bitcode_name + "_svfg";
-    svfg->dump(dot_path);
-    std::string sys_cmd =
-        "dot -Tpng " + dot_path + ".dot -o " + dot_path + ".png";
-    int sys_res = system(sys_cmd.c_str());
+    write_mssa_file(svfg, home_directory + bitcode_name + "_mssa.txt");
+    auto icfg = pag->getICFG();
+    auto svfg_dot_path = home_directory + bitcode_name + "_svfg";
+    auto icfg_dot_path = home_directory + bitcode_name + "_icfg";
+
+    icfg->dump(icfg_dot_path);
+    svfg->dump(svfg_dot_path);
+    std::string sys_cmd1 =
+        "dot -Tpng " + svfg_dot_path + ".dot -o " + svfg_dot_path + ".png";
+    std::string sys_cmd2 =
+        "dot -Tpng " + icfg_dot_path + ".dot -o " + icfg_dot_path + ".png";
+    int sys_res = system(sys_cmd1.c_str());
+    sys_res = system(sys_cmd2.c_str());
     (void)sys_res; // suppress unused warning
 
     auto llvmModuleSet = SVF::LLVMModuleSet::getLLVMModuleSet();
 
-    auto svf_fun = pag->getFunObjVar(function);
+    auto svf_fun = find_fun_by_demangled_name(pag, function);
     std::cout << "DEBUG: svf_fun = " << svf_fun << std::endl;
 
     if (svf_fun != nullptr) {
@@ -207,13 +280,20 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
         std::cout << "DEBUG: param1 extracted" << std::endl;
         auto formal_param_llvm1 = llvmModuleSet->getLLVMValue(param1);
         std::cout << "DEBUG: llvm value extracted" << std::endl;
-        auto metadata_p1 = liberator::extractParameterMetadata(
+        /*auto metadata_p1 = liberator::extractParameterMetadata(
             *svfg, formal_param_llvm1, formal_param_llvm1->getType(),
-            param1->getId());
+            param1->getId());*/
+        auto metadata_p1 = liberator::my_extract_parameter_metadata(
+            *svfg, formal_param_llvm1, formal_param_llvm1->getType());
       }
     }
 
     std::cout.flush();
+    if (no_fork) {
+      if (old_cout_buf)
+        std::cout.rdbuf(old_cout_buf);
+      return;
+    }
     exit(0);
   }
 
@@ -231,14 +311,48 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
   REQUIRE((WIFEXITED(status) && WEXITSTATUS(status) == 0));
 }
 
-TEST_CASE("extractParameterMetadata test_context1", "[unit]") {
-  run_extract_parameter_test("test_context1.bc", "test_fun");
+TEST_CASE("svf test arrays", "[unit]") {
+  run_extract_parameter_test("arrays.bc", "main");
 }
-
-TEST_CASE("extractParameterMetadata test_context", "[unit]") {
+TEST_CASE("svf test basic_load_store", "[unit]") {
+  run_extract_parameter_test("basic_load_store.bc", "main");
+}
+TEST_CASE("svf test complex_call_graph", "[unit]") {
+  run_extract_parameter_test("complex_call_graph.bc", "main");
+}
+TEST_CASE("svf test control_flow", "[unit]") {
+  run_extract_parameter_test("control_flow.bc", "main");
+}
+TEST_CASE("svf test function_calls", "[unit]") {
+  run_extract_parameter_test("function_calls.bc", "main");
+}
+TEST_CASE("svf test globals", "[unit]") {
+  run_extract_parameter_test("globals.bc", "main");
+}
+TEST_CASE("svf test pointer_arithmetic", "[unit]") {
+  run_extract_parameter_test("pointer_arithmetic.bc", "main");
+}
+TEST_CASE("svf test struct_access", "[unit]") {
+  run_extract_parameter_test("struct_access.bc", "test_fun");
+}
+TEST_CASE("svf test array_of_structs", "[unit]") {
+  run_extract_parameter_test("array_of_structs.bc", "test_fun");
+}
+TEST_CASE("svf test classes", "[unit]") {
+  run_extract_parameter_test("test_classes.bc", "testfunc");
+}
+TEST_CASE("svf test test_context", "[unit]") {
   run_extract_parameter_test("test_context.bc", "test_fun");
 }
-
-TEST_CASE("extractParameterMetadata test_struct", "[unit]") {
-  run_extract_parameter_test("struct_access.bc", "test_fun");
+TEST_CASE("svf test test_context1", "[unit]") {
+  run_extract_parameter_test("test_context1.bc", "test_fun");
+}
+TEST_CASE("svf test test_malloc", "[unit]") {
+  run_extract_parameter_test("test_malloc.bc", "test_fun");
+}
+TEST_CASE("svf test recursive", "[unit]") {
+  run_extract_parameter_test("recursive.bc", "testfunc");
+}
+TEST_CASE("svf test test_meta", "[unit]") {
+  run_extract_parameter_test("test_meta.bc", "test_parameter_metadata");
 }

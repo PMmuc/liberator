@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <unordered_set>
 
-#define ASSETS_DIR "/home/mashmallow/source/liberator/condition_extractor/tests/assets"
+#define ASSETS_DIR "@ASSETS_DIR@"
 
 // std because stdout gives conflict
 enum OutType { txt, json, stdo };

@@ -173,7 +173,7 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
     if (!ret_inst)
       continue;
 
-    ret_inst->getType()->print(llvm::outs());
+    // ret_inst->getType()->print(llvm::outs());
     Value *ret_val = ret_inst->getReturnValue();
 
     if (!ret_val)
@@ -322,6 +322,22 @@ bool open_handler(ValueMetadata *mdata, std::string fun_name,
   return false;
 }
 
+/**
+ * @param mdata - out ValueMetadata
+ * @param fun_name - name of caller function
+ * @param icfgNode - ICFGNode of caller function
+ * @param cs - callsite
+ * @param param_num - index number of parameter in the function call 1 = first
+ * parameter, 2 = second ...
+ * @param atNode - access type of current node
+ */
+/*
+ * TODO:
+ * STATE: I fixed all the problems, last problem was the problem with memcpy
+ * handler because of faulty return statement.
+ * NEXT STEPS: Execute extractor in debugger and look if it runs through for
+ * c-ares, and then find a solution for opaque pointers.
+ */
 bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
@@ -343,16 +359,14 @@ bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
     auto c = SVFUtil::dyn_cast<CallBase>(llvm_val);
     mdata->setIsArray(isAnArray(c));
-    if (param_num == 1) {
-      // outs() << cs->getCallSite()->toString() << "\n";
-      outs() << cs->toString() << "\n";
-      Value *v = c->getArgOperand(2);
-      mdata->addFunParam(v, path);
-      // }
-    }
-
-    return false;
+    // if (param_num == 1) {
+    //  outs() << cs->getCallSite()->toString() << "\n";
+    Value *v = c->getArgOperand(2);
+    mdata->addFunParam(v, path);
+    // }
   }
+
+  return false;
 }
 
 bool strlen_handler(ValueMetadata *mdata, std::string fun_name,

@@ -8,6 +8,17 @@
 #include <sstream>
 #include <string>
 
+// Profile macro for release mode only
+#define PROFILE_CONCAT_INNER(a, b) a##b
+#define PROFILE_CONCAT(a, b) PROFILE_CONCAT_INNER(a, b)
+
+#if defined(NDEBUG) && defined(PROFILING)
+#define PROFILE_SCOPE(name)                                                    \
+  liberator::ScopedTimer PROFILE_CONCAT(_timer_, __LINE__)(name)
+#else
+#define PROFILE_SCOPE(name)
+#endif
+
 namespace liberator {
 
 class Profiler {

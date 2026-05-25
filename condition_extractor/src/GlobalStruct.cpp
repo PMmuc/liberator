@@ -9,7 +9,9 @@
 #include "WPA/Andersen.h"
 #include "WPA/WPAStat.h"
 
+#include "Config.h"
 #include "GlobalStruct.h"
+#include "Profiler.hpp"
 #include "TypeMatcher.h"
 
 using namespace SVF;
@@ -20,12 +22,16 @@ std::unique_ptr<GlobalStruct> GlobalStruct::gspta;
 /// GlobalStruct analysis
 // Makes Points To Analysis
 void GlobalStruct::analyze() {
+  PROFILE_SCOPE("GlobalStruct::analyze Total Time");
 
   // I always keep a string variable
   std::string str;
 
   // let's do the base class analysis
-  FlowSensitive::analyze();
+  {
+    PROFILE_SCOPE("GlobalStruct: FlowSensitive::analyze");
+    FlowSensitive::analyze();
+  }
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
   Module *svfModule = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
@@ -34,13 +40,17 @@ void GlobalStruct::analyze() {
 
   // svfGlobalList returns functions and global variables
   SVFUtil::outs() << "--------------- Global Variables: -------------------\n";
-  for (auto &g : svfModule->getGlobalList()) {
-    int count = 0;
-    if (SVFUtil::isa<llvm::Constant>(g)) {
-      count++;
-      SVFUtil::outs() << count << ". " << g.getName().str() << "\n";
-      auto *llvm_constant = llvm::cast<llvm::Constant>(&g);
-      get_function_pointers(llvm_constant, fncs);
+  {
+    PROFILE_SCOPE("GlobalStruct: Globals Processing");
+    for (auto &g : svfModule->getGlobalList()) {
+      int count = 0;
+      if (SVFUtil::isa<llvm::Constant>(g)) {
+        count++;
+        SVFUtil::outs() << count << ". " << g.getName().str() << "\n";
+        GLOBAL_LOG("{}. {}", count, g.getName().str());
+        auto *llvm_constant = llvm::cast<llvm::Constant>(&g);
+        get_function_pointers(llvm_constant, fncs);
+      }
     }
   }
 
@@ -51,19 +61,22 @@ void GlobalStruct::analyze() {
 
   std::set<const CallICFGNode *> unresolved_calls;
   unsigned int tot_indirect_calls = 0;
-  for (auto call : indirect_calls) {
-    // Call Site of indirect call
-    auto icfg_node = call.first;
-    // id of callsite node
-    auto node_id = call.second;
-    // All Call Sites
-    CallSiteSet target_set = pag->getIndCallSites(node_id);
-    // the points to set that the indirect call can point to
-    PointsTo x = this->getPts(node_id);
-    // if x is empty the ptr points to nothing
-    if (x.empty())
-      unresolved_calls.insert(icfg_node);
-    tot_indirect_calls++;
+  {
+    PROFILE_SCOPE("GlobalStruct: Unresolved Calls");
+    for (auto call : indirect_calls) {
+      // Call Site of indirect call
+      auto icfg_node = call.first;
+      // id of callsite node
+      auto node_id = call.second;
+      // All Call Sites
+      CallSiteSet target_set = pag->getIndCallSites(node_id);
+      // the points to set that the indirect call can point to
+      PointsTo x = this->getPts(node_id);
+      // if x is empty the ptr points to nothing
+      if (x.empty())
+        unresolved_calls.insert(icfg_node);
+      tot_indirect_calls++;
+    }
   }
 
   auto ptacg = getCallGraph();
@@ -71,59 +84,62 @@ void GlobalStruct::analyze() {
   SVFGEdgeSetTy svfgEdges;
   CallEdgeMap newEdges;
 
-  // Try to analyze why the points to set is empty for this indirect call.
-  // Do a signature based matching where we match the signature of the call site
-  // function, with the signature that we got from retrieving funcs from all the
-  // constants in the program.
-  for (const CallICFGNode *callsite : unresolved_calls) {
-    // SVFUtil::outs() << cnode->toString() << "\n";
-    auto llvm_inst = llvmModuleSet->getLLVMValue(callsite->getCaller());
-    if (llvm_inst == nullptr)
-      continue;
+  {
+    PROFILE_SCOPE("GlobalStruct: Resolve Indirect Calls");
+    // Try to analyze why the points to set is empty for this indirect call.
+    // Do a signature based matching where we match the signature of the call
+    // site function, with the signature that we got from retrieving funcs from
+    // all the constants in the program.
+    for (const CallICFGNode *callsite : unresolved_calls) {
+      // SVFUtil::outs() << cnode->toString() << "\n";
+      auto llvm_inst = llvmModuleSet->getLLVMValue(callsite->getCaller());
+      if (llvm_inst == nullptr)
+        continue;
 
-    // CallBase superclass of CallInst and InvokeInst
-    auto llvm_cs = SVFUtil::dyn_cast<CallBase>(llvm_inst);
-    if (llvm_cs == nullptr)
-      continue;
+      // CallBase superclass of CallInst and InvokeInst
+      auto llvm_cs = SVFUtil::dyn_cast<CallBase>(llvm_inst);
+      if (llvm_cs == nullptr)
+        continue;
 
-    // llvm::raw_string_ostream(str) << *llvm_cs;
-    // SVFUtil::outs() << str << "\n";
-    FunctionType *fun_type = llvm_cs->getFunctionType();
-    // This  will compute the hash of the signature of the function.
-    auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
-    // auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
+      // llvm::raw_string_ostream(str) << *llvm_cs;
+      // SVFUtil::outs() << str << "\n";
+      FunctionType *fun_type = llvm_cs->getFunctionType();
+      // This  will compute the hash of the signature of the function.
+      auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
+      // auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
 
-    // llvm::raw_string_ostream(str) << *fun_type << "\n";
-    // SVFUtil::outs() << str << "\n";
-    // str = "";
-    // SVFUtil::outs() << fun_type_hash << "\n";
-    // SVFUtil::outs() << fun_type_hash_str << "\n";
+      // llvm::raw_string_ostream(str) << *fun_type << "\n";
+      // SVFUtil::outs() << str << "\n";
+      // str = "";
+      // SVFUtil::outs() << fun_type_hash << "\n";
+      // SVFUtil::outs() << fun_type_hash_str << "\n";
 
-    // auto fun_caller = cnode->getFun();
-    // returns function containg the call
-    const FunObjVar *fun_caller = callsite->getCaller();
+      // auto fun_caller = cnode->getFun();
+      // returns function containg the call
+      const FunObjVar *fun_caller = callsite->getCaller();
 
-    // FIXME: Maybe this needs a fix as i don't know if the changes I have done
-    // are correct getCallsite retrives the llvm::CallBase instruction so maybe
-    // the line 90 in the orginal code is redundant.
-    // I am assuming that callBlockNode in the orginal code is just cnode.
+      // FIXME: Maybe this needs a fix as i don't know if the changes I have
+      // done are correct getCallsite retrives the llvm::CallBase instruction so
+      // maybe the line 90 in the orginal code is redundant. I am assuming that
+      // callBlockNode in the orginal code is just cnode.
 
-    unsigned int x = 0;
-    // SVFUtil::outs() << "callBlockNode: " << callBlockNode->toString() <<
-    // "\n";
-    for (auto f : fncs[fun_type_hash]) {
-      auto fun_callee = llvmModuleSet->getFunObjVar(f);
+      unsigned int x = 0;
+      // SVFUtil::outs() << "callBlockNode: " << callBlockNode->toString() <<
+      // "\n";
+      for (auto f : fncs[fun_type_hash]) {
+        auto fun_callee = llvmModuleSet->getFunObjVar(f);
 
-      // if (ExtAPI::getExtAPI()->is_ext(fun_callee))
-      //     SVFUtil::outs() << "it is external!\n";
-      // else
-      //     SVFUtil::outs() << "it is internal!\n";
-      newEdges[callsite].insert(fun_callee);
-      getIndCallMap()[callsite].insert(fun_callee);
-      ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);
+        // if (ExtAPI::getExtAPI()->is_ext(fun_callee))
+        //     SVFUtil::outs() << "it is external!\n";
+        // else
+        //     SVFUtil::outs() << "it is internal!\n";
+        newEdges[callsite].insert(fun_callee);
+        getIndCallMap()[callsite].insert(fun_callee);
+        ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);
+      }
+      // SVFUtil::outs() << "connected to: " << x << "\n";
+      // SVFUtil::outs() << "----\n";
     }
-    // SVFUtil::outs() << "connected to: " << x << "\n";
-    // SVFUtil::outs() << "----\n";
   }
 
   // SVFUtil::outs() << "[DEBUG] early stop\n";
@@ -131,8 +147,11 @@ void GlobalStruct::analyze() {
 
   this->new_edges = newEdges;
 
-  connectCallerAndCallee(newEdges, svfgEdges);
-  updateConnectedNodes(svfgEdges);
+  {
+    PROFILE_SCOPE("GlobalStruct: Connect Edges");
+    connectCallerAndCallee(newEdges, svfgEdges);
+    updateConnectedNodes(svfgEdges);
+  }
 }
 
 /// Initialize analysis

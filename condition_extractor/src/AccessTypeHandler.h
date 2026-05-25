@@ -11,7 +11,7 @@
 #include <set>
 namespace liberator {
 /**
- * Adds an Access Write Type to the mdata, given the
+ * Adds an Access write type to the mdata, given the
  * @param mdata - metadatavalue
  * @param atNode - return type
  * @param icfgNode - ICFGNode callsite

@@ -2,6 +2,7 @@
 #include "Config.h"
 
 #include "FunctionConditions.hpp"
+#include "Profiler.hpp"
 
 #include <Util/SVFUtil.h>
 #include <llvm/Support/CommandLine.h>
@@ -15,6 +16,9 @@ using namespace std;
 using namespace SVF;
 using namespace SVFUtil;
 using namespace LLVMUtil;
+
+#include <llvm/Support/Error.h>
+#include <llvm/Support/TimeProfiler.h>
 
 using namespace liberator;
 
@@ -75,9 +79,29 @@ static llvm::cl::opt<std::string>
     minimizeApi("minimize_api", llvm::cl::desc("Minimize API <out_folder>"),
                 llvm::cl::init(""));
 
+// There are following log tags: Handler, GEPHandler, APARM
 static llvm::cl::list<std::string>
     LogTags("log", llvm::cl::desc("Enable logging for specific tags"),
             llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
+
+static llvm::cl::opt<bool>
+    EnableProfiling("profiling", llvm::cl::desc("Enable time-trace profiling"),
+                    llvm::cl::init(false));
+
+static llvm::cl::opt<int>
+    RangeStart("range-start",
+               llvm::cl::desc("Start index of the function range to analyze"),
+               llvm::cl::init(-1));
+
+static llvm::cl::opt<int>
+    RangeEnd("range-end",
+             llvm::cl::desc("End index of the function range to analyze"),
+             llvm::cl::init(-1));
+
+static llvm::cl::opt<std::string>
+    ScanRange("range",
+              llvm::cl::desc("Scan a range of functions, e.g., 100-120"),
+              llvm::cl::init(""));
 
 Verbosity verbose;
 
@@ -90,6 +114,10 @@ int main(int argc, char **argv) {
   //                           moduleNameVec);
   cl::ParseCommandLineOptions(argc, argv,
                               "Extract constraints from functions\n");
+
+  if (EnableProfiling) {
+    llvm::timeTraceProfilerInitialize(500, "condition_extractor");
+  }
 
   auto config = config_t::instance();
   config->function = FunctionName;
@@ -106,6 +134,16 @@ int main(int argc, char **argv) {
   config->print_dominator = printDominator;
   config->use_dominator = useDominator;
   config->extract_data_layout = ExtractDataLayout;
+  config->range_start = RangeStart;
+  config->range_end = RangeEnd;
+
+  if (!ScanRange.empty()) {
+    size_t dash_pos = ScanRange.find('-');
+    if (dash_pos != std::string::npos) {
+      config->range_start = std::stoi(ScanRange.substr(0, dash_pos));
+      config->range_end = std::stoi(ScanRange.substr(dash_pos + 1));
+    }
+  }
 
   for (const auto &tag : LogTags) {
     config->log_tags.insert(tag);
@@ -178,6 +216,15 @@ int main(int argc, char **argv) {
   if (config->extract_data_layout != "") {
     save_llvm_data_layout();
   }
+
+  if (EnableProfiling) {
+    if (auto E = llvm::timeTraceProfilerWrite("time_trace.json", "")) {
+      SVFUtil::errs() << llvm::toString(std::move(E)) << "\n";
+    }
+    llvm::timeTraceProfilerCleanup();
+  }
+
+  SVFUtil::outs() << "\n" << liberator::Profiler::instance().dump() << "\n";
 
   return 0;
 }
