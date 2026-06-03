@@ -207,10 +207,12 @@ find_fun_by_demangled_name(SVF::SVFIR *pag, const std::string &name) {
 void run_extract_parameter_test(const std::string &bitcode_filename,
                                 const std::string &function) {
   config_t::instance()->debug = true;
-  config_t::instance()->log_tags.insert("paramMetadata");
-  // config_t::instance()->log_tags.insert("handler");
-  // config_t::instance()->log_tags.insert("GEPHandler");
-  config_t::instance()->log_tags.insert("MyExLog");
+  // config_t::instance()->log_tags.insert("paramMetadata");
+  //  config_t::instance()->log_tags.insert("handler");
+  //  config_t::instance()->log_tags.insert("GEPHandler");
+  // config_t::instance()->log_tags.insert("MyExLog");
+  config_t::instance()->log_tags.insert("Type");
+  config_t::instance()->log_tags.insert("Global");
   setenv("LIBFUZZ_LOG_PATH", "/tmp/", 1);
 
   std::string file_path = std::string(ASSETS_DIR) + "/" + bitcode_filename;
@@ -268,11 +270,16 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
     auto llvmModuleSet = SVF::LLVMModuleSet::getLLVMModuleSet();
 
     auto svf_fun = find_fun_by_demangled_name(pag, function);
-    std::cout << "DEBUG: svf_fun = " << svf_fun << std::endl;
+    if (!svf_fun) {
+      std::cerr << "ERROR: No function found." << std::endl;
+      return;
+    }
+    std::cout << "DEBUG: Function " << svf_fun->toString() << std::endl;
 
     if (svf_fun != nullptr) {
       auto params = pag->getFunArgsMap()[svf_fun];
-      std::cout << "DEBUG: params.size() = " << params.size() << std::endl;
+      std::cout << "DEBUG: Number of Parameters: " << params.size()
+                << std::endl;
 
       if (params.size() > 0) {
         // Test Param 1: int*
@@ -280,11 +287,12 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
         std::cout << "DEBUG: param1 extracted" << std::endl;
         auto formal_param_llvm1 = llvmModuleSet->getLLVMValue(param1);
         std::cout << "DEBUG: llvm value extracted" << std::endl;
+        extractor->extract_function_conditions();
         /*auto metadata_p1 = liberator::extractParameterMetadata(
             *svfg, formal_param_llvm1, formal_param_llvm1->getType(),
             param1->getId());*/
-        auto metadata_p1 = liberator::my_extract_parameter_metadata(
-            *svfg, formal_param_llvm1, formal_param_llvm1->getType());
+        /*auto metadata_p1 = liberator::my_extract_parameter_metadata(
+         *svfg, formal_param_llvm1, formal_param_llvm1->getType());*/
       }
     }
 
@@ -355,4 +363,35 @@ TEST_CASE("svf test recursive", "[unit]") {
 }
 TEST_CASE("svf test test_meta", "[unit]") {
   run_extract_parameter_test("test_meta.bc", "test_parameter_metadata");
+}
+TEST_CASE("svf test type_inference1", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func");
+}
+TEST_CASE("svf test type_inference2", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func1");
+}
+TEST_CASE("svf test type_inference3", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func2");
+}
+TEST_CASE("svf test type_inference4", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func3");
+}
+TEST_CASE("svf test type_inference5", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func4");
+}
+TEST_CASE("svf test type_inference6", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func5");
+}
+TEST_CASE("svf test type_inference7", "[unit]") {
+  run_extract_parameter_test("type_inference.bc", "test_func6");
+}
+// Compiled without -g so the DWARF fallback returns nothing — the chain
+// then falls through to inferTypeFromForwardUses, which should pick
+// %struct.ForwardUseStruct off the GEP in the function body.
+TEST_CASE("svf test forward_use_scan", "[unit]") {
+  run_extract_parameter_test("nodwarf_forward_use.bc", "test_forward_use");
+}
+
+TEST_CASE("svf test global_func_pointers", "[unit]") {
+  run_extract_parameter_test("function_pointers.bc", "test_func");
 }

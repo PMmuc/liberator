@@ -11,6 +11,7 @@
 #include "PhiFunction.h"
 #include "PostDominators.h"
 #include "Profiler.hpp"
+#include "SVF-LLVM/ObjTypeInference.h"
 #include "SVFIR/SVFIR.h"
 #include "SVFIR/SVFVariables.h"
 #include "TypeMatcher.h"
@@ -32,6 +33,7 @@
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/TypedPointerType.h>
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/raw_ostream.h>
 #include <memory>
@@ -43,6 +45,172 @@ using namespace SVFUtil;
 using namespace LLVMUtil;
 
 namespace {
+
+llvm::Type *infer_type_from_arg_attrs(const llvm::Argument *arg) {
+  if (!arg->getType()->isPointerTy())
+    return nullptr;
+  // When the struct type is passed by value but is to big
+  if (auto *T = arg->getParamByValType())
+    return T;
+  return nullptr;
+}
+
+llvm::DIType *peel_di_qualifiers(llvm::DIType *t) {
+  using namespace llvm::dwarf;
+  if (!t) {
+    TYPE_LOG("peel_di_qualifiers: null input\n");
+    return nullptr;
+  }
+  std::string s;
+  raw_string_ostream os(s);
+  t->printTree(os);
+  TYPE_LOG("{}", s);
+  while (auto *d = llvm::dyn_cast_or_null<llvm::DIDerivedType>(t)) {
+    auto tag = d->getTag();
+    if (tag != DW_TAG_typedef && tag != DW_TAG_const_type &&
+        tag != DW_TAG_volatile_type && tag != DW_TAG_restrict_type &&
+        tag != DW_TAG_atomic_type)
+      break;
+    t = d->getBaseType();
+  }
+  return t;
+}
+
+llvm::Type *resolve_di_type_to_llvm(llvm::DIType *di, llvm::Module &mod) {
+  using namespace llvm::dwarf;
+  auto &ctx = mod.getContext();
+
+  if (!di)
+    return llvm::Type::getVoidTy(ctx);
+
+  std::string s;
+  raw_string_ostream os(s);
+  di->printTree(os);
+  TYPE_LOG("{}", s);
+  di = peel_di_qualifiers(di);
+  if (!di)
+    return llvm::Type::getVoidTy(ctx);
+
+  // function pointers
+  if (auto *sr = llvm::dyn_cast<llvm::DISubroutineType>(di)) {
+    TYPE_LOG("Found a function pointer\n");
+    auto types = sr->getTypeArray();
+    if (types.size() == 0)
+      return nullptr;
+    // resolve return type
+    llvm::Type *ret = resolve_di_type_to_llvm(types[0], mod);
+    if (!ret)
+      ret = llvm::Type::getVoidTy(ctx);
+    // resolve param types
+    std::vector<llvm::Type *> params;
+    for (unsigned i = 1; i < types.size(); ++i) {
+      llvm::Type *p = resolve_di_type_to_llvm(types[i], mod);
+      if (!p)
+        return nullptr;
+      params.push_back(p);
+    }
+    // create the function type signature
+    return llvm::FunctionType::get(ret, params, /*isVarArg=*/false);
+  }
+
+  // TODO: maybe use something better then linear search for finding the correct
+  // struct
+  // for struct types and union and classes
+  if (auto *comp = llvm::dyn_cast<llvm::DICompositeType>(di)) {
+    auto tag = comp->getTag();
+    if (tag == DW_TAG_structure_type || tag == DW_TAG_class_type ||
+        tag == DW_TAG_union_type) {
+      auto name = comp->getName().str();
+      if (name.empty())
+        return nullptr;
+      // iterate each struct type defined in the module.
+      for (auto *ST : mod.getIdentifiedStructTypes()) {
+        if (ST->getName() == name || ST->getName() == "struct." + name ||
+            ST->getName() == "union." + name ||
+            ST->getName() == "class." + name)
+          return ST;
+      }
+      return nullptr;
+    }
+  }
+
+  if (auto *d = llvm::dyn_cast<llvm::DIDerivedType>(di)) {
+    auto tag = d->getTag();
+    if (tag == DW_TAG_pointer_type || tag == DW_TAG_reference_type ||
+        tag == DW_TAG_rvalue_reference_type) {
+      llvm::Type *pointee = resolve_di_type_to_llvm(d->getBaseType(), mod);
+      // void* (DW_TAG_pointer_type with null base) and unresolvable pointees
+      // both become i8* — matches the old C-style convention and keeps the
+      // pointer wrap intact rather than degenerating to plain i8.
+      if (!pointee || pointee->isVoidTy())
+        pointee = llvm::Type::getInt8Ty(ctx);
+      return llvm::TypedPointerType::get(pointee, 0);
+    }
+  }
+
+  // get the correct basic type (int, float, short, double, long, char)
+  if (auto *b = llvm::dyn_cast<llvm::DIBasicType>(di)) {
+    auto bits = b->getSizeInBits();
+    if (bits == 0)
+      return llvm::Type::getVoidTy(ctx);
+    switch (b->getEncoding()) {
+    case DW_ATE_boolean:
+      return llvm::Type::getInt1Ty(ctx);
+    case DW_ATE_signed:
+    case DW_ATE_unsigned:
+    case DW_ATE_signed_char:
+    case DW_ATE_unsigned_char:
+    case DW_ATE_UTF:
+      return llvm::IntegerType::get(ctx, bits);
+    case DW_ATE_float:
+      if (bits == 16)
+        return llvm::Type::getHalfTy(ctx);
+      if (bits == 32)
+        return llvm::Type::getFloatTy(ctx);
+      if (bits == 64)
+        return llvm::Type::getDoubleTy(ctx);
+      if (bits == 80)
+        return llvm::Type::getX86_FP80Ty(ctx);
+      if (bits == 128)
+        return llvm::Type::getFP128Ty(ctx);
+      return nullptr;
+    default:
+      return nullptr;
+    }
+  }
+
+  return nullptr;
+}
+
+llvm::Type *infer_type_from_forward_uses(const llvm::Value *param) {
+  llvm::Type *best_struct = nullptr;
+  llvm::Type *fallback = nullptr;
+  for (const llvm::User *U : param->users()) {
+    if (auto *gep = llvm::dyn_cast<llvm::GetElementPtrInst>(U)) {
+      if (gep->getPointerOperand() != param)
+        continue;
+      llvm::Type *src = gep->getSourceElementType();
+      std::string str;
+      raw_string_ostream os(str);
+      src->print(os);
+      TYPE_LOG("Found source element type: {}\n", str);
+      if (src && src->isStructTy()) {
+        if (!best_struct)
+          best_struct = src;
+      } else if (!fallback) {
+        fallback = src;
+      }
+    } else if (auto *ld = llvm::dyn_cast<llvm::LoadInst>(U)) {
+      if (ld->getPointerOperand() == param && !fallback)
+        fallback = ld->getType();
+    } else if (auto *st = llvm::dyn_cast<llvm::StoreInst>(U)) {
+      if (st->getPointerOperand() == param && !fallback)
+        fallback = st->getValueOperand()->getType();
+    }
+  }
+  return best_struct ? best_struct : fallback;
+}
+
 std::string getCacheDomFile(std::string fun_name) {
   return config_t::instance()->cache_folder + "/" +
          computeHash(config_t::instance()->input_filename) + "_" + fun_name +
@@ -561,8 +729,81 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
       auto svf_fun = pag->getFunObjVar(f);
       ValueMetadata param_metadata;
       for (auto param : fun_param_map[svf_fun]) {
+        /**
+         * First try SVF's interprocedural type inference. Only works if the
+         * library is called in the program and it can trace back the origin to
+         * an alloc or malloc call.
+         */
         auto formal_param_llvm = llvm_module_set->getLLVMValue(param);
-        auto seek_type = formal_param_llvm->getType();
+        auto type_inference = llvm_module_set->getTypeInference();
+        auto seek_type = type_inference->inferObjType(formal_param_llvm);
+
+        /**
+         * Fallback chain when SVF returned an opaque pointer:
+         *   1. LLVM Argument attributes (byval/sret/elementtype/...)
+         *   2. DWARF debug info
+         *   3. Intra-procedural forward scan over GEP / load / store uses
+         */
+        if (seek_type->isPointerTy()) {
+          auto *arg = llvm::dyn_cast<llvm::Argument>(formal_param_llvm);
+
+          if (arg) {
+            TYPE_LOG("Argument name: {}\n", arg->getName());
+            if (auto *attr_type = infer_type_from_arg_attrs(arg)) {
+              TYPE_LOG("Recovered pointee type from Argument attribute.\n");
+              seek_type = attr_type;
+            }
+          }
+
+          if (seek_type->isPointerTy() && arg) {
+            TYPE_LOG("Couldn't deduce pointer type using SVF or attributes.\n "
+                     "Falling back to DWARF.\n");
+            if (DISubprogram *SP = arg->getParent()->getSubprogram()) {
+              if (DISubroutineType *STy = SP->getType()) {
+                DITypeRefArray type_array = STy->getTypeArray();
+
+                unsigned array_index = arg->getArgNo() + 1;
+                if (array_index < type_array.size() &&
+                    type_array[array_index]) {
+                  auto *param_di_type = type_array[array_index];
+
+                  // Resolve the entire DI chain — every pointer/reference
+                  // node becomes a TypedPointerType wrapping its (resolved)
+                  // pointee, so the full source-level type is preserved.
+                  // Examples:
+                  //   int **first  → i32**
+                  //   cb_t c       → (i32 (i8*))*           (function ptr)
+                  //   cb1_t *c     → (i32 (i32*, i8*, float))**
+                  //   PointPtr p   → %struct.Point*
+                  auto *llvm_module = llvm_module_set->getMainLLVMModule();
+                  if (auto *resolved = resolve_di_type_to_llvm(param_di_type,
+                                                               *llvm_module)) {
+                    if (!resolved->isVoidTy()) {
+                      TYPE_LOG("Resolved DWARF source type.\n");
+                      seek_type = resolved;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          if (seek_type->isPointerTy()) {
+            if (auto *use_type =
+                    infer_type_from_forward_uses(formal_param_llvm)) {
+              TYPE_LOG("Recovered pointee type from forward use scan.\n");
+              seek_type = use_type;
+            }
+          }
+        } else {
+          TYPE_LOG("SVF type inference found type!\n");
+        }
+        std::string type_str;
+        raw_string_ostream os(type_str);
+        seek_type->print(os);
+        TYPE_LOG("For parameter: {} in function: {}, we inferred type {}\n",
+                 param->toString(), svf_fun->toString(), type_str);
+
         {
           PROFILE_SCOPE("Function 1: extractParameterMetadata");
           PROFILE_SCOPE("Function 1: extractParameterMetadata: " + f);

@@ -12,15 +12,43 @@ file(MAKE_DIRECTORY "${BUILD_ASSETS_DIR}")
 file(COPY "${TESTS_ASSETS_DIR}/extapi.bc" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 file(GLOB C_TEST_FILES "${TESTS_ASSETS_DIR}/*.c")
+
+# Files that must skip the standard "-g -O0" recipe. The `nodwarf_` prefix
+# means: compile without debug info and at -O1, so the extractor's DWARF
+# resolver finds nothing and the parameter avoids the -O0 alloca-spill that
+# would hide direct uses. Used to exercise the inferTypeFromForwardUses
+# fallback in ConditionExtractor.cpp.
+set(NO_DWARF_FILES "")
+foreach(c_file ${C_TEST_FILES})
+    get_filename_component(basename ${c_file} NAME_WE)
+    if(basename MATCHES "^nodwarf_")
+        list(APPEND NO_DWARF_FILES ${c_file})
+    endif()
+endforeach()
+list(REMOVE_ITEM C_TEST_FILES ${NO_DWARF_FILES})
+
 foreach(c_file ${C_TEST_FILES})
     get_filename_component(basename ${c_file} NAME_WE)
     set(bc_file "${BUILD_ASSETS_DIR}/${basename}.bc")
-    
+
     add_custom_command(
         OUTPUT ${bc_file}
         COMMAND clang -c -emit-llvm -g -O0 "${c_file}" -o "${bc_file}"
         DEPENDS "${c_file}"
         COMMENT "Compiling ${basename}.c to bitcode"
+    )
+    list(APPEND BC_FILES ${bc_file})
+endforeach()
+
+foreach(c_file ${NO_DWARF_FILES})
+    get_filename_component(basename ${c_file} NAME_WE)
+    set(bc_file "${BUILD_ASSETS_DIR}/${basename}.bc")
+
+    add_custom_command(
+        OUTPUT ${bc_file}
+        COMMAND clang -c -emit-llvm -O1 "${c_file}" -o "${bc_file}"
+        DEPENDS "${c_file}"
+        COMMENT "Compiling ${basename}.c to bitcode (no -g, -O1)"
     )
     list(APPEND BC_FILES ${bc_file})
 endforeach()

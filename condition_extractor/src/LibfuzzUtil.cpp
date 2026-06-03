@@ -18,7 +18,6 @@
 #include "llvm/IR/Module.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/CommandLine.h"
-#include "llvm/Transforms/IPO/PassManagerBuilder.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 
 #include <filesystem>
@@ -66,7 +65,7 @@ void dumpCoerceMap(llvm::Function *func, unsigned arg_pos,
                    llvm::Argument *arg_coerce) {
   std::string fileName = getCoerceFileLog();
 
-  llvm::DataLayout *DL = new DataLayout(func->getParent());
+  const llvm::DataLayout *DL = &func->getParent()->getDataLayout();
 
   llvm::Type *arg_coerce_type = arg_coerce->getType();
 

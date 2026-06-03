@@ -120,6 +120,7 @@ void tag_log(std::initializer_list<std::string_view> tags,
              Args &&...args) {}
 #endif
 
+#ifndef NDEBUG
 #define HANDLER_LOG(...)                                                       \
   tag_log<StdoutLogger>("handler", __FUNCTION__, __VA_ARGS__)
 #define DISPATCH_LOG(...)                                                      \
@@ -140,3 +141,21 @@ void tag_log(std::initializer_list<std::string_view> tags,
 #define TYPE_LOG(...) tag_log<StdoutLogger>("Type", __FUNCTION__, __VA_ARGS__)
 #define MY_EX_LOG(...)                                                         \
   tag_log<StdoutLogger>("MyExLog", __FUNCTION__, __VA_ARGS__)
+#define GLOBAL_LOG(...)                                                        \
+  tag_log<StdoutLogger>("Global", __FUNCTION__, __VA_ARGS__)
+#else
+// Release: expand to a no-op so arguments are NOT evaluated.
+#define HANDLER_LOG(...) ((void)0)
+#define DISPATCH_LOG(...) ((void)0)
+#define GEP_LOG(...) ((void)0)
+#define APARM_LOG(...) ((void)0)
+#define COPY_LOG(...) ((void)0)
+#define INTRA_LOG(...) ((void)0)
+#define DOMINATOR_LOG(...) ((void)0)
+#define PARAM_META_LOG(...) ((void)0)
+#define RETURN_LOG(...) ((void)0)
+#define GLOBAL_LOG(...) ((void)0)
+#define TYPE_LOG(...) ((void)0)
+#define MY_EX_LOG(...) ((void)0)
+#define GLOBAL_LOG(...) ((void)0)
+#endif

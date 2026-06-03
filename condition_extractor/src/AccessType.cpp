@@ -410,11 +410,9 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
   // PointerAnalysis *pta = vfg->getPTA();
 
   PAGNode *pNode = pag->getGNode(nodeid);
-  // const VFGNode* vNode = vfg->getDefSVFGNode(pNode);
-  // need a stack -> FILO
-  // let S be a stack
-  // std::vector<Path> worklist;
-  // std::set<Path> visited;
+  // const VFGNode* vNode =
+  // vfg->getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pNode)); need a stack ->
+  // FILO let S be a stack std::vector<Path> worklist; std::set<Path> visited;
   // S.push(v)
   // worklist.push_back(Path(vNode));
 
@@ -586,10 +584,10 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
               const auto xx = llvmModuleSet->getLLVMValue(ret_node_val);
               PAGNode *zz = pag->getGNode(ret_node_val->getId());
               const VFGNode *vNode;
-              if (!vfg.hasDefSVFGNode(zz)) {
+              if (!vfg.hasDefSVFGNode(SVFUtil::cast<SVF::ValVar>(zz))) {
                 RETURN_LOG("zz has no Def Nodes\n");
               } else {
-                vNode = vfg.getDefSVFGNode(zz);
+                vNode = vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(zz));
                 RETURN_LOG("vNode: {}\n", vNode->toString());
               }
 
@@ -689,7 +687,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
   RETURN_LOG("-----------------------------------\n");
   RETURN_LOG("{}\n", pXX->toString());
   RETURN_LOG("-----------------------------------\n");
-  const VFGNode *XX = vfg.getDefSVFGNode(pXX);
+  const VFGNode *XX = vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pXX));
   if (LLVMModuleSet::getLLVMModuleSet()->hasLLVMValue(pXX)) {
     const llvm::Value *val =
         LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(pXX);
@@ -736,7 +734,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
       // outs() << n->getFun()->getName() << "\n";
       // outs() << "-----\n";
 
-      auto pagedge = s->getPAGEdge();
+      auto pagedge = s->getSVFStmt();
       auto node = pagedge->getICFGNode();
 
       if (auto call_node = SVFUtil::dyn_cast<CallICFGNode>(node)) {
@@ -1020,7 +1018,7 @@ extractDependencyAmongParameters(const SVF::SVFVar *current_parm,
   SVFIR *pag = SVFIR::getPAG();
 
   PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
-  PAG::SVFVarList fun_params = funmap_par[fun];
+  auto fun_params = funmap_par[fun];
 
   auto ats = mdata.getAccessTypeSet();
   auto ats_it = ats->begin();
@@ -1050,7 +1048,7 @@ extractDependencyAmongParameters(const SVF::SVFVar *current_parm,
         // outs() << *src << "\n";
         auto llvm_val = llvmModuleSet->getValueNode(src);
         PAGNode *pS = pag->getGNode(llvm_val);
-        const VFGNode *vS = svfg.getDefSVFGNode(pS);
+        const VFGNode *vS = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pS));
         unsigned int p_idx = 0;
         for (const SVFVar *p : fun_params) {
           if (p == current_parm) {
@@ -1060,7 +1058,8 @@ extractDependencyAmongParameters(const SVF::SVFVar *current_parm,
           // TODO: check if this is correct
           // if the id of SVFVar is what we search for here
           PAGNode *pP = pag->getGNode(p->getId());
-          const VFGNode *vP = svfg.getDefSVFGNode(pP);
+          const VFGNode *vP =
+              svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pP));
 
           if (areConnected(vP, vS)) {
             set_by.insert("param_" + std::to_string(p_idx));
@@ -1097,7 +1096,7 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
   SVFIR *pag = SVFIR::getPAG();
 
   PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
-  PAG::SVFVarList fun_params = funmap_par[fun];
+  auto fun_params = funmap_par[fun];
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
 
@@ -1126,7 +1125,7 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
       // outs() << "Exit Cond:\n" << *v << "\n";
 
       PAGNode *pV = pag->getGNode(llvmModuleSet->getValueNode(v));
-      const VFGNode *vV = svfg.getDefSVFGNode(pV);
+      const VFGNode *vV = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pV));
       PAGNode *pI = nullptr;
       PAGNode *pP = nullptr;
 
@@ -1134,7 +1133,7 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
       bool param_control_loop = false;
       for (auto i : mdata.getIndexes()) {
         pI = pag->getGNode(llvmModuleSet->getValueNode(i));
-        const VFGNode *vI = svfg.getDefSVFGNode(pI);
+        const VFGNode *vI = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pI));
 
         if (areConnected(vI, vV)) {
           // outs() << "Index control Loop\n";
@@ -1165,7 +1164,7 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
 
         // pP = const_cast<llvm::Value*>(p->getValue());
         pP = pag->getGNode(p->getId());
-        const VFGNode *vP = svfg.getDefSVFGNode(pP);
+        const VFGNode *vP = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pP));
         // const_cast<llvm::Value*>(p->getValue());
         // outs() << "P: " << pP->toString() << "\n";
         if (areConnected(vP, vV)) {
@@ -1197,7 +1196,7 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
 
       auto llvm_val = llvmModuleSet->getValueNode(fs);
       PAGNode *pS = pag->getGNode(llvm_val);
-      const VFGNode *vS = svfg.getDefSVFGNode(pS);
+      const VFGNode *vS = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pS));
 
       int p_idx = 0;
       bool param_control_len = false;
@@ -1225,7 +1224,7 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
 
         PAGNode *pP = pag->getGNode(p->getId());
 
-        const VFGNode *vP = svfg.getDefSVFGNode(pP);
+        const VFGNode *vP = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pP));
         // const_cast<llvm::Value*>(p->getValue());
         // outs() << "P: " << pP->toString() << "\n";
         if (areConnectedCtx(vP, vS, &path)) {
@@ -1608,7 +1607,7 @@ ValueMetadata my_extract_parameter_metadata(const SVFG &vfg, const Value *val,
   PAGNode *arg_node = pag->getGNode(param_node);
   // this is necessary to get the definition node of the SVFVar in the SVFG
   // graph
-  auto vNode = vfg.getDefSVFGNode(arg_node);
+  auto vNode = vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(arg_node));
   if (config_t::instance()->debug) {
     PARAM_META_LOG("Working node:\n");
     PARAM_META_LOG("A.-> {}\n", vNode->toString());
@@ -1730,7 +1729,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
   NodeID llvm_val = paramId;
 
   PAGNode *pNode = pag->getGNode(llvm_val);
-  if (!vfg.hasDefSVFGNode(pNode)) {
+  if (!vfg.hasDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pNode))) {
     ValueMetadata mdata_empty;
     return mdata_empty;
   }
@@ -1744,7 +1743,8 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
   std::set<Path> visited;
   // S.push(v)
   // worklist.push_back(Path(vNode));
-  worklist.push_back(Path(vfg.getDefSVFGNode(pNode), val, seek_type));
+  worklist.push_back(Path(vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pNode)),
+                          val, seek_type));
 
   // if (seek_type)
   //     outs() << "DEBUG: seek_type: " << *seek_type << "\n";
@@ -1870,6 +1870,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
       {
         llvm::TimeTraceScope TimeScope("Node Type Switch");
+        // Processing of the node
         auto t_start = std::chrono::high_resolution_clock::now();
         switch (vNode->getNodeKind()) {
         case VFGNode::VFGNodeK::Load: {
@@ -2038,7 +2039,6 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           bool ok_continue = true;
 
           const CallICFGNode *cs = nullptr;
-
           bool isACall = false;
 
           if (auto call_node = SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
@@ -2048,6 +2048,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           } else if (auto call_node =
                          SVFUtil::dyn_cast<ActualINSVFGNode>(succNode)) {
             cs = call_node->getCallSite();
+            // Call MU
             HANDLER_LOG("ActualINSVFGNode {}\n", succNode->toString());
             isACall = true;
           } else if (auto ret_node =
@@ -2056,6 +2057,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
             isACall = false;
           } else if (auto ret_node =
                          SVFUtil::dyn_cast<ActualOUTSVFGNode>(succNode)) {
+            // Call CHI
             cs = ret_node->getCallSite();
             isACall = false;
           } else if (auto addr_node =
@@ -2100,11 +2102,11 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
                 SVF::PAGNode *param = nullptr;
                 if (auto call_node =
                         SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
-                  param = const_cast<SVF::PAGNode *>(call_node->getParam());
+                  param = const_cast<SVF::ValVar *>(call_node->getParam());
                   can_handle_parameter = true;
                 } else if (auto call_node =
                                SVFUtil::dyn_cast<FormalParmVFGNode>(succNode)) {
-                  param = const_cast<SVF::PAGNode *>(call_node->getParam());
+                  param = const_cast<SVF::ValVar *>(call_node->getParam());
                   can_handle_parameter = true;
                   // } else {
                   //     outs() << "it is none!!\n";

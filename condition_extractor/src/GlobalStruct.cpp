@@ -2,6 +2,7 @@
 #include "MemoryModel/PointsTo.h"
 #include "SVF-LLVM/LLVMModule.h"
 #include "SVF-LLVM/LLVMUtil.h"
+#include "SVF-LLVM/ObjTypeInference.h"
 #include "SVFIR/SVFVariables.h"
 #include "Util/Casting.h"
 #include "Util/Options.h"
@@ -13,6 +14,10 @@
 #include "GlobalStruct.h"
 #include "Profiler.hpp"
 #include "TypeMatcher.h"
+#include <llvm/IR/Argument.h>
+#include <llvm/IR/GlobalVariable.h>
+#include <llvm/Support/AMDGPUAddrSpace.h>
+#include <llvm/Support/raw_ostream.h>
 
 using namespace SVF;
 using namespace SVFUtil;
@@ -36,23 +41,30 @@ void GlobalStruct::analyze() {
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
   Module *svfModule = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
 
+  // md5(function_signature) -> {possible target functions}
   std::map<std::string, std::set<const llvm::Function *>> fncs;
 
   // svfGlobalList returns functions and global variables
-  SVFUtil::outs() << "--------------- Global Variables: -------------------\n";
+  GLOBAL_LOG("--------------- global variables found: -------------------\n");
   {
     PROFILE_SCOPE("GlobalStruct: Globals Processing");
-    for (auto &g : svfModule->getGlobalList()) {
+    for (auto &g : svfModule->globals()) {
       int count = 0;
       if (SVFUtil::isa<llvm::Constant>(g)) {
         count++;
-        SVFUtil::outs() << count << ". " << g.getName().str() << "\n";
-        GLOBAL_LOG("{}. {}", count, g.getName().str());
+        GLOBAL_LOG("\t{}. {}", count, g.getName().str());
         auto *llvm_constant = llvm::cast<llvm::Constant>(&g);
         get_function_pointers(llvm_constant, fncs);
       }
     }
   }
+
+#ifndef NDEBUG
+  for (auto p : fncs) {
+    GLOBAL_LOG("Found {} possible targets for signature: {}\n", p.second.size(),
+               p.first);
+  }
+#endif
 
   // get callsites to function pointers
   // CallSite -> CallSiteId
@@ -63,12 +75,13 @@ void GlobalStruct::analyze() {
   unsigned int tot_indirect_calls = 0;
   {
     PROFILE_SCOPE("GlobalStruct: Unresolved Calls");
+    // Iterate all indirect calls
     for (auto call : indirect_calls) {
-      // Call Site of indirect call
+      //  Call Site of indirect call
       auto icfg_node = call.first;
-      // id of callsite node
+      // id of callsite node in the PAG
       auto node_id = call.second;
-      // All Call Sites
+      // All indirect callsites for one function.
       CallSiteSet target_set = pag->getIndCallSites(node_id);
       // the points to set that the indirect call can point to
       PointsTo x = this->getPts(node_id);
@@ -78,6 +91,28 @@ void GlobalStruct::analyze() {
       tot_indirect_calls++;
     }
   }
+
+  // FIXME: remove this code when not needed anymore
+  fstream outstream("unresolved_function_ptrs.txt", ios_base::out);
+  outstream << "Found: " << unresolved_calls.size() << " unresolved callsites."
+            << endl;
+
+  if (outstream.is_open()) {
+    for (auto call : unresolved_calls) {
+      outstream << "In function: " << call->getCaller()->getName() << ": "
+                << call->toString() << endl;
+    }
+    outstream.flush();
+    outstream.close();
+  }
+  // FIXME: remove to here -----------------------------------------
+#ifndef NDEBUG
+  GLOBAL_LOG("------------- UNRESOLVED CALLS -------------");
+  for (auto call : unresolved_calls) {
+    GLOBAL_LOG("Indirect call: {} found in function: {}\n", call->toString(),
+               call->getCaller()->getName());
+  }
+#endif
 
   auto ptacg = getCallGraph();
 
@@ -90,9 +125,13 @@ void GlobalStruct::analyze() {
     // Do a signature based matching where we match the signature of the call
     // site function, with the signature that we got from retrieving funcs from
     // all the constants in the program.
+    GLOBAL_LOG(
+        "Liberator found {} unresolved call(s). (Calls without "
+        "points-to set)\nTry matching signature of callsite function with",
+        unresolved_calls.size());
     for (const CallICFGNode *callsite : unresolved_calls) {
       // SVFUtil::outs() << cnode->toString() << "\n";
-      auto llvm_inst = llvmModuleSet->getLLVMValue(callsite->getCaller());
+      auto llvm_inst = llvmModuleSet->getLLVMValue(callsite);
       if (llvm_inst == nullptr)
         continue;
 
@@ -101,9 +140,31 @@ void GlobalStruct::analyze() {
       if (llvm_cs == nullptr)
         continue;
 
+      auto type_inference = llvmModuleSet->getTypeInference();
+
       // llvm::raw_string_ostream(str) << *llvm_cs;
       // SVFUtil::outs() << str << "\n";
       FunctionType *fun_type = llvm_cs->getFunctionType();
+      // TODO: Here we need to find the types of the params and the return type:
+      int arg_num = 1;
+      for (const auto &arg : llvm_cs->args()) {
+        if (llvm::Value *v = dyn_cast<Value>(arg)) {
+          string out, type_str;
+          if (v->getType()->isPointerTy()) {
+            const Type *type = type_inference->inferObjType(v);
+            raw_string_ostream os1(type_str);
+            type->print(os1);
+          } else {
+            raw_string_ostream os1(type_str);
+            v->getType()->print(os1);
+          }
+          raw_string_ostream os(out);
+          v->print(os);
+          GLOBAL_LOG("Found arg {}. {} with type: {}", arg_num, out, type_str);
+        }
+        ++arg_num;
+      }
+
       // This  will compute the hash of the signature of the function.
       auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
       // auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
@@ -117,11 +178,6 @@ void GlobalStruct::analyze() {
       // auto fun_caller = cnode->getFun();
       // returns function containg the call
       const FunObjVar *fun_caller = callsite->getCaller();
-
-      // FIXME: Maybe this needs a fix as i don't know if the changes I have
-      // done are correct getCallsite retrives the llvm::CallBase instruction so
-      // maybe the line 90 in the orginal code is redundant. I am assuming that
-      // callBlockNode in the orginal code is just cnode.
 
       unsigned int x = 0;
       // SVFUtil::outs() << "callBlockNode: " << callBlockNode->toString() <<
@@ -161,7 +217,7 @@ void GlobalStruct::initialize() { FlowSensitive::initialize(); }
 void GlobalStruct::finalize() { FlowSensitive::finalize(); }
 
 /**
- * @param in_value variable that is either a global variable, a constant
+ * @param in_value variable that is either a global variable, a constant,
  * aggregate or a function.
  * @return map (md5(function_type) -> set Function*) where the set contains all
  * functions that in_value has as an initializer of a GlobalVariable or operand
@@ -171,13 +227,12 @@ void GlobalStruct::get_function_pointers(
     const llvm::Value *in_value,
     std::map<std::string, std::set<const llvm::Function *>> &fncs) {
 
-  SVFUtil::outs() << "--------- get_function_pointers("
-                  << in_value->getName().str() << ")\n";
+  GLOBAL_LOG("------------ Retrieve function pointer for {} -------------\n",
+             in_value->getName().str());
 
   std::stack<const llvm::Value *> working;
-  working.push(in_value);
   std::set<const llvm::Value *> visited;
-  std::string str;
+  working.push(in_value);
 
   while (!working.empty()) {
     auto value = working.top();
@@ -187,21 +242,37 @@ void GlobalStruct::get_function_pointers(
       continue;
 
     if (auto gv = SVFUtil::dyn_cast<GlobalVariable>(value)) {
-      if (gv->hasInitializer()) {
+      if (!gv->isDeclaration()) {
+        GLOBAL_LOG("Global Variable: {} has an initializer.",
+                   gv->getName().str());
         auto init = gv->getInitializer();
         working.push(init);
+      } else {
+        GLOBAL_LOG("Global Variable: {} does NOT have an initializer.",
+                   gv->getName().str());
       }
     } else if (auto ca = SVFUtil::dyn_cast<ConstantAggregate>(value)) {
-      SVFUtil::outs() << ca->getName().str() << "\n";
+      if (ca->getType()->isStructTy() &&
+          !SVFUtil::cast<StructType>(ca->getType())->isLiteral()) {
+        GLOBAL_LOG("Constant aggregate struct: {}",
+                   ca->getType()->getStructName().str());
+      } else {
+        GLOBAL_LOG("Constant aggregate (non-struct or literal)");
+      }
       for (unsigned int i = 0; i < ca->getNumOperands(); ++i) {
         auto op = ca->getOperand(i);
         working.push(op);
       }
     } else if (auto f = SVFUtil::dyn_cast<Function>(value)) {
-      SVFUtil::outs() << "Found function " << f->getName().str() << "\n";
+      GLOBAL_LOG("Found function: {}\n", f->getName().str());
       auto fun_type = f->getFunctionType();
       auto k = TypeMatcher::compute_hash(fun_type);
       fncs[k].insert(f);
+    } else if (auto cs = SVFUtil::dyn_cast<CallBase>(value)) {
+      GLOBAL_LOG("Here we found an external call to {}.",
+                 cs->getCalledFunction()->getName().str());
+    } else if (auto store_in = SVFUtil::dyn_cast<StoreInst>(value)) {
+      GLOBAL_LOG("Here we found a store.");
     }
 
     visited.insert(value);

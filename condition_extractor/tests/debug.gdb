@@ -23,6 +23,8 @@ set follow-fork-mode parent
 set detach-on-fork on
 
 #break my_proc
-break AccessType.cpp:1483
+#break AccessType.cpp:1483
+#break ConditionExtractor.cpp:110
+break GlobalStruct.cpp:60
 
-run "svf test classes"
+run "svf test global_func_pointers"

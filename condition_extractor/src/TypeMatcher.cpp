@@ -1,5 +1,6 @@
 
 #include "TypeMatcher.h"
+#include <llvm/IR/TypedPointerType.h>
 
 TypeMatcher::TypeStringMap TypeMatcher::type_hash_map;
 TypeMatcher::TypeStringMap TypeMatcher::type_id_map;
@@ -60,9 +61,6 @@ std::string TypeMatcher::compute_unique_string(const llvm::Type *t,
   case llvm::Type::TypeID::MetadataTyID:
     hash += "ME";
     break;
-  case llvm::Type::TypeID::X86_MMXTyID:
-    hash += "MX";
-    break;
   case llvm::Type::TypeID::X86_AMXTyID:
     hash += "AM";
     break;
@@ -98,6 +96,13 @@ std::string TypeMatcher::compute_unique_string(const llvm::Type *t,
     // FIXME: here we would add compute_unique_string(pt->getElementType(),
     // ids_done) + "]";
     hash += "PN";
+  } break;
+  case llvm::Type::TypeID::TypedPointerTyID: {
+    // Synthesized by the DWARF fallback to preserve source-level pointer
+    // typing in opaque-pointer LLVM. Unlike opaque PointerType, it carries
+    // the pointee, so include it so e.g. `i32*` and `i32**` hash distinctly.
+    const auto *tp = SVFUtil::dyn_cast<llvm::TypedPointerType>(t);
+    hash += "TP[" + compute_unique_string(tp->getElementType(), ids_done) + "]";
   } break;
   case llvm::Type::TypeID::StructTyID: {
     const llvm::StructType *st = SVFUtil::dyn_cast<StructType>(t);
