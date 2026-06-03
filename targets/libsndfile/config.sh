@@ -9,6 +9,7 @@ target_configure() {
 
   cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
     -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+    -DBUILD_PROGRAMS=OFF -DBUILD_TESTING=OFF \
     -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
     -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 }
@@ -22,9 +23,8 @@ target_install() {
   make install
 }
 
-target_preinstall() {
+target_preinstall() { return 0; }
 
-}
 
 target_preinstall_docker() {
   sudo apt-get -y install --no-install-suggests --no-install-recommends autoconf autogen automake build-essential libasound2-dev libflac-dev libogg-dev libtool libvorbis-dev libopus-dev libmp3lame-dev libmpg123-dev pkg-config python libogg0 libopus0 libflac8 libmp3lame0 libasound2 libvorbis0a libmpg123-0

@@ -11,12 +11,6 @@ echo "Analysing $TARGET_NAME"
 
 source setup_target.sh $1
 
-# Check if wllvm is installed
-if ! command -v wllvm &>/dev/null; then
-  echo "[ERROR] wllvm is not installed or not in PATH. Please install it (e.g., pip install wllvm)."
-  exit 1
-fi
-
 export WORK="$TARGET/work"
 
 FETCH_ONLY=false
@@ -33,6 +27,11 @@ elif [ "$2" == "--debug-only" ]; then
 elif [ "$2" == "--build-only" ]; then
   BUILD_ONLY=true
 fi
+
+# Check if running in Docker
+is_docker() {
+  [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null
+}
 
 # Load target configuration
 # This must provide:
@@ -64,10 +63,11 @@ if [ "$FETCH_ONLY" = true ]; then
   exit 0
 fi
 
-# Check if running in Docker
-is_docker() {
-  [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null
-}
+# Check if wllvm is installed
+if ! command -v wllvm &>/dev/null; then
+  echo "[ERROR] wllvm is not installed or not in PATH. Please install it (e.g., pip install wllvm)."
+  exit 1
+fi
 
 if [ "$RUN_ONLY" = false ] && [ "$DEBUG_ONLY" = false ]; then
   # Go to repo

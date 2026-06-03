@@ -3,10 +3,12 @@
 set -e
 
 export PROJECT=$(dirname "$(realpath "$0")")
-export LIBFUZZ=$PROJECT/libfuzz
+if [ -z "$LIBFUZZ" ]; then
+  export LIBFUZZ=$PROJECT/libfuzz
+fi
 export TOOLS_DIR=$LIBFUZZ
-export LLVM_DIR=/home/mashmallow/lib/llvm-16
-export LLVM_COMPILER=clang
+#export LLVM_DIR=/home/mashmallow/lib/llvm-16
+#export LLVM_COMPILER=clang
 
 if [ ! -d "$PROJECT/targets/$TARGET_NAME" ]; then
   usage
@@ -25,6 +27,6 @@ mkdir -p $LIBFUZZ/targets
 mkdir -p $TOOLS_DIR/condition_extractor
 mkdir -p $TOOLS_DIR/tool/misc
 
-echo "[INFO] Creating Libfuzz directories"
-rsync -a --exclude=".git" $PROJECT/condition_extractor $TOOLS_DIR
-cp $PROJECT/tool/misc/extract_included_functions.py $TOOLS_DIR/tool/misc
+#echo "[INFO] Creating Libfuzz directories"
+#rsync -a --exclude=".git" $PROJECT/condition_extractor $TOOLS_DIR
+#cp $PROJECT/tool/misc/extract_included_functions.py $TOOLS_DIR/tool/misc

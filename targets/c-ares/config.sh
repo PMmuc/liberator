@@ -1,7 +1,7 @@
 REPO_URL="https://github.com/c-ares/c-ares.git"
 # 1.34.6
 REPO_COMMIT="3ac47ee46edd8ea40370222f91613fc16c434853"
-BC_FILE_NAME="libcares_static.a"
+BC_FILE_NAME="libcares.a"
 
 target_configure() {
   mkdir -p "$TARGET/repo/cares_build"

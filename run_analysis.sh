@@ -64,19 +64,13 @@ extract-bc -b "$ARCHIVE_PATH"
 # Use public_headers.txt from target dir if it exists
 PUBLIC_HEADERS="$TARGET/public_headers.txt"
 if [ ! -f "$PUBLIC_HEADERS" ]; then
-  echo "Warning: public_headers.txt not found at $PUBLIC_HEADERS"
-fi
-
-# Extract included functions
-# Use public_headers.txt from target dir if it exists
-PUBLIC_HEADERS="$TARGET/public_headers.txt"
-if [ ! -f "$PUBLIC_HEADERS" ]; then
-  echo "Warning: public_headers.txt not found at $PUBLIC_HEADERS"
+  echo "Warning: public_headers.txt not found at $PUBLIC_HEADERS, creating an empty one."
+  touch "$PUBLIC_HEADERS"
 fi
 
 INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
 
-"$TOOLS_DIR/tool/misc/extract_included_functions.py" -i "$INCLUDE_DIR" \
+"$PROJECT/tool/misc/extract_included_functions.py" -i "$INCLUDE_DIR" \
   -t "$TARGET_NAME" \
   -p "$PUBLIC_HEADERS" \
   -e "$LIBFUZZ_LOG_PATH/exported_functions.txt" \
@@ -96,7 +90,8 @@ time $DEBUG "$TOOLS_DIR/condition_extractor/build/bin/extractor" \
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
   -v v0 -t json -do_indirect_jumps \
   -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
-  -log Type \
+  -range 12-13 \
+  -log Type,Global \
   -profiling \
   \
   ${EXTRA_EXTRACTOR_FLAGS} #-range 81-334 \

@@ -34,7 +34,7 @@ make -j"$(nproc)"
 echo "make install"
 make install
 
-mv "$WORK"/lib/libcares_static.a "$WORK"/lib/libcares_static_profile.a
+mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_static_profile.a
 
 mkdir -p "$TARGET/repo/c-ares_build_cluster"
 cd "$TARGET/repo/c-ares_build_cluster"
@@ -52,7 +52,7 @@ make -j"$(nproc)"
 echo "make install"
 make install
 
-mv "$WORK"/lib/libcares_static.a "$WORK"/lib/libcares_static_cluster.a
+mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_static_cluster.a
 
 cd ..
 mkdir -p "$TARGET/repo/c-ares_build_fuzz"

@@ -57,7 +57,7 @@ make install
 
 # WLLVM tool to generate .bc file from a static library
 echo "Start extract in $WORK/lib/"
-extract-bc -b "$WORK"/lib/libcares_static.a
+extract-bc -b "$WORK"/lib/libcares.a
 echo "Finish extract"
 
 echo $TOOLS_DIR
@@ -75,7 +75,7 @@ echo "Finish Extract Included Functions"
 # extract fields dependency from the library itself, repeat for each object
 # produced
 "$TOOLS_DIR"/condition_extractor/build/bin/extractor \
-  "$WORK"/lib/libcares_static.a.bc \
+  "$WORK"/lib/libcares.a.bc \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -output "$LIBFUZZ_LOG_PATH/conditions.json" \
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \

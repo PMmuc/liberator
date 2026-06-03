@@ -4,8 +4,7 @@ REPO_COMMIT="b0b5dc6997956cdc027295ade5e425c416f30d33"
 BC_FILE_NAME="libminijail.pie.a"
 
 target_configure() {
-  # Minijail doesn't seem to have a configure step, just make
-  true
+  sed -i 's/(SIGRTMAX|SIGRTMIN|SIG_|NULL)/(SIGRTMAX|SIGRTMIN|SIG_|NULL|BLKTRACESETUP2)/g' "$TARGET/repo/gen_constants.sh"
 }
 
 target_build() {
@@ -18,13 +17,13 @@ target_build() {
 
 target_install() {
   # Headers are copied manually in original script
+  mkdir -p "$WORK/include"
   cp *.h "$WORK/include"
   # Library was built into $WORK/lib by make command above
 }
 
-target_preinstall() {
+target_preinstall() { return 0; }
 
-}
 
 target_preinstall_docker() {
   sudo apt-get update

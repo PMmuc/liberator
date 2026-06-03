@@ -175,38 +175,40 @@ def get_api(node, namespace):
 # Traverse the AST tree
 def traverse(node, include_folder, namespace):
 
-    if node.kind == clang.cindex.CursorKind.NAMESPACE:
+    try:
+        node_kind = node.kind
+    except ValueError:
+        # Recurse for children even if kind is unknown
+        for child in node.get_children():
+            traverse(child, include_folder, copy.deepcopy(namespace))
+        return
+
+    if node_kind == clang.cindex.CursorKind.NAMESPACE:
         namespace += [node.displayname]
 
     # Recurse for children of this node
     for child in node.get_children():
         traverse(child, include_folder, copy.deepcopy(namespace))
 
-    # if node.type.kind == clang.cindex.TypeKind.FUNCTIONPROTO and str(node.location.file).startswith("./include/"):
-    if (node.type.kind == clang.cindex.TypeKind.FUNCTIONPROTO and 
+    try:
+        node_type_kind = node.type.kind
+    except ValueError:
+        node_type_kind = None
+
+    if (node_type_kind == clang.cindex.TypeKind.FUNCTIONPROTO and 
         include_folder in str(node.location.file)):
         function_declarations.append(node)
         api = get_api(node, namespace)
         if not find_api(api, apis_definition):
             apis_definition.append(api)
-        # from IPython import embed; embed(); exit(1)
 
-    # type of size -2 is a special case for incomplete types
-    # from IPython import embed; embed(); exit(1)
-    if (node.kind in 
+    if (node_kind in 
         [clang.cindex.CursorKind.TYPEDEF_DECL, 
          clang.cindex.CursorKind.STRUCT_DECL] and
         node.type.get_size() == -2):
         type_incomplete.add("%" + node.type.spelling)
 
-    # if node.kind == clang.cindex.CursorKind.TYPEDEF_DECL:
-    #     print(f"TYPEDEF_DECL {node.spelling}")
-
-    # if node.type.get_size() == -2:
-    #     print(f"get_size == -2 {node.spelling}")
-    #     from IPython import embed; embed(); exit(1)
-
-    if node.kind == clang.cindex.CursorKind.ENUM_DECL:
+    if node_kind == clang.cindex.CursorKind.ENUM_DECL:
         type_enum.add(node.type.spelling)
     # pass
 
@@ -220,24 +222,20 @@ def get_stub_file(include_folder, public_headers):
     public_headers_lst = set()
     with open(public_headers, 'r') as ph:
         lines = ph.readlines()
-        if(len(lines) == 0):
-            print(f"No header in {public_headers}. Aborting...")
-            exit(1)
         for l in lines:
             l = l.strip()
             if l:
                 public_headers_lst.add(l)
-
-    # from IPython import embed; embed(); exit()
 
     with open(stub_file, 'w') as tmp:
         for root, _, files in os.walk(include_folder):
             for h in files:
                 # print(f"candidate header {h}: ", end='')
                 if (h.endswith(".h") or h.endswith(".h++") or h.endswith(".hh") 
-                    or h.endswith(".hpp")) and h in public_headers_lst:
-                    h_path = os.path.join(root, h)
-                    tmp.write(f"#include \"{h_path}\"\n")
+                    or h.endswith(".hpp")):
+                    if len(public_headers_lst) == 0 or h in public_headers_lst:
+                        h_path = os.path.join(root, h)
+                        tmp.write(f"#include \"{h_path}\"\n")
 
         tmp.write("\n")
 

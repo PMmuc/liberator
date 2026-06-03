@@ -6,8 +6,8 @@ BC_FILE_NAME="liburiparser.a"
 target_configure() {
   cmake . -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
     -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_C_FLAGS_DEBUG="-g -O0 -mllvm -get-api-pass" \
-    -DCMAKE_CXX_FLAGS_DEBUG="-g -O0 -mllvm -get-api-pass"
+    -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+    -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 }
 
 target_build() {
@@ -19,9 +19,8 @@ target_install() {
   make install
 }
 
-target_preinstall() {
+target_preinstall() { return 0; }
 
-}
 
 target_preinstall_docker() {
   sudo apt-get update

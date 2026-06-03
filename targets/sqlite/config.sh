@@ -22,9 +22,8 @@ target_install() {
   make install
 }
 
-target_preinstall() {
+target_preinstall() { return 0; }
 
-}
 
 target_preinstall_docker() {
   sudo apt-get -y install --no-install-suggests --no-install-recommends tclsh

@@ -26,34 +26,8 @@ echo "LIBFUZZ: $LIBFUZZ"
 
 SCRIPT_DIR="$LIBFUZZ/"
 TARGET_DIR="$SCRIPT_DIR/targets/"
-CONFIG_FILE="$TARGET_DIR/$TARGET_NAME/config.sh"
+CONFIG_FILE="$PROJECT/targets/$TARGET_NAME/config.sh"
 
-if [ ! -d "$PROJECT/targets/$TARGET_NAME" ]; then
-  echo "Error: Target directory $PROJECT/targets/$TARGET_NAME does not exist."
-  exit 1
-fi
-
-echo "Copying ${PROJECT}/targets/${TARGET_NAME} to ${TARGET_DIR}/$TARGET_NAME"
-rsync -a --exclude=".git" $PROJECT/targets/$TARGET_NAME $TARGET_DIR/
-
-if [ ! -f "$CONFIG_FILE" ]; then
-  echo "Error: Config file $CONFIG_FILE not found."
-  exit 1
-fi
-
-cd $TARGET_DIR
-
-# Load common environment variables
-# NOTE: if TOOLS_DIR is unset, I assume to find stuffs in LIBFUZZ folder
-# This mimics the behavior of original scripts
-if [ -z "$TOOLS_DIR" ]; then
-  if [ -n "$LIBFUZZ" ]; then
-    TOOLS_DIR=$LIBFUZZ
-  else
-    echo "Error: TOOLS_DIR or LIBFUZZ env variable must be set."
-    exit 1
-  fi
-fi
 
 # Default environment setup
 export LLVM_COMPILER=clang

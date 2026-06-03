@@ -4,7 +4,7 @@ BC_FILE_NAME="libtiff.a"
 
 target_configure() {
   ./autogen.sh
-  ./configure --disable-shared --prefix="$WORK" \
+  ./configure --disable-shared --disable-cxx --prefix="$WORK" \
     CC=wllvm CXX=wllvm++ \
     CXXFLAGS="-g -O0" \
     CFLAGS="-g -O0"
