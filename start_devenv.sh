@@ -5,5 +5,5 @@
 
 DOCKER_BUILDKIT=1 docker build --build-arg USER_UID=$(id -u) \
     --build-arg GROUP_UID=$(id -g) --target libfuzzpp_dev_image \
-    -t libfuzzpp_dev_image -f Dockerfile . 
-docker run -it -v $(pwd):/workspaces/libfuzz libfuzzpp_dev_image zsh
+    -t libfuzzpp_dev_image_new -f Dockerfile . 
+docker run --name libfuzz_dev_container_new -it -v $(pwd):/workspaces/libfuzz libfuzzpp_dev_image_new zsh

@@ -1,5 +1,4 @@
-FROM ubuntu:24.04 AS libfuzzpp_dev_image
-
+FROM ubuntu:24.04 AS libfuzzpp_dev_image_new
 
 RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
     DEBIAN_FRONTEND="noninteractive" \
@@ -75,6 +74,7 @@ RUN echo "export PATH=\$PATH:${HOME}/.local/bin" >> ~/.bashrc
 RUN echo "export PATH=\$PATH:${HOME}/.local/bin" >> ~/.zshrc
 RUN --mount=type=cache,target=${CCACHE_DIR} mkdir -p ${CCACHE_DIR} && sudo -E chown -R ${USERNAME}:${USERNAME} ${CCACHE_DIR}
 
+# install zstd: prerequisite of z3
 RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/facebook/zstd.git && \
     cd zstd/build/cmake && \
     mkdir build && cd build && \
@@ -84,7 +84,7 @@ RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/face
     .. && \
     sudo ninja install
 
-# install z3
+# install z3 prerequisite of SVF
 RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/Z3Prover/z3.git && \
     cd z3 && \
     git checkout z3-4.8.12 && \
@@ -95,50 +95,64 @@ RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/Z3Pr
     .. && \
     sudo ninja install
 
+# install ipython
 RUN pip3 install --break-system-packages ipython
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN $HOME/.cargo/bin/cargo install casr
 
 ENV LIBFUZZ=/workspaces/libfuzz
 
-RUN --mount=type=cache,target=/var/cache/apt sudo apt-get update && sudo apt-get full-upgrade -y && \
-    DEBIAN_FRONTEND="noninteractive" \
-    sudo apt-get -y install --no-install-suggests --no-install-recommends \
-    gcc g++ libncurses6  clang-16 llvm-16-dev
+# For building the target libraries we may need clang-16
+#RUN --mount=type=cache,target=/var/cache/apt sudo apt-get update && sudo apt-get full-upgrade -y && \
+    #DEBIAN_FRONTEND="noninteractive" \
+    #sudo apt-get -y install --no-install-suggests --no-install-recommends \
+    #gcc g++ libncurses6  clang-16 llvm-16-dev
 
 # gef
-RUN echo "export LC_CTYPE=C.UTF-8" >> ~/.bashrc
-RUN echo "export LC_CTYPE=C.UTF-8" >> ~/.zshrc
-RUN bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
+#RUN echo "export LC_CTYPE=C.UTF-8" >> ~/.bashrc
+#RUN echo "export LC_CTYPE=C.UTF-8" >> ~/.zshrc
+#RUN bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
+# install python requirements mainly for wllvm
 COPY ./requirements.txt ${HOME}/python/requirements.txt
 RUN cd ${HOME}/python && python3 -m pip install --break-system-packages -r requirements.txt
+ENV LLVM_VERSION="21"
 
-# Copy local build of LLVM-16
-COPY --chown=${USERNAME}:${USERNAME} ./llvm-16/ ${HOME}/llvm-16
+ARG USE_LOCAL_LLVM="false"
+# Conditionally use local LLVM build or download precompiled release
+RUN --mount=type=bind,source=.,target=/context \
+    if [ "$USE_LOCAL_LLVM" = "true" ] && [ -d "/context/llvm-${LLVM_VERSION}" ]; then \
+        echo "==> Copying local LLVM-${LLVM_VERSION} build..."; \
+        mkdir -p ${HOME}/llvm-${LLVM_VERSION} && \
+        cp -r /context/llvm-${LLVM_VERSION}/. ${HOME}/llvm-${LLVM_VERSION}/; \
+    else \
+        echo "==> Downloading precompiled LLVM-16..."; \
+        wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz -O /tmp/llvm.tar.xz && \
+        mkdir -p ${HOME}/llvm-16 && \
+        tar -xf /tmp/llvm.tar.xz -C ${HOME}/llvm-16 --strip-components=1 && \
+        rm /tmp/llvm.tar.xz; \
+    fi
 
-RUN --mount=type=bind,source=./llvm-16,target=/tmp/llvm-16 \
-    mkdir -p ${HOME}/llvm-16 && \
-    cp -r /tmp/llvm-16/. ${HOME}/llvm-16/
-
-
-ENV SVF_VERSION="3.2"
-ENV LLVM_DIR="/home/libfuzz/llvm-16/"
+ENV SVF_VERSION="3.3"
+ENV LLVM_DIR="${HOME}/llvm-${LLVM_VERSION}/"
 
 # SVF
-# checkout and build SVF 3.2
-RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/SVF-tools/SVF.git && \
+# checkout and build SVF 3.3
+RUN --mount=type=cache,target=${HOME}/.ccache/  git clone --depth 1 --branch SVF-${SVF_VERSION} https://github.com/SVF-tools/SVF.git &&\
     cd SVF && \
-    git checkout "tags/SVF-${SVF_VERSION}"&& \
     mkdir -p build && cd build && \
     cmake -G Ninja -DSVF_WARN_AS_ERROR=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSVF_ENABLE_ASSERTIONS=ON -DCMAKE_INSTALL_PREFIX=/home/libfuzz/SVF-${SVF_VERSION} -DSVF_ENABLE_RTTI=ON .. && \
     ninja install
 
+# remove z3 and zstd and SVF source
+RUN sudo rm -rf ${HOME}/zstd ${HOME}/z3 ${HOME}/SVF
+
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR LIBRARY DEBUG
-FROM libfuzzpp_dev_image AS libfuzzpp_debug
+FROM libfuzzpp_dev_image_new AS libfuzzpp_debug_new
 
 ENV TOOLS_DIR ${HOME}
 ARG target_name=c-ares
@@ -148,22 +162,26 @@ ARG USER_GID=1000
 
 ENV TARGET_NAME=${target_name}
 
-COPY --link ./llvm-project/build ${HOME}/LLVM/
-ENV LLVM_DIR=${HOME}/llvm-16
-ENV SVF_DIR=${HOME}/SVF-3.2
+ENV LLVM_DIR=${HOME}/llvm-${LLVM_VERSION}
+ENV SVF_DIR=${HOME}/SVF-${SVF_VERSION}
 # ENV LLVM_DIR ${LIBFUZZ}/llvm-project/build
-ENV TARGET=${HOME}/library
+ENV TARGET=${HOME}/targets/${TARGET_NAME}
 ENV DRIVER_FOLDER=${LIBFUZZ}/workdir/${TARGET_NAME}/drivers
 ENV DRIVER="*"
 
-RUN mkdir -p ${HOME}/${TARGET_NAME}
-WORKDIR ${HOME}/${TARGET_NAME}
-RUN ./analysis.sh ${TARGET_NAME} --fetch-only
-COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/build_library.sh ${HOME}/${TARGET_NAME}
+WORKDIR ${HOME}/targets/${TARGET_NAME}
+
+COPY --chown=${USERNAME}:${USERNAME} ./analysis.sh ./setup_target.sh ./setup.sh ${LIBFUZZ}/
+COPY --chown=${USERNAME}:${USERNAME} ./targets/targets.txt ${LIBFUZZ}/targets/
+COPY --chown=${USERNAME}:${USERNAME} ./targets/${TARGET_NAME}/config.sh ${LIBFUZZ}/targets/${TARGET_NAME}/
+
+RUN cd ${LIBFUZZ} && ./analysis.sh ${TARGET_NAME} --fetch-only
+COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/build_library.sh ./
+# TODO: check if this is still needed in newer SVF versions
 RUN sed -i 's/-g /-gdwarf-4 /g' ./build_library.sh;
 RUN sed -i 's/-g\"/-gdwarf-4\"/g' ./build_library.sh
 RUN ./build_library.sh
-COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/compile_driver.sh ${HOME}/${TARGET_NAME}
+COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/compile_driver.sh ./
 RUN sed -i 's/-g /-gdwarf-4 /g' ./compile_driver.sh
 RUN bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 RUN echo "PROMPT=\"Debug \"\$PROMPT" >> ~/.zshrc
@@ -172,7 +190,7 @@ WORKDIR ${LIBFUZZ}
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR LIBRARY ANALYSIS
-FROM libfuzzpp_dev_image AS libfuzzpp_analysis
+FROM libfuzzpp_dev_image_new AS libfuzzpp_analysis_new
 
 # 1. Build condition_extractor
 # 2. Run analysis.sh
@@ -203,7 +221,7 @@ CMD ${LIBFUZZ}/targets/start_analysis.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR DRIVER GENERATION
-FROM libfuzzpp_dev_image AS libfuzzpp_drivergeneration
+FROM libfuzzpp_dev_image_new AS libfuzzpp_drivergeneration_new
 
 ARG target_name=c-ares
 
@@ -213,7 +231,7 @@ CMD ${LIBFUZZ}/targets/start_generate_drivers.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR FUZZING SESSION
-FROM libfuzzpp_dev_image AS libfuzzpp_fuzzing
+FROM libfuzzpp_dev_image_new AS libfuzzpp_fuzzing_new
 
 ARG USERNAME=libfuzz
 ARG USER_UID=1000
@@ -225,22 +243,21 @@ ARG target_name=c-ares
 # COPY LLVM/update-alternatives-clang.sh .
 # RUN sudo ./update-alternatives-clang.sh 12 200
 # ENV LLVM_DIR /usr
-COPY --link ./llvm-project/build ${HOME}/LLVM/
-ENV LLVM_DIR=${HOME}/LLVM
+ENV LLVM_DIR=${HOME}/llvm-${LLVM_VERSION}
 
 ENV TARGET_NAME=${target_name}
-ENV TARGET=${HOME}/library
+ENV TARGET=${LIBFUZZ}/targets/${TARGET_NAME}
 ENV DRIVER_FOLDER=${LIBFUZZ}/workdir/${TARGET_NAME}/drivers
 
 # I want to install the library at building time, so later I only need to build
 # the drivers
 WORKDIR ${LIBFUZZ}/targets/${TARGET_NAME}
 RUN sudo mkdir -p ${TARGET} && sudo chown -R ${USERNAME}:${USERNAME} ${TARGET}
-COPY --chown=${USERNAME}:${USERNAME}  ./analysis.sh ${LIBFUZZ}/
+COPY --chown=${USERNAME}:${USERNAME}  ./analysis.sh ./setup_target.sh ./setup.sh ${LIBFUZZ}/
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/targets.txt ${LIBFUZZ}/targets/
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/config.sh ${LIBFUZZ}/targets/${TARGET_NAME}/
-RUN ./analysis.sh ${TARGET_NAME} --fetch-only
-COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/build_library.sh ${LIBFUZZ}/targets/${TARGET_NAME}
+RUN cd ${LIBFUZZ} && ./analysis.sh ${TARGET_NAME} --fetch-only
+COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/build_library.sh ./
 RUN ./build_library.sh
 
 # NOTE: start_fuzz_driver.sh finds out its configuration automatically
@@ -249,7 +266,7 @@ CMD ${LIBFUZZ}/targets/start_fuzz_driver.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR COVERAGE
-FROM libfuzzpp_fuzzing AS libfuzzpp_coverage
+FROM libfuzzpp_fuzzing_new AS libfuzzpp_coverage_new
 
 WORKDIR ${LIBFUZZ}
 ENV PROJECT_COVERAGE ${LIBFUZZ}/workdir/${TARGET_NAME}/coverage_data
@@ -259,7 +276,7 @@ CMD ${LIBFUZZ}/targets/start_coverage.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR CRASH CLUSTERING
-FROM libfuzzpp_fuzzing AS libfuzzpp_crash_cluster
+FROM libfuzzpp_fuzzing_new AS libfuzzpp_crash_cluster_new
 
 WORKDIR ${LIBFUZZ}
 ENV TARGET_WORKDIR ${LIBFUZZ}/workdir/${TARGET_NAME}
@@ -267,14 +284,14 @@ CMD ${LIBFUZZ}/targets/start_clustering.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR FUZZING CAMPAIGNS
-FROM libfuzzpp_dev_image AS libfuzzpp_fuzzing_campaigns
+FROM libfuzzpp_dev_image_new AS libfuzzpp_fuzzing_campaigns_new
 COPY LLVM/update-alternatives-clang.sh .
 RUN sudo ./update-alternatives-clang.sh 12 200
 WORKDIR ${LIBFUZZ}
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR DYNAMIC DRIVER CREATION
-FROM libfuzzpp_fuzzing AS libfuzzpp_dyndrvgen
+FROM libfuzzpp_fuzzing_new AS libfuzzpp_dyndrvgen_new
 ENV DRIVER_FOLDER=""
 WORKDIR ${LIBFUZZ}
 COPY LLVM/update-alternatives-clang.sh .

@@ -4,3 +4,10 @@ analysis/*
 # WE NEED TO INCLUDE workdir/ OR WE MISS IMPORTANT FILES, e.g., THE DRIVER TO
 # FUZZ
 # workdir/*
+
+# Ignore large directories that are not needed in the build context
+llvm-project
+libfuzz
+condition_extractor/build
+condition_extractor/CMakeFiles
+condition_extractor/CMakeCache.txt
