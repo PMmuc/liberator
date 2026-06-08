@@ -45,12 +45,8 @@
 #include "PhiFunction.h"
 #include "PostDominators.h"
 #include "TypeMatcher.h"
-<<<<<<< HEAD
 #include <llvm/Support/TimeProfiler.h>
 #include <llvm/Support/raw_ostream.h>
-    =======
->>>>>>> 87e6672 (update)
-
 // for random sampling
 #include <algorithm>
 #include <iterator>
@@ -62,7 +58,7 @@
 
 #include "md5/md5.h"
 
-    using namespace std;
+using namespace std;
 using namespace SVF;
 using namespace SVFUtil;
 using namespace LLVMUtil;
