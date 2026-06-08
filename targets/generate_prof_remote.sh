@@ -7,9 +7,9 @@ if [ $2 == "--as-excel" ]; then
   SAVE_AS_EXCEL=True
 fi
 
-GMON_OUT="$WORK/apipass/gmon.out"
-EXTRACTOR="$LIBFUZZ/condition_extractor/extractor"
-OUTPUT_FILE="$WORK/apipass/analysis_profile.txt"
+GMON_OUT="$TARGET/work/apipass/gmon.out"
+EXTRACTOR="$HOME/condition_extractor/bin/extractor"
+OUTPUT_FILE="$TARGET/work/apipass/analysis_profile.txt"
 
 # Check if gmon.out exists
 if [ ! -f "$GMON_OUT" ]; then
@@ -32,7 +32,7 @@ echo "Success! Profile output saved to:"
 echo "$OUTPUT_FILE"
 
 if [ $SAVE_AS_EXCEL ]; then
-  python3 $LIBFUZZ/gprof_to_excel.py -i $WORK/apipass/analysis_profile.txt -o $WORK/apipass/results.xlsx
+  python3 $LIBFUZZ/gprof_to_excel.py -i $TARGET/work/apipass/analysis_profile.txt -o $TARGET/work/apipass/results.xlsx
   echo "Success! Excel file saved to:"
   echo "$WORK/apipass/results.xlsx"
 fi

@@ -14,7 +14,7 @@ echo "Debugging target ${TARGET}"
 DOCKER_IMAGE=libfuzzpp_debug_${TARGET}
 
 DOCKER_BUILDKIT=1 docker build --build-arg USER_UID=$(id -u) \
-     --build-arg GROUP_UID=$(id -g) --target libfuzzpp_debug \
+     --build-arg GROUP_UID=$(id -g) --target libfuzzpp_debug_org \
      --build-arg target_name="${TARGET}" \
      -t ${DOCKER_IMAGE} -f Dockerfile . 
 docker run -it -v $(pwd):/workspaces/libfuzz ${DOCKER_IMAGE} zsh
