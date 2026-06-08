@@ -30,6 +30,8 @@ using namespace llvm;
 namespace libfuzz {
 
   // extern cl::opt<bool> ClCreateCastRelatedTypeList;
+  extern std::string current_target_name;
+  extern std::string output_file_dir;
 
 
   typedef struct {

@@ -1,5 +1,6 @@
 #include <memory>
 
+#include "LibfuzzUtil.h"
 #include "MemoryModel/PointsTo.h"
 #include "SVF-LLVM/LLVMUtil.h"
 #include "SVFIR/SVFModule.h"
@@ -59,8 +60,6 @@ void GlobalStruct::analyze() {
   SVFGEdgeSetTy svfgEdges;
   CallEdgeMap newEdges;
 
-  std::fstream file("function_pointers.txt", std::ios_base::out);
-
   // SVFUtil::outs() << "My unresolved calls:\n";
   // Actually resolving call targets
   for (auto cnode : unresolved_calls) {
@@ -117,6 +116,10 @@ void GlobalStruct::analyze() {
 
   this->new_edges = newEdges;
 
+  std::string file_path = libfuzz::output_file_dir + "/" +
+                          libfuzz::current_target_name +
+                          "_function_pointers.txt";
+  std::fstream file(file_path, std::ios_base::out);
   if (file.is_open()) {
     file << "Found " << fncs.size() << " target functions.\n";
     file << "Found " << unresolved_calls.size() << " unresolved calls.\n";
@@ -131,15 +134,12 @@ void GlobalStruct::analyze() {
       }
       file << "}\n";
     }
-
     file << endl;
-
     file << "----------- UNRESOLVED CALLS -------------\n";
     i = 1;
     for (auto uc : unresolved_calls) {
       file << i++ << ". " << uc->toString() << "\n";
     }
-
     file << "---------- ADDED EDGES ----------\n";
     i = 1;
     for (auto edge : newEdges) {
@@ -149,7 +149,6 @@ void GlobalStruct::analyze() {
       }
       file << "}\n";
     }
-
     file.flush();
     file.close();
   }

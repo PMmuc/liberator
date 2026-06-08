@@ -45,8 +45,11 @@
 #include "PhiFunction.h"
 #include "PostDominators.h"
 #include "TypeMatcher.h"
+<<<<<<< HEAD
 #include <llvm/Support/TimeProfiler.h>
 #include <llvm/Support/raw_ostream.h>
+    =======
+>>>>>>> 87e6672 (update)
 
 // for random sampling
 #include <algorithm>
@@ -59,7 +62,7 @@
 
 #include "md5/md5.h"
 
-using namespace std;
+    using namespace std;
 using namespace SVF;
 using namespace SVFUtil;
 using namespace LLVMUtil;
@@ -78,6 +81,8 @@ static llvm::cl::opt<std::string>
     FunctionName("function", llvm::cl::desc("<function name>"));
 static llvm::cl::opt<std::string>
     LibInterface("interface", llvm::cl::desc("<library interface>"));
+static llvm::cl::opt<std::string>
+    TargetNameOpt("target_name", llvm::cl::desc("<target name>"));
 
 static llvm::cl::opt<Verbosity> Verbose(
     "v", llvm::cl::desc("<verbose>"), llvm::cl::init(v0),
@@ -124,6 +129,8 @@ static llvm::cl::opt<std::string>
                 llvm::cl::init(""));
 
 Verbosity verbose;
+std::string libfuzz::current_target_name;
+std::string libfuzz::output_file_dir;
 
 bool is_fuzzing_compatible(llvm::StructType *st) {
 
@@ -390,7 +397,15 @@ int main(int argc, char **argv) {
   cl::ParseCommandLineOptions(arg_num, arg_value,
                               "Extract constraints from functions\n");
 
-  llvm::timeTraceProfilerInitialize(500, "Liberator Profiler");
+  libfuzz::current_target_name = TargetNameOpt;
+
+  std::string out_path = OutputFile;
+  size_t last_slash_idx = out_path.rfind('/');
+  if (std::string::npos != last_slash_idx) {
+    libfuzz::output_file_dir = out_path.substr(0, last_slash_idx);
+  } else {
+    libfuzz::output_file_dir = ".";
+  }
 
   bool all_functions = true;
   std::string function;
@@ -497,36 +512,21 @@ int main(int argc, char **argv) {
     libfuzz::dumpApiInfo(my_fun);
   }
   /// Build Program Assignment Graph (SVFIR)
-  SVFIR *pag = nullptr;
-  ICFG *icfg = nullptr;
-  PTACallGraph *callgraph;
-  GlobalStruct *point_to_analysys = nullptr;
-  {
-    llvm::TimeTraceScope scope("SVFIR Analysis Builder");
-    SVFIRBuilder builder(svfModule);
-    pag = builder.build();
-    icfg = pag->getICFG();
-    /// Create Andersen's pointer analysis
-    // Andersen* point_to_analysys =
-    // AndersenWaveDiff::createAndersenWaveDiff(pag); FlowSensitive*
-    // point_to_analysys = FlowSensitive::createFSWPA(pag); AndersenSCD*
-    // point_to_analysys = AndersenSCD::createAndersenSCD(pag); TypeAnalysis*
-    // point_to_analysys = new TypeAnalysis(pag);
-    point_to_analysys = GlobalStruct::createSGWPA(pag);
+  SVFIRBuilder builder(svfModule);
+  SVFIR *pag = builder.build();
+  ICFG *icfg = pag->getICFG();
+  /// Create Andersen's pointer analysis
+  // Andersen* point_to_analysys =
+  // AndersenWaveDiff::createAndersenWaveDiff(pag); FlowSensitive*
+  // point_to_analysys = FlowSensitive::createFSWPA(pag); AndersenSCD*
+  // point_to_analysys = AndersenSCD::createAndersenSCD(pag); TypeAnalysis*
+  // point_to_analysys = new TypeAnalysis(pag);
+  GlobalStruct *point_to_analysys = GlobalStruct::createSGWPA(pag);
+  point_to_analysys->analyze();
+  SVFUtil::outs() << "[INFO] Analysis done!\n";
+  // stop analysis after extracting resolving callsites.
+  return 0;
 
-    point_to_analysys->analyze();
-
-    SVFUtil::outs() << "[INFO] Analysis done!\n";
-
-    // for (auto x: funmap_par) {
-    //     SVFUtil::outs() << x.first << "\n";
-    //     SVFUtil::outs() << x.second.size() << "\n";
-    // }
-    // exit(1);
-
-    callgraph = point_to_analysys->getPTACallGraph();
-    builder.updateCallGraph(callgraph);
-  }
   GlobalStruct::CallEdgeMap newEdges = point_to_analysys->get_new_edges();
   // NOTE: copy callsite->target relation in a neutral structure
   for (auto x : newEdges) {
@@ -534,10 +534,22 @@ int main(int argc, char **argv) {
     for (auto t : x.second)
       ValueMetadata::myCallEdgeMap_inst[cs].insert(t);
   }
-  PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
-  PAG::FunToRetMap funmap_ret = pag->getFunRets();
+
   Dominator *dom = nullptr;
   PostDominator *pDom = nullptr;
+
+  PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
+
+  // for (auto x: funmap_par) {
+  //     SVFUtil::outs() << x.first << "\n";
+  //     SVFUtil::outs() << x.second.size() << "\n";
+  // }
+  // exit(1);
+
+  PAG::FunToRetMap funmap_ret = pag->getFunRets();
+
+  PTACallGraph *callgraph = point_to_analysys->getPTACallGraph();
+  builder.updateCallGraph(callgraph);
   icfg = pag->getICFG();
   icfg->updateCallGraph(callgraph);
 
@@ -586,10 +598,8 @@ int main(int argc, char **argv) {
     // SVFUtil::outs() << "[INFO] All function\n";
     // for (auto f: functions)
     //     SVFUtil::outs() << f << "\n";
-
-    // SVFUtil::outs() << "[INFO] Total: " << minimize_functions.size() <<
-    // "\n"; SVFUtil::outs() << "[INFO] Original: " << functions.size() <<
-    // "\n";
+    // SVFUtil::outs() << "[INFO] Total: " << minimize_functions.size() << "\n";
+    // SVFUtil::outs() << "[INFO] Original: " << functions.size() << "\n";
   }
 
   // SVFUtil::outs() << " === EXIT FOR DEBUG ===\n";
@@ -810,14 +820,6 @@ int main(int argc, char **argv) {
 
     SVFUtil::outs() << "[INFO] struct data layout done!\n";
   }
-
-  std::error_code EC;
-  llvm::raw_fd_ostream OS("liberator_trace.JSON", EC);
-  if (!EC) {
-    llvm::timeTraceProfilerWrite(OS);
-  }
-
-  llvm::timeTraceProfilerCleanup();
 
   // clean up memory
   if (dom)

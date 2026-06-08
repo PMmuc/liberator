@@ -63,12 +63,11 @@ extract-bc -b "$WORK"/lib/libcares_static.a
 
 # extract fields dependency from the library itself, repeat for each object
 # produced
-cd "$WORK"/apipass
-
-$PROF_EXTRACTOR "$TOOLS_DIR"/condition_extractor/bin/extractor \
+"$TOOLS_DIR"/condition_extractor/bin/extractor \
   "$WORK"/lib/libcares_static.a.bc \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -output "$LIBFUZZ_LOG_PATH/conditions.json" \
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
   -v v0 -t json -do_indirect_jumps \
-  -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+  -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
+  -target_name "$TARGET_NAME"
