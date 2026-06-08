@@ -21,6 +21,8 @@ LLVM/llvm-build
 meta/*
 
 fuzzing_campaigns/generate_*_testing_*
+condition_extractor/CLAUDE.md
+init.md
 
 fuzzing_campaigns/gen*_deep*
 fuzzing_campaigns/perc_api*
@@ -119,6 +121,8 @@ service.log
 llvm-project/build
 llvm-project-old
 llvm-project/
+llvm-21/
+.antigravitycli/
 fuzzing_campaigns/weight_logs.txt
 fuzzing_campaigns/source_weight_logs.json
 paths_observed.txt
