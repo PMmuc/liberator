@@ -13,8 +13,11 @@
 #include "Config.h"
 #include "GlobalStruct.h"
 #include "Profiler.hpp"
+#include "SignatureMatching.hpp"
 #include "TypeMatcher.h"
+#include <ios>
 #include <llvm/IR/Argument.h>
+#include <llvm/IR/GlobalAlias.h>
 #include <llvm/IR/GlobalVariable.h>
 #include <llvm/Support/AMDGPUAddrSpace.h>
 #include <llvm/Support/raw_ostream.h>
@@ -119,6 +122,8 @@ void GlobalStruct::analyze() {
   SVFGEdgeSetTy svfgEdges;
   CallEdgeMap newEdges;
 
+  auto slot_map = build_slot_map(*llvmModuleSet->getMainLLVMModule());
+
   {
     PROFILE_SCOPE("GlobalStruct: Resolve Indirect Calls");
     // Try to analyze why the points to set is empty for this indirect call.
@@ -140,20 +145,20 @@ void GlobalStruct::analyze() {
       if (llvm_cs == nullptr)
         continue;
 
-      auto type_inference = llvmModuleSet->getTypeInference();
+      // auto type_inference = llvmModuleSet->getTypeInference();
 
       // llvm::raw_string_ostream(str) << *llvm_cs;
       // SVFUtil::outs() << str << "\n";
-      FunctionType *fun_type = llvm_cs->getFunctionType();
-      // TODO: Here we need to find the types of the params and the return type:
-      int arg_num = 1;
+      // FunctionType *fun_type = llvm_cs->getFunctionType();
+      /*int arg_num = 1;
       for (const auto &arg : llvm_cs->args()) {
         if (llvm::Value *v = dyn_cast<Value>(arg)) {
           string out, type_str;
           if (v->getType()->isPointerTy()) {
-            const Type *type = type_inference->inferObjType(v);
-            raw_string_ostream os1(type_str);
-            type->print(os1);
+            // const Type *type = type_inference->inferObjType(v);
+            // raw_string_ostream os1(type_str);
+            // type->print(os1);
+
           } else {
             raw_string_ostream os1(type_str);
             v->getType()->print(os1);
@@ -163,10 +168,10 @@ void GlobalStruct::analyze() {
           GLOBAL_LOG("Found arg {}. {} with type: {}", arg_num, out, type_str);
         }
         ++arg_num;
-      }
+      }*/
 
       // This  will compute the hash of the signature of the function.
-      auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
+      // auto fun_type_hash = TypeMatcher::compute_hash(fun_type);
       // auto fun_type_hash_str = TypeMatcher::compute_unique_string(fun_type);
 
       // llvm::raw_string_ostream(str) << *fun_type << "\n";
@@ -179,11 +184,34 @@ void GlobalStruct::analyze() {
       // returns function containg the call
       const FunObjVar *fun_caller = callsite->getCaller();
 
+      // resolve the callsite to it's function type.
+      std::string lookup_key;
+      if (const auto *sr = resolve_callbase(llvm_cs, slot_map)) {
+        lookup_key = "DW " + signature(sr);
+        string out;
+        raw_string_ostream os(out);
+        llvm_cs->print(os);
+        GLOBAL_LOG("Callsite {} has function pointer type {}\n", out,
+                   lookup_key);
+      }
+      /*else {
+        lookup_key =
+            "OP " + TypeMatcher::compute_hash(llvm_cs->getFunctionType());
+        GLOBAL_LOG("Couldn't find type of function pointer. Falling back to {}",
+                   lookup_key);
+      }*/
+
       unsigned int x = 0;
       // SVFUtil::outs() << "callBlockNode: " << callBlockNode->toString() <<
       // "\n";
-      for (auto f : fncs[fun_type_hash]) {
+      for (auto f : fncs[lookup_key]) {
         auto fun_callee = llvmModuleSet->getFunObjVar(f);
+
+        std::string out;
+        raw_string_ostream os(out);
+        llvm_cs->print(os);
+        GLOBAL_LOG("The function: {} called at {} got matched with key: {}\n",
+                   f->getName().str(), out, lookup_key);
 
         // if (ExtAPI::getExtAPI()->is_ext(fun_callee))
         //     SVFUtil::outs() << "it is external!\n";
@@ -200,6 +228,54 @@ void GlobalStruct::analyze() {
 
   // SVFUtil::outs() << "[DEBUG] early stop\n";
   // exit(1);
+  fstream file("function_pointers.txt", std::ios::out);
+
+  if (file.is_open()) {
+    file << "Found " << fncs.size() << " target functions.\n";
+    file << "Found " << unresolved_calls.size() << " unresolved calls.\n";
+
+    int i;
+    file << "----------- FOUND TARGET FUNCTIONS -------------\n";
+    GLOBAL_LOG("----------- FOUND TARGET FUNCTIONS -------------\n");
+    for (auto fset : fncs) {
+      file << "For signature " << fset.first << ": {\n";
+      GLOBAL_LOG("For signature {}: [", fset.first);
+      i = 1;
+      for (auto f : fset.second) {
+        GLOBAL_LOG("{}. {}", i, f->getName().str());
+        file << i++ << ". " << f->getName().str() << "\n";
+      }
+      GLOBAL_LOG("]\n");
+      file << "]\n";
+    }
+
+    file << endl;
+
+    file << "----------- UNRESOLVED CALLS -------------\n";
+    GLOBAL_LOG("----------- UNRESOLVED CALLS -------------\n");
+    i = 1;
+    for (auto uc : unresolved_calls) {
+      GLOBAL_LOG("{}. {}", i, uc->toString());
+      file << i++ << ". " << uc->toString() << "\n";
+    }
+
+    file << "---------- ADDED EDGES ----------\n";
+    GLOBAL_LOG("----------- ADDED EDGES -------------\n");
+    i = 1;
+    for (auto edge : newEdges) {
+      file << "For call: " << edge.first->toString() << " -> {\n";
+      GLOBAL_LOG("For call: {} -> [", edge.first->toString());
+      for (auto target : edge.second) {
+        GLOBAL_LOG("{}", target->getName());
+        file << target->getName() << ",\n";
+      }
+      file << "}\n";
+      GLOBAL_LOG("]\n");
+    }
+
+    file.flush();
+    file.close();
+  }
 
   this->new_edges = newEdges;
 
@@ -265,9 +341,13 @@ void GlobalStruct::get_function_pointers(
       }
     } else if (auto f = SVFUtil::dyn_cast<Function>(value)) {
       GLOBAL_LOG("Found function: {}\n", f->getName().str());
-      auto fun_type = f->getFunctionType();
-      auto k = TypeMatcher::compute_hash(fun_type);
-      fncs[k].insert(f);
+      // add the function with found signature to the set
+
+      if (std::string dw = signature(f); !dw.empty()) {
+        GLOBAL_LOG("Found function signature: {}", dw);
+        fncs["DW " + dw].insert(f);
+      }
+      fncs["OP " + TypeMatcher::compute_hash(f->getFunctionType())].insert(f);
     } else if (auto cs = SVFUtil::dyn_cast<CallBase>(value)) {
       GLOBAL_LOG("Here we found an external call to {}.",
                  cs->getCalledFunction()->getName().str());

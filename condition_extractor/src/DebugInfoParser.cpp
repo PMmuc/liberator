@@ -23,6 +23,7 @@ struct_padding_info_t::struct_padding_info_t(
   SmallVector<field_info_t, 8> field_info;
 
   for (const Metadata *md : type->getElements()) {
+    if (!md) continue;
     const auto *derived = dyn_cast<DIDerivedType>(md);
     if (!derived || derived->getTag() != dwarf::DW_TAG_member)
       continue;
@@ -119,7 +120,7 @@ void debug_info_parser_t::insert_padding_info(
   };
 
   for (DINode *node : type->getElements()) {
-    if (!isa<DICompositeType>(node) && !isa<DIDerivedType>(node))
+    if (!node || (!isa<DICompositeType>(node) && !isa<DIDerivedType>(node)))
       continue;
     StructType *child_struct_type = nullptr;
     while (is_padding(field_idx))
@@ -134,10 +135,11 @@ void debug_info_parser_t::insert_padding_info(
                           ctx, dl, child_struct_type);
     }
     if (auto *derived_di_type = dyn_cast<DIDerivedType>(node)) {
-      if (auto *composite_di_type =
-              dyn_cast<DICompositeType>(derived_di_type->getBaseType()))
-        insert_padding_info(composite_di_type, padding_info_map, visited, ctx,
-                            dl, child_struct_type);
+      if (auto *base_type = derived_di_type->getBaseType()) {
+        if (auto *composite_di_type = dyn_cast<DICompositeType>(base_type))
+          insert_padding_info(composite_di_type, padding_info_map, visited, ctx,
+                              dl, child_struct_type);
+      }
       field_idx++;
     }
   }

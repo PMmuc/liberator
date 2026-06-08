@@ -544,8 +544,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
     // callee
     for (auto t : x.second) {
       // typedef std::map<const CallICFGNode *, std::set<const FunObjVar *>>
-      APARM_LOG("Found an indirect call in {} to {}",
-                t->getICFGNode()->getName(), t->getName());
+      // APARM_LOG("Found an indirect call in {} to {}",
+      // t->getICFGNode()->getName(), t->getName());
       ValueMetadata::myCallEdgeMap_inst[cs].insert(t);
     }
   }
