@@ -79,7 +79,7 @@ RUN cd ${HOME}/python && python3 -m pip install -r requirements.txt
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR LIBRARY DEBUG
-FROM libfuzzpp_dev_image AS libfuzzpp_debug_org
+FROM libfuzzpp_dev_image_org AS libfuzzpp_debug_org
 
 ENV TOOLS_DIR ${HOME}
 ARG target_name=simple_connection
@@ -122,7 +122,7 @@ WORKDIR ${LIBFUZZ}
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR LIBRARY ANALYSIS
-FROM libfuzzpp_dev_image AS libfuzzpp_analysis
+FROM libfuzzpp_dev_image_org AS libfuzzpp_analysis_org
 
 ENV TOOLS_DIR ${HOME}
 
@@ -146,7 +146,7 @@ CMD ${LIBFUZZ}/targets/start_analysis.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR DRIVER GENERATION
-FROM libfuzzpp_dev_image AS libfuzzpp_drivergeneration
+FROM libfuzzpp_dev_image_org AS libfuzzpp_drivergeneration_org
 
 ARG target_name=simple_connection
 
@@ -156,7 +156,7 @@ CMD ${LIBFUZZ}/targets/start_generate_drivers.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR FUZZING SESSION
-FROM libfuzzpp_dev_image AS libfuzzpp_fuzzing
+FROM libfuzzpp_dev_image_org AS libfuzzpp_fuzzing_org
 
 ARG target_name=simple_connection
 # ARG timeout=10m
@@ -189,7 +189,7 @@ CMD ${LIBFUZZ}/targets/start_fuzz_driver.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR COVERAGE
-FROM libfuzzpp_fuzzing AS libfuzzpp_coverage
+FROM libfuzzpp_fuzzing_org AS libfuzzpp_coverage_org
 
 WORKDIR ${LIBFUZZ}
 ENV PROJECT_COVERAGE ${LIBFUZZ}/workdir/${TARGET_NAME}/coverage_data
@@ -199,7 +199,7 @@ CMD ${LIBFUZZ}/targets/start_coverage.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR CRASH CLUSTERING
-FROM libfuzzpp_fuzzing AS libfuzzpp_crash_cluster
+FROM libfuzzpp_fuzzing_org AS libfuzzpp_crash_cluster_org
 
 WORKDIR ${LIBFUZZ}
 ENV TARGET_WORKDIR ${LIBFUZZ}/workdir/${TARGET_NAME}
@@ -207,14 +207,14 @@ CMD ${LIBFUZZ}/targets/start_clustering.sh
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR FUZZING CAMPAIGNS
-FROM libfuzzpp_dev_image AS libfuzzpp_fuzzing_campaigns
+FROM libfuzzpp_dev_image_org AS libfuzzpp_fuzzing_campaigns_org
 COPY LLVM/update-alternatives-clang.sh .
 RUN sudo ./update-alternatives-clang.sh 12 200
 WORKDIR ${LIBFUZZ}
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR DYNAMIC DRIVER CREATION
-FROM libfuzzpp_fuzzing AS libfuzzpp_dyndrvgen
+FROM libfuzzpp_fuzzing_org AS libfuzzpp_dyndrvgen_org
 ENV DRIVER_FOLDER ""
 WORKDIR ${LIBFUZZ}
 COPY LLVM/update-alternatives-clang.sh .
