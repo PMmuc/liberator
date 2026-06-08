@@ -17,7 +17,7 @@ for target_dir in targets/*; do
         echo "========================================================="
         
         export TARGET="$TARGET_NAME"
-        ./docker/run_analysis.sh
+        (cd docker && ./run_analysis.sh)
         
         if [ $? -ne 0 ]; then
             echo "[ERROR] Analysis failed for $TARGET_NAME"
