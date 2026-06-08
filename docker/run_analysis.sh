@@ -5,6 +5,11 @@
 # - env TARGET: target name (from targets/)
 ##
 
+set -x
+
+ROOT_DIR=$(dirname $(dirname $(realpath run_analysis.sh)))/
+echo $ROOT_DIR
+
 if [ -z "$TARGET" ]; then
   echo "[ERROR] \$TARGET must be specified as an environment variable"
   exit 1
@@ -18,19 +23,19 @@ if [ -s "$LIBPP/analysis/$TARGET/work/apipass/conditions.json" ]; then
   exit 0
 fi
 
-set -x
+#set -x
 DOCKER_BUILDKIT=1 docker build \
   --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
   -t "$IMG_NAME" --target libfuzzpp_analysis \
   -f "$LIBPP/Dockerfile" "$LIBPP"
-set +x
+#set +x
 
 echo "$IMG_NAME"
 
 if [[ "${DEVENV}" ]]; then
   docker run --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
-    "$IMG_NAME" /bin/zsh
+    "$IMG_NAME"
 else
-  docker run --rm -it --name "${IMG_NAME}-${TARGET}" \
-    --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" "$IMG_NAME" /bin/zsh
+  docker run --rm -d --name "${IMG_NAME}-${TARGET}" \
+    --env TARGET=${TARGET} -v "$ROOT_DIR:/workspaces/libfuzz" "$IMG_NAME"
 fi
