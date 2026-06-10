@@ -55,13 +55,20 @@ launch() {  # $1 = cpu, $2 = target
 }
 
 reap() {  # $1 = pid that finished, $2 = its exit code
-    local pid="$1" rc="$2" cpu
+    local pid="$1" rc="$2" cpu target
     for cpu in "${CPUS[@]}"; do
         if [ "${slot_pid[$cpu]}" = "$pid" ]; then
-            if [ "$rc" -eq 0 ]; then
-                echo "[SUCCESS] [cpu $cpu] ${slot_target[$cpu]}"
+            target="${slot_target[$cpu]}"
+            # Judge success by the produced artifact, not the container exit code:
+            # start_analysis.sh ends on an optional gprof/Excel step that exits 1
+            # whenever gmon.out is absent (i.e. every non-profiling run), even though
+            # the analysis itself already ran. The extractor writes
+            # <target>_function_pointers.txt next to the -output file (work/apipass/).
+            artifact="analysis/$target/work/apipass/${target}_function_pointers.txt"
+            if [ -s "$artifact" ]; then
+                echo "[SUCCESS] [cpu $cpu] $target"
             else
-                echo "[ERROR]   [cpu $cpu] ${slot_target[$cpu]} (exit $rc, see $LOG_DIR/${slot_target[$cpu]}.log)"
+                echo "[ERROR]   [cpu $cpu] $target (exit $rc, missing $artifact — see $LOG_DIR/$target.log)"
             fi
             slot_pid[$cpu]=""
             return
