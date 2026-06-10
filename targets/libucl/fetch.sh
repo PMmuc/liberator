@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/vstakhov/libucl.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 5c58d0d5b939daf6f0c389e15019319f138636c2
+git -C "$TARGET/repo" checkout 058286f4f85e2a66130e8bdaddf402d9c78d259c

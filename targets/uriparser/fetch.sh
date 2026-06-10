@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/uriparser/uriparser.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 1762d5ff025fb07b4b8ccd1a8a9635009b2e9e34
+git -C "$TARGET/repo" checkout 9b2bed92f5deecf740819f9bf27724bee2fe9c12

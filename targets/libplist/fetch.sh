@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/libimobiledevice/libplist.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 44099d4b79c8d6a7d599d652ebef62db8dae6696
+git -C "$TARGET/repo" checkout 02cf35bb445ad1a6ed6180f78cfb6528a1e36c19

@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/mm2/Little-CMS.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 2daf5c5859e1b62b6633ca755074e4de02459241
+git -C "$TARGET/repo" checkout 21c582a594fe5279f90c0b93437c398f93bf62b0

@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/madler/zlib  \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 0f51fb4933fc9ce18199cb2554dacea8033e7fd3
+git -C "$TARGET/repo" checkout da607da739fa6047df13e66a2af6b8bec7c2a498

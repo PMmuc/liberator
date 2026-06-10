@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://android.googlesource.com/platform/external/pthreadpool \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout f355e616e15b366dae115c916ef19e3b70327ad5
+git -C "$TARGET/repo" checkout 3278138cd43f4d81aed2a406680f2dc328492d2e

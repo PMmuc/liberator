@@ -7,4 +7,4 @@
 
 git clone https://chromium.googlesource.com/webm/libvpx \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout fd84dccd511f6db3a0aa666e52ee62b7b1699d64
+git -C "$TARGET/repo" checkout 1024874c5919305883187e2953de8fcb4c3d7fa6

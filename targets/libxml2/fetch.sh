@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/GNOME/libxml2.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 7846b0a677f8d3ce72486125fa281e92ac9970e8
+git -C "$TARGET/repo" checkout c94eb0210183b9d7cb43f8e7fddc6be55843ef49

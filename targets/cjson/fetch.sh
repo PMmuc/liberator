@@ -6,4 +6,4 @@
 ##
 git clone --no-checkout https://github.com/DaveGamble/cJSON.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 324973008ced4ea03d1626a00915d0399ecbd9db
+git -C "$TARGET/repo" checkout c859b25da02955fef659d658b8f324b5cde87be3

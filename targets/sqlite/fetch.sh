@@ -7,4 +7,4 @@
 
 git clone --no-checkout https://github.com/sqlite/sqlite.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 538ad6ce58c47e48f2c85abfcb31c968e615fc40
+git -C "$TARGET/repo" checkout 189e44dfecdc7868bb860dfb5d98eab371318c37

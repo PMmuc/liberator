@@ -6,4 +6,4 @@
 ##
 git clone --no-checkout https://github.com/c-ares/c-ares.git \
     "$TARGET/repo"
-git -C "$TARGET/repo" checkout 25ad4ca231054ba210ea5a31a5a15195d03e70b6
+git -C "$TARGET/repo" checkout 3ac47ee46edd8ea40370222f91613fc16c434853
