@@ -1,10 +1,23 @@
 #!/bin/bash
-
-##
+#
 # Pre-requirements:
 # - env TARGET: path to target work dir
-##
+#
+# Idempotent: safe to re-run. Reuses an existing checkout and only fetches the
+# pinned commit if a previous (older) clone predates it.
+set -e
 
-git clone https://chromium.googlesource.com/webm/libvpx \
-    "$TARGET/repo"
-git -C "$TARGET/repo" checkout 1024874c5919305883187e2953de8fcb4c3d7fa6
+REPO="$TARGET/repo"
+URL="https://chromium.googlesource.com/webm/libvpx"
+COMMIT="1024874c5919305883187e2953de8fcb4c3d7fa6"
+
+if [ ! -d "$REPO/.git" ]; then
+  git clone --no-checkout "$URL" "$REPO"
+fi
+
+# Make sure the pinned commit exists locally; fetch it if not.
+if ! git -C "$REPO" cat-file -e "${COMMIT}^{commit}" 2>/dev/null; then
+  git -C "$REPO" fetch --tags origin || git -C "$REPO" fetch origin "$COMMIT" || true
+fi
+
+git -C "$REPO" checkout -f --detach "$COMMIT"
