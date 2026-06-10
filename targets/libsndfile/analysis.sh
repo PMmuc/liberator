@@ -34,6 +34,7 @@ cd "$TARGET/repo/libsndfile_build"
 
 cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
         -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+        -DBUILD_PROGRAMS=OFF -DBUILD_TESTING=OFF \
         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
         -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 # configure compiles some shits for testing, better remove it

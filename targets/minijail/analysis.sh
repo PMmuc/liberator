@@ -37,6 +37,9 @@ echo "make 1"
 export REPO="$TARGET/repo"
 cd $REPO
 
+# newer kernel headers define BLKTRACESETUP2; allow it in the constant generator
+sed -i 's/(SIGRTMAX|SIGRTMIN|SIG_|NULL)/(SIGRTMAX|SIGRTMIN|SIG_|NULL|BLKTRACESETUP2)/g' "$REPO/gen_constants.sh"
+
 # configure compiles some shits for testing, better remove it
 rm -rf $LIBFUZZ_LOG_PATH/apis.log
 

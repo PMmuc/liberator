@@ -34,7 +34,7 @@ cd "$TARGET/repo"
 echo "./configure"
 # ./configure --disable-shared --prefix="$WORK" \
 #                                 CC=wllvm CXX=wllvm++
-./configure --disable-shared --prefix="$WORK" \
+./configure --disable-shared --disable-cxx --prefix="$WORK" \
   CC=wllvm CXX=wllvm++ \
   CXXFLAGS="-g -O0" \
   CFLAGS="-g -O0"
@@ -55,7 +55,6 @@ make -j$(nproc)
 echo "make install"
 make install
 
-extract-bc -b $WORK/lib/libtiffxx.a
 extract-bc -b $WORK/lib/libtiff.a
 
 # this extracts the exported functions in a file, to be used later for grammar

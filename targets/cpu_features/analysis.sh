@@ -29,10 +29,11 @@ export LIBFUZZ_LOG_PATH=$WORK/apipass
 mkdir -p $LIBFUZZ_LOG_PATH
 
 cd "$TARGET/repo"
-cmake . -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+cmake . -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_TESTING=OFF \
         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
-        -DCMAKE_CXX_FLAGS_DEBUG="-g -O0" 
+        -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 
 # configure compiles some shits for testing, better remove it
 rm -rf $LIBFUZZ_LOG_PATH/apis.log

@@ -24,21 +24,17 @@ mkdir -p $LIBFUZZ_LOG_PATH
 
 echo "make 1"
 cd "$TARGET/repo"
-./autogen.sh --enable-debug --without-cython  --with-tools=no --without-tests --prefix="$WORK" \
-                                CC=wllvm CXX=wllvm++ \
-                                CXXFLAGS="-g -O0" \
-                                CFLAGS="-g -O0"
-
-echo "./configure"
-
-# Compile library for coverage
-#./configure --disable-shared --prefix="$WORK" \
-#                                CC=wllvm CXX=wllvm++ \
-#                                CXXFLAGS="-g -O0" \
-#                                CFLAGS="-g -O0"
-
-# WATCH OUT PADAWAN! SOMETIME SETTING -O0 IN C{XX}FLAGS MIGHT NOT BE ENOUGH!
-find . -name Makefile -exec sed -i 's/-O2/-O0/g' {} \;
+# libplist 1.3+ builds with cmake; force the static lib and a g++ host compiler
+export CXX=g++
+find . -name CMakeLists.txt -exec sed -i 's/SHARED//g' {} \;
+rm -rf "$TARGET/repo/build"
+mkdir -p "$TARGET/repo/build"
+cd "$TARGET/repo/build"
+cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+        -DCMAKE_CXX_FLAGS_DEBUG="-g -O0" \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 # configure compiles some shits for testing, better remove it
 rm $LIBFUZZ_LOG_PATH/apis.log || true
@@ -50,13 +46,14 @@ touch $LIBFUZZ_LOG_PATH/apis_llvm.json
 touch $LIBFUZZ_LOG_PATH/coerce.log
 
 echo "make clean"
+cd "$TARGET/repo/build"
 make -j$(nproc) clean
 echo "make"
 make -j$(nproc)
 echo "make install"
 make install
 
-extract-bc -b $WORK/lib/libplist-2.0.a
+extract-bc -b $WORK/lib/libplist.a
 
 # this extracts the exported functions in a file, to be used later for grammar generations
 $TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
@@ -70,7 +67,7 @@ $TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
     cd "$WORK"/apipass
 
 $PROF_EXTRACTOR $TOOLS_DIR/condition_extractor/bin/extractor \
-    $WORK/lib/libplist-2.0.a.bc \
+    $WORK/lib/libplist.a.bc \
     -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \
     -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
