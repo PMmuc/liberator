@@ -16,6 +16,8 @@ enum OutType { txt, json, stdo };
 enum Verbosity { v0, v1, v2, v3 };
 
 struct config_t {
+  // Name of the target (library) currently being analysed
+  std::string target_name;
   // Function to analyze
   std::string function;
   Verbosity verbose;

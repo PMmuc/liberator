@@ -13,7 +13,7 @@ if [ -z "$TARGET" ]; then
   exit 1
 fi
 
-IMG_NAME="libpp-analysis"
+IMG_NAME="libpp-analysis-new"
 LIBPP=../
 
 if [ -s "$LIBPP/analysis/$TARGET/work/apipass/conditions.json" ]; then
@@ -24,11 +24,10 @@ fi
 set -x
 DOCKER_BUILDKIT=1 docker build \
   --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
-  -t "$IMG_NAME" --target libfuzzpp_analysis \
+  --build-arg USE_LOCAL_LLVM="false" \
+  -t "$IMG_NAME" --target libfuzzpp_analysis_new \
   -f "$LIBPP/Dockerfile" "$LIBPP"
 set +x
-
-echo "$IMG_NAME"
 
 if [[ "${DEVENV}" ]]; then
   docker run --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \

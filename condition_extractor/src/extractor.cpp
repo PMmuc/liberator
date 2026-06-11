@@ -26,6 +26,9 @@ static llvm::cl::opt<std::string>
     InputFilename(cl::Positional, llvm::cl::desc("<input bitcode>"),
                   llvm::cl::init("-"));
 static llvm::cl::opt<std::string>
+    TargetName("target", llvm::cl::desc("<name of the target being analysed>"),
+               llvm::cl::init(""));
+static llvm::cl::opt<std::string>
     FunctionName("function", llvm::cl::desc("<function name>"));
 static llvm::cl::opt<std::string>
     LibInterface("interface", llvm::cl::desc("<library interface>"));
@@ -120,6 +123,7 @@ int main(int argc, char **argv) {
   }
 
   auto config = config_t::instance();
+  config->target_name = TargetName;
   config->function = FunctionName;
   config->verbose = Verbose;
   config->consider_indirect_calls = doIndJump;
@@ -151,6 +155,11 @@ int main(int argc, char **argv) {
   if (config->verbose >= Verbosity::v2) {
     config->debug = true;
     config->debug_condition = DebugCondition;
+  }
+
+  if (!config->target_name.empty()) {
+    SVFUtil::outs() << "[INFO] Analysing target: " << config->target_name
+                    << "\n";
   }
 
   moduleNameVec.push_back(config->input_filename);

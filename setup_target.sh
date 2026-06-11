@@ -7,27 +7,16 @@ usage() {
 
 source setup.sh
 
-if [[ -z "$1" && -z "$TARGET" ]]; then
-  usage
+if [[ ! -z "$1" ]]; then
+  export TARGET_NAME="$1"
+elif [ ! -z "$TARGET" ]; then
+  export TARGET_NAME=$TARGET
 fi
 
-export TARGET_NAME=$1
-export TARGET_DIR=$LIBFUZZ/targets
+export GEN_TARGET_DIR=$LIBFUZZ/targets
+export TARGET_DIR=$GEN_TARGET_DIR/$TARGET_NAME
 
-if [ -d "$TARGET" ]; then
-  TARGET_NAME=$(basename $TARGET)
-else
-  TARGET_NAME=$1
-fi
-
-export TARGET=$TARGET_DIR/$TARGET_NAME
-
-echo "LIBFUZZ: $LIBFUZZ"
-
-SCRIPT_DIR="$LIBFUZZ/"
-TARGET_DIR="$SCRIPT_DIR/targets/"
-CONFIG_FILE="$PROJECT/targets/$TARGET_NAME/config.sh"
-
+CONFIG_FILE="$TARGET_DIR/config.sh"
 
 # Default environment setup
 export LLVM_COMPILER=clang

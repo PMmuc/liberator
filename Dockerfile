@@ -212,7 +212,8 @@ COPY --chown=${USERNAME}:${USERNAME} ./condition_extractor ${TOOLS_DIR}/conditio
 COPY --chown=${USERNAME}:${USERNAME} ./tool/misc/extract_included_functions.py ${TOOLS_DIR}/tool/misc/
 ENV PATH="/home/libfuzz/llvm-21/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/home/libfuzz/llvm-21/lib:${LD_LIBRARY_PATH}"
-RUN cd ${TOOLS_DIR}/condition_extractor && rm -Rf CMakeCache.txt CMakeFiles && ./bootstrap.sh && cd build && make -j
+ENV PATH="${PATH}:${HOME}/.local/bin"
+RUN cd ${TOOLS_DIR}/condition_extractor && rm -Rf CMakeCache.txt CMakeFiles && ./bootstrap.sh && cd build && make -j && cp ${SVF_DIR}/lib/extapi.bc bin/extapi.bc
 
 # NOTE: start_analysis.sh finds out its configuration automatically
 

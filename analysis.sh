@@ -11,6 +11,7 @@ echo "Analysing $TARGET_NAME"
 
 source setup_target.sh $1
 
+export TARGET="$LIBFUZZ/analysis/$TARGET_NAME/"
 export WORK="$TARGET/work"
 
 FETCH_ONLY=false
@@ -34,9 +35,10 @@ is_docker() {
 }
 
 # Load target configuration
+# Pull target library into $WORK directory
 # This must provide:
-# - REPO_URL
-# - REPO_COMMIT
+# - REPO_URL - the url of the target library.
+# - REPO_COMMIT - the commit tag to be pulled.
 # - target_configure() function
 # - BC_FILE_NAME (name of the bitcode/archive to extract, e.g., libxml2.a)
 # Optional:
