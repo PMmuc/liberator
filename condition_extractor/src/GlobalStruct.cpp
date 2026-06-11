@@ -194,17 +194,25 @@ void GlobalStruct::analyze() {
         GLOBAL_LOG("Callsite {} has function pointer type {}\n", out,
                    lookup_key);
       }
-      /*else {
-        lookup_key =
-            "OP " + TypeMatcher::compute_hash(llvm_cs->getFunctionType());
-        GLOBAL_LOG("Couldn't find type of function pointer. Falling back to {}",
-                   lookup_key);
-      }*/
 
       unsigned int x = 0;
       // SVFUtil::outs() << "callBlockNode: " << callBlockNode->toString() <<
       // "\n";
-      for (auto f : fncs[lookup_key]) {
+      auto it = fncs.find(lookup_key);
+
+      bool disable_fallback = true;
+      if (!disable_fallback && it == fncs.end()) {
+        // as fallback method try to fallback to opaque pointer matching.
+        lookup_key =
+            "OP " + TypeMatcher::compute_hash(llvm_cs->getFunctionType());
+        GLOBAL_LOG("Couldn't find type of function pointer. Falling back to {}",
+                   lookup_key);
+        it = fncs.find(lookup_key);
+      }
+      if (it == fncs.end())
+        continue;
+
+      for (auto f : it->second) {
         auto fun_callee = llvmModuleSet->getFunObjVar(f);
 
         std::string out;

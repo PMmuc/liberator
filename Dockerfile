@@ -1,3 +1,8 @@
+# Create a dummy stage that ONLY copies the LLVM directories if they exist
+# We copy .dockerignore so that the COPY command always succeeds, even if local LLVM doesn't exist
+FROM scratch AS llvm_local
+COPY .dockerignore* llvm-16* llvm-21* /
+
 FROM ubuntu:24.04 AS libfuzzpp_dev_image_new
 
 RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
@@ -10,7 +15,7 @@ RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
     libtool libtool-bin libglib2.0-dev wget vim jupp nano \
     bash-completion less apt-utils apt-transport-https curl  \
     ca-certificates gnupg dialog libpixman-1-dev gnuplot-nox \
-    nodejs npm graphviz libtinfo-dev libz-dev zip unzip libedit2 \
+    graphviz libtinfo-dev libz-dev zip unzip libedit2 \
     tmux tree gdb jq bc cloc ccache lsb-release lsof cargo rsync \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +27,6 @@ RUN sudo apt-get update && \
     cmake \
     gcc \
     g++ \
-    nodejs \
     libedit2 \
     zlib1g \
     libzstd1 \
@@ -36,14 +40,14 @@ RUN sudo apt-get update && \
     sudo apt-get clean && \
     sudo rm -rf /var/lib/apt/lists/*^
 
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
-    echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main" | sudo tee /etc/apt/sources.list.d/llvm.list
+#RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
+    #echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main" | sudo tee /etc/apt/sources.list.d/llvm.list
 
 # Clang dependencies
-RUN --mount=type=cache,target=/var/cache/apt apt-get update && apt-get full-upgrade -y && \
-    DEBIAN_FRONTEND="noninteractive" \
-    apt-get -y install --no-install-suggests --no-install-recommends \
-    gcc g++ libncurses6 clang-16 llvm-16-dev libclang-16-dev
+#RUN --mount=type=cache,target=/var/cache/apt apt-get update && apt-get full-upgrade -y && \
+    #DEBIAN_FRONTEND="noninteractive" \
+    #apt-get -y install --no-install-suggests --no-install-recommends \
+    #gcc g++ libncurses6 clang-16 llvm-16-dev libclang-16-dev
 
 
 ARG USERNAME=libfuzz
@@ -85,9 +89,8 @@ RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/face
     sudo ninja install
 
 # install z3 prerequisite of SVF
-RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/Z3Prover/z3.git && \
+RUN --mount=type=cache,target=${HOME}/.ccache/ git clone --depth 1 --branch z3-4.8.12 https://github.com/Z3Prover/z3.git && \
     cd z3 && \
-    git checkout z3-4.8.12 && \
     mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr/local \
@@ -123,28 +126,30 @@ ENV LLVM_VERSION="21"
 
 ARG USE_LOCAL_LLVM="false"
 # Conditionally use local LLVM build or download precompiled release
-RUN --mount=type=bind,source=.,target=/context \
+RUN --mount=type=bind,from=llvm_local,source=/,target=/context \
     if [ "$USE_LOCAL_LLVM" = "true" ] && [ -d "/context/llvm-${LLVM_VERSION}" ]; then \
         echo "==> Copying local LLVM-${LLVM_VERSION} build..."; \
         mkdir -p ${HOME}/llvm-${LLVM_VERSION} && \
         cp -r /context/llvm-${LLVM_VERSION}/. ${HOME}/llvm-${LLVM_VERSION}/; \
     else \
-        echo "==> Downloading precompiled LLVM-16..."; \
-        wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz -O /tmp/llvm.tar.xz && \
-        mkdir -p ${HOME}/llvm-16 && \
-        tar -xf /tmp/llvm.tar.xz -C ${HOME}/llvm-16 --strip-components=1 && \
+        echo "==> Downloading precompiled LLVM-${LLVM_VERSION}..."; \
+        #wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz -O /tmp/llvm.tar.xz && \
+        wget https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.6/LLVM-21.1.6-Linux-X64.tar.xz -O /tmp/llvm.tar.xz && \
+        mkdir -p ${HOME}/llvm-${LLVM_VERSION} && \
+        tar -xf /tmp/llvm.tar.xz -C ${HOME}/llvm-${LLVM_VERSION} --strip-components=1 && \
         rm /tmp/llvm.tar.xz; \
     fi
 
 ENV SVF_VERSION="3.3"
 ENV LLVM_DIR="${HOME}/llvm-${LLVM_VERSION}/"
+ENV SVF_DIR="${HOME}/SVF-${SVF_VERSION}"
 
 # SVF
 # checkout and build SVF 3.3
-RUN --mount=type=cache,target=${HOME}/.ccache/  git clone --depth 1 --branch SVF-${SVF_VERSION} https://github.com/SVF-tools/SVF.git &&\
+RUN --mount=type=cache,target=${HOME}/.ccache/  export PATH="${HOME}/llvm-${LLVM_VERSION}/bin:$PATH" && git clone --depth 1 --branch SVF-${SVF_VERSION} https://github.com/SVF-tools/SVF.git &&\
     cd SVF && \
     mkdir -p build && cd build && \
-    cmake -G Ninja -DSVF_WARN_AS_ERROR=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSVF_ENABLE_ASSERTIONS=ON -DCMAKE_INSTALL_PREFIX=/home/libfuzz/SVF-${SVF_VERSION} -DSVF_ENABLE_RTTI=ON .. && \
+    CC="${HOME}/llvm-${LLVM_VERSION}/bin/clang" CXX="${HOME}/llvm-${LLVM_VERSION}/bin/clang++" cmake -G Ninja -DSVF_WARN_AS_ERROR=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSVF_ENABLE_ASSERTIONS=ON -DCMAKE_INSTALL_PREFIX=${SVF_DIR} -DSVF_ENABLE_RTTI=ON -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld" .. && \
     ninja install
 
 # remove z3 and zstd and SVF source
@@ -171,9 +176,9 @@ ENV DRIVER="*"
 
 WORKDIR ${HOME}/targets/${TARGET_NAME}
 
-COPY --chown=${USERNAME}:${USERNAME} ./analysis.sh ./setup_target.sh ./setup.sh ${LIBFUZZ}/
-COPY --chown=${USERNAME}:${USERNAME} ./targets/targets.txt ${LIBFUZZ}/targets/
-COPY --chown=${USERNAME}:${USERNAME} ./targets/${TARGET_NAME}/config.sh ${LIBFUZZ}/targets/${TARGET_NAME}/
+#COPY --chown=${USERNAME}:${USERNAME} ./analysis.sh ./setup_target.sh ./setup.sh ${LIBFUZZ}/
+#COPY --chown=${USERNAME}:${USERNAME} ./targets/targets.txt ${LIBFUZZ}/targets/
+#COPY --chown=${USERNAME}:${USERNAME} ./targets/${TARGET_NAME}/config.sh ${LIBFUZZ}/targets/${TARGET_NAME}/
 
 RUN cd ${LIBFUZZ} && ./analysis.sh ${TARGET_NAME} --fetch-only
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/build_library.sh ./
@@ -202,19 +207,17 @@ ENV TOOLS_DIR=${HOME}
 
 RUN mkdir -p ${TOOLS_DIR}/condition_extractor/
 RUN mkdir -p ${TOOLS_DIR}/tool/misc/
-RUN sudo apt-get install zlib1g-dev unzip cmake gcc g++ libtinfo6 nodejs
+RUN sudo apt-get install -y zlib1g-dev unzip cmake gcc g++ libtinfo6 nodejs
 COPY --chown=${USERNAME}:${USERNAME} ./condition_extractor ${TOOLS_DIR}/condition_extractor/
 COPY --chown=${USERNAME}:${USERNAME} ./tool/misc/extract_included_functions.py ${TOOLS_DIR}/tool/misc/
-# ENV SVF_DIR /home/libfuzz/SVF
-# ENV LLVM_DIR /home/libfuzz/SVF
-RUN cd ${TOOLS_DIR}/condition_extractor && rm -Rf CMakeCache.txt CMakeFiles && ./bootstrap.sh && make -j
+ENV PATH="/home/libfuzz/llvm-21/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/home/libfuzz/llvm-21/lib:${LD_LIBRARY_PATH}"
+RUN cd ${TOOLS_DIR}/condition_extractor && rm -Rf CMakeCache.txt CMakeFiles && ./bootstrap.sh && cd build && make -j
 
 # NOTE: start_analysis.sh finds out its configuration automatically
 
 #COPY LLVM/update-alternatives-clang.sh .
 #RUN sudo ./update-alternatives-clang.sh 12 200
-ENV PATH="/home/libfuzz/llvm-16/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/home/libfuzz/llvm-16/lib:${LD_LIBRARY_PATH}"
 ENV PATH $PATH:${HOME}/.local/bin
 RUN echo $PATH
 CMD ${LIBFUZZ}/targets/start_analysis.sh

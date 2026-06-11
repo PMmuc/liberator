@@ -472,10 +472,10 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   SVFUtil::outs() << "[INFO] Done\n";
 
   // I extract all the function names from the LLVM module
-  auto functions_llvm =
-      svfModule->functions() |
-      views::transform([](auto &F) { return F.getName().str(); }) |
-      ranges::to<set<string>>();
+  auto transformed = svfModule->functions() | views::transform([](auto &F) {
+                       return F.getName().str();
+                     });
+  std::set<string> functions_llvm(transformed.begin(), transformed.end());
 
   std::set<string> all_funcs;
   ranges::set_intersection(functions_llvm, functions,
@@ -535,6 +535,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
     point_to_analyses->analyze();
   }
   SVFUtil::outs() << "[INFO] Points-to analysis done!\n";
+
+  return {};
 
   GlobalStruct::CallEdgeMap newEdges = point_to_analyses->get_new_edges();
   // NOTE: copy callsite->target relation in a neutral structure

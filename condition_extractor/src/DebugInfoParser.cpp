@@ -49,7 +49,7 @@ struct_padding_info_t::struct_padding_info_t(
     padding_byte_ranges_.emplace_back(curr_offset, size);
 }
 
-std::string struct_padding_info_t::to_string() const {}
+std::string struct_padding_info_t::to_string() const { return ""; }
 
 std::unordered_map<llvm::StructType *, struct_padding_info_t>
 debug_info_parser_t::get_struct_info_padding(const llvm::Module &M) {

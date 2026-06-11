@@ -787,7 +787,7 @@ IBBNode *GenericDominatorTy::getNode(int node_id) {
   }
   outs() << "[ERROR] Node " << node_id << " not found, abort!\n";
   assert(false);
-  // return nullptr;
+  return nullptr;
 }
 
 void GenericDominatorTy::buildTransientReduction() {

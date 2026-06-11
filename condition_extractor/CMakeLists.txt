@@ -19,7 +19,7 @@ option(ENABLE_GPROF "Enable gprof profiling" OFF)
   set(SVF_WARN_AS_ERROR OFF CACHE BOOL "Disable Werror for SVF" FORCE)
   find_package(SVF REQUIRED CONFIG)
   find_package(Z3 REQUIRED CONFIG)
-  find_package(spdlog REQUIRED)
+  #find_package(spdlog REQUIRED)
 
   message(STATUS "Use llvm-config: ${LLVM_CONFIG}")
   execute_process(
