@@ -32,6 +32,8 @@ condition_extractor/src_bkp/*
 condition_extractor/src_bkp/**/*
 
 condition_extractor/node_modules/**/*
+condition_extractor/build-release
+condition_extractor/build_release
 
 selection_main/*
 
