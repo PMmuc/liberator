@@ -36,7 +36,7 @@ cd "$TARGET/repo/aom_build"
 
 cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
         -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
-        -DENABLE_TESTS=0 \
+        -DENABLE_TESTS=0 -DENABLE_EXAMPLES=0 -DENABLE_TOOLS=0 \
         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
         -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 # configure compiles some shits for testing, better remove it

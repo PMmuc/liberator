@@ -28,15 +28,17 @@ mkdir -p $LIBFUZZ_LOG_PATH
 
 echo "make 1"
 cd "$TARGET/repo"
-./autogen.sh
-echo "./configure"
-./configure --disable-shared --prefix="$WORK" \
-                                CC=wllvm CXX=wllvm++
-./configure --disable-shared --disable-docs --disable-tests \
-            --prefix="$WORK" \
-            CC=wllvm CXX=wllvm++ \
-            CXXFLAGS="-g -O0" \
-            CFLAGS="-g -O0"
+# libxml2 2.15 requires newer autotools than the image ships; use the bundled cmake build.
+rm -rf "$TARGET/repo/build"
+mkdir -p "$TARGET/repo/build"
+cd "$TARGET/repo/build"
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=OFF \
+         -DCMAKE_BUILD_TYPE=Debug \
+         -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_PROGRAMS=OFF \
+         -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_ICONV=OFF \
+         -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_ZLIB=OFF \
+         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+         -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 
 # configure compiles some shits for testing, better remove it
 rm -rf $LIBFUZZ_LOG_PATH/apis.log
