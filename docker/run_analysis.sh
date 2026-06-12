@@ -33,6 +33,9 @@ if [[ "${DEVENV}" ]]; then
   docker run --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
+  # Remove any leftover container with the same name (e.g. a crashed/killed run
+  # where --rm never fired) so the name can be reused.
+  docker rm -f "${IMG_NAME}-${TARGET}" >/dev/null 2>&1 || true
   docker run --rm -d --name "${IMG_NAME}-${TARGET}" \
     --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" "$IMG_NAME"
 fi
