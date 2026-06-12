@@ -4,6 +4,7 @@ project("Condition Extractor")
 # 1. Add the option (Default is OFF)
 option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
 option(ENABLE_GPROF "Enable gprof profiling" OFF)
+option(BUILD_TESTS "Build the unit tests" ON)
 
   # We need to match the build environment for LLVM:
   # In particular, we need the -fno-rtti flag
@@ -52,15 +53,17 @@ option(ENABLE_GPROF "Enable gprof profiling" OFF)
   include(CheckIPOSupported)
   check_ipo_supported(RESULT lto_ok)
 
-include(FetchContent)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v3.4.0 # or a later release
-)
-FetchContent_MakeAvailable(Catch2)
+if(BUILD_TESTS)
+  include(FetchContent)
+  FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG        v3.4.0 # or a later release
+  )
+  FetchContent_MakeAvailable(Catch2)
 
-enable_testing()
+  enable_testing()
+endif()
 
 set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/tests/assets")
 configure_file(
@@ -70,4 +73,6 @@ configure_file(
 include_directories("${CMAKE_BINARY_DIR}/include")
 
 add_subdirectory(src)
-add_subdirectory(tests)
+if(BUILD_TESTS)
+  add_subdirectory(tests)
+endif()

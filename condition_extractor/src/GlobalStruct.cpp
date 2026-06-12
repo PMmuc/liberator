@@ -15,6 +15,7 @@
 #include "Profiler.hpp"
 #include "SignatureMatching.hpp"
 #include "TypeMatcher.h"
+#include <filesystem>
 #include <ios>
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/GlobalAlias.h>
@@ -95,20 +96,6 @@ void GlobalStruct::analyze() {
     }
   }
 
-  // FIXME: remove this code when not needed anymore
-  fstream outstream("unresolved_function_ptrs.txt", ios_base::out);
-  outstream << "Found: " << unresolved_calls.size() << " unresolved callsites."
-            << endl;
-
-  if (outstream.is_open()) {
-    for (auto call : unresolved_calls) {
-      outstream << "In function: " << call->getCaller()->getName() << ": "
-                << call->toString() << endl;
-    }
-    outstream.flush();
-    outstream.close();
-  }
-  // FIXME: remove to here -----------------------------------------
 #ifndef NDEBUG
   GLOBAL_LOG("------------- UNRESOLVED CALLS -------------");
   for (auto call : unresolved_calls) {
@@ -236,7 +223,13 @@ void GlobalStruct::analyze() {
 
   // SVFUtil::outs() << "[DEBUG] early stop\n";
   // exit(1);
-  fstream file("function_pointers.txt", std::ios::out);
+  // Write next to the output file, i.e. into
+  // analysis/<target_name>/work/apipass
+  std::filesystem::path out_dir =
+      std::filesystem::path(config_t::instance()->output_file).parent_path();
+  std::filesystem::path fp_path =
+      out_dir / (config_t::instance()->target_name + "_function_pointers.txt");
+  fstream file(fp_path, std::ios::out);
 
   if (file.is_open()) {
     file << "Found " << fncs.size() << " target functions.\n";

@@ -1,7 +1,7 @@
 # Create a dummy stage that ONLY copies the LLVM directories if they exist
 # We copy .dockerignore so that the COPY command always succeeds, even if local LLVM doesn't exist
 FROM scratch AS llvm_local
-COPY .dockerignore* llvm-16* llvm-21* /
+COPY .dockerignore* /
 
 FROM ubuntu:24.04 AS libfuzzpp_dev_image_new
 
