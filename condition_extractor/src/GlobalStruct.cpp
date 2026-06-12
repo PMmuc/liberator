@@ -187,7 +187,7 @@ void GlobalStruct::analyze() {
       // "\n";
       auto it = fncs.find(lookup_key);
 
-      bool disable_fallback = true;
+      bool disable_fallback = false;
       if (!disable_fallback && it == fncs.end()) {
         // as fallback method try to fallback to opaque pointer matching.
         lookup_key =
