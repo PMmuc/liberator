@@ -4,7 +4,7 @@ set -e
 
 export PROJECT=$(dirname "$(realpath "$0")")
 if [ -z "$LIBFUZZ" ]; then
-  export LIBFUZZ=$PROJECT/libfuzz
+  export LIBFUZZ=$PROJECT
 fi
 
 if [ -z "$TOOLS_DIR" ]; then
