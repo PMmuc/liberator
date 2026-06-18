@@ -449,6 +449,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
     function = config->function;
   }
 
+  SVF::Options::ModelArrays.setValue(true);
+
   if (Options::WriteAnder() == "ir_annotator") {
     LLVMModuleSet::getLLVMModuleSet()->preProcessBCs(module_name_vec);
   }
