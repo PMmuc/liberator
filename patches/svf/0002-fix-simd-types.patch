@@ -1,0 +1,26 @@
+--- a/svf-llvm/include/SVF-LLVM/BasicTypes.h
++++ b/svf-llvm/include/SVF-LLVM/BasicTypes.h
+@@ -100,6 +100,7 @@
+ typedef llvm::PointerType PointerType;
+ typedef llvm::IntegerType IntegerType;
+ typedef llvm::FunctionType FunctionType;
++typedef llvm::FixedVectorType FixedVectorType;
+ 
+ // LLVM Metadata
+ typedef llvm::MDString MDString;
+--- a/svf-llvm/lib/LLVMModule.cpp
++++ b/svf-llvm/lib/LLVMModule.cpp
+@@ -1352,6 +1352,13 @@
+         svfat->setTypeOfElement(getSVFType(at->getElementType()));
+         svftype = svfat;
+     }
++    else if (const FixedVectorType* vt = SVFUtil::dyn_cast<FixedVectorType>(T))
++    {
++        auto svfat = new SVFArrayType(id, byteSize);
++        svfat->setNumOfElement(vt->getNumElements());
++        svfat->setTypeOfElement(getSVFType(vt->getElementType()));
++        svftype = svfat;
++    }
+     else
+     {
+         std::string buffer;

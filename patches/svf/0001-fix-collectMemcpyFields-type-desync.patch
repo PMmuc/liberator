@@ -1,0 +1,22 @@
+--- a/svf-llvm/lib/SVFIRExtAPI.cpp
++++ b/svf-llvm/lib/SVFIRExtAPI.cpp
+@@ -111,7 +111,8 @@
+         for (u32_t i = 0; i < structType->getNumElements(); ++i)
+         {
+             const Type* elemLLVMType = structType->getElementType(i);
+-            const SVFType* elemSVFType = pag->getOriginalElemType(svfType, i);
++            const SVFType* elemSVFType =
++                LLVMModuleSet::getLLVMModuleSet()->getSVFType(elemLLVMType);
+             if (elemSVFType == nullptr)
+                 return;
+             APOffset elemByteOffset = baseByteOffset + static_cast<APOffset>(layout->getElementOffset(i));
+@@ -124,7 +130,8 @@
+     if (const auto* arrayType = SVFUtil::dyn_cast<ArrayType>(llvmType))
+     {
+         const Type* elemLLVMType = arrayType->getElementType();
+-        const SVFType* elemSVFType = pag->getOriginalElemType(svfType, 0);
++        const SVFType* elemSVFType =
++            LLVMModuleSet::getLLVMModuleSet()->getSVFType(elemLLVMType);
+         if (elemSVFType == nullptr)
+             return;
+         const APOffset elemByteSize = static_cast<APOffset>(dl.getTypeAllocSize(const_cast<Type*>(elemLLVMType)));
