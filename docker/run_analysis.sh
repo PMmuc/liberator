@@ -14,14 +14,15 @@
 # and runs it for the TARGET
 
 IMG_NAME="libpp-analysis-new"
-LIBPP=../
+LIBPP="$(cd "$(dirname "$0")/.." && pwd)"
 
 # --- Build phase (skipped when SKIP_BUILD is set) ---
 if [ -z "${SKIP_BUILD:-}" ]; then
+  source "$(dirname "$0")/llvm_source.sh"
   set -x
   DOCKER_BUILDKIT=1 docker build \
     --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
-    --build-arg USE_LOCAL_LLVM="false" \
+    --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
     -t "$IMG_NAME" --target libfuzzpp_analysis_new \
     -f "$LIBPP/Dockerfile" "$LIBPP"
   set +x
@@ -34,6 +35,7 @@ if [ -n "${BUILD_ONLY:-}" ]; then
 fi
 
 # --- Run phase (needs a TARGET) ---
+TARGET="${TARGET:-${target:-}}"
 if [ -z "${TARGET:-}" ]; then
   echo "[ERROR] \$TARGET must be specified as an environment variable"
   exit 1
@@ -49,7 +51,7 @@ cpu_arg=()
 [ -n "${CPUSET:-}" ] && cpu_arg=(--cpuset-cpus "$CPUSET")
 
 if [[ "${DEVENV:-}" ]]; then
-  docker run --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
+  docker run --env TARGET=${TARGET} -v "$LIBPP:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
   # Remove any leftover container with the same name (e.g. a crashed/killed run
@@ -59,5 +61,5 @@ else
   # the orchestrator can capture it in logs/<target>.log, and blocks until the
   # analysis finishes so per-CPU throttling and the artifact check work.
   docker run --rm --name "${IMG_NAME}-${TARGET}" "${cpu_arg[@]}" \
-    --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" "$IMG_NAME"
+    --env TARGET=${TARGET} -v "$LIBPP:/workspaces/libfuzz" "$IMG_NAME"
 fi

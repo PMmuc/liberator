@@ -14,10 +14,12 @@ fi
 IMG_NAME="libpp-clustering-$TARGET"
 LIBPP=../
 
+source "$(dirname "$0")/llvm_source.sh"
 set -x
 DOCKER_BUILDKIT=1 docker build \
     --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
     --build-arg target_name="$TARGET" \
+    --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
     -t "$IMG_NAME" --target libfuzzpp_crash_cluster \
     -f "$LIBPP/Dockerfile" "$LIBPP"
 set +x

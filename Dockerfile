@@ -1,10 +1,74 @@
-# Create a dummy stage that ONLY copies the LLVM directories if they exist
-# We copy .dockerignore so that the COPY command always succeeds, even if local LLVM doesn't exist
-FROM scratch AS llvm_local
-COPY .dockerignore* /
+# ==============================================================================
+# LLVM 21 provisioning
+#
+# Three sources are supported, selected via the LLVM_SOURCE build arg. Each one
+# exposes the toolchain at /llvm so the rest of the build can treat them
+# interchangeably:
+#   * llvm_source_local     -> reuse the prebuilt ./llvm-21 directory from the
+#                              build context (fast: just a copy).
+#   * llvm_source_download  -> download the precompiled LLVM 21 release tarball
+#                              (fast, needs network access to the release asset).
+#   * llvm_source_build     -> build LLVM 21 from source inside Docker (slow,
+#                              but needs no local toolchain or release asset).
+#
+# The docker/run_*.sh wrappers (via docker/llvm_source.sh) pick
+# llvm_source_local automatically when a local ./llvm-21 exists, and fall back
+# to llvm_source_download otherwise. BuildKit only builds the stage that is
+# actually referenced, so the other two sources cost nothing when unused.
+# ==============================================================================
 
-FROM ubuntu:24.04 AS libfuzzpp_dev_image_new
+# Global build arg: must precede the first FROM so it can be used in FROM lines.
+ARG LLVM_SOURCE=llvm_source_download
 
+# --- Source 1: build LLVM 21 from source ---
+FROM ubuntu:26.04 AS llvm_builder
+ARG LLVM_RELEASE="llvmorg-21.1.6"
+RUN apt-get -q update && DEBIAN_FRONTEND="noninteractive" \
+  apt-get -y install --no-install-suggests --no-install-recommends \
+  git cmake ninja-build build-essential python3 zlib1g-dev \
+  ca-certificates xz-utils \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN git clone --depth 1 --branch "${LLVM_RELEASE}" \
+  https://github.com/llvm/llvm-project.git /tmp/llvm-project && \
+  cmake -G Ninja -S /tmp/llvm-project/llvm -B /tmp/llvm-build \
+    -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld" \
+    -DLLVM_TARGETS_TO_BUILD=X86 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_OPTIMIZED_TABLEGEN=ON \
+    -DCMAKE_INSTALL_PREFIX="/llvm" && \
+  ninja -C /tmp/llvm-build install && \
+  rm -rf /tmp/llvm-build /tmp/llvm-project
+
+# Normalize the from-source build into a bare /llvm tree.
+FROM scratch AS llvm_source_build
+COPY --from=llvm_builder /llvm /llvm
+
+# --- Source 2: download a precompiled LLVM 21 release ---
+FROM ubuntu:26.04 AS llvm_downloader
+ARG LLVM_DOWNLOAD_URL="https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.6/LLVM-21.1.6-Linux-X64.tar.xz"
+RUN apt-get -q update && DEBIAN_FRONTEND="noninteractive" \
+  apt-get -y install --no-install-suggests --no-install-recommends \
+  wget ca-certificates xz-utils \
+  && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /llvm && \
+  wget -O /tmp/llvm.tar.xz "${LLVM_DOWNLOAD_URL}" && \
+  tar -xf /tmp/llvm.tar.xz -C /llvm --strip-components=1 && \
+  rm /tmp/llvm.tar.xz
+
+# Normalize the downloaded release into a bare /llvm tree.
+FROM scratch AS llvm_source_download
+COPY --from=llvm_downloader /llvm /llvm
+
+# --- Source 3: prebuilt local ./llvm-21 from the build context ---
+# Only built when LLVM_SOURCE=llvm_source_local, i.e. when ./llvm-21 exists.
+FROM scratch AS llvm_source_local
+COPY llvm-21 /llvm
+
+# --- Select which LLVM source to use (set by docker/run_*.sh) ---
+FROM ${LLVM_SOURCE} AS llvm_dist
+
+FROM ubuntu:26.04 AS libfuzzpp_dev_image_new
 RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
     DEBIAN_FRONTEND="noninteractive" \
     apt-get -y install --no-install-suggests --no-install-recommends \
@@ -124,36 +188,28 @@ COPY ./requirements.txt ${HOME}/python/requirements.txt
 RUN cd ${HOME}/python && python3 -m pip install --break-system-packages -r requirements.txt
 ENV LLVM_VERSION="21"
 
-ARG USE_LOCAL_LLVM="false"
-# Conditionally use local LLVM build or download precompiled release
-RUN --mount=type=bind,from=llvm_local,source=/,target=/context \
-    if [ "$USE_LOCAL_LLVM" = "true" ] && [ -d "/context/llvm-${LLVM_VERSION}" ]; then \
-        echo "==> Copying local LLVM-${LLVM_VERSION} build..."; \
-        mkdir -p ${HOME}/llvm-${LLVM_VERSION} && \
-        cp -r /context/llvm-${LLVM_VERSION}/. ${HOME}/llvm-${LLVM_VERSION}/; \
-    else \
-        echo "==> Downloading precompiled LLVM-${LLVM_VERSION}..."; \
-        #wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz -O /tmp/llvm.tar.xz && \
-        wget https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.6/LLVM-21.1.6-Linux-X64.tar.xz -O /tmp/llvm.tar.xz && \
-        mkdir -p ${HOME}/llvm-${LLVM_VERSION} && \
-        tar -xf /tmp/llvm.tar.xz -C ${HOME}/llvm-${LLVM_VERSION} --strip-components=1 && \
-        rm /tmp/llvm.tar.xz; \
-    fi
+# Provision LLVM from the selected source stage (local prebuilt or from-source).
+# See the LLVM provisioning section at the top of this file for details.
+COPY --chown=${USERNAME}:${USERNAME} --from=llvm_dist /llvm ${HOME}/llvm-${LLVM_VERSION}/
 
 ENV SVF_VERSION="3.3"
 ENV LLVM_DIR="${HOME}/llvm-${LLVM_VERSION}/"
 ENV SVF_DIR="${HOME}/SVF-${SVF_VERSION}"
 
+# Local SVF source patches, applied after clone and before the build.
+COPY --chown=${USERNAME}:${USERNAME} ./patches/svf ${HOME}/svf-patches/
+
 # SVF
 # checkout and build SVF 3.3
 RUN --mount=type=cache,target=${HOME}/.ccache/  export PATH="${HOME}/llvm-${LLVM_VERSION}/bin:$PATH" && git clone --depth 1 --branch SVF-${SVF_VERSION} https://github.com/SVF-tools/SVF.git &&\
     cd SVF && \
+    for p in ${HOME}/svf-patches/*.patch; do echo "Applying $p" && git apply "$p"; done && \
     mkdir -p build && cd build && \
     CC="${HOME}/llvm-${LLVM_VERSION}/bin/clang" CXX="${HOME}/llvm-${LLVM_VERSION}/bin/clang++" cmake -G Ninja -DSVF_WARN_AS_ERROR=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSVF_ENABLE_ASSERTIONS=ON -DCMAKE_INSTALL_PREFIX=${SVF_DIR} -DSVF_ENABLE_RTTI=ON -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld" .. && \
     ninja install
 
 # remove z3 and zstd and SVF source
-RUN sudo rm -rf ${HOME}/zstd ${HOME}/z3 ${HOME}/SVF
+RUN sudo rm -rf ${HOME}/zstd ${HOME}/z3 ${HOME}/SVF ${HOME}/svf-patches
 
 # ------------------------------------------------------------------------------------------------------------------
 # TARGET FOR LIBRARY DEBUG
