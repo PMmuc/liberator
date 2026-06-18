@@ -18,10 +18,10 @@ read -ra CPUS <<<"${CPUS_LIST:-0 1 2 3}"
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
 
-# Collect targets that actually have an analysis.sh
+# Collect targets that actually have an config.sh
 targets=()
 for target_dir in targets/*; do
-  if [ -d "$target_dir" ] && [ -f "$target_dir/analysis.sh" ]; then
+  if [ -d "$target_dir" ] && [ -f "$target_dir/config.sh" ]; then
     targets+=("$(basename "$target_dir")")
   fi
 done

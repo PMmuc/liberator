@@ -33,6 +33,12 @@ RUN git clone --depth 1 --branch "${LLVM_RELEASE}" \
   https://github.com/llvm/llvm-project.git /tmp/llvm-project && \
   cmake -G Ninja -S /tmp/llvm-project/llvm -B /tmp/llvm-build \
     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld" \
+    -DLLVM_INCLUDE_TESTS=OFF \
+    -DLLVM_INCLUDE_EXAMPLES=OFF \
+    -DLLVM_INCLUDE_BENCHMARKS=OFF \
+    -DLLVM_ENABLE_BINDINGS=OFF \
+    -DLLVM_INCLUDE_DOCS=OFF \
+    -DBUILD_SHARED_LIBS=ON \
     -DLLVM_TARGETS_TO_BUILD=X86 \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_OPTIMIZED_TABLEGEN=ON \
@@ -95,14 +101,13 @@ RUN sudo apt-get update && \
     zlib1g \
     libzstd1 \
     libncursesw6 \
-    libxml2 \
-    libicu74 && \
-    sudo ln -s /usr/lib/x86_64-linux-gnu/libxml2.so.2 /usr/lib/x86_64-linux-gnu/libxml2.so.16 && \
+    libxml2-16 \
+    libicu78 && \
     sudo ln -s /usr/lib/x86_64-linux-gnu/libedit.so.2 /usr/lib/x86_64-linux-gnu/libedit.so.0 && \
-    sudo ln -s /usr/lib/x86_64-linux-gnu/libicuuc.so.74 /usr/lib/x86_64-linux-gnu/libicuuc.so.76 && \
-    sudo ln -s /usr/lib/x86_64-linux-gnu/libicudata.so.74 /usr/lib/x86_64-linux-gnu/libicudata.so.76 && \
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libicuuc.so.78 /usr/lib/x86_64-linux-gnu/libicuuc.so.76 && \
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libicudata.so.78 /usr/lib/x86_64-linux-gnu/libicudata.so.76 && \
     sudo apt-get clean && \
-    sudo rm -rf /var/lib/apt/lists/*^
+    sudo rm -rf /var/lib/apt/lists/*
 
 #RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
     #echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main" | sudo tee /etc/apt/sources.list.d/llvm.list
@@ -153,7 +158,7 @@ RUN --mount=type=cache,target=${HOME}/.ccache/ git clone https://github.com/face
     sudo ninja install
 
 # install z3 prerequisite of SVF
-RUN --mount=type=cache,target=${HOME}/.ccache/ git clone --depth 1 --branch z3-4.8.12 https://github.com/Z3Prover/z3.git && \
+RUN --mount=type=cache,target=${HOME}/.ccache/ git clone --depth 1 --branch z3-4.13.4 https://github.com/Z3Prover/z3.git && \
     cd z3 && \
     mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release \
