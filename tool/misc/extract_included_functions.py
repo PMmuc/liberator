@@ -273,17 +273,20 @@ def _main():
 
     print(tmp_file)
 
-    # exit()
-    possible_clang_paths = [ ".conda/envs/liberator/lib/python3.14/site-packages/clang/native/libclang.so",
-        ".local/lib/python3.12/site-packages/clang/native/libclang.so"]
+    import clang
+    clang_lib = str(Path(clang.__path__[0]) / "native" / "libclang.so")
 
-    clang_lib = ""
-
-    for s in possible_clang_paths:
-        print(Path.home() / s)
-        if os.path.isfile(Path.home() / s):
-            clang_lib = s
-            break
+    if not os.path.isfile(clang_lib):
+        # Fallback to system libclang or other possibilities if needed
+        possible_clang_paths = [
+            ".conda/envs/liberator/lib/python3.14/site-packages/clang/native/libclang.so",
+            ".local/lib/python3.12/site-packages/clang/native/libclang.so"
+        ]
+        clang_lib = ""
+        for s in possible_clang_paths:
+            if os.path.isfile(Path.home() / s):
+                clang_lib = str(Path.home() / s)
+                break
 
     if len(clang_lib) == 0:
         print("[ERROR] Could not find the right clang lib")
@@ -291,7 +294,7 @@ def _main():
 
     # Eventually, tell clang.cindex where libclang.dylib is -- or else apt install and good luck
     # clang.cindex.Config.set_library_path("/Users/tomgong/Desktop/build/lib")
-    clang.cindex.Config.set_library_file(os.path.join(os.path.expanduser('~'), clang_lib)),
+    clang.cindex.Config.set_library_file(clang_lib)
     index = clang.cindex.Index.create()
 
     # Generate AST from filepath passed in the command line

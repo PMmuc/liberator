@@ -4,8 +4,17 @@ REPO_COMMIT="9b2bed92f5deecf740819f9bf27724bee2fe9c12"
 BC_FILE_NAME="liburiparser.a"
 
 target_configure() {
-  cmake . -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
+  # Build out-of-source in a fresh dir so a stale in-source CMakeCache can't
+  # pin CMAKE_C_COMPILER to host gcc and bypass CC=wllvm (which would yield an
+  # archive with no embedded LLVM bitcode and crash the extractor).
+  rm -rf "$TARGET/repo/uriparser_build"
+  mkdir -p "$TARGET/repo/uriparser_build"
+  cd "$TARGET/repo/uriparser_build"
+
+  cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
     -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+    -DURIPARSER_BUILD_DOCS=OFF -DURIPARSER_BUILD_TOOLS=OFF \
+    -DURIPARSER_BUILD_TESTS=OFF \
     -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
     -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 }
