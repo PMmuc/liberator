@@ -288,11 +288,20 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
         auto formal_param_llvm1 = llvmModuleSet->getLLVMValue(param1);
         std::cout << "DEBUG: llvm value extracted" << std::endl;
         extractor->extract_function_conditions();
-        /*auto metadata_p1 = liberator::extractParameterMetadata(
-            *svfg, formal_param_llvm1, formal_param_llvm1->getType(),
-            param1->getId());*/
-        /*auto metadata_p1 = liberator::my_extract_parameter_metadata(
-         *svfg, formal_param_llvm1, formal_param_llvm1->getType());*/
+        for (auto *param : params) {
+          auto *formal_param_llvm = llvmModuleSet->getLLVMValue(param);
+          if (formal_param_llvm &&
+              formal_param_llvm->getType()->isPointerTy()) {
+            // TODO: formal_param_llvm should be debug information type and
+            // fallback if its not available.
+            auto metadata = liberator::my_extract_parameter_metadata(
+                *svfg, formal_param_llvm, formal_param_llvm->getType(),
+                param->getId());
+            std::cout
+                << "DEBUG: my_extract_parameter_metadata completed for param "
+                << param->getId() << std::endl;
+          }
+        }
       }
     }
 
@@ -394,4 +403,32 @@ TEST_CASE("svf test forward_use_scan", "[unit]") {
 
 TEST_CASE("svf test global_func_pointers", "[unit]") {
   run_extract_parameter_test("function_pointers.bc", "test_func");
+}
+
+TEST_CASE("svf test rec_simple", "[unit]") {
+  run_extract_parameter_test("rec_simple.bc", "sum");
+}
+
+TEST_CASE("svf test rec_nested", "[unit]") {
+  run_extract_parameter_test("rec_nested.bc", "outer_rec");
+}
+
+TEST_CASE("svf test rec_mutual", "[unit]") {
+  run_extract_parameter_test("rec_mutual.bc", "foo");
+}
+
+TEST_CASE("svf test rec_struct", "[unit]") {
+  run_extract_parameter_test("rec_struct.bc", "sum_list");
+}
+
+TEST_CASE("svf test rec_multiple_params", "[unit]") {
+  run_extract_parameter_test("rec_multiple_params.bc", "copy_rec");
+}
+
+TEST_CASE("svf test rec_mutual_nonrec", "[unit]") {
+  run_extract_parameter_test("rec_mutual_nonrec.bc", "rec_foo");
+}
+
+TEST_CASE("svf test test_array_malloc", "[unit]") {
+  run_extract_parameter_test("test_array_malloc.bc", "test_fun");
 }
