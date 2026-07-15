@@ -7,6 +7,7 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <unordered_map>
 
+namespace liberator {
 class struct_padding_info_t final {
 public:
   using byte_range_t = std::pair<unsigned, unsigned>;
@@ -37,3 +38,10 @@ private:
       llvm::LLVMContext &ctx, const llvm::DataLayout &dl,
       llvm::StructType *struct_type = nullptr);
 };
+
+llvm::Type *infer_type_from_arg_attrs(const llvm::Argument *arg);
+llvm::DIType *peel_di_qualifiers(llvm::DIType *t);
+llvm::Type *resolve_di_type_to_llvm(llvm::DIType *di, llvm::Module &mod);
+llvm::Type *infer_type_from_forward_uses(const llvm::Value *param);
+
+} // namespace liberator

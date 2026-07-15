@@ -26,7 +26,7 @@ class ValueMetadata {
   std::vector<llvm::Value *> indexes;
   std::vector<std::pair<llvm::Value *, Path>> fun_params;
   friend std::string to_string(const ValueMetadata &, bool);
-  friend std::string print_summary(const ValueMetadata &);
+  friend std::string print_summary(const ValueMetadata &, bool);
 
 public:
   ValueMetadata() {
@@ -43,6 +43,12 @@ public:
   AccessTypeSet &get_access_type_set() { return ats; }
   const AccessTypeSet &get_access_type_set() const { return ats; }
 
+  bool operator==(const ValueMetadata &o) const {
+    return ats == o.ats && is_array == o.is_array &&
+           is_malloc_size == o.is_malloc_size;
+  }
+  bool operator!=(const ValueMetadata &o) const { return !(*this == o); }
+
   void addIndex(const llvm::Value *idx) {
     indexes.push_back(const_cast<llvm::Value *>(idx));
   }
@@ -52,12 +58,10 @@ public:
 
   void addFunParam(const llvm::Value *fp, Path *pp);
 
-  void setAccessTypeSet(AccessTypeSet p_ats) { ats = p_ats; }
-  AccessTypeSet *getAccessTypeSet() { return &ats; }
   int getAccessNum() { return ats.size(); }
 
   void setIsArray(bool p_is_array) { is_array = p_is_array; }
-  bool isArray() { return is_array; }
+  bool isArray() const { return is_array; }
 
   void setMallocSize(bool p_malloc_size) { is_malloc_size = p_malloc_size; }
   bool isMallocSize() { return is_malloc_size; }
@@ -128,12 +132,26 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval);
  */
 ValueMetadata extractParameterMetadata(const SVFG &, const llvm::Value *,
                                        const llvm::Type *, unsigned);
-ValueMetadata my_extract_parameter_metadata(const SVFG &vfg, const Value *val,
-                                            const Type *seek_type);
+ValueMetadata my_extract_parameter_metadata(const SVFG &vfg,
+                                            const llvm::Value *val,
+                                            const llvm::Type *seek_type,
+                                            unsigned param_id);
 std::vector<std::string> extractDependencyAmongParameters(const SVF::SVFVar *,
                                                           ValueMetadata &,
                                                           SVF::SVFG &,
                                                           const FunObjVar *);
-std::string extractLenDependencyParameter(const SVF::SVFVar *, ValueMetadata &,
-                                          SVF::SVFG &, const FunObjVar *);
+/**
+ * Returns if a about a pointer parameter, that
+ * contains an associated length parameter. For example in a function like void
+ * fill_zero(int* buf, int len) it would determine that len is indeed associated
+ * with buf.
+ * @param curr_param - the current parameter
+ * @param mdata - the current Metadatavalue
+ * @param svfg - the SVFG graph
+ * @param fun - the function graph
+ * @return - return "param_"
+ */
+std::string extractLenDependencyParameter(const SVF::SVFVar *curr_param,
+                                          ValueMetadata &mdata, SVF::SVFG &svfg,
+                                          const FunObjVar *fun);
 } // namespace liberator

@@ -22,6 +22,6 @@ std::string to_string(const Path &p);
 std::string to_string(const llvm::Type *typ);
 Json::Value to_json(const ValueMetadata &v, bool verbose);
 std::string to_string(const ValueMetadata &v, bool verbose);
-std::string print_summary(const ValueMetadata &v);
+std::string print_summary(const ValueMetadata &v, bool verbose = false);
 
 } // namespace liberator

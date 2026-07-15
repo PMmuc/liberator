@@ -212,6 +212,7 @@ void GlobalStruct::analyze() {
         //     SVFUtil::outs() << "it is external!\n";
         // else
         //     SVFUtil::outs() << "it is internal!\n";
+
         newEdges[callsite].insert(fun_callee);
         getIndCallMap()[callsite].insert(fun_callee);
         ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);

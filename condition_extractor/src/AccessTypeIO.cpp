@@ -1,5 +1,6 @@
 #include "AccessTypeIO.h"
 #include "AccessType.h"
+#include "TypeMatcher.h"
 #include "ValueMetadata.hpp"
 
 namespace liberator {
@@ -58,6 +59,10 @@ std::string to_string(const llvm::Type *typ) {
   return str;
 }
 
+/**
+ * @param at AccessType to print.
+ * @param verbose if true prints all ICFGNodes that accessed that type.
+ */
 std::string to_string(const AccessType &at, bool verbose) {
 
   std::string str;
@@ -213,11 +218,15 @@ Json::Value to_json(const ValueMetadata &v, bool verbose) {
   return res;
 }
 
-std::string print_summary(const ValueMetadata &v) {
-
+std::string print_summary(const ValueMetadata &v, bool verbose) {
   std::stringstream sstream;
 
   sstream << "ATS " << v.ats.size() << ", ";
+  if (verbose) {
+    for (auto &at : v.ats) {
+      sstream << to_string(at, false);
+    }
+  }
   sstream << "array " << std::to_string(v.is_array) << ", ";
   sstream << "malloc " << std::to_string(v.is_malloc_size) << ", ";
   sstream << "path " << std::to_string(v.is_file_path) << ", ";

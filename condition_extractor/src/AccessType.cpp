@@ -7,6 +7,7 @@
 #include "Graphs/ICFGNode.h"
 #include "Graphs/IRGraph.h"
 #include "Graphs/SVFG.h"
+#include "PhiFunction.h"
 #include "SVF-LLVM/BasicTypes.h"
 #include "SVF-LLVM/LLVMModule.h"
 #include "SVF-LLVM/LLVMUtil.h"
@@ -14,6 +15,7 @@
 #include "SVFIR/SVFIR.h"
 #include "SVFIR/SVFStatements.h"
 #include "SVFIR/SVFVariables.h"
+#include "TypeMatcher.h"
 #include "Util/Casting.h"
 #include "Util/SVFUtil.h"
 #include "llvm/Demangle/Demangle.h"
@@ -21,27 +23,59 @@
 #include "llvm/IR/InstrTypes.h"
 #include "llvm/IR/Instruction.h"
 #include "llvm/Support/raw_ostream.h"
+#include <Graphs/SCC.h>
+#include <Graphs/SVFGNode.h>
 #include <Graphs/VFGNode.h>
 #include <MSSA/SVFGBuilder.h>
 #include <Util/GeneralType.h>
 #include <Util/WorkList.h>
 #include <chrono>
 #include <iostream>
+#include <llvm/ADT/SmallVector.h>
 #include <llvm/IR/Constants.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/GetElementPtrTypeIterator.h>
+#include <llvm/IR/InlineAsm.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Metadata.h>
 #include <llvm/IR/Type.h>
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/TimeProfiler.h>
+#include <llvm/TargetParser/Triple.h>
+#include <queue>
 #include <sstream>
 #include <string>
 #include <unistd.h>
+#include <unordered_map>
 #include <vector>
 
 #define MAX_STACKSIZE 20
+// how many times the same (aggregate type, field) may be followed along a
+// single path before we stop, to bound unrolling of recursive data structures.
+#define MAX_GEP_RECURSION_DEPTH 2
 
 namespace {
+/**
+ * @retrun the function corresponding to a formal parameter
+ */
+const FunObjVar *get_function(const SVFG &svfg, SVF::NodeID param) {
+  SVF::NodeID fid = param;
+  auto *pag = SVFIR::getPAG();
+  if (auto *pNode = pag->getGNode(param)) {
+    if (auto *valVar = SVFUtil::dyn_cast<SVF::ValVar>(pNode)) {
+      if (svfg.hasDefSVFGNode(valVar)) {
+        fid = svfg.getDefSVFGNode(valVar)->getId();
+      }
+    }
+  }
+  const VFGNode *n = svfg.getGNode(fid);
+  if (auto fn = dyn_cast<FormalParmVFGNode>(n)) {
+    return fn->getFun();
+  }
+  return nullptr;
+}
+
 bool leadsToBitCastOfType(const VFGNode *vn, Type *targetType) {
   // TODO: follow def-use only inside the function!
   // return true of n leads to a bitcast whose destination is of type targetType
@@ -326,7 +360,26 @@ bool doesReturnGlobalVarConst(const ICFGNode *icfgNode) {
 }
 
 } // namespace
+  //
+namespace liberator {
+template <class T> inline void hash_combine(std::size_t &seed, const T &v) {
+  seed ^= std::hash<T>{}(v) + 0x9e3779b97f4a7c15ULL + (seed << 6) + (seed >> 2);
+}
+} // namespace liberator
 
+namespace std {
+template <> struct hash<liberator::memo_state_t> {
+  std::size_t operator()(const liberator::memo_state_t &k) const noexcept {
+    std::size_t h = std::hash<SVF::NodeID>{}(k.node);
+    liberator::hash_combine(h, static_cast<int>(k.access));
+    liberator::hash_combine(h, k.type);
+    for (int f : k.fields)
+      liberator::hash_combine(h, f);
+    return h;
+  }
+};
+} // namespace std
+  //
 namespace liberator {
 
 bool AccessType::equals(std::string s) const {
@@ -465,7 +518,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
   std::stack<ICFGEdge *> empty_stack;
   working.push(std::make_pair(entry_node, empty_stack));
 
-  AccessTypeSet *ats = mdata.getAccessTypeSet();
+  AccessTypeSet &ats = mdata.get_access_type_set();
 
   uint64_t total_main_loop_ns = 0;
   uint64_t total_def_set_ns = 0;
@@ -566,7 +619,7 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
             RETURN_LOG("{}\n", to_string(mdata_tmp, false));
 
             bool added_create = false;
-            for (auto at : *mdata_tmp.getAccessTypeSet()) {
+            for (auto at : mdata_tmp.get_access_type_set()) {
               if (at.get_kind() == AccessType::kind_e::create) {
                 outs() << "I added a create!!!\n";
                 added_create = true;
@@ -825,16 +878,16 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
 
     // XXX: TO REMOVE LATER
     bool do_not_return = true;
-    for (auto at : *mdata.getAccessTypeSet()) {
-      // for (auto at: *mdata_xx.getAccessTypeSet()) {
+    for (auto at : mdata.get_access_type_set()) {
+      // for (auto at: *mdata_xx.get_access_type_set()) {
       if (at.get_kind() == AccessType::kind_e::ret) {
         auto l_ats_all_nodes = at.getICFGNodes();
         for (auto inst : l_ats_all_nodes) {
           if (inst == fun_exit) {
-            for (auto at2 : *mdata.getAccessTypeSet())
-              // for (auto at2: *mdata_xx.getAccessTypeSet())
+            for (auto at2 : mdata.get_access_type_set())
+              // for (auto at2: *mdata_xx.get_access_type_set())
               for (auto inst2 : at.getICFGNodes())
-                ats->insert(at2, inst2);
+                ats.insert(at2, inst2);
             do_not_return = false;
             break;
           }
@@ -863,9 +916,9 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
     // outs() << "Inst: " << *el.first << "\n";
     // outs() << el.second.getSummary();
     // outs() << "----\n";
-    for (auto atx : *el.second.getAccessTypeSet())
+    for (const AccessType &atx : el.second.get_access_type_set())
       for (auto inst : atx.getICFGNodes())
-        ats->insert(atx, inst);
+        ats.insert(atx, inst);
   }
   auto t_merge_end = std::chrono::high_resolution_clock::now();
   total_merge_loop_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -1020,9 +1073,9 @@ extractDependencyAmongParameters(const SVF::SVFVar *current_parm,
   PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
   auto fun_params = funmap_par[fun];
 
-  auto ats = mdata.getAccessTypeSet();
-  auto ats_it = ats->begin();
-  auto ats_end = ats->end();
+  auto ats = mdata.get_access_type_set();
+  auto ats_it = ats.begin();
+  auto ats_end = ats.end();
   for (; ats_it != ats_end; ++ats_it) {
     auto at = *ats_it;
     // outs() << at.toString() << "\n";
@@ -1188,7 +1241,9 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
   if (dependent_param == "")
     for (auto el : mdata.getFunParams()) {
       // outs() << *fs << "\n";
+      // constant array index
       auto fs = el.first;
+      // path to that constant array index
       auto path = el.second; // Path == Context == Stack
       // path.dump_stack();
       // SVFUtil::outs() << "---------\n";
@@ -1211,22 +1266,19 @@ std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
         auto llvm_p_val =
             LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(p_val);
 
-        // std::string str;
-        // llvm::raw_string_ostream rawstr(str);
-        // rawstr << *llvm_p_val->getType();
-        // outs() << "Testing par " << p_idx << "\n";
-        // outs() << str << "\n";
+        // can not be a length parameter -> skip
         if (SVFUtil::isa<PointerType>(llvm_p_val->getType())) {
-          // outs() << "It is a pointer, skip it!\n";
           p_idx++;
           continue;
         }
 
         PAGNode *pP = pag->getGNode(p->getId());
-
         const VFGNode *vP = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pP));
         // const_cast<llvm::Value*>(p->getValue());
         // outs() << "P: " << pP->toString() << "\n";
+        // vS -> array index node
+        // vP -> the length parameter in the signature
+        // find if they have the same origin nodes
         if (areConnectedCtx(vP, vS, &path)) {
           // outs() << "connected!\n";
           param_control_len = true;
@@ -1267,6 +1319,45 @@ std::string getType(llvm::Type *t) {
   }
 
   return "";
+}
+
+namespace {
+// the result after applying the local function
+// to a function. This determines the access_type
+struct local_result_t {
+  AccessType ac_node;
+  const llvm::Value *prev_value;
+  bool skip; // don't expand successors/prune search
+};
+} // namespace
+
+void handleActualParam(const VFGNode *vNode, AccessType &acNode,
+                       ValueMetadata &mdata, Path &p) {
+  // outs() << "****: " << vNode->toString() << "\n";
+  auto actual_param = SVFUtil::dyn_cast<ActualParmSVFGNode>(vNode);
+  // 1 - get icfg node from vNode
+  auto icfg_node = actual_param->getICFGNode();
+  // 2 - check it is a call inst
+  auto cs = actual_param->getCallSite();
+  auto param = actual_param->getParam();
+  // 3 - check it is in the newedge relation
+  auto m = ValueMetadata::myCallEdgeMap_inst;
+  if (m.find(cs) != m.end() && param != nullptr) {
+    // 4 - for each target check handling
+    for (auto t : m[cs]) {
+      APARM_LOG("Found indirect call to function {}\n", t->getName());
+      int n_param = 0;
+      // determine index of the our parameter
+      for (auto p : cs->getActualParms()) {
+        if (p == param)
+          break;
+        n_param++;
+      }
+
+      handlerDispatcher(&mdata, t->getName(), vNode->getICFGNode(), cs, n_param,
+                        acNode, C_PARAM, &p);
+    }
+  }
 }
 
 bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
@@ -1334,18 +1425,24 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
       printType(dType, "Result type:");
       vNode->getDefSVFVars();
 
-      if (TypeMatcher::compare_types(sType, acNode.get_llvm_type()) &&
-          !acNode.is_visited(sType)) {
+      // TODO: check that get_llvm_type is retrieved from the signature of the
+      // function correctly.
+      if (TypeMatcher::compare_types(sType, acNode.get_llvm_type())) {
         // SVFUtil::isa<PointerType>(dType)) {
         // Here we only consider struct or constant array accesses
         if (gep_inst->hasAllConstantIndices() &&
             gep_inst->getNumIndices() > 1) {
-          int pos = 1;
           // Note: getNumIndices returns the number of indices after the
-          // base pointer. EXAMPLE: ... i32 0, i32 1, i32 3 will return 2
-          for (; pos <= gep_inst->getNumIndices(); pos++) {
-            // pos == 1 is the field offset or the constant arry offset
+          // base pointer. EXAMPLE: ... i32 0, i32 1, i32 2 will return 3
+          int pos = 1;
+          auto gep_type_it = llvm::gep_type_begin(gep_inst);
+          for (; pos <= gep_inst->getNumIndices(); pos++, ++gep_type_it) {
+            // pos == 1 will return i32 0
             if (pos == 1) {
+              // TODO: What happens when pos == 1 but getOperand(pos) is not
+              // zero?
+              // -> then we have an array of pointers
+              // If == 0 this just says that it gets dereferenced.
               AccessType tmpAcNode = acNode;
               GEP_LOG("Adding a temporary AccessType to the AccessTypeSet.\n");
               GEP_LOG("The AccessTypeSet now has {} entries.\n",
@@ -1354,13 +1451,26 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
               tmpAcNode.set_kind(AccessType::kind_e::read);
               ats.insert(tmpAcNode, vNode->getICFGNode());
             } else {
-              ConstantInt *CI =
-                  dyn_cast<ConstantInt>(gep_inst->getOperand(pos));
-              uint64_t idx = CI->getZExtValue();
-              GEP_LOG("Adding a constant to the AccesType {}\n",
-                      CI->getZExtValue());
+              // This will be useful for nested structs and recursive structs.
+              // We can just iterate over each type in the struct that gets
+              // accessed by the GEP.
+              // Example: struct A {int f1; }; struct B { A* f1; }; B b;
+              // b->f1->f1. GetElementPtr %struct.B, ptr %base, i64 0, i32 0,
+              // i32 0 ---> this will return {%struct.B, %struct.A}, {%struct.A,
+              // i32}
+              llvm::Type *container_ty = gep_type_it.getStructTypeOrNull();
+              llvm::Type *step_result_type = gep_type_it.getIndexedType();
+
+              uint64_t idx = dyn_cast<ConstantInt>(gep_inst->getOperand(pos))
+                                 ->getZExtValue();
+              if (container_ty && acNode.visit_count(container_ty, idx) >=
+                                      MAX_GEP_RECURSION_DEPTH)
+                continue;
+              GEP_LOG("Adding field to AccessType {}\n", idx);
               acNode.addField(idx);
-              acNode.set_llvm_type(dType);
+              acNode.set_llvm_type(step_result_type);
+              if (container_ty)
+                acNode.add_visited_type(container_ty, idx);
             }
           }
         } else if (acNode.get_num_fields() == 0) {
@@ -1373,25 +1483,25 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
           //     mdata.addIndex(d);
           // }
 
-          bool is_array = false;
-
+          // %p = getelementptr inbounds %struct.Foo, ptr %base, i64 0, i32 2
+          // getOperand(1) will return: i64 0
           auto d = gep_inst->getOperand(1);
+          bool is_array =
+              SVFUtil::isa<ConstantInt>(d) || gep_inst->getNumIndices() == 1;
+          /*
           if (!SVFUtil::isa<ConstantInt>(d)) {
             GEP_LOG("Adding index {} to mdata\n", d->getName());
             GEP_LOG("Setting is_array to true\n");
             is_array = true;
-            mdata.addIndex(d);
-            mdata.addFunParam(d, &p);
           } else if (gep_inst->getNumIndices() == 1) {
             is_array = true;
             GEP_LOG("Array index {}\n", gep_inst->getName());
-            mdata.addIndex(gep_inst);
-          }
+          }*/
 
         } else {
+          // if the gep is somekind of other pointer arithmetic we skip.
           return true;
         }
-        acNode.add_visited_type(sType);
       }
       // else {
       //     outs() << "[DEBUG] GEP incoherent: \n";
@@ -1423,62 +1533,159 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
   return false;
 }
 
-void handleActualParam(const VFGNode *vNode, AccessType &acNode,
-                       ValueMetadata &mdata, Path &p) {
-  // outs() << "****: " << vNode->toString() << "\n";
-  auto actual_param = SVFUtil::dyn_cast<ActualParmSVFGNode>(vNode);
-  // 1 - get icfg node from vNode
-  auto icfg_node = actual_param->getICFGNode();
-  // 2 - check it is a call inst
-  auto cs = actual_param->getCallSite();
-  auto param = actual_param->getParam();
-  // 3 - check it is in the newedge relation
-  auto m = ValueMetadata::myCallEdgeMap_inst;
-  if (m.find(cs) != m.end() && param != nullptr) {
-    // 4 - for each target check handling
-    for (auto t : m[cs]) {
-      APARM_LOG("Found indirect call to function {}\n", t->getName());
-      int n_param = 0;
-      // determine index of the our parameter
-      for (auto p : cs->getActualParms()) {
-        if (p == param)
-          break;
-        n_param++;
-      }
+local_result_t compute_local_effect(const VFGNode *vNode, AccessType acNode,
+                                    ValueMetadata &mdata, Path &p) {
+  auto *llvm_module_set = LLVMModuleSet::getLLVMModuleSet();
+  AccessTypeSet &ats = mdata.get_access_type_set();
+  bool skip_node = false;
+  // Processing of the node
+  switch (vNode->getNodeKind()) {
+  case VFGNode::VFGNodeK::Load: {
+    acNode.set_kind(AccessType::kind_e::read);
+    ats.insert(acNode, vNode->getICFGNode());
+  } break;
+  case VFGNode::VFGNodeK::Store: {
+    auto *prevValue = p.getPrevValue();
 
-      handlerDispatcher(&mdata, t->getName(), vNode->getICFGNode(), cs, n_param,
-                        acNode, C_PARAM, &p);
+    auto llvm_val = llvm_module_set->getLLVMValue(vNode->getValue());
+
+    if (prevValue != nullptr && SVFUtil::isa<StoreInst>(llvm_val)) {
+      auto inst = SVFUtil::cast<StoreInst>(llvm_val);
+
+      if (inst->getPointerOperand() == prevValue)
+        acNode.set_kind(AccessType::kind_e::write);
+      else if (inst->getValueOperand() == prevValue)
+        acNode.set_kind(AccessType::kind_e::read);
+
+      ats.insert(acNode, vNode->getICFGNode());
+
+      if (vNode->hasIncomingEdge()) {
+        for (auto it : vNode->getInEdges()) {
+          if (auto node = SVFUtil::dyn_cast<AddrVFGNode>(it->getSrcNode())) {
+            if (auto call = SVFUtil::dyn_cast<llvm::CallInst>(
+                    llvm_module_set->getLLVMValue(node->getValue()))) {
+              llvm::Function *callee = call->getCalledFunction();
+              if (callee && callee->getName() == "malloc") {
+                // no need to set field, empty field set is what I need
+                acNode.set_kind(AccessType::kind_e::create);
+                mdata.get_access_type_set().insert(acNode,
+                                                   vNode->getICFGNode());
+                HANDLER_LOG("Function {} has a malloc return value",
+                            vNode->getICFGNode()->getFun()->getName());
+              }
+            }
+          }
+        }
+      }
     }
+  } break;
+  case SVF::VFGNode::VFGNodeK::Gep:
+    skip_node = handleGep(vNode, acNode, ats, mdata, p);
+    break;
+  case VFGNode::VFGNodeK::Copy: {
+    if (auto stmt_vfg_node =
+            SVFUtil::dyn_cast<StmtVFGNode>(vNode->getValue())) {
+      // this is for ptrtoint instructions.
+      COPY_LOG("{}\n", vNode->toString());
+      auto inst = llvm_module_set->getLLVMValue(stmt_vfg_node);
+      // auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(lllvm_inst);
+
+      // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
+
+      acNode.set_kind(AccessType::kind_e::read);
+      ats.insert(acNode, vNode->getICFGNode());
+
+      // XXX: casting operations complitate things a lot. For the time
+      // being I just leave it.
+
+      if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(inst)) {
+        auto dst_typ = bitcastinst->getDestTy();
+        auto src_typ = bitcastinst->getSrcTy();
+
+        // if (acNode.getNumFields() != 0 &&
+        //     TypeMatcher::compare_types(src_typ, acNode.getType())) {
+
+        // outs() << "src_typ " << *src_typ << "\n";
+        // outs() << "acNode.getType() " << *acNode.getType() << "\n";
+
+        // if (TypeMatcher::compare_types(src_typ, acNode.getType())) {
+        //     // I want the node the original type after the cast this
+        //     // may turn out useful for mem* api operations since
+        //     // they tend to cast to i8* before being invoked
+        //     acNode.setOriginalCastType(acNode.getType());
+        //     acNode.setType(dst_typ);
+        //     ats->insert(acNode, vNode->getICFGNode());
+        // }
+        // else {
+        //     skipNode = true;
+        // }
+
+        // if (dst_typ != seek_type && dst_typ != i8ptr_typ) {
+        //     skipNode = true;
+        // }
+      }
+    }
+  } break;
+  case SVF::VFGNode::VFGNodeK::Cmp:
+    acNode.set_kind(AccessType::kind_e::read);
+    ats.insert(acNode, vNode->getICFGNode());
+    break;
+  case SVF::VFGNode::VFGNodeK::BinaryOp:
+    acNode.set_kind(AccessType::kind_e::read);
+    ats.insert(acNode, vNode->getICFGNode());
+    break;
+  case SVF::VFGNode::VFGNodeK::AParm:
+    handleActualParam(vNode, acNode, mdata, p);
+    break;
+  } // end switch statement
+
+  const llvm::Value *prev_value =
+      vNode->getValue() == nullptr
+          ? nullptr
+          : llvm_module_set->getLLVMValue(vNode->getValue());
+
+  return local_result_t{acNode, prev_value, skip_node};
+}
+struct exit_state_t {
+  SVF::NodeID formal_ret;
+  AccessType at;
+  bool operator<(const exit_state_t &o) const {
+    // TODO: Why formal_ret < o.formal_ret? this is an id so whats the purpose
+    // of comparing?
+    return formal_ret != o.formal_ret ? formal_ret < o.formal_ret : at < o.at;
   }
+};
+
+inline bool operator==(const exit_state_t &e1, const exit_state_t &e2) {
+  return e1.formal_ret == e2.formal_ret && e1.at == e2.at;
+}
+inline bool operator!=(const exit_state_t &e1, const exit_state_t &e2) {
+  return !(e1 == e2);
 }
 
-struct access_path_t {
-public:
-  const Type *base_ty;
-  vector<int> indices;
-  vector<Type *> field_ty;
-  Value *v;
-  bool is_struct;
-  bool is_array;
+struct func_summary_t {
+  /**
+   * The effects the summary function has on the local function.
+   */
+  ValueMetadata effects;
+  /**
+   * The possible exits of the function.
+   */
+  std::set<exit_state_t> exits;
 };
 
-struct param_access_site_t {
-  const ICFGNode *node; // where in the program the read happens
-  enum class kind_e {
-    e_direct_read,
-    e_indirect_read,
-    e_direct_write,
-    e_indirect_write
-  };
-};
+/**
+ * The implementation will decide if new state was reached in the SCC fixpoint
+ * iteration.
+ */
+bool operator==(const liberator::func_summary_t &s1,
+                const liberator::func_summary_t &s2) {
+  return s1.effects == s2.effects && s1.exits == s2.exits;
+}
 
-struct param_access_summary_t {
-  std::vector<param_access_site_t> sites;
-
-  // wich abstract objects this function reads/writes
-  NodeBS read_objs;
-  NodeBS write_objs;
-};
+inline bool operator!=(const func_summary_t &s1, const func_summary_t &s2) {
+  return !(s1 == s2);
+}
 
 // TODO: get other possible representations of keys.
 std::string make_key(const Function *F, NodeID param_id) {
@@ -1487,223 +1694,812 @@ std::string make_key(const Function *F, NodeID param_id) {
 }
 
 class param_access_tracker_t {
+  // program assignment graph
   SVFIR *pag;
+  // points to analysis using andersen
   PointerAnalysis *pta;
+  // SVFG graph
   SVFG *svfg;
+  // call graph is data structure where each function is a node and
+  // a function call is a directed edge between caller and callee.
   CallGraph *cg;
+  // detecting scc using tarjan algorithm
+  // TODO: use PTACallGraph
+  SCCDetection<CallGraph *> *cg_scc;
 
-  std::unordered_map<std::string, param_access_summary_t> memo;
+  // formal_id -> summary
+  std::unordered_map<SVF::NodeID, func_summary_t> summaries;
+  std::unordered_set<SVF::NodeID> scc_visited;
+
+  typedef stack<NodeID> worklist_t;
+  // the inverted ssc's for bottom up analysis
+  worklist_t inverted_scc;
 
 public:
   param_access_tracker_t(SVFIR *p, PointerAnalysis *a, SVFG *s)
-      : pag(p), pta(a), svfg(s), cg(a->getCallGraph()) {}
+      : pag(p), pta(a), svfg(s), cg(a->getCallGraph()) {
+    // first add our custom indirect calls to the callgraph.
+    for (const auto &kv : ValueMetadata::myCallEdgeMap_inst) {
+      for (const auto &f : kv.second) {
+        cg->addIndirectCallGraphEdge(kv.first, kv.first->getCaller(), f);
+      }
+    }
 
-  param_access_summary_t analyze(const Function *F, NodeID param_id) {
-    std::string key = make_key(F, param_id);
+    // evaluate SCC using Tarjan.
+    cg_scc = new SCCDetection<CallGraph *>(cg);
+    // execute scc
+    cg_scc->find();
 
-    auto it = memo.find(key);
-    if (it != memo.end())
-      return it->second;
+    // Reverse the SCC order for real bottom up traversal.
+    // Important: Do not use topoNodeStack after this again, because it will be
+    // empty. Maybe better to copy it here.
+    worklist_t st = cg_scc->topoNodeStack();
+    while (!st.empty()) {
+      auto node_id = st.top();
+      st.pop();
+      inverted_scc.push(node_id);
+    }
 
-    memo[key] = param_access_summary_t{};
+    /*while (!inverted.empty()) {
+      auto el = inverted.top();
+      inverted.pop();
+      CallGraphNode *cg_node = cg->getCallGraphNode(el);
+      cout << cg_node->getFunction()->getName() << " in scc with:" << endl;
+      const NodeBS &sub_nodes = cg_scc->subNodes(el);
+      for (NodeBS::iterator it = sub_nodes.begin(), eit = sub_nodes.end();
+           it != eit; ++it) {
+        auto tmp_cg_node = cg->getCallGraphNode(*it);
+        cout << "\t" << tmp_cg_node->getFunction()->getName() << endl;
+      }
+    }*/
 
-    param_access_summary_t summary;
+    /*auto st1 = cg_scc->revTopoNodeStack();
+    while (!st1.empty()) {
+      NodeID call_graph_id = st1.front();
+      st1.pop();
+      CallGraphNode *cg_node = cg->getCallGraphNode(call_graph_id);
+      cout << cg_node->getFunction()->getName() << " in scc with:" << endl;
+      const NodeBS &sub_nodes = cg_scc->subNodes(call_graph_id);
+      for (NodeBS::iterator it = sub_nodes.begin(), eit = sub_nodes.end();
+           it != eit; ++it) {
+        auto tmp_cg_node = cg->getCallGraphNode(*it);
+        cout << "\t" << tmp_cg_node->getFunction()->getName() << endl;
+      }
+    }*/
+  }
 
-    for (const auto &bb : *F) {
-      for (auto it = bb.begin(); it != bb.end(); ++it) {
-        const Instruction *i = &(*it);
-        // TODO: How is the CallICFGNode graph created
-        auto inst = LLVMModuleSet::getLLVMModuleSet()->getCallICFGNode(i);
-        for (const auto *stmt : pag->getSVFStmtList(inst)) {
-          if (const LoadStmt *ld = SVFUtil::dyn_cast<LoadStmt>(stmt)) {
-            SVFUtil::outs() << ld->toString() << "\n";
-          }
+  func_summary_t &get_summary(SVF::NodeID param_id) {
+    SVF::NodeID fid = param_id;
+    auto *pNode = pag->getGNode(param_id);
+    if (pNode && SVFUtil::isa<SVF::ValVar>(pNode)) {
+      auto *valVar = SVFUtil::cast<SVF::ValVar>(pNode);
+      if (svfg->hasDefSVFGNode(valVar)) {
+        fid = svfg->getDefSVFGNode(valVar)->getId();
+      }
+    }
+    return summaries[fid];
+  }
+
+  /**
+   * @param cs the callsite for which to find the targets functions.
+   * @return all possible target function belonging to a call. For indirect
+   * calls there can be multiple target functions.
+   */
+  std::vector<const FunObjVar *> callee_targets(const CallICFGNode *cs) {
+    std::vector<const FunObjVar *> res;
+
+    if (!cs->isIndirectCall()) {
+      if (const FunObjVar *t = cs->getCalledFunction())
+        res.push_back(t);
+      return res;
+    }
+
+    if (config_t::instance()->consider_indirect_calls) {
+      auto it = ValueMetadata::myCallEdgeMap_inst.find(cs);
+      if (it != ValueMetadata::myCallEdgeMap_inst.end()) {
+        res.assign(it->second.begin(), it->second.end());
+      }
+    }
+
+    return res;
+  }
+
+  // Because we stay field sensitive we must carry on the compose the field
+  // indices
+  std::optional<AccessType> merge_access_type(const AccessType &prefix,
+                                              const AccessType &suffix) {
+    for (auto &kv : suffix.get_visited_types()) {
+      int count =
+          prefix.visit_count(kv.first.first, kv.first.second) + kv.second;
+      if (count > MAX_GEP_RECURSION_DEPTH)
+        return std::nullopt;
+    }
+    AccessType out = prefix;
+
+    for (auto i : suffix.get_fields()) {
+      out.addField(i);
+    }
+
+    out.set_kind(suffix.get_kind());
+    out.set_llvm_type(suffix.get_llvm_type());
+
+    for (const auto &kv : suffix.get_visited_types()) {
+      out.add_visited_count(kv.first.first, kv.first.second, kv.second);
+    }
+
+    return out;
+  }
+
+  /**
+   * @param ret - the FormalReturn for which we want the ActualReturn
+   * Example two calls to xoo:
+   * bar -> xoo
+   * foo -> xoo
+   * two actual returns to bar and foo:
+   *      -> bar
+   * xoo |
+   *      -> foo
+   * @return the ActualRet node, from where the callee was called
+   */
+  const VFGNode *get_resume_node(SVF::NodeID ret, const CallICFGNode *cs) {
+    const VFGNode *formal_ret = svfg->getGNode(ret);
+
+    for (auto it = formal_ret->OutEdgeBegin(), eit = formal_ret->OutEdgeEnd();
+         it != eit; ++it) {
+      const VFGNode *d = (*it)->getDstNode();
+
+      if (auto actual_ret = SVFUtil::dyn_cast<ActualRetVFGNode>(d))
+        if (actual_ret->getCallSite() == cs)
+          return d;
+      if (auto outs_ret = SVFUtil::dyn_cast<ActualOUTSVFGNode>(d))
+        if (outs_ret->getCallSite() == cs)
+          return d;
+    }
+
+    return nullptr;
+  }
+
+  /**
+   * @param n Node pointing to ActualParmVFGNode
+   * @return id of corresponding FormalParmVFGNode or FormalINSVFGNode
+   */
+  SVF::NodeID callee_entry_id(const VFGNode *n, const FunObjVar *callee) {
+    for (auto it = n->OutEdgeBegin(), eit = n->OutEdgeEnd(); it != eit; ++it) {
+      const VFGNode *dst = (*it)->getDstNode();
+      // passed by value
+      if (auto formal_parm = SVFUtil::dyn_cast<FormalParmVFGNode>(dst))
+        if (formal_parm->getFun() == callee)
+          return formal_parm->getId();
+      // passed by reference (memory region read into function)
+      if (auto formal_in = SVFUtil::dyn_cast<FormalINSVFGNode>(dst)) {
+        if (formal_in->getFun() == callee) {
+          return formal_in->getId();
         }
       }
+    }
+
+    return 0;
+  }
+
+  /**
+   * TODO: this is just an exercise remove if not needed anymore
+   * @param in succ - Node pointing to ActualParmVFGNode
+   * @param in cs the callsite from which summaries are merged.
+   * @param in p the path that was taken so far.
+   * @param out res_summ the resulting merged summary
+   * @param out worklist appended with the new paths from which execution will
+   * resume.
+   */
+  void merge_summaries(VFGNode *succ, const CallICFGNode *cs, Path &p,
+                       func_summary_t &res_summ, vector<Path> &worklist) {
+    if (cs->isIndirectCall() && !config_t::instance()->consider_indirect_calls)
+      return;
+
+    PAGNode *param = nullptr;
+    if (auto a = SVFUtil::dyn_cast<ActualParmVFGNode>(succ))
+      param = const_cast<ValVar *>(a->getParam());
+
+    if (!param)
+      return;
+
+    int n = 0;
+    for (auto q : cs->getActualParms()) {
+      if (param == q)
+        break;
+      ++n;
+    }
+
+    // Merge the summaries for each possible target function.
+    for (auto target : callee_targets(cs)) {
+      SVF::NodeID fid = callee_entry_id(succ, cs->getCalledFunction());
+      if (fid == 0)
+        return;
+
+      auto summ_it = summaries.find(fid);
+
+      if (summ_it == summaries.end()) {
+        // TODO: print/log an error here, that no summary could be found
+        // for that fid.
+        continue;
+      }
+
+      const auto &callee_summary = summ_it->second;
+      for (auto at : callee_summary.effects.get_access_type_set()) {
+        auto opt = merge_access_type(at, p.get_access_type());
+        if (opt.has_value()) {
+          // TODO: the path may be wrong because we are going bottom up?
+          for (const ICFGNode *icfg_node : at.getICFGNodes())
+            res_summ.effects.get_access_type_set().insert(opt.value(),
+                                                          icfg_node);
+        }
+      }
+      // Merge the exit points of the callee summary with curr summary.
+      // Create a path from ActualParmVFGNode and add it to the worklist.
+      for (auto &ep : callee_summary.exits) {
+        if (auto rt = get_resume_node(ep.formal_ret, cs)) {
+          Path new_path{rt, nullptr, ep.at.get_llvm_type()};
+          new_path.set_access_type(ep.at);
+          worklist.push_back(new_path);
+        }
+      }
+    }
+  }
+
+  void splice_summary(VFGNode *succ, const CallICFGNode *cs, Path &p,
+                      func_summary_t &summ, vector<Path> &worklist) {
+    if (cs->isIndirectCall() && !config_t::instance()->consider_indirect_calls)
+      return;
+
+    PAGNode *param = nullptr;
+    if (auto a = SVFUtil::dyn_cast<ActualParmVFGNode>(succ))
+      param = const_cast<ValVar *>(a->getParam());
+
+    if (!param)
+      return;
+
+    int n = 0;
+    for (auto q : cs->getActualParms()) {
+      if (q == param)
+        break;
+      ++n;
+    }
+
+    for (const FunObjVar *callee : callee_targets(cs)) {
+      SVF::NodeID callee_formal = formal_id_of(callee, n);
+      if (callee_formal == 0)
+        continue;
+      auto sum_it = summaries.find(callee_formal);
+      if (sum_it == summaries.end())
+        continue;
+      const func_summary_t &callee_sum = sum_it->second;
+      for (const AccessType &sum_at :
+           callee_sum.effects.get_access_type_set()) {
+        auto composed_opt = merge_access_type(p.get_access_type(), sum_at);
+        if (composed_opt) {
+          for (const ICFGNode *icfg_n : sum_at.getICFGNodes())
+            summ.effects.get_access_type_set().insert(*composed_opt, icfg_n);
+        }
+      }
+
+      if (callee_sum.effects.isArray())
+        summ.effects.setIsArray(true);
+
+      for (const exit_state_t &exit : callee_sum.exits) {
+        const SVFGNode *poss_ret = get_resume_node(exit.formal_ret, cs);
+        if (!poss_ret)
+          continue;
+        auto composed_opt = merge_access_type(p.get_access_type(), exit.at);
+        if (!composed_opt)
+          continue;
+        Path r(poss_ret, nullptr, exit.at.get_llvm_type());
+        r.set_access_type(*composed_opt);
+        worklist.push_back(r);
+      }
+    }
+  }
+
+  /**
+   * @param
+   */
+  SVF::NodeID formal_id_of(const FunObjVar *callee, int n) {
+    if (!callee || n < 0 || (size_t)n >= callee->arg_size())
+      return 0;
+    auto *arg_val = callee->getArg(n);
+    if (!arg_val)
+      return 0;
+    auto *vv = SVFUtil::dyn_cast<ValVar>(arg_val);
+    if (!vv || !svfg->hasDefSVFGNode(vv))
+      return 0;
+    return svfg->getDefSVFGNode(vv)->getId();
+  }
+
+  // TODO: this has to be the same as seek_type in condition extractor
+  const llvm::Type *formal_pointee_type(SVF::NodeID formal_id) {
+    const VFGNode *entry = svfg->getGNode(formal_id);
+    if (auto formal_param = SVFUtil::dyn_cast<FormalParmVFGNode>(entry)) {
+      auto *llvm_module_set = LLVMModuleSet::getLLVMModuleSet();
+      const llvm::Value *val =
+          llvm_module_set->getLLVMValue(formal_param->getParam());
+      if (val) {
+        auto type_inference = llvm_module_set->getTypeInference();
+        if (type_inference) {
+          auto *seek_type = type_inference->inferObjType(val);
+          if (seek_type)
+            return seek_type;
+        }
+        return val->getType();
+      }
+    }
+    return nullptr;
+  }
+
+  /**
+   * Evaluates a summary for accesses to a function f that.
+   *  @param formal_id - id of the formal parameter node of a function
+   * representing the summary.
+   *  @return function summary of the read and write accesses to that function.
+   */
+  bool summarize_formal(SVF::NodeID formal_id, func_summary_t &summ) {
+    // we can use this to compare for changes, because effects will grow in size
+    // for access type. and exists will grow in size for finding more
+    // ActualParmVFGNodes. This is because
+    const auto org_effects = summ.effects.get_access_type_set().size();
+    const size_t org_exists = summ.exits.size();
+    const bool org_is_array = summ.effects.isArray();
+    const bool org_is_malloc_size = summ.effects.isMallocSize();
+
+    ValueMetadata &work = summ.effects;
+
+    const VFGNode *entry = svfg->getGNode(formal_id);
+    // FIXME: this should not be a set but an unordered_map and the key should
+    // just be a plain struct containing the kind, fields, type, current node.
+    // And using a good hash.
+    std::vector<Path> worklist;
+    std::set<Path> visited;
+    worklist.push_back(Path(entry, nullptr, formal_pointee_type(formal_id)));
+
+    while (!worklist.empty()) {
+      Path p = worklist.back();
+      worklist.pop_back();
+      if (!visited.insert(p).second)
+        continue;
+      const VFGNode *curr = p.getNode();
+
+      auto lr = compute_local_effect(curr, p.get_access_type(), work, p);
+      // Reasons we skip here:
+      // 1. GEP found some weird pointer arithmetic, that we can't assign to
+      // arrays or struct fields.
+      // 2. GEP converts to a constant expression.
+      if (lr.skip)
+        continue;
+
+      // update path, field indices, isArray, kind, type, previousValue for
+      // stores
+      p.set_access_type(lr.ac_node);
+      p.setPrevValue(lr.prev_value);
+
+      // Leaf nodes in SVF are for example ActualRetVFGNodes that are not
+      // consumed by the caller. A store that is never read. (dead store) A
+      // terminal node, which is not used anymore further down.
+      if (!curr->hasOutgoingEdge())
+        continue;
+
+      for (auto it = curr->OutEdgeBegin(), etit = curr->OutEdgeEnd();
+           it != etit; ++it) {
+        VFGEdge *edge = *it;
+        // Skip indirect edges except for store and Memory phi nodes.
+        if (curr->getNodeKind() != VFGNode::VFGNodeK::Store &&
+            curr->getNodeKind() != VFGNode::VFGNodeK::MIntraPhi &&
+            SVFUtil::isa<SVF::IndirectSVFGEdge>(edge))
+          continue;
+
+        VFGNode *succ = edge->getDstNode();
+
+        // (A) CALL boundary
+        const CallICFGNode *cs = nullptr;
+        // if the parameter is put into an ActualParmVFGNode, we have a
+        // callsite. Instead of descending, we merge the function summaries
+        // of the callee with the caller.
+        if (auto a = SVFUtil::dyn_cast<ActualParmVFGNode>(succ))
+          cs = a->getCallSite();
+        else if (auto a = SVFUtil::dyn_cast<ActualINSVFGNode>(succ))
+          cs = a->getCallSite();
+
+        if (cs) {
+          splice_summary(succ, cs, p, summ, worklist);
+          continue;
+        }
+
+        // (B) RETURN boundary of THIS function: record how the value exits.
+        if (SVFUtil::isa<ActualRetVFGNode>(succ) ||
+            SVFUtil::isa<ActualOUTSVFGNode>(succ)) {
+          summ.exits.insert(exit_state_t{curr->getId(), p.get_access_type()});
+          continue;
+        }
+
+        // (C) normal intra edge
+        // TODO: do we need to create a copy here or are there better
+        // alternatives?
+        Path ps = p;
+        // add node to histroy
+        // TODO: is this even needed or can we just add the next node to the
+        // worklist?
+        // Because callstack in ps is not needed anymore, because recursive
+        // functions are now handled by the SCC algorithm.
+        ps.addStep(curr->getICFGNode());
+        //
+        ps.setNode(succ);
+        worklist.push_back(ps);
+      }
+    }
+
+    return summ.effects.get_access_type_set().size() != org_effects ||
+           summ.exits.size() != org_exists ||
+           summ.effects.isArray() != org_is_array ||
+           summ.effects.isMallocSize() != org_is_malloc_size;
+  }
+
+  /**
+   * @return all functions that are in the same SCC.
+   */
+  std::vector<const FunObjVar *> functions_in_scc(SVF::NodeID rep) {
+    std::vector<const FunObjVar *> results;
+
+    for (SVF::NodeID id : cg_scc->subNodes(rep)) {
+      CallGraphNode *n = cg->getGNode(id);
+      results.push_back(n->getFunction());
+    }
+
+    return results;
+  }
+
+  /**
+   * @return all direct callees of a function.
+   */
+  std::vector<const FunObjVar *> direct_callees(const FunObjVar *f) {
+    std::vector<const FunObjVar *> res;
+    if (!f)
+      return res;
+    auto cg_node = cg->getCallGraphNode(f);
+    if (!cg_node)
+      return res;
+    for (auto edge : cg_node->getOutEdges()) {
+      res.push_back(edge->getDstNode()->getFunction());
+    }
+    return res;
+  }
+
+  /**
+   * @return all ids of FormalParmVFGNode of Function G that are pointer types
+   * and have a definition (no unused params) in the SVFG.
+   */
+  vector<SVF::NodeID> pointer_formal_ids(const FunObjVar *G) {
+    std::vector<SVF::NodeID> ids;
+
+    for (const SVFVar *arg : pag->getFunArgsList(G)) {
+      if (!arg->getType() || !arg->getType()->isPointerTy())
+        continue;
+
+      auto *vv = SVFUtil::cast<ValVar>(arg);
+
+      if (!svfg->hasDefSVFGNode(vv))
+        continue;
+
+      ids.push_back(svfg->getDefSVFGNode(vv)->getId());
+    }
+
+    return ids;
+  }
+
+  /**
+   * For multi/cycles SCCs compute fixpoint for all other just compute summarize
+   * formal.
+   * @param id of the function to be queried.
+   */
+  void process_scc(NodeID id) {
+    llvm::SmallVector<SVF::NodeID, 8> formals;
+    for (SVF::NodeID id : cg_scc->subNodes(id)) {
+      const FunObjVar *f = cg->getGNode(id)->getFunction();
+      for (SVF::NodeID fid : pointer_formal_ids(f)) {
+        formals.push_back(fid);
+      }
+    }
+
+    if (formals.empty())
+      return;
+
+    // Single SCC (non-recursive function)
+    if (!cg_scc->isInCycle(id)) {
+      for (auto fid : formals) {
+        summarize_formal(fid, summaries[fid]);
+      }
+      return;
+    }
+
+    // Fixpoint iteration
+    bool changed = true;
+    while (changed) {
+      changed = false;
+      for (auto fid : formals) {
+        changed |= summarize_formal(fid, summaries[fid]);
+      }
+    }
+
+    for (auto fid : formals) {
+      auto fp = dyn_cast<FormalParmVFGNode>(svfg->getGNode(fid));
+      llvm::outs() << "[process_scc] "
+                   << " | Evaluated Function: " << fp->getFun()->getName()
+                   << " (Formal Param ID: " << fid << ")\n"
+                   << " -> Effects: "
+                   << liberator::print_summary(summaries[fid].effects)
+                   << " -> Exit Count: " << summaries[fid].exits.size()
+                   << "\n\n";
+    }
+  }
+
+  void walk_scc(const FunObjVar *f) {
+    if (!f)
+      return;
+
+    auto cg_node = cg->getCallGraphNode(f);
+    if (!cg_node)
+      return;
+    SVF::NodeID rep = cg_scc->repNode(cg_node->getId());
+    if (!scc_visited.insert(rep).second)
+      return;
+
+    // the callgraph is now a DAG. So we will first walk the DAG to the leaf
+    // nodes using DFS and then evaluate the summaries of each function
+    // bottom-up.
+    for (const FunObjVar *G : functions_in_scc(rep)) {
+      for (const FunObjVar *C : direct_callees(G)) {
+        if (!C)
+          continue;
+        auto c_node = cg->getCallGraphNode(C);
+        if (!c_node)
+          continue;
+        if (cg_scc->repNode(c_node->getId()) != rep) {
+          walk_scc(C);
+        }
+      }
+    }
+
+    // fixpoint each SCC. A SCC node can contain one Function Object for
+    // non-recursive and multiple for recursive functions. For recursive
+    // function calls we need to evaluate the fixpoint.
+    bool changed = true;
+    int fixpoint_iter = 0;
+    while (changed) {
+      fixpoint_iter++;
+      changed = false;
+      for (const FunObjVar *G : functions_in_scc(rep)) {
+        for (SVF::NodeID fid : pointer_formal_ids(G)) {
+          changed |= summarize_formal(fid, summaries[fid]);
+        }
+      }
+    }
+  }
+
+  void print_bottom_up_order(raw_ostream &os) {
+    auto cpy_scc = inverted_scc;
+    int count = 1;
+    while (!cpy_scc.empty()) {
+      if ((count % 5) == 0)
+        os << "\n";
+      auto el = cpy_scc.top();
+      cpy_scc.pop();
+      auto rep = cg_scc->repNode(el);
+      auto sub_nodes = cg_scc->subNodes(el);
+      auto cgn = cg->getCallGraphNode(rep);
+      os << count++ << ". " << cgn->getFunction()->getName();
+      if (cpy_scc.size() != 1 && sub_nodes.empty()) {
+        os << " -> ";
+      } else {
+        for (auto sub : sub_nodes) {
+          if (sub == rep)
+            continue;
+          os << ", " << cg->getCallGraphNode(sub)->getFunction()->getName();
+        }
+        os << " -> ";
+      }
+    }
+    os << "\n";
+  }
+
+  /**
+   * Walks the inverted SCCs retrieved from executing "tarjan algorithm".
+   *
+   * @param f function for
+   */
+  void walk_inverted_scc(const FunObjVar *f) {
+    if (!f)
+      return;
+
+    auto cg_node = cg->getCallGraphNode(f);
+    if (!cg_node)
+      return;
+    SVF::NodeID rep = cg_scc->repNode(cg_node->getId());
+    print_bottom_up_order(llvm::outs());
+
+    while (!scc_visited.count(rep) && !inverted_scc.empty()) {
+      auto el = inverted_scc.top();
+      inverted_scc.pop();
+      process_scc(el);
+      scc_visited.insert(el);
     }
   }
 };
 
-void my_proc(const SVFGNode *n, access_path_t &ap) {
-  LLVMModuleSet *module_set = LLVMModuleSet::getLLVMModuleSet();
-  if (auto formal_param = SVFUtil::dyn_cast<FormalParmVFGNode>(n)) {
-    auto callee = formal_param->getICFGNode()->getFun();
-    std::string mangled = callee->getName();
-    std::string demangle = llvm::demangle(mangled);
-    stringstream ss;
-    callee->getReturnType()->print(ss);
-    MY_EX_LOG(
-        "Argument is passed to function {} unmangled {} with return type: {}\n",
-        mangled, demangle, ss.str());
-  } else if (auto gep = SVFUtil::dyn_cast<GepVFGNode>(n)) {
-    if (gep->getType())
-      MY_EX_LOG("{}\n", gep->getType()->toString());
-    auto gepV = module_set->getLLVMValue(gep->getValue());
-    if (!gepV)
-      return;
-    auto gep_inst = dyn_cast<GetElementPtrInst>(gepV);
-    if (!gep_inst)
-      return;
-    if (gep_inst->hasAllConstantIndices() && gep_inst->getNumIndices() > 1) {
-      auto *CI = dyn_cast<ConstantInt>(gep_inst->getOperand(2));
-      uint64_t idx = CI->getZExtValue();
-      ap.indices.push_back(idx);
-      if (ap.base_ty) {
-        if (auto st = dyn_cast<StructType>(ap.base_ty)) {
-          // we have to store struct accesses
-          // we have to differentiate array accesses
-          if (st->getStructElementType(idx)->getTypeID() == Type::PointerTyID) {
-            ap.indices.push_back(idx);
-            // TODO: here we need to infer the type of the access again
-            for (auto I : gep_inst->users()) {
-              if (auto store = dyn_cast<StoreInst>(I)) {
-                if (auto global =
-                        dyn_cast<GlobalVariable>(store->getValueOperand())) {
-                  // TODO: wie mappe ich den Typ jetzt auf die Class A?
-                  auto gTy = global->getValueType();
-                  std::string buffer;
-                  raw_string_ostream os(buffer);
-                  gTy->print(os);
-                  MY_EX_LOG("Global Variable: {}\n", buffer);
-                  ap.field_ty.push_back(gTy);
-                }
-              }
-            }
-          }
-        }
-      }
-    } else if (auto store_inst = SVFUtil::dyn_cast<StoreVFGNode>(n)) {
+/*
+ * TODO: Can Probably be removed:
+ static vector<Path> expand_successors(const VFGNode *vNode, Path &p,
+                                      ValueMetadata &mdata) {
+  std::vector<Path> next;
+  if (!vNode->hasOutgoingEdge())
+    return next;
+
+  auto llvm_module_set = LLVMModuleSet::getLLVMModuleSet();
+  auto ac_node = p.get_access_type();
+
+  for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
+                               eit = vNode->OutEdgeEnd();
+       it != eit; ++it) {
+    VFGEdge *edge = *it;
+
+    // VFGNode *succNode2 = edge->getDstNode();
+    //  outs() << "INSPECT?: " << succNode2->toString() << "\n";
+
+    // follow indirect jumps if a store or IntraMSSA
+    // probably add a flag
+    // TODO: Whats up with this code?
+    if (vNode->getNodeKind() != VFGNode::VFGNodeK::Store &&
+        vNode->getNodeKind() != VFGNode::VFGNodeK::MIntraPhi) {
+      if (SVFUtil::isa<SVF::IndirectSVFGEdge>(edge))
+        continue;
     }
-    if (gep_inst) {
-      std::string buffer;
-      raw_string_ostream os(buffer);
-      gep_inst->getSourceElementType()->print(os);
-      MY_EX_LOG("{}\n", buffer);
-      gep_inst->getResultElementType()->print(os);
-      MY_EX_LOG("{}\n", buffer);
-      // now what if the gep is followed by a store
-      // it can be a write to a struct or array
-      for (auto I : gep_inst->users()) {
-        if (auto store = dyn_cast<StoreInst>(I)) {
-          if (auto global =
-                  dyn_cast<GlobalVariable>(store->getValueOperand())) {
-            // wie mappe ich den Typ jetzt auf die Class A?
-            auto gTy = global->getValueType();
+
+    VFGNode *succ_node = edge->getDstNode();
+    // Add the current ICFGNode to the history of the path
+    Path p_succ = p;
+    p_succ.addStep(vNode->getICFGNode());
+
+    bool ok_continue = true;
+
+    const CallICFGNode *cs = nullptr;
+    // is a direct call
+    bool isACall = false;
+
+    if (auto call_node = SVFUtil::dyn_cast<ActualParmVFGNode>(succ_node)) {
+      cs = call_node->getCallSite();
+      HANDLER_LOG("ActualParmVFGNode {}\n", succ_node->toString());
+      isACall = true;
+    } else if (auto call_node =
+                   SVFUtil::dyn_cast<ActualINSVFGNode>(succ_node)) {
+      cs = call_node->getCallSite();
+      // Call MU
+      HANDLER_LOG("ActualINSVFGNode {}\n", succ_node->toString());
+      isACall = true;
+    } else if (auto ret_node = SVFUtil::dyn_cast<ActualRetVFGNode>(succ_node)) {
+      cs = ret_node->getCallSite();
+      isACall = false;
+    } else if (auto ret_node =
+                   SVFUtil::dyn_cast<ActualOUTSVFGNode>(succ_node)) {
+      // Call CHI
+      cs = ret_node->getCallSite();
+      isACall = false;
+    } else if (auto addr_node = SVFUtil::dyn_cast<AddrVFGNode>(succ_node)) {
+      if (auto *inst = llvm::dyn_cast<llvm::Instruction>(
+              llvm_module_set->getLLVMValue(addr_node->getValue()))) {
+        if (auto *call = llvm::dyn_cast<llvm::CallInst>(inst)) {
+          llvm::Function *callee = call->getCalledFunction();
+          if (callee && callee->getName() == "malloc") {
+            HANDLER_LOG("Found a malloc in an AddrVFGNode\n");
           }
         }
       }
+    }
+
+    if (cs && isACall) {
+      p_succ.pushFrame(cs);
+      HANDLER_LOG("The callstack now has {} entries.", p_succ.getStackSize());
+      if (p_succ.getStackSize() >= MAX_STACKSIZE) {
+        HANDLER_LOG("STACK SIZE REACHED\n");
+        ok_continue = false;
+        // outs() << "[INFO] Stack size too big!\n";
+      } else if (!config_t::instance()->consider_indirect_calls &&
+                 cs->isIndirectCall()) {
+        HANDLER_LOG("Indirect Call: {}\n", cs->toString());
+        ok_continue = false;
+        // outs() << "[INFO] Indirect call, I stop!\n";
+        // it is a direct call, check for stubs
+      } else {
+        if (!cs->isIndirectCall()) {
+          // outs() << "[INFO] ActualParmVFGNode:\n";
+          HANDLER_LOG("Direct Call: Function {} calling {} with {} "
+                      "parameters.\n {}\n",
+                      cs->getCaller()->getName(),
+                      cs->getCalledFunction()->getName(),
+                      cs->getActualParms().size(), cs->toString());
+          std::string fun = cs->getCalledFunction()->getName();
+          bool can_handle_parameter = false;
+
+          SVF::PAGNode *param = nullptr;
+          if (auto call_node =
+                  SVFUtil::dyn_cast<ActualParmVFGNode>(succ_node)) {
+            param = const_cast<SVF::ValVar *>(call_node->getParam());
+            can_handle_parameter = true;
+          } else if (auto call_node =
+                         SVFUtil::dyn_cast<FormalParmVFGNode>(succ_node)) {
+            param = const_cast<SVF::ValVar *>(call_node->getParam());
+            can_handle_parameter = true;
+            // } else {
+            //     outs() << "it is none!!\n";
+          }
+
+          // outs() << "succ node:\n";
+          // outs() << succNode->toString() << "\n";
+
+          if (can_handle_parameter) {
+            assert(param && "Param not found!\n");
+
+            int n_param = 0;
+            for (auto p : cs->getActualParms()) {
+              if (p == param)
+                break;
+              n_param++;
+            }
+            HANDLER_LOG("Parameter index: {}", n_param);
+
+            ok_continue = handlerDispatcher(&mdata, fun, vNode->getICFGNode(),
+                                            cs, n_param, ac_node, C_PARAM, &p);
+          }
+        }
+      }
+    }
+
+    if (cs && !isACall) {
+      ok_continue = p_succ.isCorrect(cs);
+      if (ok_continue) {
+        if (cs->getCaller() && cs->getCalledFunction())
+          HANDLER_LOG("Returning to matching function. Caller: {} and "
+                      "callee: {}\n",
+                      cs->getCaller()->getName(),
+                      cs->getCalledFunction()->getName());
+        p_succ.popFrame();
+        HANDLER_LOG("Call Stack back to only {} entries.\n",
+                    p_succ.getStackSize());
+      }
+    }
+
+    if (ok_continue) {
+      p_succ.setNode(succ_node);
+      next.push_back(p_succ);
     }
   }
-}
+  return next;
+}*/
 
 ValueMetadata my_extract_parameter_metadata(const SVFG &vfg, const Value *val,
-                                            const Type *seek_type) {
-  ValueMetadata res;
-  MY_EX_LOG("In EXTRACT PARAMETER\n");
-  PAG *pag = PAG::getPAG();
-  auto *module_set = LLVMModuleSet::getLLVMModuleSet();
-  // TODO: is there always a GNode to each LLVM value?
-  auto param_node = module_set->getValueNode(val);
-  PAGNode *arg_node = pag->getGNode(param_node);
-  // this is necessary to get the definition node of the SVFVar in the SVFG
-  // graph
-  auto vNode = vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(arg_node));
-  if (config_t::instance()->debug) {
-    PARAM_META_LOG("Working node:\n");
-    PARAM_META_LOG("A.-> {}\n", vNode->toString());
-    PARAM_META_LOG("B.-> {}\n", vNode->getFun()->getName());
-    // PARAM_META_LOG("Stack size: {}\n", p.getStackSize());
-
-    PARAM_META_LOG("[IN EDGES]\n");
-    for (VFGNode::const_iterator it = vNode->InEdgeBegin(),
-                                 eit = vNode->InEdgeEnd();
-         it != eit; ++it) {
-      VFGEdge *edge = *it;
-
-      // TODO: Remove
-      // STATE: I wrote the my_extract_parameter_metadata function
-      // NEXT STEPS: implement the same functionalty as extractParameterMetadata
-      // but first try to understand of CHI and MU nodes are inserted and how
-      // the VFG is created of SVF and write it down in the thesis
-      if (SVFUtil::isa<SVF::DirectSVFGEdge>(edge))
-        PARAM_META_LOG("direct:\n");
-      else
-        PARAM_META_LOG("indirect:\n");
-
-      VFGNode *succNode = edge->getSrcNode();
-      PARAM_META_LOG("{}\n", succNode->toString());
-
-      PARAM_META_LOG("[OUT EDGES]\n");
-      for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
-                                   eit = vNode->OutEdgeEnd();
-           it != eit; ++it) {
-        VFGEdge *edge = *it;
-
-        if (SVFUtil::isa<SVF::DirectSVFGEdge>(edge))
-          PARAM_META_LOG("direct:\n");
-        else
-          PARAM_META_LOG("indirect:\n");
-
-        VFGNode *succNode = edge->getDstNode();
-        PARAM_META_LOG("{}\n", succNode->toString());
-      }
-    }
+                                            const Type *seek_type,
+                                            unsigned param_id) {
+  llvm::outs() << "my_extract_parameter_metadata\n";
+  // static parameter tracker
+  // for each SVFG graph one tracker.
+  static std::unordered_map<const SVFG *,
+                            std::unique_ptr<param_access_tracker_t>>
+      trackers;
+  auto &tracker = trackers[&vfg];
+  if (!tracker) {
+    tracker = std::make_unique<param_access_tracker_t>(
+        SVFIR::getPAG(), vfg.getPTA(), const_cast<SVFG *>(&vfg));
   }
+  const FunObjVar *f = get_function(vfg, param_id);
+  tracker->walk_inverted_scc(f);
 
-  auto type_inference = module_set->getTypeInference();
-  auto param_type = type_inference->inferObjType(val);
-  std::string buffer;
-  raw_string_ostream os(buffer);
-  param_type->print(os);
-  MY_EX_LOG("Inferred Type of paramter: {}\n", buffer);
-
-  access_path_t path;
-  path.base_ty = param_type;
-
-  // val will be an formal argument when starting.
-  //
-  FILOWorkList<const SVFGNode *> worklist;
-  worklist.push(vNode);
-  Set<const SVFGNode *> visited;
-
-  while (!worklist.empty()) {
-    auto v = worklist.pop();
-    if (visited.count(v))
-      continue;
-    visited.insert(v);
-    MY_EX_LOG("Visited: {}\n", v->toString());
-    my_proc(v, path);
-    for (auto e : v->getOutEdges()) {
-      auto u = e->getDstNode();
-      worklist.push(u);
-    }
-  }
-
-  // here i can output the results
-  if (auto st = dyn_cast<StructType>(path.base_ty)) {
-    MY_EX_LOG("There are {} indices and {} field type(s)\n",
-              path.indices.size(), path.field_ty.size());
-    for (int i = 0; i < path.indices.size(); ++i) {
-      string buffer;
-      raw_string_ostream os(buffer);
-      st->print(os);
-      string type_buffer;
-      raw_string_ostream os1(type_buffer);
-      if (path.field_ty.size() > i)
-        path.field_ty[i]->print(os);
-      MY_EX_LOG("Found accesss to {} at index {} with type {}\n", buffer,
-                path.indices[i], type_buffer);
-    }
-  }
-
-  for (PAGEdge *edge : arg_node->getOutEdges()) {
-    if (GepStmt *gepEdge = SVFUtil::dyn_cast<GepStmt>(edge)) {
-      auto tst = gepEdge->getAccessPath();
-      MY_EX_LOG("{}\n", tst.dump());
-    }
-  }
-
-  return res;
+  func_summary_t &s = tracker->get_summary(param_id);
+  ValueMetadata mdata = s.effects;
+  mdata.setValue(val);
+  return mdata;
 }
 
 ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
@@ -1751,7 +2547,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
   // outs() << "DEBUG: val: " << *val << "\n";
 
-  AccessTypeSet *ats = mdata.getAccessTypeSet();
+  AccessTypeSet &ats = mdata.get_access_type_set();
   bool is_array = false;
 
   // std::set<std::string> visitedFunctions;
@@ -1778,7 +2574,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
     worklist.pop_back();
 
     const VFGNode *vNode = p.getNode();
-    AccessType acNode = p.getAccessType();
+    AccessType acNode = p.get_access_type();
 
     // visitedFunctions.insert(vNode->getFun()->getName());
 
@@ -1875,7 +2671,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
         switch (vNode->getNodeKind()) {
         case VFGNode::VFGNodeK::Load: {
           acNode.set_kind(AccessType::kind_e::read);
-          ats->insert(acNode, vNode->getICFGNode());
+          ats.insert(acNode, vNode->getICFGNode());
         } break;
         case VFGNode::VFGNodeK::Store: {
           auto *prevValue = p.getPrevValue();
@@ -1890,7 +2686,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
             else if (inst->getValueOperand() == prevValue)
               acNode.set_kind(AccessType::kind_e::read);
 
-            ats->insert(acNode, vNode->getICFGNode());
+            ats.insert(acNode, vNode->getICFGNode());
 
             if (vNode->hasIncomingEdge()) {
               for (auto it : vNode->getInEdges()) {
@@ -1900,10 +2696,11 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
                           llvmModuleSet->getLLVMValue(node->getValue()))) {
                     llvm::Function *callee = call->getCalledFunction();
                     if (callee && callee->getName() == "malloc") {
-                      // no need to set field, empty field set is what I need
+                      // no need to set field, empty field set is what I
+                      // need
                       acNode.set_kind(AccessType::kind_e::create);
-                      mdata.getAccessTypeSet()->insert(acNode,
-                                                       vNode->getICFGNode());
+                      mdata.get_access_type_set().insert(acNode,
+                                                         vNode->getICFGNode());
                       HANDLER_LOG("Function {} has a malloc return value",
                                   vNode->getICFGNode()->getFun()->getName());
                     }
@@ -1914,7 +2711,7 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           }
         } break;
         case SVF::VFGNode::VFGNodeK::Gep:
-          skipNode = handleGep(vNode, acNode, *ats, mdata, p);
+          skipNode = handleGep(vNode, acNode, ats, mdata, p);
           break;
         case VFGNode::VFGNodeK::Copy: {
           if (auto stmt_vfg_node =
@@ -1924,10 +2721,11 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
             auto inst = llvmModuleSet->getLLVMValue(stmt_vfg_node);
             // auto inst = SVFUtil::dyn_cast<GetElementPtrInst>(lllvm_inst);
 
-            // auto inst = SVFUtil::dyn_cast<Instruction>(vNode->getValue());
+            // auto inst =
+            // SVFUtil::dyn_cast<Instruction>(vNode->getValue());
 
             acNode.set_kind(AccessType::kind_e::read);
-            ats->insert(acNode, vNode->getICFGNode());
+            ats.insert(acNode, vNode->getICFGNode());
 
             // XXX: casting operations complitate things a lot. For the time
             // being I just leave it.
@@ -1937,13 +2735,16 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
               auto src_typ = bitcastinst->getSrcTy();
 
               // if (acNode.getNumFields() != 0 &&
-              //     TypeMatcher::compare_types(src_typ, acNode.getType())) {
+              //     TypeMatcher::compare_types(src_typ, acNode.getType()))
+              //     {
 
               // outs() << "src_typ " << *src_typ << "\n";
               // outs() << "acNode.getType() " << *acNode.getType() << "\n";
 
-              // if (TypeMatcher::compare_types(src_typ, acNode.getType())) {
-              //     // I want the node the original type after the cast this
+              // if (TypeMatcher::compare_types(src_typ, acNode.getType()))
+              // {
+              //     // I want the node the original type after the cast
+              //     this
               //     // may turn out useful for mem* api operations since
               //     // they tend to cast to i8* before being invoked
               //     acNode.setOriginalCastType(acNode.getType());
@@ -1962,11 +2763,11 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
         } break;
         case SVF::VFGNode::VFGNodeK::Cmp:
           acNode.set_kind(AccessType::kind_e::read);
-          ats->insert(acNode, vNode->getICFGNode());
+          ats.insert(acNode, vNode->getICFGNode());
           break;
         case SVF::VFGNode::VFGNodeK::BinaryOp:
           acNode.set_kind(AccessType::kind_e::read);
-          ats->insert(acNode, vNode->getICFGNode());
+          ats.insert(acNode, vNode->getICFGNode());
           break;
         case SVF::VFGNode::VFGNodeK::AParm:
           handleActualParam(vNode, acNode, mdata, p);
@@ -1992,10 +2793,11 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
         continue;
       }
 
-      p.setAccessType(acNode);
+      p.set_access_type(acNode);
       if (vNode->getValue() == nullptr)
         p.setPrevValue(nullptr);
       else
+        // has corresponding llvm value
         p.setPrevValue(llvmModuleSet->getLLVMValue(vNode->getValue()));
 
       if (vNode->hasOutgoingEdge()) {
@@ -2190,10 +2992,6 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
   // for (auto x: visitedFunctions) {
   //     outs() << x << "\n";
   // }
-
-  if (!mdata.isArray()) {
-    mdata.setIsArray(is_array);
-  }
 
   auto loop_end_time = std::chrono::high_resolution_clock::now();
   uint64_t total_loop_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(

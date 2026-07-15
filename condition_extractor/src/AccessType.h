@@ -6,13 +6,13 @@
 #include "SVFIR/SVFVariables.h"
 #include "WPA/Andersen.h"
 #include <Graphs/GenericGraph.h>
+#include <Util/GeneralType.h>
 #include <llvm/Analysis/LoopInfo.h>
 #include <llvm/IR/Dominators.h>
 #include <llvm/Support/raw_ostream.h>
 
-#include "PhiFunction.h"
-#include "TypeMatcher.h"
 #include <fstream>
+#include <map>
 #include <utility>
 
 using namespace SVF;
@@ -41,9 +41,19 @@ public:
 
 private:
   friend Json::Value to_json(const AccessType &, bool);
-  std::set<const ICFGNode *> icfg_set;
+  // This set contains all the ICFGNodes that made up this AccessType.
+  mutable std::set<const ICFGNode *> icfg_set;
+  /*
+   * contains the struct or array fields that were tracked.
+   */
   std::vector<int> fields;
+  /*
+   * contains the type of access (read, write, create)
+   */
   kind_e access;
+  /*
+   * contains the type
+   */
   const llvm::Type *type;
 
   // fake parent
@@ -55,8 +65,9 @@ private:
   // original casted type
   const llvm::Type *c_type;
 
-  // remember the types extracted from previous GEP
-  std::set<const llvm::Type *> visited_types;
+  // counts how often a field of a type got accessed.
+  // should prevent type recursion in a path.
+  std::map<std::pair<const llvm::Type *, int>, int> visited_types;
 
 public:
   AccessType(const llvm::Type *t) {
@@ -69,10 +80,23 @@ public:
   }
   ~AccessType() { fields.clear(); }
 
-  void add_visited_type(llvm::Type *a_type) { visited_types.insert(a_type); }
+  void add_visited_type(const llvm::Type *a_type, int field) {
+    visited_types[{a_type, field}]++;
+  }
 
-  bool is_visited(llvm::Type *a_type) {
-    return visited_types.find(a_type) != visited_types.end();
+  void add_visited_count(const llvm::Type *a_type, int field, int count) {
+    visited_types[{a_type, field}] += count;
+  }
+
+  const std::map<std::pair<const llvm::Type *, int>, int> &
+  get_visited_types() const {
+    return visited_types;
+  }
+
+  // number of times (a_type, field) has already been followed on this path
+  int visit_count(const llvm::Type *a_type, int field) const {
+    auto it = visited_types.find({a_type, field});
+    return it == visited_types.end() ? 0 : it->second;
   }
   const std::vector<int> &get_parent_fields() const { return p_fields; }
 
@@ -100,7 +124,9 @@ public:
     return *this;
   };
 
-  void addICFGNode(const ICFGNode *icfg_node) { icfg_set.insert(icfg_node); }
+  void addICFGNode(const ICFGNode *icfg_node) const {
+    icfg_set.insert(icfg_node);
+  }
 
   std::set<const ICFGNode *> getICFGNodes() const { return icfg_set; }
 
@@ -189,24 +215,30 @@ public:
 
 class AccessTypeSet {
 private:
-  // std::map<AccessType, std::set<const ICFGNode*>> ats;
-  std::set<AccessType> ats_set;
+  typedef std::set<AccessType> container_t;
+  typedef container_t::iterator iterator;
+  typedef container_t::const_iterator const_iterator;
+  container_t ats_set;
 
 public:
-  void insert(AccessType at, const ICFGNode *inst) {
+  /**
+   * Add the ICFGNode inst to the AccessType at.
+   * If it does not exists create yet, create it in the map.
+   * Note: This depends on the fact, that AccessType's odering will not
+   * use ICFGNode for its less comparison, otherwise this code will be undefined
+   * behaviour.
+   * @return an iterator to the updated value.
+   */
+  const_iterator insert(AccessType at, const ICFGNode *inst) {
     // outs() << "[DEBUG] insert: " << at.toString() << "\n";
-
-    // at is already in the set
     auto at_iter = ats_set.find(at);
     if (at_iter != ats_set.end()) {
-      AccessType at_prev = *at_iter;
-      at_prev.addICFGNode(inst);
-      ats_set.erase(at_iter);
-      // ats_set.erase(at_prev);
-      ats_set.insert(at_prev);
+      // at is already in the set
+      at_iter->addICFGNode(inst);
+      return at_iter;
     } else {
       at.addICFGNode(inst);
-      ats_set.insert(at);
+      return ats_set.insert(at).first;
     }
   }
 
@@ -237,6 +269,47 @@ public:
   bool operator<(const AccessTypeSet &rhs) const {
     return ats_set < rhs.ats_set;
   }
+  bool operator==(const AccessTypeSet &rhs) const {
+    return ats_set == rhs.ats_set;
+  }
+  bool operator!=(const AccessTypeSet &rhs) const { return !(*this == rhs); }
+};
+
+// first we need to define what the incoming state is.
+// The incoming state must uniqly identify the function call as already
+// processed. What happens when the function parameter decides the execution
+// path taken and the write and read accesses to that? do we not care and
+// report that still or do we distinguish that case? In case we distinguish,
+// the state must reflect that. The caller does not play a role in the memo.
+// Because the caller will just use the results of the saved value to change
+// it's locale state. But execution does not change based on passed parameter
+// value. But in the caller itself the return values are important. Each
+// possible return state must be tracked, when it returns references as this
+// will change the accesses to the parameter in the caller.
+//
+
+struct memo_state_t {
+  // node id - we need to know if the node that calls the callee is the same.
+  SVF::NodeID node;
+  // fields - Because we want to stay field sensitive, we need to track the
+  // different field accesses separately.
+  vector<int> fields;
+  // we need to differentiate the kind. A path that reads should be different
+  // to a path that writes.
+  AccessType::kind_e access;
+  // The type of the struct currently tracked by this state.
+  // This is the same as in the original liberator. Although the type is not
+  // as useful anymore as we have opaque pointer, it can still serve as an
+  // indicaton of if we are on the right track.
+  const llvm::Type *type;
+  // The previous value makes it possible to differentiate for a store node,
+  // if the access is read or write.
+  llvm::Value *prev_value;
+
+  bool operator==(const memo_state_t &o) const {
+    return node == o.node && o.access == access && type == o.type &&
+           fields == o.fields && prev_value == o.prev_value;
+  }
 };
 
 class Path {
@@ -263,7 +336,7 @@ public:
   }
 
   void addStep(const ICFGNode *node) {
-    history.push_back(std::make_pair(node, getAccessType()));
+    history.push_back(std::make_pair(node, get_access_type()));
   }
 
   const std::vector<std::pair<const ICFGNode *, AccessType>> getSteps() {
@@ -274,13 +347,15 @@ public:
 
   void setPrevValue(const Value *a_prevValue) { prevValue = a_prevValue; }
 
-  const VFGNode *getNode() { return node; }
+  const VFGNode *getNode() const { return node; }
 
   void setNode(const VFGNode *a_node) { node = a_node; }
 
-  AccessType getAccessType() { return access_type; }
+  AccessType get_access_type() const { return access_type; }
 
-  void setAccessType(AccessType a_access_type) { access_type = a_access_type; }
+  void set_access_type(const AccessType &a_access_type) {
+    access_type = a_access_type;
+  }
 
   bool isCorrect(const CallICFGNode *edge) {
     if (getStackSize() == 0)
