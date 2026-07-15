@@ -1999,12 +1999,14 @@ public:
   }
 
   /**
-   * @param
+   * @param f function to retrieve for FormalParmVFGNode from.
+   * @param n the index of the parameter in the function f.
+   * @return the FormalParmVFGNode of parameter n in function f.
    */
-  SVF::NodeID formal_id_of(const FunObjVar *callee, int n) {
-    if (!callee || n < 0 || (size_t)n >= callee->arg_size())
+  SVF::NodeID formal_id_of(const FunObjVar *f, int n) {
+    if (!f || n < 0 || (size_t)n >= f->arg_size())
       return 0;
-    auto *arg_val = callee->getArg(n);
+    auto *arg_val = f->getArg(n);
     if (!arg_val)
       return 0;
     auto *vv = SVFUtil::dyn_cast<ValVar>(arg_val);
