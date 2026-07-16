@@ -70,4 +70,4 @@ extract-bc -b "$WORK"/lib/libcares.a
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
   -v v0 -t json -do_indirect_jumps \
   -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
-  -target_name "$TARGET_NAME"
+  
