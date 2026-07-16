@@ -4,6 +4,7 @@ project("Condition Extractor")
 # 1. Add the option (Default is OFF)
 option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
 option(ENABLE_GPROF "Enable gprof profiling" OFF)
+option(ENABLE_PROFILING "Enable wall-clock PROFILE_SCOPE timers (no -pg overhead)" OFF)
 option(BUILD_TESTS "Build the unit tests" ON)
 
   # We need to match the build environment for LLVM:

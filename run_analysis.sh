@@ -92,7 +92,7 @@ time $DEBUG "$TOOLS_DIR/condition_extractor/build/bin/extractor" \
   -v v0 -t json -do_indirect_jumps \
   -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
   -range 12-13 \
-  -log Type,Global \
+  -log Type \
   -profiling \
   \
   ${EXTRA_EXTRACTOR_FLAGS} #-range 81-334 \

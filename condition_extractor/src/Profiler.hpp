@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <chrono>
+#include <ctime>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <map>
@@ -37,6 +39,38 @@ public:
 
   void clear() { stats_.clear(); }
 
+  bool empty() const { return stats_.empty(); }
+
+  // Append one CSV row per key so repeated benchmark runs accumulate in a
+  // single table. The header is written only when the file is new/empty.
+  // `target` and `label` (e.g. the analysed library and the implementation
+  // under test) are copied into every row to keep runs distinguishable.
+  void write_csv(const std::string &path, const std::string &target,
+                 const std::string &label) const {
+    std::ofstream out(path, std::ios::app);
+    if (!out.is_open()) {
+      std::cerr << "[Profiler] cannot open CSV file: " << path << "\n";
+      return;
+    }
+    if (out.tellp() == 0)
+      out << "timestamp,target,label,key,count,total_ms,avg_ms,min_ms,max_ms"
+          << "\n";
+
+    auto now = std::chrono::system_clock::to_time_t(
+        std::chrono::system_clock::now());
+    char timestamp[32];
+    std::strftime(timestamp, sizeof(timestamp), "%Y-%m-%dT%H:%M:%S",
+                  std::localtime(&now));
+
+    out << std::fixed << std::setprecision(3);
+    for (const auto &[key, data] : stats_) {
+      out << timestamp << ',' << csv_quote(target) << ',' << csv_quote(label)
+          << ',' << csv_quote(key) << ',' << data.count << ',' << data.total_ms
+          << ',' << (data.total_ms / data.count) << ',' << data.min_ms << ','
+          << data.max_ms << "\n";
+    }
+  }
+
   std::string dump() const {
     std::stringstream ss;
     ss << "Profiler Stats:\n";
@@ -55,6 +89,18 @@ public:
   }
 
 private:
+  static std::string csv_quote(const std::string &s) {
+    std::string quoted = "\"";
+    for (char c : s) {
+      if (c == '"')
+        quoted += "\"\"";
+      else
+        quoted += c;
+    }
+    quoted += '"';
+    return quoted;
+  }
+
   struct StatData {
     long long count = 0;
     double total_ms = 0.0;
@@ -68,22 +114,21 @@ private:
 
 class ScopedTimer {
 public:
+  // steady_clock: monotonic, unaffected by system clock adjustments —
+  // high_resolution_clock may alias system_clock and jump during a run.
   ScopedTimer(std::string key)
-      : key_(std::move(key)),
-        start_(std::chrono::high_resolution_clock::now()) {}
+      : key_(std::move(key)), start_(std::chrono::steady_clock::now()) {}
 
   ~ScopedTimer() {
-    auto end = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::steady_clock::now();
     double duration =
-        std::chrono::duration_cast<std::chrono::microseconds>(end - start_)
-            .count() /
-        1000.0;
+        std::chrono::duration<double, std::milli>(end - start_).count();
     Profiler::instance().record(key_, duration);
   }
 
 private:
   std::string key_;
-  std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+  std::chrono::time_point<std::chrono::steady_clock> start_;
 };
 
 } // namespace liberator

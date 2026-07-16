@@ -2178,6 +2178,9 @@ public:
   vector<SVF::NodeID> pointer_formal_ids(const FunObjVar *G) {
     std::vector<SVF::NodeID> ids;
 
+    if (!G || G->isDeclaration() || !pag->hasFunArgsList(G))
+      return ids;
+
     for (const SVFVar *arg : pag->getFunArgsList(G)) {
       if (!arg->getType() || !arg->getType()->isPointerTy())
         continue;
@@ -2194,8 +2197,8 @@ public:
   }
 
   /**
-   * For multi/cycles SCCs compute fixpoint for all other just compute summarize
-   * formal.
+   * For multi/cycles SCCs compute fixpoint for all other just compute summmary
+   * for all formal params.
    * @param id of the function to be queried.
    */
   void process_scc(NodeID id) {
@@ -2214,6 +2217,16 @@ public:
     if (!cg_scc->isInCycle(id)) {
       for (auto fid : formals) {
         summarize_formal(fid, summaries[fid]);
+      }
+      for (auto fid : formals) {
+        auto fp = dyn_cast<FormalParmVFGNode>(svfg->getGNode(fid));
+        llvm::outs() << "[process_scc] "
+                     << " | Evaluated Function: " << fp->getFun()->getName()
+                     << " (Formal Param ID: " << fid << ")\n"
+                     << " -> Effects: "
+                     << liberator::print_summary(summaries[fid].effects)
+                     << " -> Exit Count: " << summaries[fid].exits.size()
+                     << "\n\n";
       }
       return;
     }
@@ -2484,7 +2497,6 @@ public:
 ValueMetadata my_extract_parameter_metadata(const SVFG &vfg, const Value *val,
                                             const Type *seek_type,
                                             unsigned param_id) {
-  llvm::outs() << "my_extract_parameter_metadata\n";
   // static parameter tracker
   // for each SVFG graph one tracker.
   static std::unordered_map<const SVFG *,

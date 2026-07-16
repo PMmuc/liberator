@@ -91,6 +91,18 @@ static llvm::cl::opt<bool>
     EnableProfiling("profiling", llvm::cl::desc("Enable time-trace profiling"),
                     llvm::cl::init(false));
 
+static llvm::cl::opt<std::string> ProfileCsv(
+    "profile_csv",
+    llvm::cl::desc("Append the profiler stats as CSV rows to <file> "
+                   "(needs a build with -DENABLE_PROFILING=ON)"),
+    llvm::cl::init(""));
+
+static llvm::cl::opt<std::string> ProfileLabel(
+    "profile_label",
+    llvm::cl::desc("Label written into the profile CSV rows, e.g. the "
+                   "implementation under test"),
+    llvm::cl::init("default"));
+
 static llvm::cl::opt<int>
     RangeStart("range-start",
                llvm::cl::desc("Start index of the function range to analyze"),
@@ -234,6 +246,18 @@ int main(int argc, char **argv) {
   }
 
   SVFUtil::outs() << "\n" << liberator::Profiler::instance().dump() << "\n";
+
+  if (!ProfileCsv.empty()) {
+    auto &profiler = liberator::Profiler::instance();
+    if (profiler.empty()) {
+      SVFUtil::errs() << "[WARN] -profile_csv given, but no profiling data "
+                         "was recorded. Rebuild with -DENABLE_PROFILING=ON.\n";
+    } else {
+      profiler.write_csv(ProfileCsv, config->target_name, ProfileLabel);
+      SVFUtil::outs() << "[INFO] profiler stats appended to " << ProfileCsv
+                      << "\n";
+    }
+  }
 
   return 0;
 }

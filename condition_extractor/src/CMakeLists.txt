@@ -9,6 +9,12 @@ target_link_libraries(condition_extractor_core PUBLIC SVF::SvfLLVM ${Z3_LIBRARIE
 if (lto_ok)
   set_property(TARGET condition_extractor_core PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
+
+# PROFILE_SCOPE timers also need NDEBUG, i.e. a release-type build
+if(ENABLE_PROFILING OR ENABLE_GPROF)
+    target_compile_definitions(condition_extractor_core
+      PRIVATE PROFILING)
+endif()
 #target_include_directories(condition_extractor_core PRIVATE $<TARGET_PROPERTY:SVF::SvfLLVM,INTERFACE_INCLUDE_DIRECTORIES>)
 
 if(ENABLE_ASAN)
@@ -52,8 +58,6 @@ if(ENABLE_GPROF)
     message(STATUS "GProf enabled")
     target_compile_options(condition_extractor_core PUBLIC -pg)
     target_link_options(condition_extractor_core PUBLIC -pg)
-    target_compile_definitions(condition_extractor_core
-      PRIVATE PROFILING)
     target_compile_options(extractor PUBLIC -pg)
     target_link_options(extractor PUBLIC -pg)
 endif()
