@@ -37,6 +37,9 @@ echo "make 1"
 export REPO="$TARGET/repo"
 cd $REPO
 
+# newer kernel headers define BLKTRACESETUP2; allow it in the constant generator
+sed -i 's/(SIGRTMAX|SIGRTMIN|SIG_|NULL)/(SIGRTMAX|SIGRTMIN|SIG_|NULL|BLKTRACESETUP2)/g' "$REPO/gen_constants.sh"
+
 # configure compiles some shits for testing, better remove it
 rm -rf $LIBFUZZ_LOG_PATH/apis.log
 
@@ -76,7 +79,8 @@ $PROF_EXTRACTOR $TOOLS_DIR/condition_extractor/bin/extractor \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \
     -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
     -v v0 -t json -do_indirect_jumps \
-    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
+    -target_name "$TARGET_NAME"
 
 
 # sed -i 's\minijail_run\# minijail_run\g' "$LIBFUZZ_LOG_PATH/apis_minimized.txt"

@@ -13,6 +13,6 @@ echo "[WLLVM] $(which wllvm)"
 cd ${LIBFUZZ}/targets/${TARGET_NAME}
 sudo ./preinstall.sh
 ./fetch.sh
-{ time taskset -c 0 ./analysis.sh; } 2>${TARGET}/${TARGET_NAME}_analysis_time.txt
+{ time ./analysis.sh; } 2>${TARGET}/${TARGET_NAME}_analysis_time.txt
 
 $LIBFUZZ/targets/generate_prof_remote.sh --as-excel

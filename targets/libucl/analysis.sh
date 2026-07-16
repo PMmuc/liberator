@@ -22,17 +22,14 @@ mkdir -p $LIBFUZZ_LOG_PATH
 
 echo "make 1"
 cd "$TARGET/repo"
-./autogen.sh
-echo "./configure"
-
-# Compile library for coverage
-./configure --disable-shared --prefix="$WORK" \
-                                CC=wllvm CXX=wllvm++ \
-                                CXXFLAGS="-g -O0" \
-                                CFLAGS="-g -O0"
-
-# WATCH OUT PADAWAN! SOMETIME SETTING -O0 IN C{XX}FLAGS MIGHT NOT BE ENOUGH!
-find . -name Makefile -exec sed -i 's/-O2/-O0/g' {} \;
+# libucl 0.9.4 requires autoconf >= 2.70 (newer than the image); use the bundled cmake build.
+rm -rf "$TARGET/repo/build"
+mkdir -p "$TARGET/repo/build"
+cd "$TARGET/repo/build"
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=OFF \
+         -DCMAKE_BUILD_TYPE=Debug \
+         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+         -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 
 # configure compiles some shits for testing, better remove it
 rm $LIBFUZZ_LOG_PATH/apis.log
@@ -69,4 +66,5 @@ $PROF_EXTRACTOR $TOOLS_DIR/condition_extractor/bin/extractor \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \
     -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
     -v v0 -t json -do_indirect_jumps \
-    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
+    -target_name "$TARGET_NAME"

@@ -28,12 +28,15 @@ export LIBFUZZ_LOG_PATH=$WORK/apipass
 mkdir -p "$LIBFUZZ_LOG_PATH"
 
 echo "make 1"
+export CXX=g++
+rm -rf "$TARGET/repo/aom_build"
 mkdir -p "$TARGET/repo/aom_build"
 cd "$TARGET/repo/aom_build"
 
 
-cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
         -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+        -DENABLE_TESTS=0 -DENABLE_EXAMPLES=0 -DENABLE_TOOLS=0 \
         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
         -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
 # configure compiles some shits for testing, better remove it
@@ -73,7 +76,8 @@ $PROF_EXTRACTOR "$TOOLS_DIR"/condition_extractor/bin/extractor \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \
     -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
     -v v0 -t json -do_indirect_jumps \
-    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
+    -target_name "$TARGET_NAME"
 
 
 # manual way to modify automatically extracted constraints

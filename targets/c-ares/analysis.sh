@@ -50,7 +50,7 @@ make -j"$(nproc)"
 echo "make install"
 make install
 
-extract-bc -b "$WORK"/lib/libcares_static.a
+extract-bc -b "$WORK"/lib/libcares.a
 
 # this extracts the exported functions in a file, to be used later for grammar
 # generations
@@ -63,12 +63,11 @@ extract-bc -b "$WORK"/lib/libcares_static.a
 
 # extract fields dependency from the library itself, repeat for each object
 # produced
-cd "$WORK"/apipass
-
-$PROF_EXTRACTOR "$TOOLS_DIR"/condition_extractor/bin/extractor \
-  "$WORK"/lib/libcares_static.a.bc \
+"$TOOLS_DIR"/condition_extractor/bin/extractor \
+  "$WORK"/lib/libcares.a.bc \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -output "$LIBFUZZ_LOG_PATH/conditions.json" \
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
   -v v0 -t json -do_indirect_jumps \
-  -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+  -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
+  -target_name "$TARGET_NAME"

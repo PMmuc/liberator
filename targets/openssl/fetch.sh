@@ -1,12 +1,23 @@
 #!/bin/bash
-
-##
+#
 # Pre-requirements:
 # - env TARGET: path to target work dir
-##
+#
+# Idempotent: safe to re-run. Reuses an existing checkout and only fetches the
+# pinned commit if a previous (older) clone predates it.
+set -e
 
-git clone --no-checkout https://github.com/openssl/openssl.git \
-    "$TARGET/repo"
-git -C "$TARGET/repo" checkout 3bd5319b5d0df9ecf05c8baba2c401ad8e3ba130
+REPO="$TARGET/repo"
+URL="https://github.com/openssl/openssl.git"
+COMMIT="3bd5319b5d0df9ecf05c8baba2c401ad8e3ba130"
 
-cp "$LIBFUZZ/targets/openssl/src/abilist.txt" "$TARGET/repo/abilist.txt"
+if [ ! -d "$REPO/.git" ]; then
+  git clone --no-checkout "$URL" "$REPO"
+fi
+
+# Make sure the pinned commit exists locally; fetch it if not.
+if ! git -C "$REPO" cat-file -e "${COMMIT}^{commit}" 2>/dev/null; then
+  git -C "$REPO" fetch --tags origin || git -C "$REPO" fetch origin "$COMMIT" || true
+fi
+
+git -C "$REPO" checkout -f --detach "$COMMIT"

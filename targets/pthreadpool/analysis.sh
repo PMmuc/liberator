@@ -37,7 +37,9 @@ cmake . -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
         -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
         -DCMAKE_CXX_FLAGS_DEBUG="-g -O0" \
         -DBENCHMARK_ENABLE_GTEST_TESTS=off \
-        -DBENCHMARK_ENABLE_INSTALL=off 
+        -DBENCHMARK_ENABLE_INSTALL=off \
+        -DPTHREADPOOL_BUILD_TESTS=OFF \
+        -DPTHREADPOOL_BUILD_BENCHMARKS=OFF
 
 # configure compiles some shits for testing, better remove it
 rm -rf $LIBFUZZ_LOG_PATH/apis.log
@@ -76,4 +78,5 @@ $PROF_EXTRACTOR $TOOLS_DIR/condition_extractor/bin/extractor \
     -output "$LIBFUZZ_LOG_PATH/conditions.json" \
     -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
     -v v0 -t json -do_indirect_jumps \
-    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt"
+    -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
+    -target_name "$TARGET_NAME"
