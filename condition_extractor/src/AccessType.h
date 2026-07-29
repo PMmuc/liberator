@@ -7,7 +7,9 @@
 #include "WPA/Andersen.h"
 #include <Graphs/GenericGraph.h>
 #include <Util/GeneralType.h>
+#include <cstddef>
 #include <llvm/Analysis/LoopInfo.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/Dominators.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -55,12 +57,14 @@ private:
    * contains the type
    */
   const llvm::Type *type;
+  llvm::DIType *di_type;
 
   // fake parent
   bool has_parent_;
   std::vector<int> p_fields;
   kind_e p_access;
   const llvm::Type *p_type;
+  DIType *p_di_type;
 
   // original casted type
   const llvm::Type *c_type;
@@ -70,15 +74,20 @@ private:
   std::map<std::pair<const llvm::Type *, int>, int> visited_types;
 
 public:
-  AccessType(const llvm::Type *t) {
+  AccessType(const llvm::Type *t, llvm::DIType *di = nullptr) {
     access = kind_e::none;
     p_access = kind_e::none;
     has_parent_ = false;
     type = t;
     p_type = nullptr;
     c_type = nullptr;
+    di_type = di;
+    p_di_type = nullptr;
   }
+
   ~AccessType() { fields.clear(); }
+
+  DIType *get_di_type() const { return di_type; }
 
   void add_visited_type(const llvm::Type *a_type, int field) {
     visited_types[{a_type, field}]++;
@@ -108,6 +117,9 @@ public:
     this->fields = rhs.fields;
     this->access = rhs.access;
     this->type = rhs.type;
+
+    this->di_type = rhs.di_type;
+    this->p_di_type = rhs.p_di_type;
 
     // hope this does not make a mess!
     this->icfg_set = rhs.icfg_set;
@@ -139,6 +151,7 @@ public:
     p_fields = fields;
     p_access = access;
     p_type = type;
+    p_di_type = di_type;
     has_parent_ = true;
     fields.push_back(a_field);
   }
@@ -164,7 +177,10 @@ public:
 
   kind_e get_kind() const { return access; }
 
-  void set_llvm_type(const llvm::Type *typ) { type = typ; }
+  void set_llvm_type(const llvm::Type *typ, llvm::DIType *di_typ) {
+    type = typ;
+    di_type = di_typ;
+  }
 
   const llvm::Type *get_llvm_type() const { return type; }
 
@@ -223,7 +239,7 @@ private:
 public:
   /**
    * Add the ICFGNode inst to the AccessType at.
-   * If it does not exists create yet, create it in the map.
+   * If it does not exists yet, create it in the map.
    * Note: This depends on the fact, that AccessType's odering will not
    * use ICFGNode for its less comparison, otherwise this code will be undefined
    * behaviour.
@@ -328,8 +344,9 @@ public:
   // }
 
   // BUG: this is probably a bug where val is not used in the constructor.
-  Path(const VFGNode *p_node, const llvm::Value *val, const llvm::Type *type)
-      : access_type(type) {
+  Path(const VFGNode *p_node, const llvm::Value *val, const llvm::Type *type,
+       llvm::DIType *di = nullptr)
+      : access_type(type, di) {
     node = p_node;
     prevValue = nullptr;
     // access_type.setType(val->getType());

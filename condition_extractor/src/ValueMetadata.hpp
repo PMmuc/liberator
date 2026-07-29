@@ -24,6 +24,7 @@ class ValueMetadata {
 
   const llvm::Value *val;
   std::vector<llvm::Value *> indexes;
+  // this is set by handler memset,
   std::vector<std::pair<llvm::Value *, Path>> fun_params;
   friend std::string to_string(const ValueMetadata &, bool);
   friend std::string print_summary(const ValueMetadata &, bool);
@@ -134,7 +135,6 @@ ValueMetadata extractParameterMetadata(const SVFG &, const llvm::Value *,
                                        const llvm::Type *, unsigned);
 ValueMetadata my_extract_parameter_metadata(const SVFG &vfg,
                                             const llvm::Value *val,
-                                            const llvm::Type *seek_type,
                                             unsigned param_id);
 std::vector<std::string> extractDependencyAmongParameters(const SVF::SVFVar *,
                                                           ValueMetadata &,

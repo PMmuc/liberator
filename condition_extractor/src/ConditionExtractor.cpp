@@ -12,7 +12,6 @@
 #include "PhiFunction.h"
 #include "PostDominators.h"
 #include "Profiler.hpp"
-#include "SVF-LLVM/ObjTypeInference.h"
 #include "SVFIR/SVFIR.h"
 #include "SVFIR/SVFVariables.h"
 #include "TypeMatcher.h"
@@ -567,86 +566,14 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
       auto svf_fun = pag->getFunObjVar(f);
       ValueMetadata param_metadata;
       for (auto param : fun_param_map[svf_fun]) {
-        /**
-         * First try SVF's interprocedural type inference. Only works if the
-         * library is called in the program and it can trace back the origin to
-         * an alloc or malloc call.
-         */
         auto formal_param_llvm = llvm_module_set->getLLVMValue(param);
-        auto type_inference = llvm_module_set->getTypeInference();
-        auto seek_type = type_inference->inferObjType(formal_param_llvm);
-
-        /**
-         * Fallback chain when SVF returned an opaque pointer:
-         *   1. LLVM Argument attributes (byval/sret/elementtype/...)
-         *   2. DWARF debug info
-         *   3. Intra-procedural forward scan over GEP / load / store uses
-         */
-        if (seek_type->isPointerTy()) {
-          auto *arg = llvm::dyn_cast<llvm::Argument>(formal_param_llvm);
-
-          if (arg) {
-            TYPE_LOG("Argument name: {}\n", arg->getName());
-            if (auto *attr_type = infer_type_from_arg_attrs(arg)) {
-              TYPE_LOG("Recovered pointee type from Argument attribute.\n");
-              seek_type = attr_type;
-            }
-          }
-
-          if (seek_type->isPointerTy() && arg) {
-            TYPE_LOG("Couldn't deduce pointer type using SVF or attributes.\n "
-                     "Falling back to DWARF.\n");
-            if (DISubprogram *SP = arg->getParent()->getSubprogram()) {
-              if (DISubroutineType *STy = SP->getType()) {
-                DITypeRefArray type_array = STy->getTypeArray();
-
-                unsigned array_index = arg->getArgNo() + 1;
-                if (array_index < type_array.size() &&
-                    type_array[array_index]) {
-                  auto *param_di_type = type_array[array_index];
-
-                  // Resolve the entire DI chain — every pointer/reference
-                  // node becomes a TypedPointerType wrapping its (resolved)
-                  // pointee, so the full source-level type is preserved.
-                  // Examples:
-                  //   int **first  → i32**
-                  //   cb_t c       → (i32 (i8*))*           (function ptr)
-                  //   cb1_t *c     → (i32 (i32*, i8*, float))**
-                  //   PointPtr p   → %struct.Point*
-                  auto *llvm_module = llvm_module_set->getMainLLVMModule();
-                  if (auto *resolved = resolve_di_type_to_llvm(param_di_type,
-                                                               *llvm_module)) {
-                    if (!resolved->isVoidTy()) {
-                      TYPE_LOG("Resolved DWARF source type.\n");
-                      seek_type = resolved;
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          if (seek_type->isPointerTy()) {
-            if (auto *use_type =
-                    infer_type_from_forward_uses(formal_param_llvm)) {
-              TYPE_LOG("Recovered pointee type from forward use scan.\n");
-              seek_type = use_type;
-            }
-          }
-        } else {
-          TYPE_LOG("SVF type inference found type!\n");
-        }
-        std::string type_str;
-        raw_string_ostream os(type_str);
-        seek_type->print(os);
-        TYPE_LOG("For parameter: {} in function: {}, we inferred type {}\n",
-                 param->toString(), svf_fun->toString(), type_str);
+        const Function *llvm_fun = llvm_module_set->getFunction(f);
 
         {
           PROFILE_SCOPE("Function 1: extractParameterMetadata");
           PROFILE_SCOPE("Function 1: extractParameterMetadata: " + f);
           param_metadata = my_extract_parameter_metadata(
-              *svfg, formal_param_llvm, seek_type, param->getId());
+              *svfg, formal_param_llvm, param->getId());
         }
 
         if (param_metadata.isArray()) {

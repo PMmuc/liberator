@@ -264,7 +264,7 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
       AccessType atField = atNode;
       atField.set_kind(AccessType::kind_e::write);
       atField.addField(f);
-      atField.set_llvm_type(ft);
+      atField.set_llvm_type(ft, nullptr);
       mdata->get_access_type_set().insert(atField, icfgNode);
     }
   }
@@ -331,13 +331,6 @@ bool open_handler(ValueMetadata *mdata, std::string fun_name,
  * parameter, 2 = second ...
  * @param atNode - access type of current node
  */
-/*
- * TODO:
- * STATE: I fixed all the problems, last problem was the problem with memcpy
- * handler because of faulty return statement.
- * NEXT STEPS: Execute extractor in debugger and look if it runs through for
- * c-ares, and then find a solution for opaque pointers.
- */
 bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
@@ -361,6 +354,7 @@ bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
     mdata->setIsArray(isAnArray(c));
     // if (param_num == 1) {
     //  outs() << cs->getCallSite()->toString() << "\n";
+    //
     Value *v = c->getArgOperand(2);
     mdata->addFunParam(v, path);
     // }
@@ -428,6 +422,8 @@ bool memset_hander(ValueMetadata *mdata, std::string fun_name,
 
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
     auto i = SVFUtil::dyn_cast<CallBase>(llvm_val);
+    // Get parameter n from memset call which is the number of bytes
+    // to set the memory to.
     Value *v = i->getArgOperand(2);
     mdata->addFunParam(v, path);
 

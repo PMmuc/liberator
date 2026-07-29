@@ -138,13 +138,15 @@ void tag_log(std::initializer_list<std::string_view> tags,
   tag_log<StdoutLogger>("paramMetadata", __FUNCTION__, __VA_ARGS__)
 #define RETURN_LOG(...)                                                        \
   tag_log<StdoutLogger>("returnMetadata", __FUNCTION__, __VA_ARGS__)
-#define GLOBAL_LOG(...)                                                        \
-  tag_log<StdoutLogger>("Global", __FUNCTION__, __VA_ARGS__)
 #define TYPE_LOG(...) tag_log<StdoutLogger>("Type", __FUNCTION__, __VA_ARGS__)
 #define MY_EX_LOG(...)                                                         \
   tag_log<StdoutLogger>("MyExLog", __FUNCTION__, __VA_ARGS__)
+#define LOCAL_LOG(...) tag_log<StdoutLogger>("Local", __FUNCTION__, __VA_ARGS__)
 #define GLOBAL_LOG(...)                                                        \
   tag_log<StdoutLogger>("Global", __FUNCTION__, __VA_ARGS__)
+#define SUMM_LOG(...)                                                          \
+  tag_log<StdoutLogger>("Summary", __FUNCTION__, __VA_ARGS__)
+#define LOCAL_LOG(...) tag_log<StdoutLogger>("Local", __FUNCTION__, __VA_ARGS__)
 #else
 // Release: expand to a no-op so arguments are NOT evaluated.
 #define HANDLER_LOG(...) ((void)0)
@@ -156,8 +158,8 @@ void tag_log(std::initializer_list<std::string_view> tags,
 #define DOMINATOR_LOG(...) ((void)0)
 #define PARAM_META_LOG(...) ((void)0)
 #define RETURN_LOG(...) ((void)0)
+#define LOCAL_LOG(...) ((void)0)
 #define GLOBAL_LOG(...) ((void)0)
 #define TYPE_LOG(...) ((void)0)
 #define MY_EX_LOG(...) ((void)0)
-#define GLOBAL_LOG(...) ((void)0)
 #endif
