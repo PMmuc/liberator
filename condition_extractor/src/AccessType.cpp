@@ -1552,13 +1552,13 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
               p_succ.setNode(succNode);
               worklist.push_back(p_succ);
             }
+            auto t_wl_end = std::chrono::high_resolution_clock::now();
+            total_edge_worklist_ns +=
+                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    t_wl_end - t_wl_start);
           }
-          auto t_wl_end = std::chrono::high_resolution_clock::now();
-          total_edge_worklist_ns +=
-              std::chrono::duration_cast<std::chrono::nanoseconds>(t_wl_end -
-                                                                   t_wl_start)
 
-                  auto t_end = std::chrono::high_resolution_clock::now();
+          auto t_end = std::chrono::high_resolution_clock::now();
           total_out_edges_ns +=
               std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
                                                                    t_start)
