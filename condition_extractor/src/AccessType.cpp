@@ -1190,6 +1190,7 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
 
       {
         // process the node!
+        auto t_start = std::chrono::high_resolution_clock::now();
         if (vNode->getNodeKind() == VFGNode::VFGNodeK::Load) {
           acNode.setAccess(AccessType::Access::read);
           ats->insert(acNode, vNode->getICFGNode());
