@@ -1395,255 +1395,249 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
         total_switch_ns += std::chrono::duration_cast<std::chrono::nanoseconds>(
                                t_end - t_start)
                                .count();
-        // else if (vNode->getNodeKind() == VFGNode::VFGNodeK::FRet) {
-        //     // outs() << "[INFO] I found a FormalRet\n";
-        //     // outs() << vNode->toString() << "\n";
-        //     acNode.setAccess(AccessType::Access::ret);
-        //     ats->insert(acNode, vNode->getICFGNode());
-        // }
+      } // anonymous block
 
-        if (skipNode) {
-          // outs() << "I skip\n";
-          // outs() << vNode->toString() << "\n";
-          continue;
-        }
+      // else if (vNode->getNodeKind() == VFGNode::VFGNodeK::FRet) {
+      //     // outs() << "[INFO] I found a FormalRet\n";
+      //     // outs() << vNode->toString() << "\n";
+      //     acNode.setAccess(AccessType::Access::ret);
+      //     ats->insert(acNode, vNode->getICFGNode());
+      // }
 
-        p.setAccessType(acNode);
-        if (vNode->getValue() == nullptr)
-          p.setPrevValue(nullptr);
-        else
-          p.setPrevValue(llvmModuleSet->getLLVMValue(vNode->getValue()));
+      if (skipNode) {
+        // outs() << "I skip\n";
+        // outs() << vNode->toString() << "\n";
+        continue;
+      }
 
-        if (vNode->hasOutgoingEdge()) {
-          auto t_start = std::chrono::high_resolution_clock::now();
-          // outs() << "Children of: \n";
-          // outs() << vNode->toString() << "\n";
-          for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
-                                       eit = vNode->OutEdgeEnd();
-               it != eit; ++it) {
-            VFGEdge *edge = *it;
+      p.setAccessType(acNode);
+      if (vNode->getValue() == nullptr)
+        p.setPrevValue(nullptr);
+      else
+        p.setPrevValue(llvmModuleSet->getLLVMValue(vNode->getValue()));
 
-            VFGNode *succNode2 = edge->getDstNode();
-            // outs() << "INSPECT?: " << succNode2->toString() << "\n";
+      if (vNode->hasOutgoingEdge()) {
+        auto t_start = std::chrono::high_resolution_clock::now();
+        // outs() << "Children of: \n";
+        // outs() << vNode->toString() << "\n";
+        for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
+                                     eit = vNode->OutEdgeEnd();
+             it != eit; ++it) { // start edge processing
+          VFGEdge *edge = *it;
 
-            // follow indirect jumps if a store or IntraMSSA
-            // probably add a flag
-            if (vNode->getNodeKind() != VFGNode::VFGNodeK::Store &&
-                vNode->getNodeKind() != VFGNode::VFGNodeK::MIntraPhi) {
-              // try to follow only Direct Edges
-              if (SVFUtil::isa<SVF::IndirectSVFGEdge>(edge)) {
-                // VFGNode* succNode2 = edge->getDstNode();
-                // outs() << "SKIP: " << succNode2->toString() << "\n";
-                continue;
-              }
+          VFGNode *succNode2 = edge->getDstNode();
+          // outs() << "INSPECT?: " << succNode2->toString() << "\n";
+
+          // follow indirect jumps if a store or IntraMSSA
+          // probably add a flag
+          if (vNode->getNodeKind() != VFGNode::VFGNodeK::Store &&
+              vNode->getNodeKind() != VFGNode::VFGNodeK::MIntraPhi) {
+            // try to follow only Direct Edges
+            if (SVFUtil::isa<SVF::IndirectSVFGEdge>(edge)) {
+              // VFGNode* succNode2 = edge->getDstNode();
+              // outs() << "SKIP: " << succNode2->toString() << "\n";
+              continue;
             }
-            // outs() << "I PROCEED WITH THIS\n";
+          }
+          // outs() << "I PROCEED WITH THIS\n";
 
-            VFGNode *succNode = edge->getDstNode();
+          VFGNode *succNode = edge->getDstNode();
 
-            auto t_path_start = std::chrono::high_resolution_clock::now();
-            Path p_succ = p;
-            auto t_path_end = std::chrono::high_resolution_clock::now();
-            total_edge_path_copy_ns +=
-                std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    t_path_end - t_path_start)
-                    .count();
-            p_succ.addStep(vNode->getICFGNode());
+          auto t_path_start = std::chrono::high_resolution_clock::now();
+          Path p_succ = p;
+          auto t_path_end = std::chrono::high_resolution_clock::now();
+          total_edge_path_copy_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_path_end -
+                                                                   t_path_start)
+                  .count();
+          p_succ.addStep(vNode->getICFGNode());
 
-            bool ok_continue = true;
+          bool ok_continue = true;
 
-            const CallICFGNode *cs = nullptr;
-            bool isACall = false;
+          const CallICFGNode *cs = nullptr;
+          bool isACall = false;
 
-            if (auto call_node =
-                    SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
-              cs = call_node->getCallSite();
-              isACall = true;
-            } else if (auto call_node =
-                           SVFUtil::dyn_cast<ActualINSVFGNode>(succNode)) {
-              cs = call_node->getCallSite();
-              isACall = true;
-            } else if (auto ret_node =
-                           SVFUtil::dyn_cast<ActualRetVFGNode>(succNode)) {
-              cs = ret_node->getCallSite();
-              isACall = false;
-            } else if (auto ret_node =
-                           SVFUtil::dyn_cast<ActualOUTSVFGNode>(succNode)) {
-              cs = ret_node->getCallSite();
-              isACall = false;
-            }
+          if (auto call_node = SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
+            cs = call_node->getCallSite();
+            isACall = true;
+          } else if (auto call_node =
+                         SVFUtil::dyn_cast<ActualINSVFGNode>(succNode)) {
+            cs = call_node->getCallSite();
+            isACall = true;
+          } else if (auto ret_node =
+                         SVFUtil::dyn_cast<ActualRetVFGNode>(succNode)) {
+            cs = ret_node->getCallSite();
+            isACall = false;
+          } else if (auto ret_node =
+                         SVFUtil::dyn_cast<ActualOUTSVFGNode>(succNode)) {
+            cs = ret_node->getCallSite();
+            isACall = false;
+          }
 
-            auto t_call_start = std::chrono::high_resolution_clock::now();
-            if (cs && isACall) {
-              // outs() << "[INFO] ActualParmVFGNode:\n";
-              p_succ.pushFrame(cs);
-              if (p_succ.getStackSize() >= MAX_STACKSIZE) {
-                ok_continue = false;
-                // outs() << "[INFO] Stack size too big!\n";
-              } else if (!consider_indirect_calls && cs->isIndirectCall()) {
-                ok_continue = false;
-                // outs() << "[INFO] Indirect call, I stop!\n";
-                // it is a direct call, check for stubs
-              } else {
-                if (!cs->isIndirectCall()) {
-                  std::string fun =
-                      SVFUtil::getCallee(cs->getCallSite())->getName();
+          auto t_call_start = std::chrono::high_resolution_clock::now();
+          if (cs && isACall) {
+            // outs() << "[INFO] ActualParmVFGNode:\n";
+            p_succ.pushFrame(cs);
+            if (p_succ.getStackSize() >= MAX_STACKSIZE) {
+              ok_continue = false;
+              // outs() << "[INFO] Stack size too big!\n";
+            } else if (!consider_indirect_calls && cs->isIndirectCall()) {
+              ok_continue = false;
+              // outs() << "[INFO] Indirect call, I stop!\n";
+              // it is a direct call, check for stubs
+            } else {
+              if (!cs->isIndirectCall()) {
+                std::string fun =
+                    SVFUtil::getCallee(cs->getCallSite())->getName();
 
-                  // outs() << "[DEBUG] I found this function: "
-                  //        << fun << "\n";
+                // outs() << "[DEBUG] I found this function: "
+                //        << fun << "\n";
 
-                  bool can_handle_parameter = false;
+                bool can_handle_parameter = false;
 
-                  SVF::PAGNode *param = nullptr;
-                  if (auto call_node =
-                          SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
-                    param = const_cast<SVF::PAGNode *>(call_node->getParam());
-                    can_handle_parameter = true;
-                  } else if (auto call_node =
-                                 SVFUtil::dyn_cast<FormalParmVFGNode>(
-                                     succNode)) {
-                    param = const_cast<SVF::PAGNode *>(call_node->getParam());
-                    can_handle_parameter = true;
-                    // } else {
-                    //     outs() << "it is none!!\n";
+                SVF::PAGNode *param = nullptr;
+                if (auto call_node =
+                        SVFUtil::dyn_cast<ActualParmVFGNode>(succNode)) {
+                  param = const_cast<SVF::PAGNode *>(call_node->getParam());
+                  can_handle_parameter = true;
+                } else if (auto call_node =
+                               SVFUtil::dyn_cast<FormalParmVFGNode>(succNode)) {
+                  param = const_cast<SVF::PAGNode *>(call_node->getParam());
+                  can_handle_parameter = true;
+                  // } else {
+                  //     outs() << "it is none!!\n";
+                }
+
+                // outs() << "succ node:\n";
+                // outs() << succNode->toString() << "\n";
+
+                if (can_handle_parameter) {
+                  assert(param && "Param not found!\n");
+
+                  int n_param = 0;
+                  for (auto p : cs->getActualParms()) {
+                    if (p == param)
+                      break;
+                    n_param++;
                   }
 
-                  // outs() << "succ node:\n";
-                  // outs() << succNode->toString() << "\n";
-
-                  if (can_handle_parameter) {
-                    assert(param && "Param not found!\n");
-
-                    int n_param = 0;
-                    for (auto p : cs->getActualParms()) {
-                      if (p == param)
-                        break;
-                      n_param++;
-                    }
-
-                    ok_continue =
-                        handlerDispatcher(&mdata, fun, vNode->getICFGNode(), cs,
-                                          n_param, acNode, C_PARAM, &p);
-                  }
+                  ok_continue =
+                      handlerDispatcher(&mdata, fun, vNode->getICFGNode(), cs,
+                                        n_param, acNode, C_PARAM, &p);
                 }
               }
             }
-            auto t_call_end = std::chrono::high_resolution_clock::now();
-            total_edge_call_ns +=
-                std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    t_call_end - t_call_start)
-                    .count();
-
-            // aka is a ret
-            auto t_ret_start = std::chrono::high_resolution_clock::now();
-            if (cs && !isACall) {
-              ok_continue = p_succ.isCorrect(cs);
-              if (ok_continue)
-                p_succ.popFrame();
-            }
-            auto t_ret_end = std::chrono::high_resolution_clock::now();
-            total_edge_ret_ns +=
-                std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    t_ret_end - t_ret_start)
-                    .count();
-
-            auto t_wl_start = std::chrono::high_resolution_clock::now();
-            if (ok_continue) {
-              p_succ.setNode(succNode);
-              worklist.push_back(p_succ);
-            }
-            auto t_wl_end = std::chrono::high_resolution_clock::now();
-            total_edge_worklist_ns +=
-                std::chrono::duration_cast<std::chrono::nanoseconds>(t_wl_end -
-                                                                     t_wl_start)
-                    .count();
           }
-
-          auto t_end = std::chrono::high_resolution_clock::now();
-          total_out_edges_ns +=
-              std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
-                                                                   t_start)
+          auto t_call_end = std::chrono::high_resolution_clock::now();
+          total_edge_call_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_call_end -
+                                                                   t_call_start)
                   .count();
-        }
-        // else {
-        //     outs() << "I HAVE NOT OUT EDGES!\n";
-        // }
-      }
-    }
-    auto loop_end_time = std::chrono::high_resolution_clock::now();
-    uint64_t total_loop_ns =
-        std::chrono::duration_cast<std::chrono::nanoseconds>(loop_end_time -
-                                                             loop_start_time)
-            .count();
 
-    // outs() << "I visited these functions:\n";
-    // for (auto x: visitedFunctions) {
-    //     outs() << x << "\n";
-    // }
+          // aka is a ret
+          auto t_ret_start = std::chrono::high_resolution_clock::now();
+          if (cs && !isACall) {
+            ok_continue = p_succ.isCorrect(cs);
+            if (ok_continue)
+              p_succ.popFrame();
+          }
+          auto t_ret_end = std::chrono::high_resolution_clock::now();
+          total_edge_ret_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_ret_end -
+                                                                   t_ret_start)
+                  .count();
 
-    if (!mdata.isArray()) {
-      mdata.setIsArray(is_array);
-    }
+          auto t_wl_start = std::chrono::high_resolution_clock::now();
+          if (ok_continue) {
+            p_succ.setNode(succNode);
+            worklist.push_back(p_succ);
+          }
+          auto t_wl_end = std::chrono::high_resolution_clock::now();
+          total_edge_worklist_ns +=
+              std::chrono::duration_cast<std::chrono::nanoseconds>(t_wl_end -
+                                                                   t_wl_start)
+                  .count();
+        } // end out_edge processing
+        auto t_end = std::chrono::high_resolution_clock::now();
+        total_out_edges_ns +=
+            std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
+                                                                 t_start)
+                .count();
+      } // end if has  OudgoingEdges
+    } // end visited
+  } // end worklist empty
+  auto loop_end_time = std::chrono::high_resolution_clock::now();
+  uint64_t total_loop_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                               loop_end_time - loop_start_time)
+                               .count();
+
+  // outs() << "I visited these functions:\n";
+  // for (auto x: visitedFunctions) {
+  //     outs() << x << "\n";
+  // }
+
+  if (!mdata.isArray()) {
+    mdata.setIsArray(is_array);
+  }
 
 #if defined(PROFILING)
-    if (total_loop_ns > 0) {
-      outs() << "\n[PROFILING] `extractParameterMetadata` Time Breakdown:\n";
-      outs() << "  Total Loop Time: " << (total_loop_ns / 1e6) << " ms\n";
-      outs() << "  Visited Lookup : " << (total_visited_lookup_ns / 1e6)
-             << " ms ("
-             << ((double)total_visited_lookup_ns / total_loop_ns) * 100.0
-             << "%)\n";
-      outs() << "  Visited Insert : " << (total_visited_insert_ns / 1e6)
-             << " ms ("
-             << ((double)total_visited_insert_ns / total_loop_ns) * 100.0
-             << "%)\n";
-      outs() << "  Node Switch    : " << (total_switch_ns / 1e6) << " ms ("
-             << ((double)total_switch_ns / total_loop_ns) * 100.0 << "%)\n";
-      outs() << "  Edge Traversal : " << (total_out_edges_ns / 1e6) << " ms ("
-             << ((double)total_out_edges_ns / total_loop_ns) * 100.0 << "%)\n";
-      outs() << "    - Path Copy  : " << (total_edge_path_copy_ns / 1e6)
-             << "ms\n";
-      outs() << "    - Call Check : " << (total_edge_call_ns / 1e6) << "ms\n";
-      outs() << "    - Ret Check  : " << (total_edge_ret_ns / 1e6) << "ms\n";
-      outs() << "    - Worklist   : " << (total_edge_worklist_ns / 1e6)
-             << "ms\n";
-      outs() << "    - Unmeasured Overhead: "
-             << ((total_out_edges_ns - total_edge_path_copy_ns -
-                  total_edge_call_ns - total_edge_ret_ns -
-                  total_edge_worklist_ns) /
-                 1e6)
-             << " ms\n";
-      outs() << "  Other (Wait)   : "
-             << ((total_loop_ns - total_visited_lookup_ns -
-                  total_visited_insert_ns - total_switch_ns -
-                  total_out_edges_ns) /
-                 1e6)
-             << " ms\n\n";
-    }
+  if (total_loop_ns > 0) {
+    outs() << "\n[PROFILING] `extractParameterMetadata` Time Breakdown:\n";
+    outs() << "  Total Loop Time: " << (total_loop_ns / 1e6) << " ms\n";
+    outs() << "  Visited Lookup : " << (total_visited_lookup_ns / 1e6)
+           << " ms ("
+           << ((double)total_visited_lookup_ns / total_loop_ns) * 100.0
+           << "%)\n";
+    outs() << "  Visited Insert : " << (total_visited_insert_ns / 1e6)
+           << " ms ("
+           << ((double)total_visited_insert_ns / total_loop_ns) * 100.0
+           << "%)\n";
+    outs() << "  Node Switch    : " << (total_switch_ns / 1e6) << " ms ("
+           << ((double)total_switch_ns / total_loop_ns) * 100.0 << "%)\n";
+    outs() << "  Edge Traversal : " << (total_out_edges_ns / 1e6) << " ms ("
+           << ((double)total_out_edges_ns / total_loop_ns) * 100.0 << "%)\n";
+    outs() << "    - Path Copy  : " << (total_edge_path_copy_ns / 1e6)
+           << "ms\n";
+    outs() << "    - Call Check : " << (total_edge_call_ns / 1e6) << "ms\n";
+    outs() << "    - Ret Check  : " << (total_edge_ret_ns / 1e6) << "ms\n";
+    outs() << "    - Worklist   : " << (total_edge_worklist_ns / 1e6) << "ms\n";
+    outs() << "    - Unmeasured Overhead: "
+           << ((total_out_edges_ns - total_edge_path_copy_ns -
+                total_edge_call_ns - total_edge_ret_ns -
+                total_edge_worklist_ns) /
+               1e6)
+           << " ms\n";
+    outs() << "  Other (Wait)   : "
+           << ((total_loop_ns - total_visited_lookup_ns -
+                total_visited_insert_ns - total_switch_ns -
+                total_out_edges_ns) /
+               1e6)
+           << " ms\n\n";
+  }
 #endif
-    return mdata;
-  }
+  return mdata;
+}
 
-  void FunctionConditionsSet::storeIntoJsonFile(
-      FunctionConditionsSet fun_cond_set, std::string filename, bool verbose) {
+void FunctionConditionsSet::storeIntoJsonFile(
+    FunctionConditionsSet fun_cond_set, std::string filename, bool verbose) {
 
-    Json::Value jsonResult = fun_cond_set.toJson(verbose);
+  Json::Value jsonResult = fun_cond_set.toJson(verbose);
 
-    std::ofstream jsonOutFile(filename);
-    Json::StreamWriterBuilder jsonBuilder;
-    if (!verbose)
-      jsonBuilder.settings_["indentation"] = "";
+  std::ofstream jsonOutFile(filename);
+  Json::StreamWriterBuilder jsonBuilder;
+  if (!verbose)
+    jsonBuilder.settings_["indentation"] = "";
 
-    std::unique_ptr<Json::StreamWriter> writer(jsonBuilder.newStreamWriter());
+  std::unique_ptr<Json::StreamWriter> writer(jsonBuilder.newStreamWriter());
 
-    writer->write(jsonResult, &jsonOutFile);
-    jsonOutFile.close();
-  }
+  writer->write(jsonResult, &jsonOutFile);
+  jsonOutFile.close();
+}
 
-  void FunctionConditionsSet::storeIntoTextFile(
-      FunctionConditionsSet fun_cond_set, std::string filename, bool verbose) {
+void FunctionConditionsSet::storeIntoTextFile(
+    FunctionConditionsSet fun_cond_set, std::string filename, bool verbose) {
 
-    std::ofstream txtOutFile(filename);
-    txtOutFile << fun_cond_set.toString(verbose);
-    txtOutFile.close();
-  }
+  std::ofstream txtOutFile(filename);
+  txtOutFile << fun_cond_set.toString(verbose);
+  txtOutFile.close();
+}
