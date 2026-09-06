@@ -43,7 +43,7 @@ echo "$IMG_NAME"
 PROF_FLAG=()
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --prof) PROF_FLAG=("PROF_EXTRACTOR=perf record -g --call-graph dwarf -F 99"); shift ;;
+        --prof) PROF_FLAG=("PROF_EXTRACTOR=perf"); shift ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
 done

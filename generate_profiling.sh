@@ -17,7 +17,7 @@ fi
 TARGET=$1
 ROOT_DIR=$(dirname $(realpath generate_profiling.sh))
 WORK="$ROOT_DIR/analysis/$TARGET/work"
-GMON_OUT="$WORK/gmon.out"
+GMON_OUT="$WORK/apipass/gmon.out"
 EXTRACTOR="$ROOT_DIR/condition_extractor/build/bin/extractor"
 OUTPUT_FILE="$WORK/analysis_profile.txt"
 

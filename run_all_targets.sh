@@ -14,7 +14,7 @@ if [ ! -f "docker/run_analysis.sh" ]; then
     exit 1
 fi
 
-read -ra CPUS <<< "${CPUS_LIST:-0 1 2 3}"
+read -ra CPUS <<< "${CPUS_LIST:-0 1 2 3 4 5 6 7}"
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
 
@@ -48,7 +48,7 @@ for cpu in "${CPUS[@]}"; do slot_pid[$cpu]=""; done
 launch() {  # $1 = cpu, $2 = target
     local cpu="$1" target="$2"
     echo "[INFO] [cpu $cpu] start  $target  (log: $LOG_DIR/$target.log)"
-    ( cd docker && CPUSET="$cpu" SKIP_BUILD=1 TARGET="$target" ./run_analysis.sh ) \
+    ( cd docker && CPUSET="$cpu" SKIP_BUILD=1 TARGET="$target" ./run_analysis.sh --prof ) \
         >"$LOG_DIR/$target.log" 2>&1 &
     slot_pid[$cpu]=$!
     slot_target[$cpu]="$target"
