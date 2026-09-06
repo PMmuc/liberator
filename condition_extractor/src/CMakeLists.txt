@@ -11,6 +11,7 @@ set_target_properties(extractor PROPERTIES
 if(ENABLE_GPROF)
     message(STATUS "GProf enabled for target extractor!")
     set(PROFILING_FLAGS "-pg" "-O3" "-g" "-fno-omit-frame-pointer")
+    target_compile_defintions(extractor PRIVATE "PROFILING")
     target_compile_options(extractor PRIVATE ${PROFILING_FLAGS})
     target_link_options(extractor PUBLIC -pg)
 endif()

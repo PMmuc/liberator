@@ -14,14 +14,15 @@ if (DEFINED LLVM_DIR)
 	endif()
 	set(CMAKE_C_FLAGS "-fPIC")
 
-find_package(LLVM REQUIRED CONFIG)
-    
-option(ENABLE_GPROF "Enable gprof profiling" OFF)
-    list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
-    include(AddLLVM)
+  find_package(LLVM REQUIRED CONFIG)
+      
+  option(ENABLE_GPROF "Enable gprof profiling" OFF)
 
-    add_definitions(${LLVM_DEFINITIONS})
-    include_directories(${LLVM_INCLUDE_DIRS})
+  list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+  include(AddLLVM)
+
+  add_definitions(${LLVM_DEFINITIONS})
+  include_directories(${LLVM_INCLUDE_DIRS})
 
 else()
     message(FATAL_ERROR "\
