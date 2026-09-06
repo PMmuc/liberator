@@ -1554,8 +1554,9 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
             }
             auto t_wl_end = std::chrono::high_resolution_clock::now();
             total_edge_worklist_ns +=
-                std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    t_wl_end - t_wl_start);
+                std::chrono::duration_cast<std::chrono::nanoseconds>(t_wl_end -
+                                                                     t_wl_start)
+                    .count();
           }
 
           auto t_end = std::chrono::high_resolution_clock::now();
