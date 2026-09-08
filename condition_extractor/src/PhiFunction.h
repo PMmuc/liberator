@@ -15,6 +15,6 @@ using namespace std;
 typedef std::map<CallCFGEdge *, RetCFGEdge *> PHIFun;
 typedef std::map<RetCFGEdge *, CallCFGEdge *> PHIFunInv;
 
-void getPhiFunction(Module *, ICFG *, PHIFun *, PHIFunInv *);
+void get_phi_function(Module *, ICFG *, PHIFun &, PHIFunInv &);
 
 #endif

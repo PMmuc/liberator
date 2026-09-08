@@ -49,7 +49,7 @@ void GenericDominatorTy::buildPhiFun() {
   PHIFun phi;
   PHIFunInv phi_inv;
 
-  getPhiFunction(svfModule, icfg, &phi, &phi_inv);
+  get_phi_function(svfModule, icfg, phi, phi_inv);
 
   this->setPhi(phi);
   this->setPhiInv(phi_inv);
@@ -244,12 +244,7 @@ void GenericDominatorTy::pruneUnreachableFunctions() {
   // exit(1);
 }
 
-void GenericDominatorTy::inferSubGraph() {
-
-  FunEntryICFGNode *entry_node = this->getEntryNode();
-
-  assert(entry_node && "We need an entry block!");
-
+GenericDominatorTy::SVFFunctionSet GenericDominatorTy::get_called_functions() {
   std::stack<CallGraphNode *> working;
   std::set<CallGraphNode *> visited;
 
@@ -290,6 +285,16 @@ void GenericDominatorTy::inferSubGraph() {
 
     visited.insert(node);
   }
+  return functions;
+}
+
+void GenericDominatorTy::inferSubGraph() {
+
+  FunEntryICFGNode *entry_node = this->getEntryNode();
+
+  assert(entry_node && "We need an entry block!");
+
+  auto functions = get_called_functions();
 
   // outs() << "Functions:\n";
   // for(auto f: functions)
@@ -352,6 +357,8 @@ void GenericDominatorTy::inferSubGraph() {
 
   outs() << "[INFO] Building IBB graph\n";
 
+  auto icfg = getICFG();
+
   for (auto f : functions) {
     ICFGNodeSet visited2;
     std::stack<std::tuple<ICFGNode *, ICFGNodeVec, IBBNode::Kind>> working;
@@ -370,36 +377,11 @@ void GenericDominatorTy::inferSubGraph() {
       ICFGNodeVec node_list = std::get<1>(el);
       IBBNode::Kind ibb_kind = std::get<2>(el);
 
-      unsigned int n_outgoingedges = 0;
-      unsigned int n_incomingedges = 0;
       ICFGNode::const_iterator it = node->OutEdgeBegin();
       ICFGNode::const_iterator eit = node->OutEdgeEnd();
-      for (; it != eit; ++it)
-        n_outgoingedges++;
 
-      it = node->InEdgeBegin();
-      eit = node->InEdgeEnd();
-      for (; it != eit; ++it)
-        n_incomingedges++;
-
-      // if (node->getId() == 7185) {
-
-      //     outs() << "[DEBUG] this is unreachable\n";
-      //     outs() << node->toString() << "\n";
-      //     outs() << "incoming edges: " << n_incomingedges << "\n";
-      //     outs() << "outcoming edges: " << n_outgoingedges << "\n";
-
-      //     it = node->InEdgeBegin();
-      //     eit = node->InEdgeEnd();
-
-      //     for (; it != eit; ++it) {
-      //         auto edge = *it;
-      //         auto src = edge->getSrcNode();
-      //         outs() << src->toString() << "\n";
-      //     }
-
-      //     exit(1);
-      // }
+      unsigned int n_outgoingedges = node->getOutEdges().size();
+      unsigned int n_incomingedges = node->getInEdges().size();
 
       if (visited2.find(node) != visited2.end()) {
         // outs() << "[DEBUG] Node already visited, store and skip\n";
@@ -788,6 +770,12 @@ IBBNode *GenericDominatorTy::getNode(int node_id) {
   outs() << "[ERROR] Node " << node_id << " not found, abort!\n";
   assert(false);
   return nullptr;
+}
+
+void GenericDominatorTy::my_build_transient_reduction() {
+  std::map<int, IBBNode *> id_node_map;
+
+  IBBGraph::IBBNodeSet relevant_nodes = ibbg->getNodeAllocated();
 }
 
 void GenericDominatorTy::buildTransientReduction() {

@@ -65,10 +65,10 @@ public:
   bool isArray() const { return is_array; }
 
   void setMallocSize(bool p_malloc_size) { is_malloc_size = p_malloc_size; }
-  bool isMallocSize() { return is_malloc_size; }
+  bool isMallocSize() const { return is_malloc_size; }
 
   void setIsFilePath(bool p_is_file_path) { is_file_path = p_is_file_path; }
-  bool isFilePath() { return is_file_path; }
+  bool isFilePath() const { return is_file_path; }
 
   void setLenDependency(std::string p_dep) { len_depends_on = p_dep; }
   std::string getLenDependency() { return len_depends_on; }

@@ -16,7 +16,7 @@ Json::Value to_json(const FunctionConditions &f, bool verbose) {
     pn++;
   }
 
-  res["return"] = to_json(f.getReturnMetadata(), verbose);
+  res["return"] = to_json(f.get_return_metadata(), verbose);
 
   return res;
 }
@@ -61,6 +61,10 @@ void store_into_json_file(const function_condition_set_t &cs,
   Json::Value jsonResult = to_json(cs, verbose);
 
   std::ofstream jsonOutFile(filename);
+  if (!jsonOutFile) {
+    SVFUtil::errs() << "[ERROR] Couldn't open " << filename << endl;
+    return;
+  }
   Json::StreamWriterBuilder jsonBuilder;
   if (!verbose)
     jsonBuilder.settings_["indentation"] = "";
@@ -68,6 +72,10 @@ void store_into_json_file(const function_condition_set_t &cs,
   std::unique_ptr<Json::StreamWriter> writer(jsonBuilder.newStreamWriter());
   writer->write(jsonResult, &jsonOutFile);
   jsonOutFile.close();
+
+  if (jsonOutFile.fail()) {
+    SVFUtil::errs() << "[ERROR] Failed to write " << filename << endl;
+  }
 }
 void store_into_text_file(const function_condition_set_t &cs,
                           const std::string &filename, bool verbose) {

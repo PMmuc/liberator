@@ -1,18 +1,19 @@
 #pragma once
 
+#include "AccessType.h"
 #include "json/json.h"
 
 namespace llvm {
 class Type;
 class DIType;
-}
+} // namespace llvm
 
 namespace liberator {
 class AccessTypeSet;
-class AccessType;
 class Path;
 class ValueMetadata;
 
+std::string to_string(AccessType::kind_e k);
 Json::Value to_json(const AccessTypeSet &ats, bool verbose = false);
 std::string to_string(const AccessTypeSet &ats, bool verbose = false);
 Json::Value to_json(const AccessType &at, bool verbose = false);

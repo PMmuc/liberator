@@ -1,3 +1,4 @@
+#include "AccessType.h"
 #include "ConditionExtractor.hpp"
 #include "Config.h"
 
@@ -49,6 +50,12 @@ static llvm::cl::opt<bool>
              llvm::cl::desc("Dumps the SVFGGraph of the build library"),
              llvm::cl::init(false));
 
+static llvm::cl::opt<bool>
+    PrintMetrics("metrics",
+                 llvm::cl::desc("Print the instrumentation counters collected "
+                                "during the analysis when it finished"),
+                 llvm::cl::init(false));
+
 static llvm::cl::opt<std::string>
     ExtractDataLayout("data_layout", llvm::cl::desc("<datalayout file>"),
                       llvm::cl::init(""));
@@ -91,11 +98,11 @@ static llvm::cl::opt<bool>
     EnableProfiling("profiling", llvm::cl::desc("Enable time-trace profiling"),
                     llvm::cl::init(false));
 
-static llvm::cl::opt<std::string> ProfileCsv(
-    "profile_csv",
-    llvm::cl::desc("Append the profiler stats as CSV rows to <file> "
-                   "(needs a build with -DENABLE_PROFILING=ON)"),
-    llvm::cl::init(""));
+static llvm::cl::opt<std::string>
+    ProfileCsv("profile_csv",
+               llvm::cl::desc("Append the profiler stats as CSV rows to <file> "
+                              "(needs a build with -DENABLE_PROFILING=ON)"),
+               llvm::cl::init(""));
 
 static llvm::cl::opt<std::string> ProfileLabel(
     "profile_label",
@@ -120,6 +127,17 @@ static llvm::cl::opt<std::string>
 
 Verbosity verbose;
 
+void print_config(const config_t &config) {
+  llvm::outs() << "------- CONFIG ---------"
+               << "\n\tTrace Indirect Jumps: "
+               << (config.consider_indirect_calls ? "true" : "false")
+               << "\n\tOutput Metrics: "
+               << (config.print_metrics ? "true" : "false")
+               << "\n\tTarget: " << config.target_name << "\n"
+               << "\n\tInterface file: " << config.interface_file
+               << "----------------------\n";
+}
+
 int main(int argc, char **argv) {
 
   int arg_num = 0;
@@ -143,6 +161,7 @@ int main(int argc, char **argv) {
   config->output_type = OutputType;
   config->output_file = OutputFile;
   config->dump_svfg = DumpSVFG;
+  config->print_metrics = PrintMetrics;
   config->interface_file = LibInterface;
   config->minimize_api = minimizeApi;
   config->cache_folder = cacheFolder;
@@ -173,6 +192,8 @@ int main(int argc, char **argv) {
     SVFUtil::outs() << "[INFO] Analysing target: " << config->target_name
                     << "\n";
   }
+
+  print_config(*config);
 
   moduleNameVec.push_back(config->input_filename);
 
@@ -218,14 +239,6 @@ int main(int argc, char **argv) {
     functions.insert(config->function);
   }
 
-  // exit(1);
-
-  // Function -> SVFVar
-
-  // SVFUtil::outs() << " === EXIT FOR DEBUG ===\n";
-  // exit(1);
-  //
-
   auto extractor = make_condition_extractor(moduleNameVec, functions);
   if (!extractor)
     return 1;
@@ -258,6 +271,8 @@ int main(int argc, char **argv) {
                       << "\n";
     }
   }
+
+  liberator::dump_metrics(llvm::outs());
 
   return 0;
 }

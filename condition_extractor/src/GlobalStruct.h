@@ -7,26 +7,42 @@
 #include "MemoryModel/PointerAnalysis.h"
 #include "MemoryModel/PointerAnalysisImpl.h"
 #include "WPA/WPAFSSolver.h"
+#include <WPA/Andersen.h>
 #include <WPA/FlowSensitive.h>
 #include <llvm/IR/Value.h>
 
 using namespace SVF;
 using namespace SVFUtil;
 
-class GlobalStruct : public FlowSensitive {
+/// Base pointer analysis backing GlobalStruct.
+///
+/// FlowSensitive::initialize() builds a PTR-only SVFG plus its MemSSA and then
+/// keeps per-program-point points-to state for every node in it. On large
+/// targets that dominates the whole run's memory. The only consumer of the
+/// flow-sensitive result in this codebase is the `getPts(...).empty()` test in
+/// GlobalStruct::analyze(); the two sites that read points-to contents
+/// (AccessTypeHandler.cpp, ConditionExtractor.cpp) already ask Andersen.
+/// AndersenBase::initialize() only builds a ConstraintGraph - no SVFG.
+using GlobalStructPTA = AndersenWaveDiff;
+
+class GlobalStruct : public GlobalStructPTA {
 
 public:
   /// Constructor
-  explicit GlobalStruct(SVFIR *_pag) : FlowSensitive(_pag) {}
+  explicit GlobalStruct(SVFIR *_pag) : GlobalStructPTA(_pag) {}
 
   /// Destructor
   ~GlobalStruct() override = default;
 
-  /// Create single instance of flow-sensitive pointer analysis
+  /// Create single instance of flow-sensitive pointer analysis.
+  /// Note: this only constructs the instance. The caller must invoke analyze()
+  /// exactly once. Calling it here as well made FlowSensitive::analyze() run
+  /// twice, and it has no guard - it re-runs initialize(), which rebuilds the
+  /// PTR-only SVFG and MemSSA from scratch, then re-solves the fixpoint.
   static GlobalStruct *createSGWPA(SVFIR *_pag) {
     if (gspta == nullptr) {
+      // FIXME: creates flow sensitive points-to analysis
       gspta = std::unique_ptr<GlobalStruct>(new GlobalStruct(_pag));
-      gspta->analyze();
     }
     return gspta.get();
   }
@@ -40,7 +56,9 @@ public:
   /// GlobalStruct analysis
   void analyze() override;
 
-  /// Initialize analysis
+  /**
+   * Build the AndersenConstraintGraph
+   */
   void initialize() override;
 
   /// Finalize analysis

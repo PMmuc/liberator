@@ -1,6 +1,7 @@
 #include <ConditionExtractor.hpp>
 #include <Config.h>
 #include <GlobalStruct.h>
+#include <MSSA/MemRegion.h>
 #include <Util/GeneralType.h>
 #include <ValueMetadata.hpp>
 #include <catch2/catch_test_macros.hpp>
@@ -16,6 +17,7 @@
 
 #include "AccessType.h"
 #include "AccessTypeIO.h"
+#include "DebugInfoParser.hpp"
 #include "ScevLenDependency.hpp"
 #include "Util/Options.h"
 #include "WPA/Andersen.h"
@@ -27,8 +29,10 @@
 #include <functional>
 #include <llvm/Demangle/Demangle.h>
 #include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
+#include <llvm/IR/TypedPointerType.h>
 
 #include <sys/wait.h>
 #include <unistd.h>
@@ -168,12 +172,23 @@ TEST_CASE("Condition Extraction on .ll files", "[integration]") {
 void write_mssa_file(SVFG *svfg, const std::string &filename) {
   std::ofstream file(filename);
 
-  if (file.is_open()) {
-    svfg->getMSSA()->dumpMSSA(file);
-    file.close();
-  } else {
-    SVFUtil::errs() << "[ERROR] Failed to open file for writing.\n";
+  if (!file.is_open()) {
+    SVFUtil::errs() << "[ERROR] Failed to open: " << filename << "\n";
+    return;
   }
+
+  auto memssa = svfg->getMSSA();
+  auto gen = memssa->getMRGenerator();
+
+  std::streambuf *saved = std::cout.rdbuf(file.rdbuf());
+  SVFUtil::outs() << "Memory Regions:\n";
+  for (const MemRegion *mr : gen->getMRSet()) {
+    SVFUtil::outs() << "MR_" << mr->getMRID() << "\t" << mr->dumpStr() << "\n";
+  }
+  SVFUtil::outs() << "------------------------------\n";
+  svfg->getMSSA()->dumpMSSA(file);
+  std::cout.flush();
+  std::cout.rdbuf(saved);
 }
 
 // Strip the parameter list and any trailing qualifiers from a demangled C++
@@ -417,6 +432,87 @@ static void run_param_metadata_check(
   CHECK(WEXITSTATUS(status) == 0);
 }
 
+// Same fork protocol as run_param_metadata_check, but drives
+// extractReturnMetadata on the function's return node instead of a formal
+// parameter. The return path is currently not wired into
+// extract_function_conditions (the "Process Return" block in
+// ConditionExtractor.cpp is commented out), so the pipeline is run only to
+// populate myCallEdgeMap_inst and the extraction is invoked directly.
+static void run_return_metadata_check(
+    const std::string &bitcode_filename, const std::string &function,
+    bool consider_indirect,
+    const std::function<bool(const liberator::ValueMetadata &)> &pred) {
+  setenv("LIBFUZZ_LOG_PATH", "/tmp/", 1);
+  config_t::instance()->consider_indirect_calls = consider_indirect;
+
+  std::string file_path =
+      std::string(BINARY_DIR) + "/assets/" + bitcode_filename;
+  if (!fs::exists(file_path)) {
+    file_path = std::string(ASSETS_DIR) + "/" + bitcode_filename;
+  }
+  REQUIRE(fs::exists(file_path));
+
+  std::vector<std::string> modules = {file_path};
+  std::set<std::string> functions = {function};
+
+  bool no_fork = getenv("LIBERATOR_TEST_NO_FORK") != nullptr;
+  pid_t pid = no_fork ? 0 : fork();
+  REQUIRE(pid >= 0);
+
+  if (pid == 0) {
+    auto fail_child = [&](const char *msg) {
+      std::cerr << "[return-check setup error] " << msg << std::endl;
+      if (no_fork)
+        FAIL(msg);
+      else
+        _exit(1);
+    };
+
+    auto extractor = liberator::make_condition_extractor(modules, functions);
+    if (!extractor)
+      return fail_child("extractor is null");
+
+    auto *pag = SVF::SVFIR::getPAG();
+    auto *svfg = extractor->get_svfg();
+    auto *llvm_module_set = SVF::LLVMModuleSet::getLLVMModuleSet();
+
+    extractor->extract_function_conditions();
+
+    const SVF::FunObjVar *svf_fun = find_fun_by_demangled_name(pag, function);
+    if (!svf_fun)
+      return fail_child("function not found");
+    if (!pag->funHasRet(svf_fun))
+      return fail_child("function has no return node");
+
+    // The return *value*, not the return instruction - see the doc comment on
+    // extractReturnMetadata.
+    const SVF::ValVar *ret_var = pag->getFunRet(svf_fun);
+    const llvm::Value *ret_llvm = llvm_module_set->getLLVMValue(ret_var);
+    if (!ret_llvm)
+      return fail_child("return node has no llvm value");
+
+    auto metadata = liberator::extractReturnMetadata(*svfg, ret_llvm);
+
+    std::cout << "[return-check] " << function << ":\n"
+              << liberator::print_summary(metadata, true) << std::endl;
+
+    bool ok = pred(metadata);
+    if (no_fork) {
+      CHECK(ok);
+      return;
+    }
+    std::cout.flush();
+    _exit(ok ? 0 : 2);
+  }
+
+  int status;
+  waitpid(pid, &status, 0);
+  REQUIRE(WIFEXITED(status));
+  INFO("child exit status = " << WEXITSTATUS(status)
+                              << " (1 = setup error, 2 = predicate false)");
+  CHECK(WEXITSTATUS(status) == 0);
+}
+
 static bool metadata_has_kind(const liberator::ValueMetadata &m,
                               liberator::AccessType::kind_e kind) {
   for (const auto &at : m.get_access_type_set()) {
@@ -474,6 +570,40 @@ TEST_CASE("resolved indirect call merges callee write into param summary",
       "indirect_param_resolved.bc", "dispatch", 0, /*consider_indirect=*/true,
       [](const liberator::ValueMetadata &m) {
         return metadata_has_kind(m, liberator::AccessType::kind_e::write);
+      });
+}
+
+// Return path, opaque-pointer regression. make_buffer spills the malloc into a
+// local before returning it, so the IR clang emits at -O0 is
+//   %call = call ptr @malloc(i64 16)
+//   store ptr %call, ptr %b
+//   %3 = load ptr, ptr %b
+//   ret ptr %3
+// Under LLVM <= 14 there was a `bitcast i8* %call to %struct.Buffer*` in that
+// chain and extractReturnMetadata found the allocation by matching the cast's
+// destination type against the return type (leadsToBitCastOfType). Opaque
+// pointers removed the cast, so the allocation is only reachable by following
+// the value flow across the alloca. A missing `create` here means the analysis
+// lost the allocation, i.e. callers are told the returned pointer is not owned.
+TEST_CASE("return summary records malloc spilled through a local",
+          "[unit][return][malloc]") {
+  run_return_metadata_check(
+      "ret_malloc_alloca.bc", "make_buffer", /*consider_indirect=*/false,
+      [](const liberator::ValueMetadata &m) {
+        return metadata_has_kind(m, liberator::AccessType::kind_e::create);
+      });
+}
+
+// Control for the case above: the allocation is returned directly, so the
+// malloc reaches the `ret` over a plain def-use chain with no memory-SSA hop.
+// If this passes while make_buffer fails, the gap is the store/load through
+// the alloca specifically, not malloc recognition in general.
+TEST_CASE("return summary records malloc returned directly",
+          "[unit][return][malloc]") {
+  run_return_metadata_check(
+      "ret_malloc_alloca.bc", "make_buffer_direct", /*consider_indirect=*/false,
+      [](const liberator::ValueMetadata &m) {
+        return metadata_has_kind(m, liberator::AccessType::kind_e::create);
       });
 }
 
@@ -604,6 +734,40 @@ TEST_CASE("di type printer emits old-style llvm ir types", "[unit][ditype]") {
     CHECK(to_string(db.createPointerType(void_sig, 64)) == "void ()*");
   }
 
+  // A trailing null in the parameter slots is DW_TAG_unspecified_parameters -
+  // the `...` of a variadic prototype, not a void parameter. Resolving it as
+  // void made FunctionType::get assert; libxml2's xmlGenericErrorFunc
+  // (`void (*)(void *, const char *, ...)`) aborted the whole run.
+  SECTION("variadic function pointers resolve to a vararg FunctionType") {
+    auto *va_sig = db.createSubroutineType(
+        db.getOrCreateTypeArray({nullptr, i8p, i8p, nullptr}));
+    auto *resolved = liberator::resolve_di_type_to_llvm(va_sig, mod);
+    REQUIRE(resolved != nullptr);
+    auto *fn = llvm::dyn_cast<FunctionType>(resolved);
+    REQUIRE(fn != nullptr);
+    CHECK(fn->isVarArg());
+    CHECK(fn->getNumParams() == 2);
+    CHECK(fn->getReturnType()->isVoidTy());
+
+    // Behind a pointer, which is how the DWARF fallback in restore_llvm_type
+    // actually reaches it.
+    auto *ptr = liberator::resolve_di_type_to_llvm(
+        db.createPointerType(va_sig, 64), mod);
+    REQUIRE(ptr != nullptr);
+    auto *tp = llvm::dyn_cast<TypedPointerType>(ptr);
+    REQUIRE(tp != nullptr);
+    CHECK(tp->getElementType() == fn);
+  }
+
+  SECTION("non-variadic function pointers stay non-vararg") {
+    auto *sig = db.createSubroutineType(db.getOrCreateTypeArray({i32, i8p}));
+    auto *fn = llvm::dyn_cast_if_present<FunctionType>(
+        liberator::resolve_di_type_to_llvm(sig, mod));
+    REQUIRE(fn != nullptr);
+    CHECK_FALSE(fn->isVarArg());
+    CHECK(fn->getNumParams() == 1);
+  }
+
   db.finalize();
 }
 
@@ -714,6 +878,10 @@ TEST_CASE("svf test forward_use_scan", "[unit]") {
   run_extract_parameter_test("nodwarf_forward_use.bc", "test_forward_use");
 }
 
+TEST_CASE("svf test simple_phi", "[unit]") {
+  run_extract_parameter_test("simple_phi.bc", "target_func");
+}
+
 TEST_CASE("svf test global_func_pointers", "[unit]") {
   run_extract_parameter_test("function_pointers.bc", "test_func");
 }
@@ -748,4 +916,221 @@ TEST_CASE("svf test test_array_malloc", "[unit]") {
 
 TEST_CASE("svf test resolve_struct pointers", "[unit]") {
   run_extract_parameter_test("resolve_struct.bc", "test_func");
+}
+
+// ---------------------------------------------------------------------------
+// Field-path explosion across a `T **` heap array (slist_path_explosion.c)
+//
+// slist_path_explosion.c is a reduced c-ares skip list. `struct list` has a
+// `struct node **head` - a heap-allocated array of pointers - and `struct node`
+// has a self-referential `next` walked in a loop plus a `parent` back edge to
+// the list. c-ares' [24,3,2,2] appears here as [1,3,2,2].
+//
+// Reading head[lvl] is a load of a pointer *out of the heap*: the node it
+// yields is not derived from `list` by any def-use chain, it comes from the
+// store that filled the array. So every path past `.1.3` is only reachable by
+// reasoning about memory, and in the SVFG the GEP for `list->head` and the node
+// objects are separated by indirect (memory-SSA) edges - which is exactly what
+// the dumped graph is here to show.
+//
+// my_extract_parameter_metadata does not walk value flow to build these paths.
+// merge_access_type concatenates a caller-side prefix with a callee's whole
+// summary, gated only by the type check and the two budgets; nothing checks
+// that the callee's argument actually points into the prefix's points-to set.
+// The heap load it would have to cross is therefore never in its way, which is
+// how the loop `left = left->next[lvl]` gets unrolled into nested struct fields
+// (.1.3 -> .1.3.2 -> .1.3.2.2) and how node->parent re-enters the same list a
+// second time at .1.3.4 / .1.3.2.2.4.
+//
+// On c-ares this is not a corner case. Over the whole conditions.json, counting
+// paths whose type ends in `**` and asking whether any of them is extended by a
+// struct field: the Jul-16 output has 0 of 119, the current output has 319 of
+// 908, and 1177 of 5483 access types sit exactly at MAX_FIELD_DEPTH.
+// ---------------------------------------------------------------------------
+
+// Same fork protocol as run_param_metadata_check, but writes the SVFG, ICFG and
+// call graph as .dot next to the test binary, prints their paths, and hands the
+// predicate both the top-down and the bottom-up summary of the same formal.
+//
+// NOTE on the top-down number: extractParameterMetadata is printed for
+// comparison only, never asserted on. In the current tree it no longer
+// reproduces what the Jul-16 pipeline produced - it returns just the flat `.`
+// read/write even for test_meta.bc, where it used to report .0/.1/.2 - so it is
+// diagnostic output, not a baseline.
+static void run_access_path_probe(
+    const std::string &bitcode_filename, const std::string &function,
+    unsigned param_index, const std::string &dump_stem,
+    const std::function<bool(const liberator::ValueMetadata &top_down,
+                             const liberator::ValueMetadata &bottom_up)>
+        &pred) {
+  setenv("LIBFUZZ_LOG_PATH", "/tmp/", 1);
+  config_t::instance()->consider_indirect_calls = false;
+
+  std::string file_path =
+      std::string(BINARY_DIR) + "/assets/" + bitcode_filename;
+  if (!fs::exists(file_path)) {
+    file_path = std::string(ASSETS_DIR) + "/" + bitcode_filename;
+  }
+  REQUIRE(fs::exists(file_path));
+
+  std::vector<std::string> modules = {file_path};
+  std::set<std::string> functions = {function};
+
+  bool no_fork = getenv("LIBERATOR_TEST_NO_FORK") != nullptr;
+  pid_t pid = no_fork ? 0 : fork();
+  REQUIRE(pid >= 0);
+
+  if (pid == 0) {
+    auto fail_child = [&](const char *msg) {
+      std::cerr << "[access-path probe setup error] " << msg << std::endl;
+      if (no_fork)
+        FAIL(msg);
+      else
+        _exit(1);
+    };
+
+    auto extractor = liberator::make_condition_extractor(modules, functions);
+    if (!extractor)
+      return fail_child("extractor is null");
+
+    auto *pag = SVF::SVFIR::getPAG();
+    auto *svfg = extractor->get_svfg();
+    auto *llvm_module_set = SVF::LLVMModuleSet::getLLVMModuleSet();
+
+    extractor->extract_function_conditions();
+
+    const SVF::FunObjVar *svf_fun = find_fun_by_demangled_name(pag, function);
+    if (!svf_fun)
+      return fail_child("function not found");
+
+    auto params = pag->getFunArgsMap()[svf_fun];
+    if (param_index >= params.size())
+      return fail_child("parameter index out of range");
+
+    auto *param = params[param_index];
+    auto *param_llvm = llvm_module_set->getLLVMValue(param);
+    if (!param_llvm || !param_llvm->getType()->isPointerTy())
+      return fail_child("parameter is not a pointer");
+
+    // Graph dumps; SVF appends ".dot" itself.
+    // fs::path dump_dir = fs::path(BINARY_DIR) / "graphs";
+    fs::path dump_dir = "/mnt/c/Users/MaschPaul/Downloads/";
+    fs::create_directories(dump_dir);
+    std::string svfg_dot = (dump_dir / (dump_stem + ".svfg")).string();
+    std::string icfg_dot = (dump_dir / (dump_stem + ".icfg")).string();
+    std::string cg_dot = (dump_dir / (dump_stem + ".callgraph")).string();
+    svfg->dump(svfg_dot);
+    pag->getICFG()->dump(icfg_dot);
+    const_cast<SVF::CallGraph *>(pag->getCallGraph())->dump(cg_dot);
+    std::cout << "\n[graphs] SVFG       -> " << svfg_dot << ".dot\n"
+              << "[graphs] ICFG       -> " << icfg_dot << ".dot\n"
+              << "[graphs] call graph -> " << cg_dot << ".dot\n"
+              << "[graphs] render: dot -Tsvg " << svfg_dot
+              << ".dot -o svfg.svg\n"
+              << std::endl;
+
+    std::string sys_cmd1 =
+        "dot -Tpng " + svfg_dot + ".dot -o " + svfg_dot + ".png";
+    std::string sys_cmd2 =
+        "dot -Tpng " + icfg_dot + ".dot -o " + icfg_dot + ".png";
+    int sys_res = system(sys_cmd1.c_str());
+    sys_res = system(sys_cmd2.c_str());
+    (void)sys_res; // suppress unused warning
+    // extractParameterMetadata wants the source-level pointee type; under
+    // opaque pointers the formal's LLVM type is just `ptr`, so recover it from
+    // DWARF the way the pre-bottom-up pipeline did.
+    const llvm::Type *seek_type = param_llvm->getType();
+    if (llvm::DIType *di = liberator::restore_param_di_type(param_llvm)) {
+      if (llvm::Type *resolved = liberator::resolve_di_type_to_llvm(
+              di, *llvm_module_set->getMainLLVMModule())) {
+        if (!resolved->isVoidTy())
+          seek_type = resolved;
+      }
+    }
+
+    auto top_down = liberator::extractParameterMetadata(
+        *svfg, param_llvm, seek_type, param->getId());
+    auto bottom_up = liberator::my_extract_parameter_metadata(*svfg, param_llvm,
+                                                              param->getId());
+
+    std::cout << "[top-down  extractParameterMetadata] (diagnostic only) "
+              << function << " param " << param_index << ":\n"
+              << liberator::print_summary(top_down, true) << "\n"
+              << "[bottom-up my_extract_parameter_metadata] " << function
+              << " param " << param_index << ":\n"
+              << liberator::print_summary(bottom_up, true) << std::endl;
+
+    bool ok = pred(top_down, bottom_up);
+    if (no_fork) {
+      CHECK(ok);
+      return;
+    }
+    std::cout.flush();
+    _exit(ok ? 0 : 2);
+  }
+
+  int status;
+  waitpid(pid, &status, 0);
+  REQUIRE(WIFEXITED(status));
+  INFO("child exit status = " << WEXITSTATUS(status)
+                              << " (1 = setup error, 2 = predicate false)");
+  CHECK(WEXITSTATUS(status) == 0);
+}
+
+// True if any access type in `m` has exactly this field path, any kind.
+static bool metadata_has_path(const liberator::ValueMetadata &m,
+                              const std::vector<int> &fields) {
+  for (const auto &at : m.get_access_type_set()) {
+    if (at.get_fields() == fields)
+      return true;
+  }
+  return false;
+}
+
+// Records the step that no value-flow edge supports: the summary reaches
+// `c->servers->head` (.1.3, `struct node **`) and then keeps going to
+// `head[lvl]->next` (.1.3.2), which requires loading a pointer out of the heap
+// array. Passing means composition crossed a memory boundary on type shape
+// alone. This is the entry point for the [!shouldfail] case below - if this
+// ever stops passing, check whether composition became points-to gated before
+// concluding the test is stale.
+TEST_CASE("summary composition crosses a heap array of pointers",
+          "[unit][pathexplosion][svfg]") {
+  run_access_path_probe("slist_path_explosion.bc", "channel_walk", 0,
+                        "slist_path_explosion",
+                        [](const liberator::ValueMetadata &,
+                           const liberator::ValueMetadata &bottom_up) {
+                          return metadata_has_path(bottom_up, {1, 3}) &&
+                                 metadata_has_path(bottom_up, {1, 3, 2});
+                        });
+}
+
+// The defect itself. `left = left->next[lvl]` is a loop over distinct node
+// objects, but an access path has no way to say "the same field again", so one
+// `.2` is appended per unrolled iteration until MAX_GEP_RECURSION_DEPTH stops
+// it; and node->parent closes a cycle back onto the list, so the whole list
+// subtree is appended a second time without ever leaving one allocation. None
+// of these paths is a real access - they are the shape of the type graph, not
+// of the program.
+//
+// Tagged [!shouldfail]: the assertions state the CORRECT behaviour, so the case
+// is expected to fail today and the suite stays green. Once composition is
+// gated on the callee argument actually aliasing the prefix, Catch2 will report
+// this as unexpectedly passing - that is the signal to drop the tag.
+TEST_CASE("bottom-up composition unrolls a list traversal into nested fields",
+          "[unit][pathexplosion][svfg][!shouldfail]") {
+  run_access_path_probe("slist_path_explosion.bc", "channel_walk", 0,
+                        "slist_path_explosion",
+                        [](const liberator::ValueMetadata &,
+                           const liberator::ValueMetadata &bottom_up) {
+                          // .1.3.2     head[i]->next            - one unrolled
+                          // loop iteration .1.3.2.2   head[i]->next[j]->next -
+                          // two .1.3.4     head[i]->parent          - the back
+                          // edge, a struct list * .1.3.2.2.4 the back edge
+                          // after two unrolled iterations
+                          return !metadata_has_path(bottom_up, {1, 3, 2}) &&
+                                 !metadata_has_path(bottom_up, {1, 3, 2, 2}) &&
+                                 !metadata_has_path(bottom_up, {1, 3, 4}) &&
+                                 !metadata_has_path(bottom_up, {1, 3, 2, 2, 4});
+                        });
 }

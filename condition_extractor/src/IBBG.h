@@ -157,7 +157,7 @@ protected:
   IBBMap id_to_ibbnode;
 
 public:
-  IBBGraph() {}
+  IBBGraph() noexcept = default;
 
   inline NodeIDSet getNodeIdAllocated() { return node_id_allocated; }
   inline IBBNodeSet getNodeAllocated() {

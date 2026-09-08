@@ -37,6 +37,11 @@ struct config_t {
    */
   std::string interface_file;
   bool dump_svfg;
+  /**
+   * Print the instrumentation counters collected during the analysis once it
+   * finished (see liberator::dump_metrics).
+   */
+  bool print_metrics = false;
 
   std::unordered_set<std::string> log_tags;
 
@@ -162,4 +167,5 @@ void tag_log(std::initializer_list<std::string_view> tags,
 #define GLOBAL_LOG(...) ((void)0)
 #define TYPE_LOG(...) ((void)0)
 #define MY_EX_LOG(...) ((void)0)
+#define SUMM_LOG(...) ((void)0)
 #endif

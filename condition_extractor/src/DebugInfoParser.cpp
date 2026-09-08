@@ -223,6 +223,38 @@ llvm::DIType *restore_param_di_type(const llvm::Value *v) {
   return idx < arr_types.size() ? arr_types[idx] : nullptr;
 }
 
+llvm::DIType *restore_local_di_type(const llvm::AllocaInst *alloca) {
+  if (!alloca)
+    return nullptr;
+
+  for (auto *rec : findDVRDeclares(const_cast<llvm::AllocaInst *>(alloca))) {
+    if (auto *var = rec->getVariable())
+      return var->getType();
+  }
+  return nullptr;
+}
+
+/**
+ * @param f the function
+ * @return the di type of the return of a function
+ */
+llvm::DIType *restore_ret_di_type(const llvm::Function *f) {
+  if (!f)
+    return nullptr;
+
+  auto sig_sub = f->getSubprogram();
+
+  if (!sig_sub || !sig_sub->getType())
+    return nullptr;
+
+  auto sig_di = sig_sub->getType()->getTypeArray();
+
+  if (!sig_di || sig_di.size() == 0)
+    return nullptr;
+
+  return sig_di[0];
+}
+
 llvm::DIType *peel_di_qualifiers(llvm::DIType *t) {
   using namespace llvm::dwarf;
   if (!t) {
@@ -270,16 +302,29 @@ llvm::Type *resolve_di_type_to_llvm(llvm::DIType *di, llvm::Module &mod) {
     llvm::Type *ret = resolve_di_type_to_llvm(types[0], mod);
     if (!ret)
       ret = llvm::Type::getVoidTy(ctx);
+    if (!llvm::FunctionType::isValidReturnType(ret))
+      return nullptr;
     // resolve param types
     std::vector<llvm::Type *> params;
+    bool is_var_arg = false;
     for (unsigned i = 1; i < types.size(); ++i) {
+      // A null entry in a parameter slot is DW_TAG_unspecified_parameters, the
+      // `...` of a variadic prototype - not a void parameter. Resolving it
+      // would yield voidTy, and FunctionType::get asserts on a void argument.
+      if (!types[i]) {
+        is_var_arg = true;
+        continue;
+      }
       llvm::Type *p = resolve_di_type_to_llvm(types[i], mod);
-      if (!p)
+      // isValidArgumentType also rejects a bare FunctionType, which a
+      // parameter spelled as a function (rather than a function pointer)
+      // resolves to.
+      if (!p || !llvm::FunctionType::isValidArgumentType(p))
         return nullptr;
       params.push_back(p);
     }
     // create the function type signature
-    return llvm::FunctionType::get(ret, params, false);
+    return llvm::FunctionType::get(ret, params, is_var_arg);
   }
 
   // TODO: maybe use something better then linear search for finding the correct
@@ -435,6 +480,12 @@ llvm::DIType *decay_di_type(llvm::DIType *t) {
 }
 
 llvm::StringRef canonical_name(const StructType *st) {
+  // StructType::getName() asserts on literal (anonymous) structs such as
+  // `{i32, i8*}` - it does not return an empty name for them. isLiteral() has
+  // to be checked *before* the call; testing the result for emptiness
+  // afterwards is too late, the assert has already fired.
+  if (!st || st->isLiteral())
+    return {};
   auto name_ref = st->getName();
   // StructType can have no name
   if (name_ref.empty())
@@ -494,7 +545,12 @@ llvm::DIType *next_di_field(llvm::DIType *di, const llvm::Type *container,
   if (!res)
     return nullptr;
 
-  if (auto *st = dyn_cast<StructType>(container)) {
+  // dyn_cast_if_present, not dyn_cast: handleGep() passes
+  // gep_type_iterator::getStructTypeOrNull(), which is null whenever the GEP
+  // step indexes an array rather than selecting a struct field. Plain dyn_cast
+  // asserts on a null operand (and dereferences it under NDEBUG). A null
+  // container has to fall through to the DW_TAG_array_type branch below.
+  if (auto *st = dyn_cast_if_present<StructType>(container)) {
     auto comp = dyn_cast<DICompositeType>(res);
     if (!comp)
       return nullptr;
@@ -534,8 +590,9 @@ llvm::DIType *next_di_field(llvm::DIType *di, const llvm::Type *container,
   }
 
   if (auto *comp = llvm::dyn_cast<DICompositeType>(res)) {
-    if (comp->getTag() == llvm::dwarf::DW_TAG_array_type)
-      return comp->getBaseType();
+    if (!comp || comp->getTag() != llvm::dwarf::DW_TAG_array_type)
+      return nullptr;
+    return result && result->isArrayTy() ? res : comp->getBaseType();
   }
 
   return nullptr;

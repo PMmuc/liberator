@@ -26,15 +26,15 @@ public:
     parameter_metadata.push_back(par);
   }
 
-  int getParameterNum() { return parameter_metadata.size(); }
+  int get_parameter_num() const { return parameter_metadata.size(); }
 
-  void replaceParameterMetadata(int parm, ValueMetadata new_par) {
+  void replace_parameter_metadata(int parm, const ValueMetadata &new_par) {
     parameter_metadata[parm] = new_par;
   }
 
   params_metadata_t get_parameters() const { return parameter_metadata; }
 
-  ValueMetadata getParameterMetadata(int idx) {
+  ValueMetadata &get_parameter_metadata(int idx) noexcept {
     if (idx < 0 || idx >= parameter_metadata.size())
       assert("idx out of bounds!");
 
@@ -42,7 +42,8 @@ public:
   }
 
   void setReturnMetadata(ValueMetadata ret) { return_metadata = ret; }
-  ValueMetadata getReturnMetadata() const { return return_metadata; }
+  ValueMetadata &get_return_metadata() { return return_metadata; }
+  const ValueMetadata &get_return_metadata() const { return return_metadata; }
 
   // for using it in std::set
   bool operator<(const FunctionConditions &rhs) const {

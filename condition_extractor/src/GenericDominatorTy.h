@@ -82,6 +82,7 @@ public:
   void loadDom(const std::string &file);
 
   IBBNode *getNode(int node_id);
+  void my_build_transient_reduction();
 
   inline FunEntryICFGNode *getEntryNode() { return entry_node; }
   inline void setEntryNode(FunEntryICFGNode *node) { entry_node = node; }
@@ -155,6 +156,7 @@ private:
   // void inferSubGraph();
   // void buildR();
   void restoreUnreachableFunctions();
+  SVFFunctionSet get_called_functions();
 
   void buildTransientReduction();
   int getLongestPath(int, int, int **, int);

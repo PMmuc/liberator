@@ -62,15 +62,15 @@ void testDom2(liberator::FunctionConditions *fun_conds, IBBGraph *ibbg) {
 
   std::set<const ICFGNode *> cond_nodes;
 
-  int num_param = fun_conds->getParameterNum();
+  int num_param = fun_conds->get_parameter_num();
 
   for (int p = 0; p < num_param; p++) {
-    liberator::ValueMetadata meta = fun_conds->getParameterMetadata(p);
+    const liberator::ValueMetadata &meta = fun_conds->get_parameter_metadata(p);
     for (auto i : meta.get_access_type_set().getAllICFGNodes())
       cond_nodes.insert(i);
   }
 
-  liberator::ValueMetadata meta = fun_conds->getReturnMetadata();
+  const liberator::ValueMetadata &meta = fun_conds->get_return_metadata();
   for (auto i : meta.get_access_type_set().getAllICFGNodes())
     cond_nodes.insert(i);
 
@@ -190,50 +190,48 @@ bool dominatesAccessType(GenericDominatorTy *dom, liberator::AccessType at1,
   return n_instr_dominated == at2.getICFGNodes().size();
 }
 
-void pruneAccessTypes(Dominator *dom, PostDominator *pDom,
-                      liberator::ValueMetadata *meta) {
+void prune_access_types(Dominator *dom, PostDominator *pDom,
+                        liberator::ValueMetadata &meta) {
 
-  // the pair is meant to be <CREATE, DELETE>, not the other way around
   std::set<std::pair<liberator::AccessType, liberator::AccessType>>
       pairs_create_delete;
-  for (auto &at1 : meta->get_access_type_set()) {
-    if (at1.get_kind() != liberator::AccessType::kind_e::create &&
-        at1.get_kind() != liberator::AccessType::kind_e::del)
-      continue;
 
-    for (auto &at2 : meta->get_access_type_set()) {
-      if (at2.get_kind() != liberator::AccessType::kind_e::create &&
-          at2.get_kind() != liberator::AccessType::kind_e::del)
-        continue;
+  const auto &ats = meta.get_access_type_set();
 
-      if (at1 == at2)
-        continue;
+  auto ats_creates =
+      ats | std::views::filter([](const auto &at) {
+        return at.get_kind() == liberator::AccessType::kind_e::create;
+      });
+  auto ats_deletes =
+      ats | std::views::filter([](const auto &at) {
+        return at.get_kind() == liberator::AccessType::kind_e::del;
+      });
 
-      if (at1.get_fields() == at2.get_fields())
-        // be sure create comes first
-        if (at1.get_kind() == liberator::AccessType::kind_e::create)
-          pairs_create_delete.insert(std::make_pair(at1, at2));
+  for (auto &&[x, y] :
+       std::views::cartesian_product(ats_creates, ats_deletes)) {
+    if (x.get_fields() == y.get_fields()) {
+      pairs_create_delete.insert(std::make_pair(x, y));
     }
   }
 
   for (auto px : pairs_create_delete)
     // (delete, X) PostDom (create, X) => None *remove both*
     if (dominatesAccessType(pDom, px.second, px.first)) {
-      meta->get_access_type_set().remove(px.first);
-      meta->get_access_type_set().remove(px.second);
+      meta.get_access_type_set().remove(px.first);
+      meta.get_access_type_set().remove(px.second);
       // (create, X) Dom (delete, X) => (create, X)
     } else if (dominatesAccessType(dom, px.first, px.second))
-      meta->get_access_type_set().remove(px.second);
+      meta.get_access_type_set().remove(px.second);
 
   // the pair is meant to be <WRITE, READ>, not the other way around
   std::set<std::pair<liberator::AccessType, liberator::AccessType>>
       pairs_write_read;
-  for (auto &at1 : meta->get_access_type_set()) {
+  for (auto &at1 : meta.get_access_type_set()) {
     if (at1.get_kind() != liberator::AccessType::kind_e::write &&
         at1.get_kind() != liberator::AccessType::kind_e::read)
       continue;
 
-    for (auto &at2 : meta->get_access_type_set()) {
+    for (auto &at2 : meta.get_access_type_set()) {
       if (at2.get_kind() != liberator::AccessType::kind_e::write &&
           at2.get_kind() != liberator::AccessType::kind_e::read)
         continue;
@@ -251,7 +249,7 @@ void pruneAccessTypes(Dominator *dom, PostDominator *pDom,
   for (auto px : pairs_write_read)
     // (write, X) Dom (read, X) => (write, X)
     if (dominatesAccessType(dom, px.first, px.second))
-      meta->get_access_type_set().remove(px.second);
+      meta.get_access_type_set().remove(px.second);
 }
 
 // bool thereIsCache(std::string fun_name) {
@@ -262,6 +260,41 @@ void pruneAccessTypes(Dominator *dom, PostDominator *pDom,
 } // namespace
 
 namespace liberator {
+
+static unsigned remove_indirect_calls(CallGraph *callgraph) {
+  std::vector<CallGraphEdge *> detach;
+  unsigned mixed = 0;
+  for (const auto &[id, node] : *callgraph) {
+    for (auto *edge : node->getOutEdges()) {
+      if (edge->getIndirectCalls().empty())
+        continue;
+      if (!edge->getDirectCalls().empty()) {
+        edge->getIndirectCalls().clear();
+        ++mixed;
+        continue;
+      }
+      detach.push_back(edge);
+    }
+  }
+
+  for (auto edge : detach) {
+    edge->getSrcNode()->removeOutgoingEdge(edge);
+    edge->getDstNode()->removeIncomingEdge(edge);
+  }
+
+  callgraph->edgeNum -= detach.size();
+
+  // no propagation into SVFG/PAG/ICFG graph.
+  callgraph->getIndCallMap().clear();
+
+  if (mixed)
+    SVFUtil::outs()
+        << "[INFO] " << mixed
+        << " call edges contained both direct as well as indirect callsites."
+        << "\n";
+
+  return detach.size();
+}
 
 condition_extractor_t::condition_extractor_t(
     const std::set<std::string> &&functions, Module *module,
@@ -333,7 +366,7 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
     StringRef function_name = F.getName();
     bool is_vararg = F.isVarArg();
 
-    SVFUtil::errs() << "Doing: " << function_name.str() << "\n";
+    // SVFUtil::errs() << "Doing: " << function_name.str() << "\n";
 
     my_fun.function_name = function_name.str();
     my_fun.is_vararg = is_vararg ? "true" : "false";
@@ -374,21 +407,29 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   SVFUtil::outs() << "[INFO] Points-to analysis done!\n";
 
   GlobalStruct::CallEdgeMap newEdges = point_to_analyses->get_new_edges();
-  // NOTE: copy callsite->target relation in a neutral structure
-  for (auto x : newEdges) {
-    // callsite
-    auto cs = x.first;
-    // callee
-    for (auto t : x.second) {
-      // typedef std::map<const CallICFGNode *, std::set<const FunObjVar *>>
-      // APARM_LOG("Found an indirect call in {} to {}",
-      // t->getICFGNode()->getName(), t->getName());
-      ValueMetadata::myCallEdgeMap_inst[cs].insert(t);
+  CallGraph *callgraph = point_to_analyses->getCallGraph();
+
+  if (config_t::instance()->consider_indirect_calls) {
+    for (auto x : newEdges) {
+      // callsite
+      auto cs = x.first;
+      // callee
+      for (auto t : x.second) {
+        // typedef std::map<const CallICFGNode *, std::set<const FunObjVar *>>
+        // APARM_LOG("Found an indirect call in {} to {}",
+        // t->getICFGNode()->getName(), t->getName());
+        ValueMetadata::myCallEdgeMap_inst[cs].insert(t);
+      }
     }
+  } else {
+    unsigned removed = remove_indirect_calls(callgraph);
+    ValueMetadata::myCallEdgeMap_inst.clear();
+    SVFUtil::outs() << "[INFO] consider_indirect_calls=false: removed "
+                    << removed << " indirect call edges; PAG/ICFG/SVFG and the "
+                    << " bottom-up SCC walk are direct\n";
   }
 
   // update both callgraphs with added new edges from GlobalStruct::analyze
-  CallGraph *callgraph = point_to_analyses->getCallGraph();
   ir_builder.updateCallGraph(callgraph);
   icfg->updateCallGraph(callgraph);
   // icfg->dump("icfg_extractor");
@@ -475,7 +516,10 @@ void type_induction_by_use_def(llvm::Value *param) {
     for (const llvm::User *user : arg->users()) {
       if (const auto *gep = llvm::dyn_cast<llvm::GetElementPtrInst>(user)) {
         llvm::Type *src_type = gep->getSourceElementType();
-        if (src_type->isStructTy()) {
+        // isStructTy() is true for literal (anonymous) structs too, and
+        // getStructName() asserts on those - so exclude them.
+        if (src_type->isStructTy() &&
+            !llvm::cast<llvm::StructType>(src_type)->isLiteral()) {
           TYPE_LOG("Parameter {} is actually struct: {}\n",
                    param->getName().str(), src_type->getStructName().str());
         }
@@ -564,8 +608,8 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
 
       std::vector<std::string> set_by_vect;
       auto svf_fun = pag->getFunObjVar(f);
-      ValueMetadata param_metadata;
       for (auto param : fun_param_map[svf_fun]) {
+        ValueMetadata param_metadata;
         auto formal_param_llvm = llvm_module_set->getLLVMValue(param);
         const Function *llvm_fun = llvm_module_set->getFunction(f);
 
@@ -594,13 +638,12 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
           set_by_vect = extractDependencyAmongParameters(param, param_metadata,
                                                          *svfg, svf_fun);
         }
-      }
+        for (auto &d : set_by_vect) {
+          param_metadata.addSetByDependency(d);
+        }
 
-      for (auto &d : set_by_vect) {
-        param_metadata.addSetByDependency(d);
+        fun_conds.addParameterMetadata(param_metadata);
       }
-
-      fun_conds.addParameterMetadata(param_metadata);
     }
 
     {
@@ -709,16 +752,16 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
           }
         }
 
-        int num_param = fun_conds.getParameterNum();
+        int num_param = fun_conds.get_parameter_num();
 
         for (int p = 0; p < num_param; p++) {
-          ValueMetadata meta = fun_conds.getParameterMetadata(p);
-          pruneAccessTypes(dom.get(), pDom.get(), &meta);
-          fun_conds.replaceParameterMetadata(p, meta);
+          ValueMetadata &meta = fun_conds.get_parameter_metadata(p);
+          prune_access_types(dom.get(), pDom.get(), meta);
+          fun_conds.replace_parameter_metadata(p, meta);
         }
 
-        ValueMetadata meta = fun_conds.getReturnMetadata();
-        pruneAccessTypes(dom.get(), pDom.get(), &meta);
+        ValueMetadata &meta = fun_conds.get_return_metadata();
+        prune_access_types(dom.get(), pDom.get(), meta);
         fun_conds.setReturnMetadata(meta);
       }
     }

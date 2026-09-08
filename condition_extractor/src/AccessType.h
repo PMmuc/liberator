@@ -71,7 +71,11 @@ private:
 
   // counts how often a field of a type got accessed.
   // should prevent type recursion in a path.
-  std::map<std::pair<const llvm::Type *, int>, int> visited_types;
+  // mutable for the same reason icfg_set is: AccessTypes live inside a
+  // std::set whose ordering (operator<) depends only on fields/access/type, so
+  // updating the recursion counters through a set iterator cannot break the
+  // container invariant.
+  mutable std::map<std::pair<const llvm::Type *, int>, int> visited_types;
 
 public:
   AccessType(const llvm::Type *t, llvm::DIType *di = nullptr) {
@@ -85,9 +89,17 @@ public:
     p_di_type = nullptr;
   }
 
-  ~AccessType() { fields.clear(); }
+  // copy assignment operator
+  AccessType(const AccessType &rhs) = default;
+  AccessType &operator=(const AccessType &rhs) = default;
+  // move operator
+  AccessType(AccessType &&) = default;
+  AccessType &operator=(AccessType &&) = default;
+
+  ~AccessType() = default;
 
   DIType *get_di_type() const { return di_type; }
+  DIType *get_p_di_type() const { return p_di_type; }
 
   void add_visited_type(const llvm::Type *a_type, int field) {
     visited_types[{a_type, field}]++;
@@ -95,6 +107,30 @@ public:
 
   void add_visited_count(const llvm::Type *a_type, int field, int count) {
     visited_types[{a_type, field}] += count;
+  }
+
+  /**
+   * Fold another AccessType's recursion counters into this one, keeping the
+   * LARGER count per key.
+   *
+   * Needed because operator</operator== compare only (fields, access, type) -
+   * visited_types is deliberately not part of the identity. So two AccessTypes
+   * that reached the same field path by different routes, carrying different
+   * recursion counts, collapse onto one entry in an AccessTypeSet. Without
+   * this merge the first-inserted counters win and every later (higher) count
+   * is discarded, leaving the set holding the MINIMUM counts ever seen.
+   * merge_access_type() then reads those understated counters and permits
+   * compositions that should have exceeded MAX_GEP_RECURSION_DEPTH - the
+   * recursion bound silently weakens the more paths converge on a key.
+   *
+   * max is the sound choice for a budget: it keeps the tightest constraint.
+   */
+  void merge_visited_max(const AccessType &other) const {
+    for (const auto &kv : other.visited_types) {
+      auto &slot = visited_types[kv.first];
+      if (kv.second > slot)
+        slot = kv.second;
+    }
   }
 
   const std::map<std::pair<const llvm::Type *, int>, int> &
@@ -112,35 +148,12 @@ public:
   kind_e get_parent_kind() const { return p_access; }
   const llvm::Type *get_parent_llvm_type() const { return p_type; }
 
-  // copy assignment operator
-  AccessType &operator=(const AccessType &rhs) {
-    this->fields = rhs.fields;
-    this->access = rhs.access;
-    this->type = rhs.type;
-
-    this->di_type = rhs.di_type;
-    this->p_di_type = rhs.p_di_type;
-
-    // hope this does not make a mess!
-    this->icfg_set = rhs.icfg_set;
-
-    // parent
-    this->has_parent_ = rhs.has_parent_;
-    this->p_fields = rhs.p_fields;
-    this->p_access = rhs.p_access;
-    this->p_type = rhs.p_type;
-
-    // visited types for GEP recursion
-    this->visited_types = rhs.visited_types;
-
-    return *this;
-  };
-
   void addICFGNode(const ICFGNode *icfg_node) const {
     icfg_set.insert(icfg_node);
   }
 
-  std::set<const ICFGNode *> getICFGNodes() const { return icfg_set; }
+  std::set<const ICFGNode *> &getICFGNodes() { return icfg_set; }
+  const std::set<const ICFGNode *> &getICFGNodes() const { return icfg_set; }
 
   const llvm::Type *getOriginalCastType() { return c_type; }
 
@@ -154,6 +167,19 @@ public:
     p_di_type = di_type;
     has_parent_ = true;
     fields.push_back(a_field);
+  }
+
+  void append_path(const std::vector<int> &suffix_fields, kind_e parent_access,
+                   const llvm::Type *parent_ty, llvm::DIType *parent_di) {
+    if (suffix_fields.empty()) {
+      return;
+    }
+    fields.insert(fields.end(), suffix_fields.begin(), suffix_fields.end());
+    p_fields.assign(fields.begin(), fields.end() - 1);
+    p_access = parent_access;
+    p_type = parent_ty;
+    p_di_type = parent_di;
+    has_parent_ = true;
   }
 
   std::vector<int> &get_fields() { return fields; }
@@ -201,6 +227,7 @@ public:
       return false;
     if (other.type != type)
       return false;
+    // TODO: Maybe add di_type?
     return true;
   }
 
@@ -209,7 +236,7 @@ public:
     std::string str;
     raw_string_ostream rawstr(str);
 
-    for (auto inst : getICFGNodes())
+    for (auto &inst : getICFGNodes())
       rawstr << inst->toString() << "; \n";
     rawstr << "\n";
 
@@ -245,20 +272,32 @@ public:
    * behaviour.
    * @return an iterator to the updated value.
    */
-  const_iterator insert(AccessType at, const ICFGNode *inst) {
+  const_iterator insert(const AccessType &at, const ICFGNode *inst) {
     // outs() << "[DEBUG] insert: " << at.toString() << "\n";
-    auto at_iter = ats_set.find(at);
-    if (at_iter != ats_set.end()) {
-      // at is already in the set
-      at_iter->addICFGNode(inst);
-      return at_iter;
-    } else {
-      at.addICFGNode(inst);
-      return ats_set.insert(at).first;
-    }
+    auto it = ats_set.find(at);
+    if (it == ats_set.end())
+      it = ats_set.insert(at).first;
+    else
+      // keep the tightest recursion budget; see merge_visited_max()
+      it->merge_visited_max(at);
+    return it;
   }
 
-  void remove(AccessType at) {
+  template <typename T>
+  const_iterator insert_nodes(const AccessType &at, const T &nodes) {
+    auto it = ats_set.find(at);
+    if (it == ats_set.end())
+      it = ats_set.insert(at).first;
+    else
+      // keep the tightest recursion budget; see merge_visited_max()
+      it->merge_visited_max(at);
+    for (const ICFGNode *n : nodes) {
+      it->addICFGNode(n);
+    }
+    return it;
+  }
+
+  void remove(AccessType &at) {
     auto at_iter = ats_set.find(at);
     if (at_iter != ats_set.end()) {
       ats_set.erase(*at_iter);
@@ -270,7 +309,7 @@ public:
   std::set<const ICFGNode *> getAllICFGNodes() const {
     std::set<const ICFGNode *> allNodes;
 
-    for (auto at : ats_set) {
+    for (auto &at : ats_set) {
       for (auto icfg_node : at.getICFGNodes()) {
         allNodes.insert(icfg_node);
       }
@@ -334,7 +373,7 @@ private:
   AccessType access_type;
   const Value *prevValue;
   std::stack<const CallICFGNode *> stack;
-  std::vector<std::pair<const ICFGNode *, AccessType>> history;
+  // std::vector<std::pair<const ICFGNode *, AccessType>> history;
   friend std::string to_string(const Path &);
 
 public:
@@ -352,13 +391,22 @@ public:
     // access_type.setType(val->getType());
   }
 
-  void addStep(const ICFGNode *node) {
+  // copy assignment operator
+  Path(const Path &rhs) = default;
+  Path(Path &&) = default;
+  Path &operator=(const Path &) = default;
+  Path &operator=(Path &&) = default;
+  ~Path() = default;
+
+  /*void addStep(const ICFGNode *node) {
     history.push_back(std::make_pair(node, get_access_type()));
   }
 
+  size_t history_size() const { return history.size(); }
+
   const std::vector<std::pair<const ICFGNode *, AccessType>> getSteps() {
     return history;
-  }
+  }*/
 
   const Value *getPrevValue() { return prevValue; }
 
@@ -368,10 +416,13 @@ public:
 
   void setNode(const VFGNode *a_node) { node = a_node; }
 
-  AccessType get_access_type() const { return access_type; }
+  const AccessType &get_access_type() const { return access_type; }
 
   void set_access_type(const AccessType &a_access_type) {
     access_type = a_access_type;
+  }
+  void set_access_type(AccessType &&a_access_type) {
+    access_type = std::move(a_access_type);
   }
 
   bool isCorrect(const CallICFGNode *edge) {
@@ -415,18 +466,39 @@ public:
     else
       return node < rhs.node;
   }
-
-  // copy assignment operator
-  Path &operator=(const Path &rhs) {
-    this->node = rhs.node;
-    this->access_type = rhs.access_type;
-    this->stack = rhs.stack;
-
-    this->history = rhs.history;
-
-    return *this;
-  };
 };
+
+/**
+ * Counters describing how merge_access_type() decided whether a callee summary
+ * may be composed onto the caller path. The counting itself is always on (a
+ * handful of increments), the report is printed once at the end of the run and
+ * only when -metrics is given.
+ */
+struct compose_instr_t {
+  size_t attempts = 0;    // compositions with a non-empty suffix path
+  size_t di_match = 0;    // DWARF says same record -> allowed
+  size_t di_reject = 0;   // DWARF says different records -> rejected
+  size_t llvm_match = 0;  // no usable DWARF, LLVM types equal -> allowed
+  size_t llvm_reject = 0; // no usable DWARF, distinct structs -> rejected
+  size_t undecidable = 0; // neither view discriminates -> allowed
+  // Why DWARF declined: no DIType at all, vs. one that
+  // di_record_name() rejects because it only accepts NAMED composites.
+  size_t di_absent = 0;        // prefix or callee base DIType is null
+  size_t di_not_composite = 0; // decays to a basic type (int, char)
+  size_t di_unnamed = 0;       // composite but anonymous
+
+  /// Process-wide counters, shared by every param_access_tracker_t.
+  static compose_instr_t &instance();
+
+  void dump(llvm::raw_ostream &os) const;
+};
+
+/**
+ * Writes the instrumentation counters collected during the analysis, if
+ * config_t::print_metrics is set. Meant to be called once, after the analysis
+ * finished.
+ */
+void dump_metrics(llvm::raw_ostream &os);
 
 } // namespace liberator
 

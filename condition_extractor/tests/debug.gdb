@@ -26,6 +26,7 @@ set detach-on-fork on
 #break AccessType.cpp:1483
 #break ConditionExtractor.cpp:110
 #break GlobalStruct.cpp:60
-break SignatureMatching.cpp:309
+#break SignatureMatching.cpp:309
+break AccessType.cpp:2009
 
-run "svf test global_func_pointers"
+run "svf test struct_access"

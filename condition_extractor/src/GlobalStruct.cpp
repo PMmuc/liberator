@@ -28,6 +28,15 @@ using namespace SVFUtil;
 
 std::unique_ptr<GlobalStruct> GlobalStruct::gspta;
 
+/// Accessor for translation units that must not include GlobalStruct.h
+/// (its header-scope `using namespace SVF` breaks llvm::dyn_cast there).
+/// GlobalStruct is itself an Andersen, so callers that just want the
+/// Andersen points-to result should come through here instead of building a
+/// second one via AndersenWaveDiff::createAndersenWaveDiff().
+SVF::Andersen *global_struct_pta(SVF::SVFIR *pag) {
+  return GlobalStruct::createSGWPA(pag);
+}
+
 /// GlobalStruct analysis
 // Makes Points To Analysis
 void GlobalStruct::analyze() {
@@ -38,8 +47,8 @@ void GlobalStruct::analyze() {
 
   // let's do the base class analysis
   {
-    PROFILE_SCOPE("GlobalStruct: FlowSensitive::analyze");
-    FlowSensitive::analyze();
+    PROFILE_SCOPE("GlobalStruct: base PTA analyze");
+    GlobalStructPTA::analyze();
   }
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
@@ -106,7 +115,6 @@ void GlobalStruct::analyze() {
 
   auto ptacg = getCallGraph();
 
-  SVFGEdgeSetTy svfgEdges;
   CallEdgeMap newEdges;
 
   auto slot_map = build_slot_map(*llvmModuleSet->getMainLLVMModule());
@@ -215,7 +223,8 @@ void GlobalStruct::analyze() {
 
         newEdges[callsite].insert(fun_callee);
         getIndCallMap()[callsite].insert(fun_callee);
-        ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);
+        if (config_t::instance()->consider_indirect_calls)
+          ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);
       }
       // SVFUtil::outs() << "connected to: " << x << "\n";
       // SVFUtil::outs() << "----\n";
@@ -281,18 +290,18 @@ void GlobalStruct::analyze() {
 
   this->new_edges = newEdges;
 
-  {
-    PROFILE_SCOPE("GlobalStruct: Connect Edges");
-    connectCallerAndCallee(newEdges, svfgEdges);
-    updateConnectedNodes(svfgEdges);
-  }
+  // Note: connectCallerAndCallee()/updateConnectedNodes() used to run here.
+  // Both are FlowSensitive members that patch *its* PTR-only SVFG with the
+  // edges discovered above and re-propagate. That graph is discarded anyway -
+  // the SVFG the extractor uses is built afterwards, in
+  // make_condition_extractor(), from the call graph these edges were already
+  // added to (see addIndirectCallGraphEdge above).
 }
 
-/// Initialize analysis
-void GlobalStruct::initialize() { FlowSensitive::initialize(); }
+void GlobalStruct::initialize() { GlobalStructPTA::initialize(); }
 
 /// Finalize analysis
-void GlobalStruct::finalize() { FlowSensitive::finalize(); }
+void GlobalStruct::finalize() { GlobalStructPTA::finalize(); }
 
 /**
  * @param in_value variable that is either a global variable, a constant,

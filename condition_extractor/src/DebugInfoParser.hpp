@@ -76,7 +76,7 @@ bool compare_types(llvm::DIType *di, const llvm::Type *type,
 /**
  * Returns the next DI type that we need to handle based on the offset that
  * compare_types returned from a GEP instruction.
- * @param di current DIType
+ * @param di current DIType on the path, which will be used for resolution
  * @param container
  */
 llvm::DIType *next_di_field(llvm::DIType *di, const llvm::Type *container,

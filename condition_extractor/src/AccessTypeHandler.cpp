@@ -11,6 +11,11 @@
 
 #include "Config.h"
 
+/// Defined in GlobalStruct.cpp. Declared here rather than including
+/// GlobalStruct.h, whose header-scope `using namespace SVF/SVFUtil` would make
+/// llvm::dyn_cast and llvm::outs ambiguous throughout this file.
+SVF::Andersen *global_struct_pta(SVF::SVFIR *pag);
+
 namespace {
 
 llvm::Type *deduce_type(llvm::Value *v) {
@@ -138,7 +143,7 @@ bool isAnArray(const CallBase *c) {
 } // namespace
 namespace liberator {
 
-void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
+void addWrteToAllFields(ValueMetadata &mdata, AccessType atNode,
                         const ICFGNode *icfgNode) {
 
   // outs() << "addWrteToAllFields\n";
@@ -162,8 +167,11 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
   const llvm::Type *t = nullptr;
   Value *base = nullptr;
 
-  // singleton: just return pointer
-  SVF::Andersen *ander = SVF::AndersenWaveDiff::createAndersenWaveDiff(pag);
+  // Singleton: just returns the already-analysed instance. Ask GlobalStruct
+  // rather than AndersenWaveDiff::createAndersenWaveDiff() - GlobalStruct is
+  // itself an Andersen now, and createAndersenWaveDiff() would build and solve
+  // a second, independent one.
+  SVF::Andersen *ander = global_struct_pta(pag);
 
   // use points to analysis to find the type of the return type of the current
   // function
@@ -173,20 +181,22 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
     if (!ret_inst)
       continue;
 
-    // ret_inst->getType()->print(llvm::outs());
     Value *ret_val = ret_inst->getReturnValue();
 
+    // if ret void skip
     if (!ret_val)
       continue;
+    auto ret_node_id = moduleSet->getValueNode(ret_val);
+    if (pag->hasGNode(ret_node_id)) {
+      auto node_id = pag->getGNode(ret_node_id);
 
-    auto svf_val = pag->getGNode(moduleSet->getValueNode(ret_val));
-
-    if (pag->hasGNode(svf_val->getId())) {
-      auto node_id = pag->getGNode(moduleSet->getValueNode(ret_val));
-
+      // Get all the objects that the return value can point to, in a NodeBS
+      // format (list).
       const SVF::PointsTo &pts = ander->getPts(node_id->getId());
 
+      // go through each object the points to set can point to.
       for (SVF::NodeID target_id : pts) {
+        // which node do we get here?
         if (!pag->hasGNode(target_id))
           continue;
 
@@ -254,29 +264,28 @@ void addWrteToAllFields(ValueMetadata *mdata, AccessType atNode,
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::write);
-    mdata->get_access_type_set().insert(tmpAcNode, icfgNode);
+    mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
   }
 
   if (auto st = SVFUtil::dyn_cast<llvm::StructType>(t)) {
-    outs() << st->getStructName() << "\n";
     for (int f = 0; f < st->getNumElements(); f++) {
       auto ft = st->getElementType(f);
       AccessType atField = atNode;
       atField.set_kind(AccessType::kind_e::write);
       atField.addField(f);
       atField.set_llvm_type(ft, nullptr);
-      mdata->get_access_type_set().insert(atField, icfgNode);
+      mdata.get_access_type_set().insert(atField, icfgNode);
     }
   }
 }
-bool malloc_handler(liberator::ValueMetadata *mdata, std::string fun_name,
+bool malloc_handler(liberator::ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
     atNode.set_kind(AccessType::kind_e::create);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
     HANDLER_LOG("Function {} is a possible malloc return value", fun_name);
     return true;
   }
@@ -284,35 +293,35 @@ bool malloc_handler(liberator::ValueMetadata *mdata, std::string fun_name,
     HANDLER_LOG("Parameter of {} is a possible malloc size parameter",
                 fun_name);
     atNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
-    mdata->setMallocSize(true);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    mdata.setMallocSize(true);
     return false;
   }
 
   return false;
 }
 
-bool free_handler(ValueMetadata *mdata, std::string fun_name,
+bool free_handler(ValueMetadata &mdata, std::string fun_name,
                   const ICFGNode *icfgNode, const CallICFGNode *cs,
                   int param_num, AccessType atNode, H_SCOPE scope, Path *path) {
 
   if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
     atNode.set_kind(AccessType::kind_e::del);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
   }
 
   return false;
 }
 
-bool open_handler(ValueMetadata *mdata, std::string fun_name,
+bool open_handler(ValueMetadata &mdata, std::string fun_name,
                   const ICFGNode *icfgNode, const CallICFGNode *cs,
                   int param_num, AccessType atNode, H_SCOPE scope, Path *path) {
 
   if ((param_num == 0 || param_num == 1) && atNode.get_num_fields() == 0 &&
       scope & C_PARAM) {
     atNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
-    mdata->setIsFilePath(true);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    mdata.setIsFilePath(true);
 
     // outs() << "icfgNode: " << icfgNode->toString() << "\n";
     // outs() << "cs: " << cs->toString() << "\n";
@@ -331,7 +340,7 @@ bool open_handler(ValueMetadata *mdata, std::string fun_name,
  * parameter, 2 = second ...
  * @param atNode - access type of current node
  */
-bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
+bool memcpy_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
@@ -347,23 +356,23 @@ bool memcpy_handler(ValueMetadata *mdata, std::string fun_name,
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(tmpAcNode, icfgNode);
+    mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
 
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
     auto c = SVFUtil::dyn_cast<CallBase>(llvm_val);
-    mdata->setIsArray(isAnArray(c));
+    mdata.setIsArray(isAnArray(c));
     // if (param_num == 1) {
     //  outs() << cs->getCallSite()->toString() << "\n";
     //
     Value *v = c->getArgOperand(2);
-    mdata->addFunParam(v, path);
+    mdata.addFunParam(v, path);
     // }
   }
 
   return false;
 }
 
-bool strlen_handler(ValueMetadata *mdata, std::string fun_name,
+bool strlen_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
@@ -375,8 +384,8 @@ bool strlen_handler(ValueMetadata *mdata, std::string fun_name,
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(tmpAcNode, icfgNode);
-    mdata->setIsArray(true);
+    mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
+    mdata.setIsArray(true);
     // outs() << "HOOK IT!\n";
   }
 
@@ -385,7 +394,7 @@ bool strlen_handler(ValueMetadata *mdata, std::string fun_name,
   return false;
 }
 
-bool strcpy_handler(ValueMetadata *mdata, std::string fun_name,
+bool strcpy_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
@@ -395,17 +404,17 @@ bool strcpy_handler(ValueMetadata *mdata, std::string fun_name,
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(tmpAcNode, icfgNode);
-    mdata->setIsArray(true);
+    mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
+    mdata.setIsArray(true);
   }
 
   return false;
 }
 
-bool memset_hander(ValueMetadata *mdata, std::string fun_name,
-                   const ICFGNode *icfgNode, const CallICFGNode *cs,
-                   int param_num, AccessType atNode, H_SCOPE scope,
-                   Path *path) {
+bool memset_handler(ValueMetadata &mdata, std::string fun_name,
+                    const ICFGNode *icfgNode, const CallICFGNode *cs,
+                    int param_num, AccessType atNode, H_SCOPE scope,
+                    Path *path) {
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
 
@@ -417,21 +426,21 @@ bool memset_hander(ValueMetadata *mdata, std::string fun_name,
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(tmpAcNode, icfgNode);
-    mdata->setIsArray(true);
+    mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
+    mdata.setIsArray(true);
 
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
     auto i = SVFUtil::dyn_cast<CallBase>(llvm_val);
     // Get parameter n from memset call which is the number of bytes
     // to set the memory to.
     Value *v = i->getArgOperand(2);
-    mdata->addFunParam(v, path);
+    mdata.addFunParam(v, path);
 
     if (auto par_const = dyn_cast<ConstantInt>(i->getArgOperand(1))) {
       uint64_t actual_const = par_const->getZExtValue();
       if (actual_const == 0) {
         atNode.set_kind(AccessType::kind_e::del);
-        mdata->get_access_type_set().insert(atNode, icfgNode);
+        mdata.get_access_type_set().insert(atNode, icfgNode);
       }
     }
 
@@ -441,7 +450,7 @@ bool memset_hander(ValueMetadata *mdata, std::string fun_name,
   return false;
 }
 
-bool calloc_handler(ValueMetadata *mdata, std::string fun_name,
+bool calloc_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
@@ -449,7 +458,7 @@ bool calloc_handler(ValueMetadata *mdata, std::string fun_name,
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
     atNode.set_kind(AccessType::kind_e::create);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
 
     addWrteToAllFields(mdata, atNode, icfgNode);
 
@@ -457,15 +466,15 @@ bool calloc_handler(ValueMetadata *mdata, std::string fun_name,
   }
   if (param_num == 1 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
     atNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
-    mdata->setMallocSize(true);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    mdata.setMallocSize(true);
     return false;
   }
 
   return false;
 }
 
-bool posix_memalign_handler(ValueMetadata *mdata, std::string fun_name,
+bool posix_memalign_handler(ValueMetadata &mdata, std::string fun_name,
                             const ICFGNode *icfgNode, const CallICFGNode *cs,
                             int param_num, AccessType atNode, H_SCOPE scope,
                             Path *path) {
@@ -473,7 +482,7 @@ bool posix_memalign_handler(ValueMetadata *mdata, std::string fun_name,
   if (param_num == 0 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
     atNode.set_kind(AccessType::kind_e::create);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
 
     return true;
   }
@@ -501,7 +510,7 @@ bool posix_memalign_handler(ValueMetadata *mdata, std::string fun_name,
 //     return false;
 // }
 
-bool strdup_handler(ValueMetadata *mdata, std::string fun_name,
+bool strdup_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
@@ -509,7 +518,7 @@ bool strdup_handler(ValueMetadata *mdata, std::string fun_name,
   if (param_num == -1 && scope & C_RETURN) {
     // no need to set field, empty field set is what I need
     atNode.set_kind(AccessType::kind_e::create);
-    mdata->get_access_type_set().insert(atNode, icfgNode);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
 
     addWrteToAllFields(mdata, atNode, icfgNode);
 
@@ -521,8 +530,8 @@ bool strdup_handler(ValueMetadata *mdata, std::string fun_name,
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);
-    mdata->get_access_type_set().insert(tmpAcNode, icfgNode);
-    mdata->setIsArray(true);
+    mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
+    mdata.setIsArray(true);
   }
 
   return false;
@@ -535,19 +544,19 @@ You can define handlers for specific functions that will manually update the
 access type set.
 */
 AccessTypeHandlerMap accessTypeHandlers = {
-    {"malloc", &malloc_handler},
-    {"free", &free_handler},
-    {"open", &open_handler},
-    {"open64", &open_handler},
-    {"fopen", &open_handler},
-    {"fopen64", &open_handler},
-    {"llvm.memcpy.*", &memcpy_handler},
-    {"strcpy", &strcpy_handler},
+    {"malloc", malloc_handler},
+    {"free", free_handler},
+    {"open", open_handler},
+    {"open64", open_handler},
+    {"fopen", open_handler},
+    {"fopen64", open_handler},
+    {"llvm.memcpy.*", memcpy_handler},
+    {"strcpy", strcpy_handler},
     // {"strdup", &strcpy_handler},
-    {"strlen", &strlen_handler},
-    {"llvm.memset.*", &memset_hander},
-    {"calloc", &calloc_handler},
-    {"posix_memalign", &posix_memalign_handler},
+    {"strlen", strlen_handler},
+    {"llvm.memset.*", memset_handler},
+    {"calloc", calloc_handler},
+    {"posix_memalign", posix_memalign_handler},
     // {"__asprintf_chk", &asprintf_handler},
-    {"strdup", &strdup_handler}};
+    {"strdup", strdup_handler}};
 } // namespace liberator

@@ -369,8 +369,9 @@ Json::Value to_json_parent(const AccessType &at) {
     fieldsJson.append(field);
 
   accessTypeJson["fields"] = fieldsJson;
+  // FIXME: take the di type not the llvm_type for the hash
   accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_llvm_type());
-  accessTypeJson["type_string"] = to_string(at.get_llvm_type());
+  accessTypeJson["type_string"] = to_string(at.get_di_type());
 
   return accessTypeJson;
 }
@@ -379,7 +380,7 @@ Json::Value to_json(const AccessType &at, bool verbose) {
   Json::Value accessTypeJson;
 
   if (at.has_parent()) {
-    AccessType p(at.p_type);
+    AccessType p(at.p_type, at.get_p_di_type());
     // AccessType p;
     // p.setType(p_type);
     p.set_kind(at.p_access);
@@ -397,8 +398,9 @@ Json::Value to_json(const AccessType &at, bool verbose) {
     fieldsJson.append(field);
 
   accessTypeJson["fields"] = fieldsJson;
+  // FIXME: take di type for hash
   accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_llvm_type());
-  accessTypeJson["type_string"] = to_string(at.get_llvm_type());
+  accessTypeJson["type_string"] = to_string(at.get_di_type());
 
   if (verbose)
     accessTypeJson["debug"] = dumpICFGNodesJson();

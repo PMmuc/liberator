@@ -1,22 +1,22 @@
 #include "PhiFunction.h"
 #include "SVF-LLVM/LLVMModule.h"
+#include <llvm/Support/Casting.h>
 
-void getPhiFunction(Module *svfModule, ICFG *icfg, PHIFun *phi,
-                    PHIFunInv *phi_inv) {
+void get_phi_function(Module *svfModule, ICFG *icfg, PHIFun &phi,
+                      PHIFunInv &phi_inv) {
+  // iterate all functions
   SVF::Module::const_iterator it = svfModule->begin();
   SVF::Module::const_iterator eit = svfModule->end();
 
   for (; it != eit; ++it) {
+    // skip functions that don't have a declaration.
+    // example external functions not defined
+    // or intrinsics for example llvm debug intrinsics
     if (it->isDeclaration() || it->isIntrinsic())
       continue;
 
-    auto fun = LLVMModuleSet::getLLVMModuleSet()->getFunObjVar(&(*it));
-
-    // outs() << fun->getName() << " [in DOM]\n";
-    CallCFGEdge *call_edge;
-    RetCFGEdge *ret_edge;
-    ICFGNode::const_iterator it_fun_entry, eit_fun_entry;
-    ICFGNode::const_iterator it_fun_exit, eit_fun_exit;
+    auto fun =
+        LLVMModuleSet::getLLVMModuleSet()->getFunObjVar(&it->getFunction());
 
     // when a function is declared in LLVM IR and is called this will still
     // return nullptr without definition.
@@ -28,22 +28,20 @@ void getPhiFunction(Module *svfModule, ICFG *icfg, PHIFun *phi,
       continue;
     }
 
-    it_fun_entry = fun_entry->InEdgeBegin();
-    eit_fun_entry = fun_entry->InEdgeEnd();
-
-    for (; it_fun_entry != eit_fun_entry; ++it_fun_entry) {
-      call_edge = (CallCFGEdge *)(*it_fun_entry);
+    for (auto e1 : fun_entry->getInEdges()) {
+      auto call_edge = dyn_cast<CallCFGEdge>(e1);
+      if (!call_edge)
+        continue;
       const auto *inst_src_fun_entry = call_edge->getCallSite();
 
-      it_fun_exit = fun_exit->OutEdgeBegin();
-      eit_fun_exit = fun_exit->OutEdgeEnd();
-      for (; it_fun_exit != eit_fun_exit; ++it_fun_exit) {
-        ret_edge = (RetCFGEdge *)(*it_fun_exit);
-        const auto *inst_src_fun_exit = ret_edge->getCallSite();
+      for (auto e2 : fun_exit->getOutEdges()) {
+        if (auto ret_edge = dyn_cast<RetCFGEdge>(e2)) {
+          const auto *inst_src_fun_exit = ret_edge->getCallSite();
 
-        if (inst_src_fun_entry == inst_src_fun_exit) {
-          phi->operator[](call_edge) = ret_edge;
-          phi_inv->operator[](ret_edge) = call_edge;
+          if (inst_src_fun_entry == inst_src_fun_exit) {
+            phi[call_edge] = ret_edge;
+            phi_inv[ret_edge] = call_edge;
+          }
         }
       }
     }

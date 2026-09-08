@@ -58,13 +58,15 @@ Make sure that in the run_analysis.sh the -profiling flag is set, when invoking 
 
 ## 6. Running with Docker
 For Docker only step 1.1 or 1.2 have to be done as prerequisite. The rest will be done automatically by in the Dockerfile.
-> Note: Copy the llvm install directories into the liberator directory with the name llvm-21 for LLVM version 21 and llvm-16 for version 16. This will use this version on the docker machine.
+> Note: Copy the llvm install directories into the liberator directory with the name llvm-21 for LLVM version 21. This will use this version on the docker machine.
 ```
 ./start_debugenv.sh <target_name>
 ```
 > This will build the docker image and run the analysis for the target library in a container.
 
 ### 6.1 Run Docker without script
+> Make sure to run this in the root directory of liberator
 ```
-docker run 
+  docker run --rm --it --name "libpp-analysis-new-<TARGET_NAME>" \
+    --env TARGET=c-ares -v "$(pwd):/workspaces/libfuzz" "libpp-analysis-new"
 ```
