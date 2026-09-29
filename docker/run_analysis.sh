@@ -42,10 +42,16 @@ echo "$IMG_NAME"
 # Parse arguments
 PROF_FLAG=()
 while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        --prof) PROF_FLAG=("PROF_EXTRACTOR=perf record -g --call-graph dwarf -F 99"); shift ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
-    esac
+  case $1 in
+  --prof)
+    PROF_FLAG=("PROF_EXTRACTOR=perf record -g --call-graph dwarf -F 99")
+    shift
+    ;;
+  *)
+    echo "Unknown parameter passed: $1"
+    exit 1
+    ;;
+  esac
 done
 
 # CPU(s) to pin this container to (default 0). The batch runner sets this per worker.

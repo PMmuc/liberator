@@ -28,6 +28,7 @@
  */
 
 #include "Graphs/SVFG.h"
+#include "Profiler.h"
 #include "SVF-LLVM/LLVMUtil.h"
 #include "SVF-LLVM/SVFIRBuilder.h"
 #include "Util/Options.h"
@@ -410,10 +411,15 @@ int main(int argc, char **argv) {
   }
 
   SVFUtil::outs() << "[INFO] Loading library...\n";
-
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
-  SVFModule *svfModule =
-      LLVMModuleSet::getLLVMModuleSet()->buildSVFModule(moduleNameVec);
+
+  SVFModule *svfModule = nullptr;
+  {
+    PROFILE_SCOPED("1. LLVM Module Build");
+    PROFILE_MEM("1. LLVM Module Build");
+    svfModule = LLVMModuleSet::getLLVMModuleSet()->buildSVFModule(
+        moduleNameVec); // HERE
+  }
 
   SVFUtil::outs() << "[INFO] Done\n";
 
@@ -504,7 +510,11 @@ int main(int argc, char **argv) {
   {
     llvm::TimeTraceScope scope("SVFIR Analysis Builder");
     SVFIRBuilder builder(svfModule);
-    pag = builder.build();
+    {
+      PROFILE_SCOPED("2. PAG Builder");
+      PROFILE_MEM("2. PAG Builder");
+      pag = builder.build();
+    }
     icfg = pag->getICFG();
     /// Create Andersen's pointer analysis
     // Andersen* point_to_analysys =
@@ -512,9 +522,13 @@ int main(int argc, char **argv) {
     // point_to_analysys = FlowSensitive::createFSWPA(pag); AndersenSCD*
     // point_to_analysys = AndersenSCD::createAndersenSCD(pag); TypeAnalysis*
     // point_to_analysys = new TypeAnalysis(pag);
-    point_to_analysys = GlobalStruct::createSGWPA(pag);
 
-    point_to_analysys->analyze();
+    point_to_analysys = GlobalStruct::createSGWPA(pag);
+    {
+      PROFILE_SCOPED("3. Points-to Analysis");
+      PROFILE_MEM("3. Points-to Analysis");
+      point_to_analysys->analyze();
+    }
 
     SVFUtil::outs() << "[INFO] Analysis done!\n";
 
@@ -545,8 +559,13 @@ int main(int argc, char **argv) {
 
   /// Sparse value-flow graph (SVFG)
   SVFGBuilder svfBuilder;
-  SVFG *svfg = svfBuilder.buildFullSVFG(point_to_analysys);
-  svfg->updateCallGraph(point_to_analysys);
+  SVFG *svfg = nullptr;
+  {
+    PROFILE_SCOPED("4. Full SVFG Build");
+    PROFILE_MEM("4. Full SVFG Build");
+    svfg = svfBuilder.buildFullSVFG(point_to_analysys);
+    svfg->updateCallGraph(point_to_analysys);
+  }
 
   // svfg->dump("from_extractor");
 
@@ -596,182 +615,228 @@ int main(int argc, char **argv) {
   // exit(1);
 
   FunctionConditionsSet fun_cond_set;
+  {
+    PROFILE_SCOPED("Total Condition Extraction (all 4 functions total)");
+    PROFILE_MEM("Total Condition Extraction (all 4 functions total)");
 
-  unsigned int tot_function = functions.size();
-  unsigned int num_function = 0;
+    unsigned int tot_function = functions.size();
+    unsigned int num_function = 0;
 
-  SVFUtil::outs() << "[INFO] running analysis...\n";
-  for (auto f : functions) {
+    SVFUtil::outs() << "[INFO] running analysis...\n";
+    for (auto f : functions) {
 
-    num_function++;
-    FunctionConditions fun_conds;
-    std::string prog =
-        std::to_string(num_function) + "/" + std::to_string(tot_function);
+      num_function++;
 
-    fun_conds.setFunctionName(f);
-    for (auto const &x : funmap_par) {
-      const SVFFunction *fun = x.first;
-      if (fun->getName() != f)
-        continue;
+      PROFILE_SCOPED("Process Function: " + f);
+      PROFILE_MEM("Process Function: " + f);
 
-      SVFUtil::outs() << "[INFO " << prog
-                      << "] processing params for: " << fun->getName() << "\n";
+      FunctionConditions fun_conds;
+      std::string prog =
+          std::to_string(num_function) + "/" + std::to_string(tot_function);
 
-      for (auto const &p : x.second) {
-        if (verbose >= Verbosity::v1)
-          SVFUtil::outs() << "[INFO] param: " << p->toString() << "\n";
+      fun_conds.setFunctionName(f);
+      {
+        PROFILE_SCOPED("Process Parameters: " + f);
+        PROFILE_MEM("Process Parameters: " + f);
+        for (auto const &x : funmap_par) {
+          const SVFFunction *fun = x.first;
+          if (fun->getName() != f)
+            continue;
 
-        auto val = p->getValue();
-        auto llvm_val = llvmModuleSet->getLLVMValue(val);
-        auto seek_type = llvm_val->getType();
-        ValueMetadata paramMetadata =
-            ValueMetadata::extractParameterMetadata(svfg, llvm_val, seek_type);
+          SVFUtil::outs() << "[INFO " << prog
+                          << "] processing params for: " << fun->getName()
+                          << "\n";
 
-        // auto param_key = "param_" + std::to_string(pn);
-        // functionResult[param_key] = paramMetadata.toJson();
+          for (auto const &p : x.second) {
+            if (verbose >= Verbosity::v1)
+              SVFUtil::outs() << "[INFO] param: " << p->toString() << "\n";
 
-        if (paramMetadata.isArray()) {
-          auto depends_on = ValueMetadata::extractLenDependencyParameter(
-              p, &paramMetadata, svfg, fun);
+            auto val = p->getValue();
+            auto llvm_val = llvmModuleSet->getLLVMValue(val);
+            auto seek_type = llvm_val->getType();
+            ValueMetadata paramMetadata;
+            {
+              PROFILE_SCOPED("Function 1: extract_parameter_metadata");
+              PROFILE_SCOPED("Function 1: extract_parameter_metadata: " + f);
+              PROFILE_MEM("Function 1: extract_parameter_metadata");
+              PROFILE_MEM("Function 1: extract_parameter_metadata: " + f);
+              paramMetadata = ValueMetadata::extractParameterMetadata(
+                  svfg, llvm_val, seek_type);
+            }
 
-          if (depends_on != "")
-            paramMetadata.setLenDependency(depends_on);
-        }
+            // auto param_key = "param_" + std::to_string(pn);
+            // functionResult[param_key] = paramMetadata.toJson();
 
-        // find "generic" dependencies between parameters
-        auto set_by_vect = ValueMetadata::extractDependencyAmongParameters(
-            p, &paramMetadata, svfg, fun);
+            std::string depends_on;
+            if (paramMetadata.isArray()) {
+              {
+                PROFILE_SCOPED("Function 2: extractLenDependencyParameter");
+                PROFILE_SCOPED("Function 2: extractLenDependencyParameter: " +
+                               f);
+                PROFILE_MEM("Function 2: extractLenDependencyParameter");
+                PROFILE_MEM("Function 2: extractLenDependencyParameter: " + f);
+                depends_on =                                      // HERE Func2
+                    ValueMetadata::extractLenDependencyParameter( // HERE Func2
+                        p, &paramMetadata, svfg, fun);            // Here Func
+              }
 
-        for (auto d : set_by_vect)
-          paramMetadata.addSetByDependency(d);
+              if (depends_on != "")
+                paramMetadata.setLenDependency(depends_on);
+            }
 
-        fun_conds.addParameterMetadata(paramMetadata);
+            std::vector<std::string> set_by_vect;
+            // find "generic" dependencies between parameters
+            {
+              PROFILE_SCOPED(
+                  "Function 3: my_extract_dependency_among_parameters");
+              PROFILE_SCOPED(
+                  "Function 3: my_extract_dependency_among_parameters: " + f);
+              PROFILE_MEM("Function 3: my_extract_dependency_among_parameters");
+              PROFILE_MEM(
+                  "Function 3: my_extract_dependency_among_parameters: " + f);
+              set_by_vect =
+                  ValueMetadata::extractDependencyAmongParameters( // HERE FUNC3
+                      p, &paramMetadata, svfg, fun);
+            }
+
+            for (auto d : set_by_vect)
+              paramMetadata.addSetByDependency(d);
+
+            fun_conds.addParameterMetadata(paramMetadata);
+          }
+        } // HERE process params + f
       }
-    }
 
-    for (auto const &x : funmap_ret) {
-      const SVFFunction *fun = x.first;
-      if (fun->getName() != f)
-        continue;
+      {
+        PROFILE_SCOPED("Function 4: extract_return_metadata");
+        PROFILE_SCOPED("Function 4: extract_return_metadata: " + f);
+        PROFILE_MEM("Function 4: extract_return_metadata");
+        PROFILE_MEM("Function 4: extract_return_metadata: " + f);
+        for (auto const &x : funmap_ret) {
+          const SVFFunction *fun = x.first;
+          if (fun->getName() != f)
+            continue;
 
-      SVFUtil::outs() << "[INFO " << prog
-                      << "] processing return for: " << fun->getName() << "\n";
+          SVFUtil::outs() << "[INFO " << prog
+                          << "] processing return for: " << fun->getName()
+                          << "\n";
 
-      auto p = x.second;
-      if (verbose >= Verbosity::v1)
-        SVFUtil::outs() << "[INFO] return: " << p->toString() << "\n";
-      auto llvm_value = llvmModuleSet->getLLVMValue(p->getValue());
-      ValueMetadata returnMetadata =
-          ValueMetadata::extractReturnMetadata(svfg, llvm_value);
-
-      // functionResult["return"] = returnAccessTypeSet.toJson();
-      // jsonResult.append(functionResult);
-      fun_conds.setReturnMetadata(returnMetadata);
-    }
-
-    if (useDominator) {
-      SVF::SVFModule::const_iterator it = svfModule->begin();
-      SVF::SVFModule::const_iterator eit = svfModule->end();
-      for (; it != eit; ++it) {
-        const SVFFunction *fun = *it;
-        if (fun->getName() != f)
-          continue;
-
-        std::string fun_name = fun->getName();
-
-        SVFUtil::outs() << "[INFO] computing dominators for: " << fun_name
-                        << "\n";
-
-        FunEntryICFGNode *fun_entry = icfg->getFunEntryICFGNode(fun);
-        FunExitICFGNode *fun_exit = icfg->getFunExitICFGNode(fun);
-
-        std::string dom_cache_file = getCacheDomFile(fun_name);
-        std::string postdom_cache_file = getCachePostDomFile(fun_name);
-
-        dom = new Dominator(point_to_analysys, fun_entry, doIndJump);
-        // SVFUtil::outs() << "[INFO] Running pruneUnreachableFunctions()\n";
-        // dom->pruneUnreachableFunctions();
-        // SVFUtil::outs() << "[INFO] Running buildPhiFun()\n";
-        // dom->buildPhiFun();
-        // SVFUtil::outs() << "[INFO] Running inferSubGraph()\n";
-        // dom->inferSubGraph();
-        if (cacheFolder != "" && doesFileExists(dom_cache_file)) {
-          SVFUtil::outs() << "[INFO] There is DOM cache, loading it\n";
-          dom->loadDom(dom_cache_file);
-        } else {
-          SVFUtil::outs()
-              << "[INFO] No DOM cache, computing from scratch and save\n";
-          auto begin = chrono::high_resolution_clock::now();
-          dom->createDom();
-          auto end = chrono::high_resolution_clock::now();
-          auto dur = end - begin;
-          auto min =
-              std::chrono::duration_cast<std::chrono::minutes>(dur).count();
-          SVFUtil::outs() << "[TIME] Dom: " << min << "min\n";
-          // dom->saveIBBGraph("ibbgraph_2");
-
-          if (cacheFolder != "")
-            dom->dumpDom(dom_cache_file);
+          auto p = x.second;
+          if (verbose >= Verbosity::v1)
+            SVFUtil::outs() << "[INFO] return: " << p->toString() << "\n";
+          auto llvm_value = llvmModuleSet->getLLVMValue(p->getValue());
+          ValueMetadata returnMetadata = // HERE FUNC4
+              ValueMetadata::extractReturnMetadata(svfg, llvm_value);
+          // functionResult["return"] = returnAccessTypeSet.toJson();
+          // jsonResult.append(functionResult);
+          fun_conds.setReturnMetadata(returnMetadata);
         }
+      }
 
-        pDom = new PostDominator(point_to_analysys, fun_entry, fun_exit,
-                                 doIndJump);
-        if (cacheFolder != "" && doesFileExists(postdom_cache_file)) {
-          SVFUtil::outs() << "[INFO] There is POSTDOM cache, loading it\n";
-          pDom->loadDom(postdom_cache_file);
-        } else {
-          SVFUtil::outs()
-              << "[INFO] No POSTDOM cache, computing from scratch and save\n";
-          auto begin = chrono::high_resolution_clock::now();
-          pDom->createDom();
-          auto end = chrono::high_resolution_clock::now();
-          auto dur = end - begin;
-          auto min =
-              std::chrono::duration_cast<std::chrono::minutes>(dur).count();
-          SVFUtil::outs() << "[TIME] Postdom: " << min << "min\n";
-          // pDom->saveIBBGraph("ibbgraph_3");
+      if (useDominator) {
+        SVF::SVFModule::const_iterator it = svfModule->begin();
+        SVF::SVFModule::const_iterator eit = svfModule->end();
+        for (; it != eit; ++it) {
+          const SVFFunction *fun = *it;
+          if (fun->getName() != f)
+            continue;
 
-          if (cacheFolder != "")
-            pDom->dumpDom(postdom_cache_file);
-        }
+          std::string fun_name = fun->getName();
 
-        if (printDominator) {
-          SVFUtil::outs() << "[INFO] dumping dominators...\n";
-          std::string str1, str2;
-          if (dom) {
-            dom->dumpTransRed("./" + dom_cache_file);
+          SVFUtil::outs() << "[INFO] computing dominators for: " << fun_name
+                          << "\n";
+
+          FunEntryICFGNode *fun_entry = icfg->getFunEntryICFGNode(fun);
+          FunExitICFGNode *fun_exit = icfg->getFunExitICFGNode(fun);
+
+          std::string dom_cache_file = getCacheDomFile(fun_name);
+          std::string postdom_cache_file = getCachePostDomFile(fun_name);
+
+          dom = new Dominator(point_to_analysys, fun_entry, doIndJump);
+          // SVFUtil::outs() << "[INFO] Running
+          // pruneUnreachableFunctions()\n"; dom->pruneUnreachableFunctions();
+          // SVFUtil::outs() << "[INFO] Running buildPhiFun()\n";
+          // dom->buildPhiFun();
+          // SVFUtil::outs() << "[INFO] Running inferSubGraph()\n";
+          // dom->inferSubGraph();
+          if (cacheFolder != "" && doesFileExists(dom_cache_file)) {
+            SVFUtil::outs() << "[INFO] There is DOM cache, loading it\n";
+            dom->loadDom(dom_cache_file);
+          } else {
+            SVFUtil::outs()
+                << "[INFO] No DOM cache, computing from scratch and save\n";
+            auto begin = chrono::high_resolution_clock::now();
+            dom->createDom();
+            auto end = chrono::high_resolution_clock::now();
+            auto dur = end - begin;
+            auto min =
+                std::chrono::duration_cast<std::chrono::minutes>(dur).count();
+            SVFUtil::outs() << "[TIME] Dom: " << min << "min\n";
+            // dom->saveIBBGraph("ibbgraph_2");
+
+            if (cacheFolder != "")
+              dom->dumpDom(dom_cache_file);
           }
 
-          if (pDom) {
-            pDom->dumpTransRed("./" + postdom_cache_file);
+          pDom = new PostDominator(point_to_analysys, fun_entry, fun_exit,
+                                   doIndJump);
+          if (cacheFolder != "" && doesFileExists(postdom_cache_file)) {
+            SVFUtil::outs() << "[INFO] There is POSTDOM cache, loading it\n";
+            pDom->loadDom(postdom_cache_file);
+          } else {
+            SVFUtil::outs() << "[INFO] No POSTDOM cache, computing from "
+                               "scratch and save\n";
+            auto begin = chrono::high_resolution_clock::now();
+            pDom->createDom();
+            auto end = chrono::high_resolution_clock::now();
+            auto dur = end - begin;
+            auto min =
+                std::chrono::duration_cast<std::chrono::minutes>(dur).count();
+            SVFUtil::outs() << "[TIME] Postdom: " << min << "min\n";
+            // pDom->saveIBBGraph("ibbgraph_3");
+
+            if (cacheFolder != "")
+              pDom->dumpDom(postdom_cache_file);
           }
-        }
 
-        // FOR TESTING DOM CORRECTNESS
-        testDom2(&fun_conds, dom->getIBBGraph());
-        // testDom(dom, ibb_graph);
+          if (printDominator) {
+            SVFUtil::outs() << "[INFO] dumping dominators...\n";
+            std::string str1, str2;
+            if (dom) {
+              dom->dumpTransRed("./" + dom_cache_file);
+            }
 
-        int num_param = fun_conds.getParameterNum();
+            if (pDom) {
+              pDom->dumpTransRed("./" + postdom_cache_file);
+            }
+          }
 
-        for (int p = 0; p < num_param; p++) {
-          ValueMetadata meta = fun_conds.getParameterMetadata(p);
+          // FOR TESTING DOM CORRECTNESS
+          testDom2(&fun_conds, dom->getIBBGraph());
+          // testDom(dom, ibb_graph);
+
+          int num_param = fun_conds.getParameterNum();
+
+          for (int p = 0; p < num_param; p++) {
+            ValueMetadata meta = fun_conds.getParameterMetadata(p);
+            pruneAccessTypes(dom, pDom, &meta);
+            fun_conds.replaceParameterMetadata(p, meta);
+          }
+
+          ValueMetadata meta = fun_conds.getReturnMetadata();
           pruneAccessTypes(dom, pDom, &meta);
-          fun_conds.replaceParameterMetadata(p, meta);
+          fun_conds.setReturnMetadata(meta);
+
+          delete dom;
+          dom = nullptr;
+          delete pDom;
+          pDom = nullptr;
         }
-
-        ValueMetadata meta = fun_conds.getReturnMetadata();
-        pruneAccessTypes(dom, pDom, &meta);
-        fun_conds.setReturnMetadata(meta);
-
-        delete dom;
-        dom = nullptr;
-        delete pDom;
-        pDom = nullptr;
       }
-    }
 
-    fun_cond_set.addFunctionConditions(fun_conds);
-  }
+      fun_cond_set.addFunctionConditions(fun_conds);
+    }
+  } // HERE total cond ext end after
 
   if (OutputType == OutType::txt) {
     FunctionConditionsSet::storeIntoTextFile(fun_cond_set, OutputFile,
@@ -784,6 +849,10 @@ int main(int argc, char **argv) {
   }
 
   SVFUtil::outs() << fun_cond_set.getSummary();
+
+  SVFUtil::outs() << "\n" << liberator::profiler_t::instance().dump() << "\n";
+  SVFUtil::outs() << "\n"
+                  << liberator::profiler_t::instance().dump_mem() << "\n";
 
   // extract data layout
   if (ExtractDataLayout != "") {

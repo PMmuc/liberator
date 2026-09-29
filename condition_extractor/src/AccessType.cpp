@@ -582,7 +582,6 @@ ValueMetadata ValueMetadata::extractReturnMetadata(const SVFG *vfg,
 std::vector<std::string> ValueMetadata::extractDependencyAmongParameters(
     const SVF::SVFVar *current_parm, ValueMetadata *mdata, SVF::SVFG *svfg,
     const SVFFunction *fun) {
-
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
 
   std::set<std::string> set_by;
