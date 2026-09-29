@@ -7,7 +7,7 @@ NUM_IT=${2:-7}
 
 for i in $(seq $NUM_IT); do
   # delete conditions.json otherwise run_analysis skips target
-  docker run --rm --user root -v "$PWD:/w" libpp-anaylsis-org \
+  docker run --rm --user root -v "$PWD:/w" libpp-analysis-org \
     rm -f /w/analysis/${TARGET}/work/apipass/conditions.json
   (cd docker && SKIP_BUILD=1 TARGET=${TARGET} ./run_analysis.sh) \
     >test_results/base/${TARGET}_$i.log 2>&1
