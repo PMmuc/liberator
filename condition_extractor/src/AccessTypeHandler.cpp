@@ -1,12 +1,20 @@
 #include "AccessTypeHandler.h"
+#include "DebugInfoParser.hpp"
+#include "Instrumentation.h"
 #include "SVFIR/SVFIR.h"
 #include <SVF-LLVM/LLVMModule.h>
+#include <SVF-LLVM/ObjTypeInference.h>
 #include <Util/Casting.h>
 #include <Util/GeneralType.h>
+#include <llvm/ADT/StringRef.h>
+#include <llvm/BinaryFormat/Dwarf.h>
 #include <llvm/IR/Argument.h>
+#include <llvm/IR/DataLayout.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Type.h>
+#include <llvm/Support/Casting.h>
 #include <llvm/Support/raw_ostream.h>
 
 #include "Config.h"
@@ -140,9 +148,181 @@ bool isAnArray(const CallBase *c) {
 
   return true;
 }
+
 } // namespace
 namespace liberator {
 
+string_view di_tag_name(unsigned tag) {
+  switch (tag) {
+  case llvm::dwarf::DW_TAG_structure_type:
+    return "DW_TAG_structure_type"sv;
+  case llvm::dwarf::DW_TAG_union_type:
+    return "DW_TAG_union_type"sv;
+  case dwarf::DW_TAG_pointer_type:
+    return "DW_TAG_pointer_type"sv;
+  case dwarf::DW_TAG_array_type:
+    return "DW_TAG_array_type"sv;
+  case dwarf::DW_TAG_member:
+    return "DW_TAG_member"sv;
+  case dwarf::DW_TAG_base_type:
+    return "DW_TAG_base_type"sv;
+  case dwarf::DW_TAG_subroutine_type:
+    return "DW_TAG_subroutine_type"sv;
+  case dwarf::DW_TAG_typedef:
+    return "DW_TAG_typedef"sv;
+  case dwarf::DW_TAG_class_type:
+    return "DW_TAG_class_type"sv;
+  default:
+    return "DW_TAG_unknown"sv;
+  }
+}
+
+/**
+ * @AccessType at -
+ */
+void return_object_type(const AccessType &at, const ICFGNode *icfg_node,
+                        const llvm::Type *legacy_t) {
+  auto module_set = LLVMModuleSet::getLLVMModuleSet();
+  auto *pag = SVF::SVFIR::getPAG();
+  llvm::Module *mod = module_set->getMainLLVMModule();
+  const llvm::DataLayout &dl = mod->getDataLayout();
+
+  auto type_str = [](const llvm::Type *ty) {
+    if (!ty)
+      return std::string("<null>");
+    if (const auto *st = llvm::dyn_cast<llvm::StructType>(ty))
+      // st->getName() asserts on anonymous structs.
+      if (!st->isLiteral() && st->hasName())
+        return st->getName().str();
+    std::string buf;
+    llvm::raw_string_ostream os(buf);
+    ty->print(os);
+    return os.str();
+  };
+
+  auto llvm_bytes = [&dl](const llvm::Type *ty) -> uint64_t {
+    if (!ty || !ty->isSized())
+      return 0;
+
+    return dl.getTypeAllocSize(const_cast<llvm::Type *>(ty)).getFixedValue();
+  };
+
+  const llvm::Type *dwarf_t = nullptr;
+  llvm::DIType *raw_di = at.get_di_type();
+  llvm::DIType *di = liberator::decay_di_type(raw_di);
+  if (!di) {
+    llvm::outs() << "[TYPE] no dwarf found. CAUSE: "
+                 << (raw_di ? "decayed" : "no DIType on AccessType") << ")\n";
+  } else {
+    llvm::StringRef di_name = di->getName();
+    llvm::outs() << "[TYPE] dwarf"
+                 << (di_name.empty() ? llvm::StringRef("<anonymous>") : di_name)
+                 << " tag=" << di_tag_name(di->getTag())
+                 << " size=" << (di->getSizeInBits() / 8) << "Bytes\n";
+    if (auto *comp = llvm::dyn_cast<llvm::DICompositeType>(di)) {
+      unsigned idx = 0;
+      for (llvm::DINode *e : comp->getElements()) {
+        auto *member = llvm::dyn_cast_or_null<llvm::DIDerivedType>(e);
+        if (!member || member->getTag() != llvm::dwarf::DW_TAG_member)
+          continue;
+        llvm::DIType *peeled = peel_di_qualifiers(member->getBaseType());
+        llvm::StringRef peeled_name =
+            peeled ? peeled->getName() : llvm::StringRef();
+        llvm::outs() << "[TYPE] [" << ++idx << "] " << member->getName()
+                     << " : "
+                     << (peeled_name.empty() ? llvm::StringRef("<anonymous>")
+                                             : peeled_name)
+                     << " (" << (member->getSizeInBits() / 8)
+                     << "Bytes at offset " << (member->getOffsetInBits() / 8)
+                     << ")\n";
+      }
+    }
+
+    dwarf_t = resolve_di_type_to_llvm(di, *mod);
+    llvm::outs() << "[TYPE] -> llvm: " << type_str(dwarf_t) << " ("
+                 << llvm_bytes(dwarf_t) << " Bytes\n";
+  }
+
+  // Fallback to SVF's type system
+  SVF::Andersen *ander = global_struct_pta(pag);
+  const llvm::Type *svf_t = nullptr;
+  uint64_t svf_best = 0;
+  unsigned nobj = 0;
+
+  for (const ICFGNode *n : *icfg_node->getBB()) {
+    const llvm::Value *v = module_set->getLLVMValue(n);
+    const auto *ret_inst = llvm::dyn_cast_or_null<llvm::ReturnInst>(v);
+    if (!ret_inst)
+      continue;
+    const llvm::Value *ret_val = ret_inst->getReturnValue();
+    if (!ret_val || !module_set->hasValueNode(ret_val))
+      continue;
+
+    SVF::NodeID ret_node_id = module_set->getValueNode(ret_val);
+    if (!pag->hasGNode(ret_node_id))
+      continue;
+
+    for (SVF::NodeID target_id : ander->getPts(ret_node_id)) {
+      if (!pag->hasGNode(target_id))
+        continue;
+      SVF::SVFVar *obj = pag->getGNode(target_id);
+      ++nobj;
+
+      if (!module_set->hasLLVMValue(obj)) {
+        llvm::outs() << "[TYPE] pts obj with id: " << target_id
+                     << " has no llvm value - probably a blackhole/dummy\n";
+        continue;
+      }
+
+      const llvm::Value *obj_value = module_set->getLLVMValue(obj);
+      const char *kind = "other ";
+      // NOTE: an object in SVF can only be a stack, global variable, function
+      // or result of malloc (heap).
+      if (llvm::isa<llvm::AllocaInst>(obj_value))
+        kind = "alloca";
+      else if (llvm::isa<llvm::GlobalVariable>(obj_value))
+        kind = "global";
+      else if (llvm::isa<Function>(obj_value)) {
+        kind = "function";
+      } else if (llvm::isa<llvm::CallBase>(obj_value))
+        kind = "heap-call";
+
+      const llvm::Type *obj_type =
+          module_set->getTypeInference()->inferObjType(obj_value);
+      llvm::outs() << "[TYPE] pts obj " << target_id << " " << kind
+                   << " svf-inferred: " << type_str(obj_type) << " ("
+                   << llvm_bytes(obj_type) << "Bytes\n";
+
+      if (llvm_bytes(obj_type) >= svf_best) {
+        svf_best = llvm_bytes(obj_type);
+        svf_t = obj_type;
+      }
+    }
+  }
+
+  // chose between dwarf and svf_t type
+  const llvm::Type *chosen = dwarf_t ? dwarf_t : svf_t;
+  string_view via = dwarf_t ? "dwarf" : (svf_t ? "svf" : "none");
+  llvm::outs() << "[TYPE] objects=" << nobj << " chosen=" << type_str(chosen)
+               << " via=" << via << "\n";
+
+  llvm::outs() << "[TYPE] legacy=" << type_str(legacy_t);
+  if (!legacy_t)
+    llvm::outs() << " (legacy FAILED)";
+  else if (chosen == legacy_t)
+    llvm::outs() << " (agree)";
+  else
+    llvm::outs() << " (DIFFER)";
+  llvm::outs() << "\n";
+
+  if (dwarf_t && svf_t && llvm_bytes(dwarf_t) != llvm_bytes(svf_t)) {
+    llvm::outs() << "[TYPE] size mismatch dwarf=" << llvm_bytes(dwarf_t)
+                 << "Bytes svf=" << llvm_bytes(svf_t)
+                 << "Bytes - likely a cast through a handle type\n";
+  }
+
+  llvm::outs().flush();
+}
 void addWrteToAllFields(ValueMetadata &mdata, AccessType atNode,
                         const ICFGNode *icfgNode) {
 
@@ -196,11 +376,12 @@ void addWrteToAllFields(ValueMetadata &mdata, AccessType atNode,
 
       // go through each object the points to set can point to.
       for (SVF::NodeID target_id : pts) {
-        // which node do we get here?
+        // can be address-taken or top-level variable
         if (!pag->hasGNode(target_id))
           continue;
 
         auto node = pag->getGNode(target_id);
+        // not every SVFVar has a corresponding llvm value.
         if (!moduleSet->hasLLVMValue(node))
           continue;
 
@@ -236,11 +417,15 @@ void addWrteToAllFields(ValueMetadata &mdata, AccessType atNode,
       }
     }
 
+    // strip GEP that have only zero indices to get to the definition of the
+    // base pointer.
     base = ret_val->stripPointerCasts();
     auto t = deduce_type(base);
     if (!t)
       deduce_type(ret_val);
   }
+
+  // return_object_type(atNode, icfgNode, t);
 
   if (!t) {
     SVFUtil::errs()
@@ -273,11 +458,59 @@ void addWrteToAllFields(ValueMetadata &mdata, AccessType atNode,
       AccessType atField = atNode;
       atField.set_kind(AccessType::kind_e::write);
       atField.addField(f);
+      // FIXME: add di type for that struct element
       atField.set_llvm_type(ft, nullptr);
       mdata.get_access_type_set().insert(atField, icfgNode);
     }
   }
 }
+
+bool handlerDispatcher(ValueMetadata &mdata, const std::string &fun,
+                       const ICFGNode *icfgNode, const CallICFGNode *cs,
+                       int param_num, AccessType atNode, H_SCOPE h_scope,
+                       liberator::Path *path) {
+  std::string suffix = "*";
+  for (auto f : accessTypeHandlers) {
+    std::string fk = f.first;
+    auto handler = f.second;
+
+    int fk_size = fk.length() - suffix.length();
+    if (fk.compare(fk_size, suffix.length(), suffix) == 0 &&
+        fun.size() >= fk_size) {
+      std::string fk_clean = fk.substr(0, fk_size);
+      std::string fun_clean = fun.substr(0, fk_size);
+      if (fk_clean == fun_clean)
+        handler(mdata, fun, icfgNode, cs, param_num, atNode, h_scope, path);
+    } else if (fun == f.first) {
+      handler(mdata, fun, icfgNode, cs, param_num, atNode, h_scope, path);
+    }
+  }
+  return true;
+}
+
+bool hasHandlerDispatcher(ValueMetadata *mdata, const std::string &fun,
+                          const ICFGNode *icfgNode, const CallICFGNode *cs,
+                          int param_num, H_SCOPE h_scope) {
+
+  std::string suffix = "*";
+  for (auto f : accessTypeHandlers) {
+    std::string fk = f.first;
+    auto handler = f.second;
+
+    int fk_size = fk.length() - suffix.length();
+    if (fk.compare(fk_size, suffix.length(), suffix) == 0 &&
+        fun.size() >= fk_size) {
+      std::string fk_clean = fk.substr(0, fk_size);
+      std::string fun_clean = fun.substr(0, fk_size);
+      if (fk_clean == fun_clean)
+        return true;
+    } else if (fun == f.first) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool malloc_handler(liberator::ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
@@ -365,7 +598,7 @@ bool memcpy_handler(ValueMetadata &mdata, std::string fun_name,
     //  outs() << cs->getCallSite()->toString() << "\n";
     //
     Value *v = c->getArgOperand(2);
-    mdata.addFunParam(v, path);
+    mdata.add_len_source(v, path);
     // }
   }
 
@@ -434,7 +667,7 @@ bool memset_handler(ValueMetadata &mdata, std::string fun_name,
     // Get parameter n from memset call which is the number of bytes
     // to set the memory to.
     Value *v = i->getArgOperand(2);
-    mdata.addFunParam(v, path);
+    mdata.add_len_source(v, path);
 
     if (auto par_const = dyn_cast<ConstantInt>(i->getArgOperand(1))) {
       uint64_t actual_const = par_const->getZExtValue();

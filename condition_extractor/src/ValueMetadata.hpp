@@ -16,16 +16,20 @@ namespace liberator {
 class ValueMetadata {
   friend Json::Value to_json(const ValueMetadata &, bool);
   AccessTypeSet ats;
+  // this is set by handler memset, and by GEP handler
   bool is_array;
   bool is_malloc_size;
   bool is_file_path;
   std::string len_depends_on;
   std::vector<std::string> set_by;
 
+  // Value that got tracked
   const llvm::Value *val;
-  std::vector<llvm::Value *> indexes;
-  // this is set by handler memset,
-  std::vector<std::pair<llvm::Value *, Path>> fun_params;
+  // for an array this stores the values to the indices from the GEP handling.
+  std::set<llvm::Value *> indexes;
+  // this is set by handler memset, and by GEP handler if it is an array access.
+  // stores the GEP instruction and the path that lead to it.
+  std::vector<std::pair<llvm::Value *, Path>> length_sources;
   friend std::string to_string(const ValueMetadata &, bool);
   friend std::string print_summary(const ValueMetadata &, bool);
 
@@ -51,13 +55,13 @@ public:
   bool operator!=(const ValueMetadata &o) const { return !(*this == o); }
 
   void addIndex(const llvm::Value *idx) {
-    indexes.push_back(const_cast<llvm::Value *>(idx));
+    indexes.insert(const_cast<llvm::Value *>(idx));
   }
-  std::vector<llvm::Value *> getIndexes() { return indexes; }
+  const std::set<llvm::Value *> &getIndexes() const { return indexes; }
 
-  std::vector<std::pair<llvm::Value *, Path>> getFunParams();
+  const std::vector<std::pair<llvm::Value *, Path>> &get_len_source() const;
 
-  void addFunParam(const llvm::Value *fp, Path *pp);
+  void add_len_source(const llvm::Value *fp, const Path *pp);
 
   int getAccessNum() { return ats.size(); }
 
@@ -133,9 +137,9 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval);
  */
 ValueMetadata extractParameterMetadata(const SVFG &, const llvm::Value *,
                                        const llvm::Type *, unsigned);
-ValueMetadata my_extract_parameter_metadata(const SVFG &vfg,
-                                            const llvm::Value *val,
-                                            unsigned param_id);
+std::vector<std::string>
+my_extract_dependency_among_parameters(const SVF::SVFVar *, ValueMetadata &,
+                                       SVF::SVFG &, const FunObjVar *);
 std::vector<std::string> extractDependencyAmongParameters(const SVF::SVFVar *,
                                                           ValueMetadata &,
                                                           SVF::SVFG &,

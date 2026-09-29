@@ -9,8 +9,7 @@ target_link_libraries(condition_extractor_core PUBLIC SVF::SvfLLVM ${Z3_LIBRARIE
 if (lto_ok)
   set_property(TARGET condition_extractor_core PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
-
-# PROFILE_SCOPE timers also need NDEBUG, i.e. a release-type build
+# PROFILE_SCOPE timers need NDEBUG (release-type build)
 if(ENABLE_PROFILING OR ENABLE_GPROF)
     target_compile_definitions(condition_extractor_core
       PRIVATE PROFILING)

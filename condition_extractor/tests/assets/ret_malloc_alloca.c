@@ -1,4 +1,4 @@
-#include <stdlib.h>
+extern void *malloc(unsigned int size);
 
 struct Buffer {
   int len;
@@ -25,9 +25,9 @@ struct Buffer {
  * alloca and therefore needs the SVFG's memory-SSA edges.
  */
 struct Buffer *make_buffer(int len) {
-  struct Buffer *b = malloc(sizeof(struct Buffer));
+  struct Buffer *b = (struct Buffer *)malloc(sizeof(struct Buffer));
   b->len = len;
-  b->data = NULL;
+  b->data = 0;
   return b;
 }
 
@@ -38,5 +38,5 @@ struct Buffer *make_buffer(int len) {
  * is about the store/load hop specifically.
  */
 struct Buffer *make_buffer_direct(void) {
-  return malloc(sizeof(struct Buffer));
+  return (struct Buffer *)malloc(sizeof(struct Buffer));
 }

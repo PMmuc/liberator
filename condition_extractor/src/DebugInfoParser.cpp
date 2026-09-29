@@ -1,6 +1,5 @@
 #include "DebugInfoParser.hpp"
 #include "Config.h"
-#include "FileLogger.h"
 
 #include "SVF-LLVM/LLVMModule.h"
 #include "SVF-LLVM/ObjTypeInference.h"
@@ -16,6 +15,7 @@
 #include <llvm/IR/TypedPointerType.h>
 #include <llvm/Support/Casting.h>
 #include <unordered_map>
+#include <utility>
 
 using namespace llvm;
 
@@ -234,10 +234,6 @@ llvm::DIType *restore_local_di_type(const llvm::AllocaInst *alloca) {
   return nullptr;
 }
 
-/**
- * @param f the function
- * @return the di type of the return of a function
- */
 llvm::DIType *restore_ret_di_type(const llvm::Function *f) {
   if (!f)
     return nullptr;
@@ -255,26 +251,117 @@ llvm::DIType *restore_ret_di_type(const llvm::Function *f) {
   return sig_di[0];
 }
 
-llvm::DIType *peel_di_qualifiers(llvm::DIType *t) {
-  using namespace llvm::dwarf;
-  if (!t) {
+// -
+std::string unique_composite_name(const llvm::DICompositeType *comp,
+                                  const llvm::StringRef typedef_name) {
+  std::string name = composite_name(comp);
+  if (!comp->getName().empty())
+    return name;
+  if (!typedef_name.empty())
+    return name + "." + typedef_name.str();
+  std::string file = comp->getFile() ? comp->getFilename().str() : "unknown";
+  return name + "@" + file + ":" + std::to_string(comp->getLine());
+}
+
+/**
+ * Removes qualifiers and returns the name of the typedef if it exists.
+ * @param type to remove the qualifiers.
+ * @param typedef_name the name of the typedef.
+ */
+const llvm::DIType *peel_di_type(const DIType *type, StringRef &typedef_name) {
+  if (!type) {
     TYPE_LOG("peel_di_qualifiers: null input\n");
     return nullptr;
   }
-  /*std::string s;
-  raw_string_ostream os(s);
-  t->printTree(os);
-  TYPE_LOG("{}", s);*/
-  while (auto *d = llvm::dyn_cast_or_null<llvm::DIDerivedType>(t)) {
-    auto tag = d->getTag();
-    if (tag != DW_TAG_typedef && tag != DW_TAG_const_type &&
-        tag != DW_TAG_volatile_type && tag != DW_TAG_restrict_type &&
-        tag != DW_TAG_atomic_type)
+
+  while (auto deriv = dyn_cast_or_null<DIDerivedType>(type)) {
+    auto tag = deriv->getTag();
+    if (tag == llvm::dwarf::DW_TAG_typedef)
+      typedef_name = deriv->getName();
+    if (tag != llvm::dwarf::DW_TAG_const_type &&
+        tag != llvm::dwarf::DW_TAG_volatile_type &&
+        tag != llvm::dwarf::DW_TAG_atomic_type &&
+        dwarf::DW_TAG_restrict_type != tag)
       break;
-    t = d->getBaseType();
+    type = deriv->getBaseType();
   }
-  return t;
+
+  return type;
 }
+
+/**
+ * - Removes qualifiers such as typedef, const, volatile, atomic, restrict from
+ *   the type definition.
+ */
+llvm::DIType *peel_di_qualifiers(DIType *type) {
+  if (!type) {
+    TYPE_LOG("peel_di_qualifiers: null input\n");
+    return nullptr;
+  }
+
+  while (auto deriv = dyn_cast_or_null<DIDerivedType>(type)) {
+    auto tag = deriv->getTag();
+    if (tag != llvm::dwarf::DW_TAG_const_type &&
+        tag != llvm::dwarf::DW_TAG_volatile_type &&
+        tag != llvm::dwarf::DW_TAG_atomic_type &&
+        tag != llvm::dwarf::DW_TAG_typedef &&
+        dwarf::DW_TAG_restrict_type != tag)
+      break;
+    type = deriv->getBaseType();
+  }
+  return type;
+}
+
+/**
+ * @return returns for example "%struct.vpx_image". Anonymouse composites get
+ * the "anon" name.
+ */
+std::string composite_name(const llvm::DICompositeType *comp) {
+  std::string prefix;
+  switch (comp->getTag()) {
+  case llvm::dwarf::DW_TAG_structure_type:
+    prefix = "%struct.";
+    break;
+  case llvm::dwarf::DW_TAG_class_type:
+    prefix = "%class.";
+    break;
+  case llvm::dwarf::DW_TAG_union_type:
+    prefix = "%union.";
+    break;
+  default:
+    prefix = "unknown";
+  }
+
+  auto name = comp->getName();
+  return prefix + (name.empty() ? "anonymous" : name.str());
+}
+
+std::pair<llvm::StringRef, unsigned> di_aggregate_name(llvm::DIType *t) {
+  unsigned depth = 0;
+  llvm::DIType *type = peel_di_qualifiers(t);
+  while (auto *tmp = llvm::dyn_cast_or_null<llvm::DIDerivedType>(type)) {
+    if (!is_indirection_tag(tmp->getTag()))
+      break;
+    ++depth;
+    type = peel_di_qualifiers(tmp->getBaseType());
+  }
+  if (const auto *comp = llvm::dyn_cast_or_null<llvm::DICompositeType>(type))
+    return {comp->getName(), depth};
+  return {{}, depth};
+}
+
+bool is_indirection_tag(llvm::dwarf::Tag tag) {
+  switch (tag) {
+  case dwarf::DW_TAG_pointer_type:
+  case dwarf::DW_TAG_reference_type:
+  case dwarf::DW_TAG_rvalue_reference_type:
+  case dwarf::DW_TAG_ptr_to_member_type:
+    return true;
+  }
+  return false;
+}
+
+std::string unique_string(const llvm::DIType *t, unsigned depth);
 
 // resolve function pointers
 llvm::Type *resolve_di_type_to_llvm(llvm::DIType *di, llvm::Module &mod) {

@@ -3,7 +3,7 @@
 #include "Config.h"
 
 #include "FunctionConditions.hpp"
-#include "Profiler.hpp"
+#include "MyProfiler.hpp"
 
 #include <Util/SVFUtil.h>
 #include <llvm/Support/CommandLine.h>
@@ -258,10 +258,12 @@ int main(int argc, char **argv) {
     llvm::timeTraceProfilerCleanup();
   }
 
-  SVFUtil::outs() << "\n" << liberator::Profiler::instance().dump() << "\n";
+  SVFUtil::outs() << "\n" << liberator::profiler_t::instance().dump() << "\n";
+  SVFUtil::outs() << "\n"
+                  << liberator::profiler_t::instance().dump_mem() << "\n";
 
   if (!ProfileCsv.empty()) {
-    auto &profiler = liberator::Profiler::instance();
+    auto &profiler = liberator::profiler_t::instance();
     if (profiler.empty()) {
       SVFUtil::errs() << "[WARN] -profile_csv given, but no profiling data "
                          "was recorded. Rebuild with -DENABLE_PROFILING=ON.\n";
@@ -271,8 +273,6 @@ int main(int argc, char **argv) {
                       << "\n";
     }
   }
-
-  liberator::dump_metrics(llvm::outs());
 
   return 0;
 }

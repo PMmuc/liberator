@@ -25,6 +25,23 @@ private:
   llvm::SmallVector<byte_range_t, 4> padding_byte_ranges_;
 };
 
+/**
+ * @param comp - the DICompositeType
+ * @return a unique string identifing the type of the class/struct/union.
+ * If the composite is defined through a typedef the typedef is appended to the
+ * name.
+ * If the composite and typedef are empty, return the "tag" +
+ * "@file:line_number" where the type was defined.
+ */
+std::string unique_composite_name(const llvm::DICompositeType *comp,
+                                  const llvm::StringRef typedef_name);
+
+/**
+ * @param f the LLVM function
+ * @return the DIType of the return value of a function f.
+ */
+llvm::DIType *restore_ret_di_type(const llvm::Function *f);
+
 class debug_info_parser_t {
 public:
   static std::unordered_map<llvm::StructType *, struct_padding_info_t>
@@ -41,8 +58,13 @@ private:
 
 llvm::Type *infer_type_from_arg_attrs(const llvm::Argument *arg);
 llvm::DIType *peel_di_qualifiers(llvm::DIType *t);
+const llvm::DIType *peel_di_type(const llvm::DIType *type,
+                                 llvm::StringRef &typedef_name);
 llvm::Type *resolve_di_type_to_llvm(llvm::DIType *di, llvm::Module &mod);
 llvm::Type *infer_type_from_forward_uses(const llvm::Value *param);
+std::string composite_name(const llvm::DICompositeType *comp);
+bool is_indirection_tag(llvm::dwarf::Tag tag);
+std::pair<llvm::StringRef, unsigned> di_aggregate_name(llvm::DIType *t);
 
 /**
  * Returns the llvm::Type of the parameter.

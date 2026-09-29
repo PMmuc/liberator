@@ -20,8 +20,8 @@ LIBPP="$(cd "$(dirname "$0")/.." && pwd)"
 if [ -z "${SKIP_BUILD:-}" ]; then
   source "$(dirname "$0")/llvm_source.sh"
   set -x
+  # maybe add --no-cache \
   DOCKER_BUILDKIT=1 docker build \
-    --no-cache \
     --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
     --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
     -t "$IMG_NAME" --target libfuzzpp_analysis_new \
@@ -55,12 +55,8 @@ if [[ "${DEVENV:-}" ]]; then
   docker run --env TARGET=${TARGET} -v "$LIBPP:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
-  # Remove any leftover container with the same name (e.g. a crashed/killed run
-  # where --rm never fired) so the name can be reused.
+  # Remove any leftover container with the same name
   docker rm -f "${IMG_NAME}-${TARGET}" >/dev/null 2>&1 || true
-  # Run in the FOREGROUND (no -d): this streams the analysis output to stdout so
-  # the orchestrator can capture it in logs/<target>.log, and blocks until the
-  # analysis finishes so per-CPU throttling and the artifact check work.
   docker run --rm --name "${IMG_NAME}-${TARGET}" "${cpu_arg[@]}" \
     --env TARGET=${TARGET} -v "$LIBPP:/workspaces/libfuzz" "$IMG_NAME"
 fi

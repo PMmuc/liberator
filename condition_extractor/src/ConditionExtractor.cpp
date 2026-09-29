@@ -1,4 +1,5 @@
 #include "ConditionExtractor.hpp"
+#include "AccessTracker.h"
 #include "AccessType.h"
 #include "Config.h"
 #include "DebugInfoParser.hpp"
@@ -8,7 +9,9 @@
 #include "GenericDominatorTy.h"
 #include "GlobalStruct.h"
 #include "IBBG.h"
+#include "Instrumentation.h"
 #include "LibfuzzUtil.h"
+#include "MyProfiler.hpp"
 #include "PhiFunction.h"
 #include "PostDominators.h"
 #include "Profiler.hpp"
@@ -38,6 +41,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <memory>
 #include <ranges>
+#include <unistd.h>
 #include <utility>
 
 using namespace SVF;
@@ -317,7 +321,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
     function = config->function;
   }
 
-  SVF::Options::ModelArrays.setValue(true);
+  // FIXME: Maybe don't use this
+  // SVF::Options::ModelArrays.setValue(true);
 
   if (Options::WriteAnder() == "ir_annotator") {
     LLVMModuleSet::getLLVMModuleSet()->preProcessBCs(module_name_vec);
@@ -334,7 +339,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   }
 
   {
-    PROFILE_SCOPE("1. LLVM Module Build");
+    PROFILE_SCOPED("1. LLVM Module Build");
+    PROFILE_MEM("1. LLVM Module Build");
     llvmModuleSet->buildSVFModule(module_name_vec);
   }
   auto *svfModule = &llvmModuleSet->getLLVMModules().front().get();
@@ -389,7 +395,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   SVFIRBuilder ir_builder;
   PAG *pag = nullptr;
   {
-    PROFILE_SCOPE("2. PAG Builder");
+    PROFILE_SCOPED("2. PAG Builder");
+    PROFILE_MEM("2. PAG Builder");
     pag = ir_builder.build();
   }
   ICFG *icfg = pag->getICFG();
@@ -401,7 +408,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   // point_to_analysys = new TypeAnalysis(pag);
   auto point_to_analyses = GlobalStruct::createSGWPA(pag);
   {
-    PROFILE_SCOPE("3. Points-to Analysis");
+    PROFILE_SCOPED("3. Points-to Analysis");
+    PROFILE_MEM("3. Points-to Analysis");
     point_to_analyses->analyze();
   }
   SVFUtil::outs() << "[INFO] Points-to analysis done!\n";
@@ -437,7 +445,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   auto svfBuilder = make_unique<SVFGBuilder>();
   SVFG *svfg = nullptr;
   {
-    PROFILE_SCOPE("4. Full SVFG Build");
+    PROFILE_SCOPED("4. Full SVFG Build");
+    PROFILE_MEM("4. Full SVFG Build");
     svfg = svfBuilder->buildFullSVFG(point_to_analyses);
     svfg->updateCallGraph(point_to_analyses);
   }
@@ -496,74 +505,9 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
                                 std::move(svfBuilder), pag, point_to_analyses));
 }
 
-void type_induction_by_pts(PAG *pag, SVFVar *param) {
-  SVF::Andersen *ander = SVF::AndersenWaveDiff::createAndersenWaveDiff(pag);
-  const SVF::PointsTo pts = ander->getPts(param->getId());
-  TYPE_LOG("Parameter {} with id {} points-to {} objects.\n", param->getName(),
-           param->getId(), pts.count());
-
-  for (auto target : pts) {
-    auto base = pag->getBaseObject(target);
-    if (!base)
-      continue;
-    TYPE_LOG("Parameter with id: {} - points to {} with type {}\n",
-             param->getId(), base->getName(), base->getType()->toString());
-  }
-}
-
-void type_induction_by_use_def(llvm::Value *param) {
-  if (const auto *arg = SVFUtil::dyn_cast<llvm::Argument>(param)) {
-    for (const llvm::User *user : arg->users()) {
-      if (const auto *gep = llvm::dyn_cast<llvm::GetElementPtrInst>(user)) {
-        llvm::Type *src_type = gep->getSourceElementType();
-        // isStructTy() is true for literal (anonymous) structs too, and
-        // getStructName() asserts on those - so exclude them.
-        if (src_type->isStructTy() &&
-            !llvm::cast<llvm::StructType>(src_type)->isLiteral()) {
-          TYPE_LOG("Parameter {} is actually struct: {}\n",
-                   param->getName().str(), src_type->getStructName().str());
-        }
-      }
-    }
-  }
-}
-
-std::string get_full_type(llvm::DIType *Ty) {
-  if (!Ty)
-    return "void";
-
-  if (!Ty->getName().empty()) {
-    return Ty->getName().str();
-  }
-
-  if (auto *derivedTy = llvm::dyn_cast<llvm::DIDerivedType>(Ty)) {
-    if (derivedTy->getTag() == llvm::dwarf::DW_TAG_pointer_type) {
-      return get_full_type(derivedTy->getBaseType()) + "*";
-    }
-    if (derivedTy->getTag() == llvm::dwarf::DW_TAG_const_type) {
-      return "const " + get_full_type(derivedTy->getBaseType());
-    }
-
-    return get_full_type(derivedTy->getBaseType());
-  }
-
-  return "unknown";
-}
-
-void get_function_metadata(const llvm::Function &F) {
-  if (llvm::DISubprogram *SP = F.getSubprogram()) {
-    llvm::DISubroutineType *STy = SP->getType();
-    llvm::DITypeRefArray typeArray = STy->getTypeArray();
-    for (unsigned i = 0; i < typeArray.size(); ++i) {
-      if (auto *Ty = typeArray[i]) {
-        TYPE_LOG("Type Name: {}\n", get_full_type(Ty));
-      }
-    }
-  }
-}
-
 function_condition_set_t condition_extractor_t::extract_function_conditions() {
-  PROFILE_SCOPE("Total Extraction");
+  PROFILE_SCOPED("Total Condition Extraction (all 4 functions total)");
+  PROFILE_MEM("Total Condition Extraction (all 4 functions total)");
   auto llvm_module_set = LLVMModuleSet::getLLVMModuleSet();
   auto *svfModule = &llvm_module_set->getLLVMModules().front().get();
   function_condition_set_t result;
@@ -591,7 +535,8 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
       continue;
     }
 
-    PROFILE_SCOPE("Process Function: " + f);
+    PROFILE_SCOPED("Process Function: " + f);
+    PROFILE_MEM("Process Function: " + f);
     FunctionConditions fun_conds;
 
     const string prog =
@@ -600,10 +545,10 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
                     << "\n";
 
     fun_conds.setFunctionName(f);
-    get_function_metadata(*llvm_module_set->getFunction(f));
 
     {
-      PROFILE_SCOPE("Process Parameters: " + f);
+      PROFILE_SCOPED("Process Parameters: " + f);
+      PROFILE_MEM("Process Parameters: " + f);
       // Look up the specific function object instead of iterating all
 
       std::vector<std::string> set_by_vect;
@@ -614,29 +559,36 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
         const Function *llvm_fun = llvm_module_set->getFunction(f);
 
         {
-          PROFILE_SCOPE("Function 1: extractParameterMetadata");
-          PROFILE_SCOPE("Function 1: extractParameterMetadata: " + f);
-          param_metadata = my_extract_parameter_metadata(
+          PROFILE_SCOPED("Function 1: extract_parameter_metadata");
+          PROFILE_SCOPED("Function 1: extract_parameter_metadata: " + f);
+          PROFILE_MEM("Function 1: extract_parameter_metadata");
+          PROFILE_MEM("Function 1: extract_parameter_metadata: " + f);
+          param_metadata = access_tracker_t::extract_parameter_metadata(
               *svfg, formal_param_llvm, param->getId());
         }
 
         if (param_metadata.isArray()) {
           std::string depends_on;
           {
-            PROFILE_SCOPE("Function 2: extractLenDependencyParameter");
-            PROFILE_SCOPE("Function 2: extractLenDependencyParameter: " + f);
+            PROFILE_SCOPED("Function 2: extractLenDependencyParameter");
+            PROFILE_SCOPED("Function 2: extractLenDependencyParameter: " + f);
+            PROFILE_MEM("Function 2: extractLenDependencyParameter");
+            PROFILE_MEM("Function 2: extractLenDependencyParameter: " + f);
             depends_on = extractLenDependencyParameter(param, param_metadata,
                                                        *svfg, svf_fun);
           }
-          if (depends_on.empty())
+          if (!depends_on.empty())
             param_metadata.setLenDependency(depends_on);
         }
 
         {
-          PROFILE_SCOPE("Function 3: extractDependencyAmongParam");
-          PROFILE_SCOPE("Function 3: extractDependencyAmongParam: " + f);
-          set_by_vect = extractDependencyAmongParameters(param, param_metadata,
-                                                         *svfg, svf_fun);
+          PROFILE_SCOPED("Function 3: my_extract_dependency_among_parameters");
+          PROFILE_SCOPED("Function 3: my_extract_dependency_among_parameters" +
+                         f);
+          PROFILE_MEM("Function 3: my_extract_dependency_among_parameters");
+          PROFILE_MEM("Function 3: my_extract_dependency_among_parameters" + f);
+          set_by_vect = my_extract_dependency_among_parameters(
+              param, param_metadata, *svfg, svf_fun);
         }
         for (auto &d : set_by_vect) {
           param_metadata.addSetByDependency(d);
@@ -647,7 +599,10 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
     }
 
     {
-      PROFILE_SCOPE("Process Return " + f);
+      PROFILE_SCOPED("Function 4: extract_return_metadata");
+      PROFILE_SCOPED("Function 4: extract_return_metadata: " + f);
+      PROFILE_MEM("Function 4: extract_return_metadata");
+      PROFILE_MEM("Function 4: extract_return_metadata: " + f);
       for (auto r : ret_param_map) {
         const FunObjVar *fun = r.first;
         if (fun->getName() != f) {
@@ -656,14 +611,18 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
 
         const SVFVar *p = r.second;
         const Value *llvm_value = llvm_module_set->getLLVMValue(p);
-        auto return_metadata = extractReturnMetadata(*svfg, llvm_value);
+        // auto return_metadata =
+        //   my_extract_return_metadata(*svfg, llvm_value, fun);
+        auto return_metadata =
+            access_tracker_t::extract_return_metadata(*svfg, llvm_value, fun);
 
         fun_conds.setReturnMetadata(return_metadata);
       }
     }
 
     if (config_t::instance()->use_dominator) {
-      PROFILE_SCOPE("Process Dominators");
+      PROFILE_SCOPED("Dominator");
+      PROFILE_MEM("Dominator");
       SVF::Module::const_iterator it = svfModule->begin();
       SVF::Module::const_iterator eit = svfModule->end();
       for (; it != eit; ++it) {
@@ -699,7 +658,8 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
           SVFUtil::outs() << "[INFO] There is DOM cache, loading it\n";
           dom->loadDom(dom_cache_file);
         } else {
-          PROFILE_SCOPE("Create Dominator");
+          PROFILE_SCOPED("Create Dominator");
+          PROFILE_MEM("Create Dominator");
           SVFUtil::outs()
               << "[INFO] No DOM cache, computing from scratch and save\n";
           auto begin = chrono::high_resolution_clock::now();
@@ -724,7 +684,8 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
           SVFUtil::outs() << "[INFO] There is POSTDOM cache, loading it\n";
           pDom->loadDom(postdom_cache_file);
         } else {
-          PROFILE_SCOPE("Create PostDominator");
+          PROFILE_SCOPED("Create PostDominator");
+          PROFILE_MEM("Create PostDominator");
           SVFUtil::outs()
               << "[INFO] No POSTDOM cache, computing from scratch and save\n";
           auto begin = chrono::high_resolution_clock::now();
@@ -767,6 +728,9 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
     }
     result.insert({fun_conds.getFunctionName(), fun_conds});
   }
+
+  cinstr.dump(llvm::outs());
+
   return result;
 }
 

@@ -1,6 +1,5 @@
 #include "FileLogger.h"
 #include <Util/SVFUtil.h>
-#include <cmath>
 #include <cstring>
 #include <expected>
 #include <fstream>
@@ -32,7 +31,7 @@ logger_manager_t::logger(const std::string &filename) {
 
   auto logger = make_unique<log_ctx_t>();
   logger->fstream_ =
-      fstream(output_path_ + filename, std::ios::out | std::ios::app);
+      fstream(output_path_ + "/" + filename, std::ios::out | std::ios::app);
 
   if (!logger->fstream_.is_open()) {
     return std::unexpected(log_error::file_open_failed);

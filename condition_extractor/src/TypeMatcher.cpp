@@ -1,9 +1,16 @@
 
 #include "TypeMatcher.h"
+#include "DebugInfoParser.hpp"
+#include "md5/md5.h"
+#include <llvm/ADT/StringRef.h>
+#include <llvm/BinaryFormat/Dwarf.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/TypedPointerType.h>
+#include <llvm/Support/Casting.h>
 
 TypeMatcher::TypeStringMap TypeMatcher::type_hash_map;
 TypeMatcher::TypeStringMap TypeMatcher::type_id_map;
+TypeMatcher::DITypeStringMap TypeMatcher::di_type_hash_map;
 
 std::string TypeMatcher::compute_id(const llvm::StructType *t) {
 
@@ -20,6 +27,173 @@ std::string TypeMatcher::compute_id(const llvm::StructType *t) {
   type_id_map[t] = name;
 
   return name;
+}
+
+/**
+ * -
+ */
+std::string di_struct_id(const llvm::DICompositeType *comp,
+                         StringRef typedef_name) {
+  return liberator::unique_composite_name(comp, typedef_name);
+}
+
+/**
+ * -
+ */
+bool has_data_members(const llvm::DICompositeType *comp) {
+  for (auto *e : comp->getElements()) {
+    auto m = dyn_cast_or_null<llvm::DIDerivedType>(e);
+    if (m && !m->isStaticMember() && m->getTag() == llvm::dwarf::DW_TAG_member)
+      return true;
+  }
+
+  return false;
+}
+
+std::string di_subroutine_string(const llvm::DISubroutineType *sr,
+                                 unsigned depth);
+std::string di_array_string(const llvm::DICompositeType *comp, unsigned depth);
+
+/**
+ * -
+ */
+string unique_string(const llvm::DIType *type, unsigned depth) {
+  llvm::StringRef typedef_name;
+  type = liberator::peel_di_type(type, typedef_name);
+
+  if (!type)
+    return "VO";
+
+  if (auto *b = llvm::dyn_cast<llvm::DIBasicType>(type)) {
+    const uint64_t bits = b->getSizeInBits();
+    if (bits == 0)
+      return "VO";
+    switch (b->getEncoding()) {
+    case dwarf::DW_ATE_float:
+      if (b->getName() == "long double")
+        return "F8";
+      switch (bits) {
+      case 16:
+        return "HA";
+      case 32:
+        return "FL";
+      case 64:
+        return "DO";
+      case 80:
+        return "F8";
+      case 128:
+        return "FP";
+      default:
+        return "UN";
+      }
+    case dwarf::DW_ATE_complex_float:
+      return "ST[none]";
+    default:
+      return "IN";
+    }
+  }
+
+  if (auto sr = dyn_cast<DISubroutineType>(type))
+    return di_subroutine_string(sr, depth);
+
+  if (auto *d = llvm::dyn_cast<DIDerivedType>(type)) {
+    switch (d->getTag()) {
+    case dwarf::DW_TAG_pointer_type:
+    case dwarf::DW_TAG_reference_type:
+    case dwarf::DW_TAG_rvalue_reference_type: {
+      string pointee = unique_string(d->getBaseType(), depth + 1);
+      if (pointee == "VO")
+        pointee = "IN";
+      return "TP[" + pointee + "]";
+    }
+    case dwarf::DW_TAG_member:
+      return unique_string(d->getBaseType(), depth + 1);
+    default:
+      break;
+    }
+  }
+
+  if (auto comp = dyn_cast<DICompositeType>(type)) {
+    switch (comp->getTag()) {
+    case dwarf::DW_TAG_array_type:
+      return di_array_string(comp, depth);
+    case dwarf::DW_TAG_enumeration_type:
+      return "IN";
+    case dwarf::DW_TAG_structure_type:
+    case dwarf::DW_TAG_class_type:
+    case dwarf::DW_TAG_union_type:
+      if (!comp->isForwardDecl() && !has_data_members(comp))
+        return "FN";
+      return "ST[" + di_struct_id(comp, typedef_name) + "]";
+    default:
+      break;
+    }
+  }
+  return "UN";
+}
+
+std::string di_subroutine_string(const llvm::DISubroutineType *sr,
+                                 unsigned depth) {
+  auto types = sr->getTypeArray();
+
+  std::string ret =
+      types.size() == 0 ? "VO" : unique_string(types[0], depth + 1);
+
+  std::vector<string> params;
+  for (unsigned i = 1; i < types.size(); ++i) {
+    if (types[i])
+      params.push_back(unique_string(types[i], depth + 1));
+  }
+
+  std::string hash = "FN[" + to_string(params.size() + 1) + "," + ret;
+  for (const string &p : params)
+    hash += "," + p;
+  return hash + "]";
+}
+
+/**
+ * -
+ */
+std::string di_array_string(const llvm::DICompositeType *comp, unsigned depth) {
+  string hash = unique_string(comp->getBaseType(), depth + 1);
+
+  vector<uint64_t> counts;
+  for (auto e : comp->getElements()) {
+    auto *sub = llvm::dyn_cast_or_null<llvm::DISubrange>(e);
+    if (!sub)
+      continue;
+    auto ci = llvm::dyn_cast_if_present<ConstantInt *>(sub->getCount());
+    counts.push_back(ci ? ci->getZExtValue() : 0);
+  }
+  if (counts.empty())
+    counts.push_back(0);
+
+  const std::string tag = comp->isVector() ? "VF[" : "AR[";
+  for (auto it = counts.rbegin(); it != counts.rend(); ++it) {
+    hash = tag + std::to_string(*it) + "," + hash + "]";
+  }
+  return hash;
+}
+
+/**
+ * -
+ */
+std::string TypeMatcher::compute_hash(const llvm::DIType *t) {
+  string hash = TypeMatcher::compute_unique_string(t);
+  md5::MD5 md5stream;
+  md5stream.add(hash.c_str(), hash.length());
+  hash = md5stream.getHash();
+
+  return hash;
+}
+std::string TypeMatcher::compute_unique_string(const llvm::DIType *t) {
+  auto it = di_type_hash_map.find(t);
+  if (it != di_type_hash_map.end())
+    return it->second;
+
+  std::string hash = unique_string(t, 0);
+  di_type_hash_map[t] = hash;
+  return hash;
 }
 
 std::string TypeMatcher::compute_unique_string(const llvm::Type *t,
@@ -161,7 +335,6 @@ std::string TypeMatcher::compute_unique_string(const llvm::Type *t,
  * Compute MD5 hash of the llvm::Type
  */
 std::string TypeMatcher::compute_hash(const llvm::Type *t) {
-
   std::string hash = TypeMatcher::compute_unique_string(t);
 
   md5::MD5 md5stream;

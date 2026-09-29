@@ -34,75 +34,93 @@ if [ "$n" -eq 0 ]; then
   exit 0
 fi
 
-# Build the image once so the workers don't race on (or repeat) docker build.
-echo "[INFO] Building docker image once..."
-if ! (cd docker && BUILD_ONLY=1 ./run_analysis.sh); then
-  echo "[ERROR] docker image build failed"
-  exit 1
+build_locally() {
+  for t in "${targets[@]}"; do
+    $(./analysis.sh $t --build-only)
+  done
+}
+
+BUILD_ONLY=false
+ARG="${1:-}"
+
+if [ "$ARG" == "--build-only" ]; then
+  BUILD_ONLY=true
 fi
 
-# Per-CPU bookkeeping: which pid/target currently occupies each CPU ("" = free).
-declare -A slot_pid slot_target
-for cpu in "${CPUS[@]}"; do slot_pid[$cpu]=""; done
+if [ "$BUILD_ONLY" = true ]; then
+  build_locally
+  echo "[INFO] All target have been build."
+fi
 
-launch() { # $1 = cpu, $2 = target
-  local cpu="$1" target="$2"
-  echo "[INFO] [cpu $cpu] start  $target  (log: $LOG_DIR/$target.log)"
-  (cd docker && CPUSET="$cpu" SKIP_BUILD=1 TARGET="$target" ./run_analysis.sh) \
-    >"$LOG_DIR/$target.log" 2>&1 &
-  slot_pid[$cpu]=$!
-  slot_target[$cpu]="$target"
-}
-
-reap() { # $1 = pid that finished, $2 = its exit code
-  local pid="$1" rc="$2" cpu target
-  for cpu in "${CPUS[@]}"; do
-    if [ "${slot_pid[$cpu]}" = "$pid" ]; then
-      target="${slot_target[$cpu]}"
-      # Judge success by the produced artifact, not the container exit code:
-      # start_analysis.sh ends on an optional gprof/Excel step that exits 1
-      # whenever gmon.out is absent (i.e. every non-profiling run), even though
-      # the analysis itself already ran. The extractor writes
-      # <target>_function_pointers.txt next to the -output file (work/apipass/).
-      artifact="analysis/$target/work/apipass/${target}_function_pointers.txt"
-      if [ -s "$artifact" ]; then
-        echo "[SUCCESS] [cpu $cpu] $target"
-      else
-        echo "[ERROR]   [cpu $cpu] $target (exit $rc, missing $artifact — see $LOG_DIR/$target.log)"
-      fi
-      slot_pid[$cpu]=""
-      return
-    fi
-  done
-}
-
-free_cpu() { # prints a free CPU id, or nothing
-  local cpu
-  for cpu in "${CPUS[@]}"; do
-    if [ -z "${slot_pid[$cpu]}" ]; then
-      echo "$cpu"
-      return
-    fi
-  done
-}
-
-i=0
-running=0
-while [ "$i" -lt "$n" ] || [ "$running" -gt 0 ]; do
-  cpu="$(free_cpu)"
-  if [ -n "$cpu" ] && [ "$i" -lt "$n" ]; then
-    launch "$cpu" "${targets[$i]}"
-    i=$((i + 1))
-    running=$((running + 1))
-    continue
+if [ "$BUILD_ONLY" = false ]; then
+  # Build the image once so the workers don't race on (or repeat) docker build.
+  echo "[INFO] Building docker image once..."
+  if ! (cd docker && BUILD_ONLY=1 ./run_analysis.sh); then
+    echo "[ERROR] docker image build failed"
+    exit 1
   fi
 
-  # No free CPU (or no work left to start): block until a worker exits.
-  finished_pid=""
-  wait -n -p finished_pid
-  rc=$?
-  [ -n "$finished_pid" ] && reap "$finished_pid" "$rc"
-  running=$((running - 1))
-done
+  # Per-CPU bookkeeping: which pid/target currently occupies each CPU ("" = free).
+  declare -A slot_pid slot_target
+  for cpu in "${CPUS[@]}"; do slot_pid[$cpu]=""; done
 
-echo "[INFO] All target analyses have finished."
+  launch() { # $1 = cpu, $2 = target
+    local cpu="$1" target="$2"
+    echo "[INFO] [cpu $cpu] start  $target  (log: $LOG_DIR/$target.log)"
+    (cd docker && CPUSET="$cpu" SKIP_BUILD=1 TARGET="$target" ./run_analysis.sh) \
+      >"$LOG_DIR/$target.log" 2>&1 &
+    slot_pid[$cpu]=$!
+    slot_target[$cpu]="$target"
+  }
+
+  reap() { # $1 = pid that finished, $2 = its exit code
+    local pid="$1" rc="$2" cpu target
+    for cpu in "${CPUS[@]}"; do
+      if [ "${slot_pid[$cpu]}" = "$pid" ]; then
+        target="${slot_target[$cpu]}"
+        # Success if the conditions.json could be generated successfully
+        artifact="analysis/$target/work/apipass/conditions.json"
+        if [ -s "$artifact" ]; then
+          echo "[SUCCESS] [cpu $cpu] $target"
+        else
+          echo "[ERROR]   [cpu $cpu] $target (exit $rc, missing $artifact — see $LOG_DIR/$target.log)"
+        fi
+        slot_pid[$cpu]=""
+        return
+      fi
+    done
+  }
+
+  free_cpu() { # prints a free CPU id, or nothing
+    local cpu
+    for cpu in "${CPUS[@]}"; do
+      if [ -z "${slot_pid[$cpu]}" ]; then
+        echo "$cpu"
+        return
+      fi
+    done
+  }
+
+  i=0
+  running=0
+  if [ "$BUILD_ONLY" = false ]; then
+    while [ "$i" -lt "$n" ] || [ "$running" -gt 0 ]; do
+      cpu="$(free_cpu)"
+      if [ -n "$cpu" ] && [ "$i" -lt "$n" ]; then
+        launch "$cpu" "${targets[$i]}"
+        i=$((i + 1))
+        running=$((running + 1))
+        continue
+      fi
+
+      # No free CPU (or no work left to start): block until a worker exits.
+      finished_pid=""
+      wait -n -p finished_pid
+      rc=$?
+      [ -n "$finished_pid" ] && reap "$finished_pid" "$rc"
+      running=$((running - 1))
+    done
+    echo "[INFO] All target analyses have finished."
+  fi
+
+fi

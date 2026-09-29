@@ -20,12 +20,13 @@ target_configure() {
   else
     extra_c_flags='-DVPX_MAX_ALLOCABLE_MEMORY=1073741824'
   fi
-
   # Using $REPO which is $TARGET/repo in analysis.sh
+  # without --disable-optimizations, libvpx will get compiled with O3 instead of O0
   LDFLAGS="$CXXFLAGS" LD=$CXX "$TARGET/repo/configure" \
     --prefix="$WORK" \
     --enable-vp9-highbitdepth \
     --disable-unit-tests \
+    --disable-optimizations \
     --disable-examples \
     --size-limit=12288x12288 \
     --extra-cflags="${extra_c_flags}" \

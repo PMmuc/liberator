@@ -40,7 +40,7 @@ fi
 # Sync condition_extractor if needed
 if [ -d "$PROJECT/condition_extractor" ]; then
   echo "[INFO] Syncing condition_extractor..."
-  rsync -au --exclude=".git" "$PROJECT/condition_extractor/" "$TOOLS_DIR/condition_extractor/"
+  rsync -au --exclude=".git" --exclude="build" --exclude="build_release" "$PROJECT/condition_extractor/" "$TOOLS_DIR/condition_extractor/"
 fi
 
 # --- Extraction Phase ---
@@ -82,17 +82,30 @@ INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
 # changing the working directory to $WORK will cause the gmon.out file to be stored in
 # the $WORK directory
 # specify following log tags: GEPHandler, Type, Handler (only in debug mode)
+#
+EXTRACTOR_BUILD_DIR=${EXTRACTOR_BUILD_DIR:-build_release}
+EXTRACTOR_BIN="$TOOLS_DIR/condition_extractor/$EXTRACTOR_BUILD_DIR/bin/extractor"
+
+if [ ! -x "$EXTRACTOR_BIN" ]; then
+  echo "[ERROR] Extractor not found at $EXTRACTOR_BIN"
+  echo "        Build it, or set EXTRACTOR_BUILD_DIR to another build directory."
+  exit 1
+fi
+echo "[INFO] Using extractor: $EXTRACTOR_BIN"
+
+# -do_indirect_jumps for indirect calls
 cd "$WORK"
-time $DEBUG "$TOOLS_DIR/condition_extractor/build/bin/extractor" \
+time $DEBUG "$EXTRACTOR_BIN" \
   "${ARCHIVE_PATH}.bc" \
   -target "$TARGET_NAME" \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -output "$LIBFUZZ_LOG_PATH/conditions.json" \
   -minimize_api "$LIBFUZZ_LOG_PATH/apis_minimized.txt" \
-  -v v0 -t json -do_indirect_jumps \
+  -v v0 -t json \
+  -do_indirect_jumps \
   -data_layout "$LIBFUZZ_LOG_PATH/data_layout.txt" \
-  -range 12-13 \
-  -log Type \
+  -metrics \
+  -log Summary \
   -profiling \
   \
   ${EXTRA_EXTRACTOR_FLAGS} #-range 81-334 \

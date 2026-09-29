@@ -15,6 +15,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "AccessTracker.h"
 #include "AccessType.h"
 #include "AccessTypeIO.h"
 #include "DebugInfoParser.hpp"
@@ -313,7 +314,7 @@ void run_extract_parameter_test(const std::string &bitcode_filename,
           auto *formal_param_llvm = llvmModuleSet->getLLVMValue(param);
           if (formal_param_llvm &&
               formal_param_llvm->getType()->isPointerTy()) {
-            auto metadata = liberator::my_extract_parameter_metadata(
+            auto metadata = liberator::access_tracker_t::extract_parameter_metadata(
                 *svfg, formal_param_llvm, param->getId());
             std::cout
                 << "DEBUG: my_extract_parameter_metadata completed for param "
@@ -408,7 +409,7 @@ static void run_param_metadata_check(
     if (!param_llvm || !param_llvm->getType()->isPointerTy())
       return fail_child("parameter is not a pointer");
 
-    auto metadata = liberator::my_extract_parameter_metadata(*svfg, param_llvm,
+    auto metadata = liberator::access_tracker_t::extract_parameter_metadata(*svfg, param_llvm,
                                                              param->getId());
 
     std::cout << "[param-check] " << function << " param " << param_index
@@ -491,7 +492,8 @@ static void run_return_metadata_check(
     if (!ret_llvm)
       return fail_child("return node has no llvm value");
 
-    auto metadata = liberator::extractReturnMetadata(*svfg, ret_llvm);
+    auto metadata =
+        liberator::access_tracker_t::extract_return_metadata(*svfg, ret_llvm, svf_fun);
 
     std::cout << "[return-check] " << function << ":\n"
               << liberator::print_summary(metadata, true) << std::endl;
@@ -787,7 +789,7 @@ TEST_CASE("memcpy model records the length argument", "[unit][extapi]") {
                            /*consider_indirect=*/false,
                            [](const liberator::ValueMetadata &m) {
                              liberator::ValueMetadata copy = m;
-                             return !copy.getFunParams().empty();
+                             return !copy.get_len_source().empty();
                            });
 }
 
@@ -807,6 +809,9 @@ TEST_CASE("strlen model marks parameter as array", "[unit][extapi]") {
 
 TEST_CASE("svf test arrays", "[unit]") {
   run_extract_parameter_test("arrays.bc", "main");
+}
+TEST_CASE("svf test mem_model", "[unit]") {
+  run_extract_parameter_test("mem_model.bc", "main");
 }
 TEST_CASE("svf test basic_load_store", "[unit]") {
   run_extract_parameter_test("basic_load_store.bc", "main");
@@ -882,6 +887,10 @@ TEST_CASE("svf test simple_phi", "[unit]") {
   run_extract_parameter_test("simple_phi.bc", "target_func");
 }
 
+TEST_CASE("svf test ret_malloc_alloca", "[unit]") {
+  run_extract_parameter_test("ret_malloc_alloca.bc", "make_buffer");
+}
+
 TEST_CASE("svf test global_func_pointers", "[unit]") {
   run_extract_parameter_test("function_pointers.bc", "test_func");
 }
@@ -953,7 +962,8 @@ TEST_CASE("svf test resolve_struct pointers", "[unit]") {
 // predicate both the top-down and the bottom-up summary of the same formal.
 //
 // NOTE on the top-down number: extractParameterMetadata is printed for
-// comparison only, never asserted on. In the current tree it no longer
+// comparison only, never asserted on (except by the [doubleptr] cases, which
+// pin its behaviour on purpose). In the current tree it no longer
 // reproduces what the Jul-16 pipeline produced - it returns just the flat `.`
 // read/write even for test_meta.bc, where it used to report .0/.1/.2 - so it is
 // diagnostic output, not a baseline.
@@ -1012,30 +1022,32 @@ static void run_access_path_probe(
     if (!param_llvm || !param_llvm->getType()->isPointerTy())
       return fail_child("parameter is not a pointer");
 
-    // Graph dumps; SVF appends ".dot" itself.
-    // fs::path dump_dir = fs::path(BINARY_DIR) / "graphs";
-    fs::path dump_dir = "/mnt/c/Users/MaschPaul/Downloads/";
-    fs::create_directories(dump_dir);
-    std::string svfg_dot = (dump_dir / (dump_stem + ".svfg")).string();
-    std::string icfg_dot = (dump_dir / (dump_stem + ".icfg")).string();
-    std::string cg_dot = (dump_dir / (dump_stem + ".callgraph")).string();
-    svfg->dump(svfg_dot);
-    pag->getICFG()->dump(icfg_dot);
-    const_cast<SVF::CallGraph *>(pag->getCallGraph())->dump(cg_dot);
-    std::cout << "\n[graphs] SVFG       -> " << svfg_dot << ".dot\n"
-              << "[graphs] ICFG       -> " << icfg_dot << ".dot\n"
-              << "[graphs] call graph -> " << cg_dot << ".dot\n"
-              << "[graphs] render: dot -Tsvg " << svfg_dot
-              << ".dot -o svfg.svg\n"
-              << std::endl;
+    // Graph dumps; SVF appends ".dot" itself. An empty dump_stem skips them.
+    if (!dump_stem.empty()) {
+      // fs::path dump_dir = fs::path(BINARY_DIR) / "graphs";
+      fs::path dump_dir = "/mnt/c/Users/MaschPaul/Downloads/";
+      fs::create_directories(dump_dir);
+      std::string svfg_dot = (dump_dir / (dump_stem + ".svfg")).string();
+      std::string icfg_dot = (dump_dir / (dump_stem + ".icfg")).string();
+      std::string cg_dot = (dump_dir / (dump_stem + ".callgraph")).string();
+      svfg->dump(svfg_dot);
+      pag->getICFG()->dump(icfg_dot);
+      const_cast<SVF::CallGraph *>(pag->getCallGraph())->dump(cg_dot);
+      std::cout << "\n[graphs] SVFG       -> " << svfg_dot << ".dot\n"
+                << "[graphs] ICFG       -> " << icfg_dot << ".dot\n"
+                << "[graphs] call graph -> " << cg_dot << ".dot\n"
+                << "[graphs] render: dot -Tsvg " << svfg_dot
+                << ".dot -o svfg.svg\n"
+                << std::endl;
 
-    std::string sys_cmd1 =
-        "dot -Tpng " + svfg_dot + ".dot -o " + svfg_dot + ".png";
-    std::string sys_cmd2 =
-        "dot -Tpng " + icfg_dot + ".dot -o " + icfg_dot + ".png";
-    int sys_res = system(sys_cmd1.c_str());
-    sys_res = system(sys_cmd2.c_str());
-    (void)sys_res; // suppress unused warning
+      std::string sys_cmd1 =
+          "dot -Tpng " + svfg_dot + ".dot -o " + svfg_dot + ".png";
+      std::string sys_cmd2 =
+          "dot -Tpng " + icfg_dot + ".dot -o " + icfg_dot + ".png";
+      int sys_res = system(sys_cmd1.c_str());
+      sys_res = system(sys_cmd2.c_str());
+      (void)sys_res; // suppress unused warning
+    }
     // extractParameterMetadata wants the source-level pointee type; under
     // opaque pointers the formal's LLVM type is just `ptr`, so recover it from
     // DWARF the way the pre-bottom-up pipeline did.
@@ -1050,7 +1062,7 @@ static void run_access_path_probe(
 
     auto top_down = liberator::extractParameterMetadata(
         *svfg, param_llvm, seek_type, param->getId());
-    auto bottom_up = liberator::my_extract_parameter_metadata(*svfg, param_llvm,
+    auto bottom_up = liberator::access_tracker_t::extract_parameter_metadata(*svfg, param_llvm,
                                                               param->getId());
 
     std::cout << "[top-down  extractParameterMetadata] (diagnostic only) "
@@ -1133,4 +1145,144 @@ TEST_CASE("bottom-up composition unrolls a list traversal into nested fields",
                                  !metadata_has_path(bottom_up, {1, 3, 4}) &&
                                  !metadata_has_path(bottom_up, {1, 3, 2, 2, 4});
                         });
+}
+
+// ---------------------------------------------------------------------------
+// Double pointers (struct S **), double_pointer.c.
+//
+// In `(*s)->a = 1` the struct is one load further away than in `s->a = 1`:
+//   %0 = load ptr, ptr %s.addr   ; -O0 reload of s
+//   %1 = load ptr, ptr %0        ; *s
+//   %a = getelementptr %struct.S, ptr %1, i32 0, i32 0
+// A Load node only sets kind=read and adds no field, and compare_types() /
+// next_di_field() decay *all* pointer levels of the DWARF type, so S** matches
+// %struct.S at the GEP. The summary of double_ptr_field therefore comes out
+// identical to single_ptr's: `.*` read and `.0` write, i.e. "field 0 of the
+// struct s points to" although s points to a pointer.
+//
+// The top-down extractParameterMetadata never gets that far: it seeds its Path
+// without a DIType, so handleGep() skips every struct GEP and only the flat `.`
+// accesses remain, even for single_ptr.
+// ---------------------------------------------------------------------------
+
+static bool metadata_has_write_deeper_than(const liberator::ValueMetadata &m,
+                                           size_t depth) {
+  for (const auto &at : m.get_access_type_set()) {
+    if (at.get_kind() == liberator::AccessType::kind_e::write &&
+        at.get_fields().size() > depth)
+      return true;
+  }
+  return false;
+}
+
+// Control: the single-pointer field write that the double-pointer cases are
+// compared against.
+TEST_CASE("bottom-up traces a field write through a single pointer",
+          "[unit][doubleptr]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe("double_pointer.bc", "single_ptr", 0, "",
+                        [](const liberator::ValueMetadata &,
+                           const liberator::ValueMetadata &bottom_up) {
+                          return metadata_has_field_access(bottom_up, {0},
+                                                           kind_e::write);
+                        });
+}
+
+// *s = malloc(...) writes the pointee of the parameter itself, which the flat
+// `.` path expresses correctly in both analyzers.
+TEST_CASE("double pointer out-parameter records write and create on *s",
+          "[unit][doubleptr]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe(
+      "double_pointer.bc", "double_ptr_alloc", 0, "",
+      [](const liberator::ValueMetadata &top_down,
+         const liberator::ValueMetadata &bottom_up) {
+        for (const auto *m : {&top_down, &bottom_up})
+          if (!metadata_has_field_access(*m, {}, kind_e::write) ||
+              !metadata_has_field_access(*m, {}, kind_e::create))
+            return false;
+        return true;
+      });
+}
+
+// s[i] indexes the parameter with a variable, so it is an array.
+TEST_CASE("double pointer indexed as s[i] is an array", "[unit][doubleptr]") {
+  run_access_path_probe("double_pointer.bc", "double_ptr_array", 0, "",
+                        [](const liberator::ValueMetadata &top_down,
+                           const liberator::ValueMetadata &bottom_up) {
+                          return top_down.isArray() && bottom_up.isArray();
+                        });
+}
+
+// The defects. Tagged [!shouldfail]: the assertions state the CORRECT
+// behaviour, so these are expected to fail today. Correct means the field
+// write lands on the struct behind *s: it must not show up as `.N` directly on
+// s, and its path has to be deeper than one field (a dereference step plus the
+// field), whatever encoding is chosen for that step. These check the bottom-up
+// summary; the top-down side is covered separately below.
+TEST_CASE("(*s)->a is not attributed to field .0 of s",
+          "[unit][doubleptr][!shouldfail]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe(
+      "double_pointer.bc", "double_ptr_field", 0, "",
+      [](const liberator::ValueMetadata &,
+         const liberator::ValueMetadata &bottom_up) {
+        return !metadata_has_field_access(bottom_up, {0}, kind_e::write) &&
+               metadata_has_write_deeper_than(bottom_up, 1);
+      });
+}
+
+TEST_CASE("(*s)->b after *s = malloc is not attributed to field .1 of s",
+          "[unit][doubleptr][!shouldfail]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe(
+      "double_pointer.bc", "double_ptr_alloc", 0, "",
+      [](const liberator::ValueMetadata &,
+         const liberator::ValueMetadata &bottom_up) {
+        return !metadata_has_field_access(bottom_up, {1}, kind_e::write) &&
+               metadata_has_write_deeper_than(bottom_up, 1);
+      });
+}
+
+TEST_CASE("s[i]->a is not attributed to field .0 of s",
+          "[unit][doubleptr][!shouldfail]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe(
+      "double_pointer.bc", "double_ptr_array", 0, "",
+      [](const liberator::ValueMetadata &,
+         const liberator::ValueMetadata &bottom_up) {
+        return !metadata_has_field_access(bottom_up, {0}, kind_e::write) &&
+               metadata_has_write_deeper_than(bottom_up, 1);
+      });
+}
+
+// The top-down analyzer cannot see struct fields at all: extractParameterMetadata
+// builds its Path with di = nullptr, and handleGep() gives up on a struct GEP
+// when the path carries no DIType. Until that is fixed the double-pointer cases
+// above cannot be judged on the top-down side.
+TEST_CASE("top-down extractParameterMetadata traces a single pointer field",
+          "[unit][doubleptr][topdown][!shouldfail]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe("double_pointer.bc", "single_ptr", 0, "",
+                        [](const liberator::ValueMetadata &top_down,
+                           const liberator::ValueMetadata &) {
+                          return metadata_has_field_access(top_down, {0},
+                                                           kind_e::write);
+                        });
+}
+
+// Same defect on the top-down side, the case from foo(struct S **s). Blocked by
+// the missing DIType above: today it fails because there is no field write at
+// all, and once the DIType is seeded it has to fail for the right reason
+// (collapse onto .0) before it can pass.
+TEST_CASE("top-down (*s)->a is not attributed to field .0 of s",
+          "[unit][doubleptr][topdown][!shouldfail]") {
+  using kind_e = liberator::AccessType::kind_e;
+  run_access_path_probe(
+      "double_pointer.bc", "double_ptr_field", 0, "",
+      [](const liberator::ValueMetadata &top_down,
+         const liberator::ValueMetadata &) {
+        return !metadata_has_field_access(top_down, {0}, kind_e::write) &&
+               metadata_has_write_deeper_than(top_down, 1);
+      });
 }

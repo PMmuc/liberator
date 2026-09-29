@@ -1,5 +1,6 @@
 #include "Graphs/ICFGNode.h"
 #include "MemoryModel/PointsTo.h"
+#include "MyProfiler.hpp"
 #include "SVF-LLVM/LLVMModule.h"
 #include "SVF-LLVM/LLVMUtil.h"
 #include "SVF-LLVM/ObjTypeInference.h"
@@ -40,14 +41,15 @@ SVF::Andersen *global_struct_pta(SVF::SVFIR *pag) {
 /// GlobalStruct analysis
 // Makes Points To Analysis
 void GlobalStruct::analyze() {
-  PROFILE_SCOPE("GlobalStruct::analyze Total Time");
+  PROFILE_SCOPED("GlobalStruct::analyze Total Time");
+  PROFILE_MEM("GlobalStruct::analyze Total Time");
 
   // I always keep a string variable
   std::string str;
 
   // let's do the base class analysis
   {
-    PROFILE_SCOPE("GlobalStruct: base PTA analyze");
+    PROFILE_MEM("GlobalStruct: base PTA analyze");
     GlobalStructPTA::analyze();
   }
 
@@ -60,7 +62,8 @@ void GlobalStruct::analyze() {
   // svfGlobalList returns functions and global variables
   GLOBAL_LOG("--------------- global variables found: -------------------\n");
   {
-    PROFILE_SCOPE("GlobalStruct: Globals Processing");
+    PROFILE_SCOPED("GlobalStruct: Globals Processing");
+    PROFILE_MEM("GlobalStruct: Globals Processing");
     for (auto &g : svfModule->globals()) {
       int count = 0;
       if (SVFUtil::isa<llvm::Constant>(g)) {
@@ -87,7 +90,8 @@ void GlobalStruct::analyze() {
   std::set<const CallICFGNode *> unresolved_calls;
   unsigned int tot_indirect_calls = 0;
   {
-    PROFILE_SCOPE("GlobalStruct: Unresolved Calls");
+    PROFILE_SCOPED("GlobalStruct: Unresolved Calls");
+    PROFILE_MEM("GlobalStruct: Unresolved Calls");
     // Iterate all indirect calls
     for (auto call : indirect_calls) {
       //  Call Site of indirect call
@@ -120,7 +124,8 @@ void GlobalStruct::analyze() {
   auto slot_map = build_slot_map(*llvmModuleSet->getMainLLVMModule());
 
   {
-    PROFILE_SCOPE("GlobalStruct: Resolve Indirect Calls");
+    PROFILE_SCOPED("GlobalStruct: Resolve Indirect Calls");
+    PROFILE_MEM("GlobalStruct: Resolve Indirect Calls");
     // Try to analyze why the points to set is empty for this indirect call.
     // Do a signature based matching where we match the signature of the call
     // site function, with the signature that we got from retrieving funcs from

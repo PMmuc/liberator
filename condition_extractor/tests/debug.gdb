@@ -27,6 +27,6 @@ set detach-on-fork on
 #break ConditionExtractor.cpp:110
 #break GlobalStruct.cpp:60
 #break SignatureMatching.cpp:309
-break AccessType.cpp:2009
+#break AccessType.cpp:2009
 
-run "svf test struct_access"
+run "[return]"

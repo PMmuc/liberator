@@ -3,7 +3,13 @@
 #include "DebugInfoParser.hpp" // peel_di_qualifiers
 #include "TypeMatcher.h"
 #include "ValueMetadata.hpp"
+#include <llvm/ADT/StringRef.h>
+#include <llvm/BinaryFormat/Dwarf.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+
+#include <llvm/Support/Casting.h>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace liberator {
 std::string to_string(AccessType::kind_e k) {
@@ -49,40 +55,20 @@ std::string to_string_parent(const AccessType &at) {
 
   rawstr << ", ";
   rawstr << to_string(at.get_kind());
-  rawstr << ", " << to_string(at.get_llvm_type());
-  rawstr << ", " << TypeMatcher::compute_hash(at.get_llvm_type()) << ")";
+  rawstr << ", " << to_string(at.get_di_type());
 
   return rawstr.str();
 }
 
 std::string to_string(const llvm::Type *typ) {
+  if (!typ)
+    return "no llvm type";
   std::string str;
   llvm::raw_string_ostream(str) << *typ;
   return str;
 }
 
 namespace {
-
-/**
- * @return returns for example "%struct.vpx_image". Anonymous composites get the
- * "anon" name.
- */
-std::string composite_name(const llvm::DICompositeType *comp) {
-  std::string prefix;
-  switch (comp->getTag()) {
-  case llvm::dwarf::DW_TAG_union_type:
-    prefix = "%union.";
-    break;
-  case llvm::dwarf::DW_TAG_class_type:
-    prefix = "%class.";
-    break;
-  default:
-    prefix = "%struct.";
-    break;
-  }
-  auto name = comp->getName();
-  return prefix + (name.empty() ? "anon" : name.str());
-}
 
 // Guards against cycles in malformed debug info. Struct bodies are only
 // expanded at the top level and pointers never expand their pointee, so a
@@ -277,6 +263,36 @@ std::string print_di_type(const llvm::DIType *di, bool expand_composite,
 }
 
 } // namespace
+//
+// -
+static std::string build_di_key(const llvm::DIType *di) {
+  std::string indirections;
+  llvm::StringRef typedef_name;
+  const llvm::DIType *cur = di;
+
+  while (true) {
+    typedef_name = {};
+    cur = peel_di_type(cur, typedef_name);
+    auto *d = llvm::dyn_cast_or_null<llvm::DIDerivedType>(cur);
+    if (!d || !is_indirection_tag(static_cast<llvm::dwarf::Tag>(d->getTag())))
+      break;
+    indirections += '*';
+    cur = d->getBaseType();
+  }
+
+  string base;
+  auto *comp = dyn_cast_or_null<DICompositeType>(cur);
+  if (comp && (comp->getTag() == llvm::dwarf::DW_TAG_structure_type ||
+               comp->getTag() == llvm::dwarf::DW_TAG_class_type ||
+               comp->getTag() == llvm::dwarf::DW_TAG_union_type)) {
+    base = unique_composite_name(comp, typedef_name);
+  } else
+    base = print_di_type(cur, false, 0);
+
+  if (base == "void" && !indirections.empty())
+    base = "i8"; // the old llvm where i8* == void*
+  return base + indirections;
+}
 
 /**
  * Prints a DWARF type in the old (pre-opaque-pointer) LLVM IR type syntax:
@@ -292,6 +308,22 @@ std::string print_di_type(const llvm::DIType *di, bool expand_composite,
  */
 std::string to_string(const llvm::DIType *di) {
   return print_di_type(di, /*expand_composite=*/true, /*depth=*/0);
+}
+
+const std::string *di_key(const llvm::DIType *di) {
+  if (!di)
+    return nullptr;
+
+  static std::unordered_map<const llvm::DIType *, const std::string *> di2str;
+  static std::unordered_set<string> di_types;
+
+  auto it = di2str.find(di);
+  if (it != di2str.end())
+    return it->second;
+
+  const std::string *key = &*di_types.insert(build_di_key(di)).first;
+  di2str.emplace(di, key);
+  return key;
 }
 
 /**
@@ -338,7 +370,7 @@ std::string to_string(const AccessType &at, bool verbose) {
   rawstr << to_string(at.get_kind());
   rawstr << ", " << to_string(at.get_llvm_type());
   rawstr << ", " << to_string(at.get_di_type());
-  rawstr << ", " << TypeMatcher::compute_hash(at.get_llvm_type()) << ")";
+  rawstr << ", " << TypeMatcher::compute_hash(at.get_di_type()) << ")";
 
   if (verbose) {
     rawstr << "\n";
@@ -369,8 +401,7 @@ Json::Value to_json_parent(const AccessType &at) {
     fieldsJson.append(field);
 
   accessTypeJson["fields"] = fieldsJson;
-  // FIXME: take the di type not the llvm_type for the hash
-  accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_llvm_type());
+  accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_di_type());
   accessTypeJson["type_string"] = to_string(at.get_di_type());
 
   return accessTypeJson;
@@ -398,8 +429,8 @@ Json::Value to_json(const AccessType &at, bool verbose) {
     fieldsJson.append(field);
 
   accessTypeJson["fields"] = fieldsJson;
-  // FIXME: take di type for hash
-  accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_llvm_type());
+  accessTypeJson["llvm_type"] = to_string(at.get_llvm_type());
+  accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_di_type());
   accessTypeJson["type_string"] = to_string(at.get_di_type());
 
   if (verbose)

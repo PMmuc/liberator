@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AccessTracker.h"
 #include "FunctionConditions.hpp"
 #include "GlobalStruct.h"
 #include <Graphs/SVFG.h>
@@ -20,6 +21,8 @@ class condition_extractor_t {
   condition_extractor_t(const std::set<std::string> &&functions,
                         SVF::Module *module, std::unique_ptr<SVFGBuilder> svfg,
                         SVFIR *pag, GlobalStruct *point_to_analyses) noexcept;
+  condition_extractor_t(const condition_extractor_t &) = delete;
+  condition_extractor_t &operator=(const condition_extractor_t &) = delete;
 
 public:
   ~condition_extractor_t() noexcept;

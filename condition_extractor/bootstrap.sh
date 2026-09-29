@@ -16,4 +16,5 @@ cd $TOOLS_DIR/condition_extractor/build_release
 CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTS=OFF \
   -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" \
   -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld" \
+  -DENABLE_PROFILING=ON \
   -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld" ..

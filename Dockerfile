@@ -205,7 +205,7 @@ ENV SVF_DIR="${HOME}/SVF-${SVF_VERSION}"
 COPY --chown=${USERNAME}:${USERNAME} ./patches/svf ${HOME}/svf-patches/
 
 # SVF
-# checkout and build SVF 3.3
+# checkout and build SVF 3.3 and apply patches
 RUN --mount=type=cache,target=${HOME}/.ccache/  export PATH="${HOME}/llvm-${LLVM_VERSION}/bin:$PATH" && git clone --depth 1 --branch SVF-${SVF_VERSION} https://github.com/SVF-tools/SVF.git &&\
     cd SVF && \
     for p in ${HOME}/svf-patches/*.patch; do echo "Applying $p" && git apply "$p"; done && \
@@ -274,7 +274,8 @@ COPY --chown=${USERNAME}:${USERNAME} ./tool/misc/extract_included_functions.py $
 ENV PATH="/home/libfuzz/llvm-21/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/home/libfuzz/llvm-21/lib:${LD_LIBRARY_PATH}"
 ENV PATH="${PATH}:${HOME}/.local/bin"
-RUN cd ${TOOLS_DIR}/condition_extractor && rm -Rf CMakeCache.txt CMakeFiles && ./bootstrap.sh && cd build && make -j && cp ${SVF_DIR}/lib/extapi.bc bin/extapi.bc
+RUN cd ${TOOLS_DIR}/condition_extractor && rm -Rf CMakeCache.txt CMakeFiles && ./bootstrap.sh \
+      && cd build_release && make -j && cp ${SVF_DIR}/lib/extapi.bc bin/extapi.bc
 
 # NOTE: start_analysis.sh finds out its configuration automatically
 
