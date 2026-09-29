@@ -6,5 +6,6 @@ set -e
 # cmake .
 export PATH=$LLVM_DIR/bin:$PATH
 export CXXFLAGS="-Wno-deprecated-declarations -Wfatal-errors"
-cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_GPROF=ON .
+cmake -DCMAKE_BUILD_TYPE=Release .
+# add -DENABLE_GPROF=ON for gprof output
 # cmake -DCMAKE_BUILD_TYPE=Debug  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  .

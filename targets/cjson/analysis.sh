@@ -65,7 +65,7 @@ extract-bc -b "$WORK"/lib/libcjson.a
 # produced
 cd "$WORK"/apipass
 
-time $PROF_EXTRACTOR "$TOOLS_DIR"/condition_extractor/bin/extractor \
+/usr/bin/time -f "real %e\nuser %U\nsys %S\nmaxrss_kb %M" $PROF_EXTRACTOR "$TOOLS_DIR"/condition_extractor/bin/extractor \
   "$WORK"/lib/libcjson.a.bc \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -output "$LIBFUZZ_LOG_PATH/conditions.json" \

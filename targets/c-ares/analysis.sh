@@ -63,7 +63,7 @@ extract-bc -b "$WORK"/lib/libcares.a
 
 # extract fields dependency from the library itself, repeat for each object
 # produced
-"$TOOLS_DIR"/condition_extractor/bin/extractor \
+/usr/bin/time -f "real %e\nuser %U\nsys %S\nmaxrss_kb %M" "$TOOLS_DIR"/condition_extractor/bin/extractor \
   "$WORK"/lib/libcares.a.bc \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -output "$LIBFUZZ_LOG_PATH/conditions.json" \

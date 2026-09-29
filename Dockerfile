@@ -128,7 +128,8 @@ ENV TOOLS_DIR ${HOME}
 
 RUN mkdir -p ${TOOLS_DIR}/condition_extractor/
 RUN mkdir -p ${TOOLS_DIR}/tool/misc/
-RUN sudo apt-get install zlib1g-dev unzip cmake gcc g++ libtinfo5 nodejs
+# time for reporting runtime and RSS
+RUN sudo apt-get update && sudo apt-get install -y zlib1g-dev unzip cmake gcc g++ libtinfo5 nodejs time
 COPY --chown=${USERNAME}:${USERNAME} ./condition_extractor ${TOOLS_DIR}/condition_extractor/
 COPY --chown=${USERNAME}:${USERNAME} ./tool/misc/extract_included_functions.py ${TOOLS_DIR}/tool/misc/
 # ENV SVF_DIR /home/libfuzz/SVF
