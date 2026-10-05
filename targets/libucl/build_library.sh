@@ -18,13 +18,14 @@ mkdir -p "$WORK/lib" "$WORK/include"
 
 echo "make 1"
 cd "$TARGET/repo"
-./autogen.sh
-echo "./configure"
 
 # Compile library for coverage
-./configure --disable-shared --prefix="$WORK" \
-        CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
-        CFLAGS="-fprofile-instr-generate -fcoverage-mapping -g"
+rm -rf build
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=OFF \
+        -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
+        -DCMAKE_C_FLAGS="-fprofile-instr-generate -fcoverage-mapping -g"
 
 echo "make clean"
 make -j$(nproc) clean
@@ -34,13 +35,15 @@ echo "make install"
 make install
 
 mv $WORK/lib/libucl.a $WORK/lib/libucl_profile.a
-echo "make clean"
-make -j$(nproc) clean
 
 # Compile library for debugging
-./configure --disable-shared --prefix="$WORK" \
-        CXXFLAGS="-fsanitize=fuzzer-no-link,address -g" \
-        CFLAGS="-fsanitize=fuzzer-no-link,address -g"
+cd "$TARGET/repo"
+rm -rf build
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=OFF \
+        -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address -g" \
+        -DCMAKE_C_FLAGS="-fsanitize=fuzzer-no-link,address -g"
 
 echo "make clean"
 make -j$(nproc) clean
@@ -50,14 +53,16 @@ echo "make install"
 make install
 
 mv $WORK/lib/libucl.a $WORK/lib/libucl_cluster.a
-echo "make clean"
-make -j$(nproc) clean
 
 # Compile library for fuzzing
-./configure --disable-shared --prefix="$WORK" \
-        CXXFLAGS="-fsanitize=fuzzer-no-link,address" \
-        CFLAGS="-fsanitize=fuzzer-no-link,address" \
-        --disable-debug 
+cd "$TARGET/repo"
+rm -rf build
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=OFF \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address" \
+        -DCMAKE_C_FLAGS="-fsanitize=fuzzer-no-link,address"
 
 echo "make"
 make -j$(nproc)
