@@ -18,13 +18,19 @@ mkdir -p "$WORK/lib" "$WORK/include"
 
 echo "make 1"
 cd "$TARGET/repo"
-./autogen.sh --without-cython
-echo "./configure"
+# libplist 1.3+ builds with cmake; force the static lib and a g++ host compiler
+export CXX=g++
+find . -name CMakeLists.txt -exec sed -i 's/SHARED//g' {} \;
 
 # Compile library for coverage
-./configure --without-cython  --prefix="$WORK" --with-tools=no --without-tests --enable-debug \
-        CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
-        CFLAGS="-fprofile-instr-generate -fcoverage-mapping -g"
+rm -rf build
+mkdir build
+cd build
+cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+        -DENABLE_STATIC=on \
+        -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
+        -DCMAKE_C_FLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 echo "make clean"
 make -j$(nproc) clean
@@ -34,13 +40,17 @@ echo "make install"
 make install
 
 mv $WORK/lib/libplist-2.0.a $WORK/lib/libplist-2.0_profile.a
-echo "make clean"
-make -j$(nproc) clean
 
 # Compile library for debugging
-./configure --without-cython  --prefix="$WORK" --with-tools=no --without-tests --enable-debug  \
-        CXXFLAGS="-fsanitize=fuzzer-no-link,address -g" \
-        CFLAGS="-fsanitize=fuzzer-no-link,address -g"
+cd "$TARGET/repo"
+rm -rf build
+mkdir build
+cd build
+cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+        -DENABLE_STATIC=on \
+        -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address -g" \
+        -DCMAKE_C_FLAGS="-fsanitize=fuzzer-no-link,address -g" \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 echo "make clean"
 make -j$(nproc) clean
@@ -50,15 +60,20 @@ echo "make install"
 make install
 
 mv $WORK/lib/libplist-2.0.a $WORK/lib/libplist-2.0_cluster.a
-echo "make clean"
-make -j$(nproc) clean
 
 # Compile library for fuzzing
-./configure --without-cython --without-tests --with-tools=no --prefix="$WORK" \
-        CXXFLAGS="-fsanitize=fuzzer-no-link,address" \
-        CFLAGS="-fsanitize=fuzzer-no-link,address" \
-        --disable-debug 
+cd "$TARGET/repo"
+rm -rf build
+mkdir build
+cd build
+cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address" \
+        -DCMAKE_C_FLAGS="-fsanitize=fuzzer-no-link,address" \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
+echo "make clean"
+make -j$(nproc) clean
 echo "make"
 make -j$(nproc)
 echo "make install"
