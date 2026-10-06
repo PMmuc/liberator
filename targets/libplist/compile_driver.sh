@@ -35,16 +35,16 @@ do
     # [TAG] THIS STEP MUST BE ADAPTED FOR EACH LIBRARY
     # Compile driver for fuzzing
     $CXX -std=c++11 -fsanitize=fuzzer,address -I/${TARGET}/work/include \
-        $d -Wl,--whole-archive ${TARGET}/work/lib/libplist-2.0.a -Wl,--no-whole-archive -lz -ljpeg -llzma -Wl, \
+        $d -Wl,--whole-archive ${TARGET}/work/lib/libplist-2.0.a -Wl,--no-whole-archive -lz -ljpeg -llzma -lglib-2.0 -Wl, \
         -Bdynamic -lstdc++ -o "${d%%.*}" || true
     
     # Compile driver for clustering
     $CXX -g -std=c++11 -fsanitize=fuzzer,address -I/${TARGET}/work/include \
-        $d -Wl,--whole-archive ${TARGET}/work/lib/libplist-2.0_cluster.a -Wl,--no-whole-archive -lz -ljpeg -llzma -Wl, \
+        $d -Wl,--whole-archive ${TARGET}/work/lib/libplist-2.0_cluster.a -Wl,--no-whole-archive -lz -ljpeg -llzma -lglib-2.0 -Wl, \
         -Bdynamic -lstdc++ -o "${CLUSTER_DRIVERS}/${DRIVER_NAME%%.*}_cluster" || true
 
     # Compile driver for coverage
     $CXX -g -std=c++11 -fsanitize=fuzzer -fprofile-instr-generate -fcoverage-mapping \
-        -I/${TARGET}/work/include $d -Wl,--whole-archive ${TARGET}/work/lib/libplist-2.0_profile.a -Wl,--no-whole-archive -lz -ljpeg -llzma -Wl, \
+        -I/${TARGET}/work/include $d -Wl,--whole-archive ${TARGET}/work/lib/libplist-2.0_profile.a -Wl,--no-whole-archive -lz -ljpeg -llzma -lglib-2.0 -Wl, \
         -Bdynamic -lstdc++ -o "${PROFILE_DRIVERS}/${DRIVER_NAME%%.*}_profile" || true
 done
