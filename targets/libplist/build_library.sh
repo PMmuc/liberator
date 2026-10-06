@@ -38,7 +38,7 @@ make -j$(nproc)
 echo "make install"
 make install
 
-mv $WORK/lib/libplist-2.0.a $WORK/lib/libplist-2.0_profile.a
+mv $WORK/lib/libplist.a $WORK/lib/libplist-2.0_profile.a
 
 # Compile library for debugging
 cd "$TARGET/repo"
@@ -58,7 +58,7 @@ make -j$(nproc)
 echo "make install"
 make install
 
-mv $WORK/lib/libplist-2.0.a $WORK/lib/libplist-2.0_cluster.a
+mv $WORK/lib/libplist.a $WORK/lib/libplist-2.0_cluster.a
 
 # Compile library for fuzzing
 cd "$TARGET/repo"
@@ -77,5 +77,7 @@ echo "make"
 make -j$(nproc)
 echo "make install"
 make install
+
+mv $WORK/lib/libplist.a $WORK/lib/libplist-2.0.a
 
 echo "[INFO] Library installed in: $WORK"
