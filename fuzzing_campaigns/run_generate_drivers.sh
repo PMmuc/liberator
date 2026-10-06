@@ -2,7 +2,7 @@
 
 source campaign_configuration.sh
 
-if [ -n "$TARGET_PROJECT"]; then
+if [ -n "$TARGET_PROJECT" ]; then
   PROJECTS=("$TARGET_PROJECT")
 fi
 
