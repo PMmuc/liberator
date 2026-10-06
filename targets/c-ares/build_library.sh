@@ -36,7 +36,7 @@ make -j"$(nproc)"
 echo "make install"
 make install
 
-mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_profile.a
+mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_static_profile.a
 
 # Compile library for clustering
 cd "$TARGET/repo"
@@ -55,7 +55,7 @@ make -j"$(nproc)"
 echo "make install"
 make install
 
-mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_cluster.a
+mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_static_cluster.a
 
 # Compile library for fuzzing
 cd "$TARGET/repo"
@@ -73,5 +73,8 @@ echo "make"
 make -j"$(nproc)"
 echo "make install"
 make install
+
+mv "$WORK"/lib/libcares.a "$WORK"/lib/libcares_static.a
+
 # configure compiles some shits for testing, better remove it
 echo "[INFO] Library installed in: $WORK"
