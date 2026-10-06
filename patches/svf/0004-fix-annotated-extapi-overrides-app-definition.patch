@@ -1,0 +1,29 @@
+diff --git a/svf-llvm/lib/LLVMModule.cpp b/svf-llvm/lib/LLVMModule.cpp
+index 749c320d..84169cf3 100644
+--- a/svf-llvm/lib/LLVMModule.cpp
++++ b/svf-llvm/lib/LLVMModule.cpp
+@@ -969,6 +969,10 @@ void LLVMModuleSet::buildFunToFunMap()
+                     }
+                 }
+             }
++            // remove the app body so that the function becomes just a
++            // declartion with annotations.
++            appFuncDef->deleteBody();
++            ExtFuncsVec.push_back(appFuncDef);
+         }
+     }
+ 
+@@ -1427,6 +1431,13 @@ SVFType* LLVMModuleSet::addSVFTypeInfo(const Type* T)
+         svfat->setTypeOfElement(getSVFType(at->getElementType()));
+         svftype = svfat;
+     }
++    else if (const FixedVectorType* vt = SVFUtil::dyn_cast<FixedVectorType>(T))
++    {
++        auto svfat = new SVFArrayType(id, byteSize);
++        svfat->setNumOfElement(vt->getNumElements());
++        svfat->setTypeOfElement(getSVFType(vt->getElementType()));
++        svftype = svfat;
++    }
+     else
+     {
+         std::string buffer;

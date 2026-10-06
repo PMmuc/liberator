@@ -2,7 +2,6 @@
 #define INCLUDE_DOM_ACCESSTYPE_HANDLER_H_
 
 #include "AccessType.h"
-#include "SVF-LLVM/LLVMModule.h"
 #include "ValueMetadata.hpp"
 #include <Graphs/ICFGNode.h>
 #include <Util/Casting.h>
@@ -48,6 +47,7 @@ bool handlerDispatcher(ValueMetadata &mdata, const std::string &fun,
                        const ICFGNode *icfgNode, const CallICFGNode *cs,
                        int param_num, AccessType atNode, H_SCOPE h_scope,
                        liberator::Path *path);
+
 /**
 It checks if the target function is handled by our dispatchers.
 
@@ -67,5 +67,6 @@ typedef function<bool(ValueMetadata &, string, const ICFGNode *,
     handler_t;
 typedef std::map<std::string, handler_t> AccessTypeHandlerMap;
 extern AccessTypeHandlerMap accessTypeHandlers;
+static handler_t handler_from_annotation(const std::string &name);
 } // namespace liberator
 #endif /* INCLUDE_DOM_ACCESSTYPE_HANDLER_H_ */

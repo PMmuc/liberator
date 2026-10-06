@@ -78,11 +78,6 @@ INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
   -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
 
-# Extractor
-# changing the working directory to $WORK will cause the gmon.out file to be stored in
-# the $WORK directory
-# specify following log tags: GEPHandler, Type, Handler (only in debug mode)
-#
 EXTRACTOR_BUILD_DIR=${EXTRACTOR_BUILD_DIR:-build_release}
 EXTRACTOR_BIN="$TOOLS_DIR/condition_extractor/$EXTRACTOR_BUILD_DIR/bin/extractor"
 
@@ -93,9 +88,14 @@ if [ ! -x "$EXTRACTOR_BIN" ]; then
 fi
 echo "[INFO] Using extractor: $EXTRACTOR_BIN"
 
+if [ ! -x /usr/bin/time ]; then
+  echo "[ERROR] /usr/bin/time not found"
+  exit 1
+fi
+
 # -do_indirect_jumps for indirect calls
 cd "$WORK"
-time $DEBUG "$EXTRACTOR_BIN" \
+/usr/bin/time -f "real %e\nuser %U\nsys %S\nmaxrss_kb %M" $DEBUG "$EXTRACTOR_BIN" \
   "${ARCHIVE_PATH}.bc" \
   -target "$TARGET_NAME" \
   -interface "$LIBFUZZ_LOG_PATH/apis_clang.json" \

@@ -57,7 +57,16 @@ private:
 };
 
 llvm::Type *infer_type_from_arg_attrs(const llvm::Argument *arg);
+/**
+ * - Removes qualifiers such as typedef, const, volatile, atomic, restrict from
+ *   the type definition.
+ */
 llvm::DIType *peel_di_qualifiers(llvm::DIType *t);
+/**
+ * Removes qualifiers and returns the name of the typedef if it exists.
+ * @param type to remove the qualifiers.
+ * @param typedef_name the name of the typedef.
+ */
 const llvm::DIType *peel_di_type(const llvm::DIType *type,
                                  llvm::StringRef &typedef_name);
 llvm::Type *resolve_di_type_to_llvm(llvm::DIType *di, llvm::Module &mod);
@@ -94,6 +103,25 @@ llvm::DIType *decay_di_type(llvm::DIType *type);
  */
 bool compare_types(llvm::DIType *di, const llvm::Type *type,
                    const llvm::DataLayout &dl);
+/**
+ * Returns the DIType for an llvm struct type.
+ * It compares llvm names with di names.
+ */
+llvm::DIType *struct_to_di(const llvm::StructType *st, const llvm::Module &m);
+/**
+ * -
+ *  Buils a unique string representation of the di type for all pointers,
+ * composite and basic types.
+ */
+std::string build_di_key(const llvm::DIType *di);
+
+// -
+// Prints a DWARF
+std::string print_di_type(const llvm::DIType *di, bool expand_composite,
+                          unsigned depth);
+// -
+// returns a string for function pointer in format "return_type (parameters)"
+std::string print_subroutine(const llvm::DISubroutineType *sr, unsigned depth);
 
 /**
  * Returns the next DI type that we need to handle based on the offset that

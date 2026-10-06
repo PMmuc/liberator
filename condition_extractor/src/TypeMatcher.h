@@ -21,7 +21,15 @@ public:
 
   static std::string compute_id(const llvm::StructType *);
   static std::string compute_hash(const llvm::Type *t);
+  /**
+   * -
+   * Computes a unique MD5 hash for the DIType.
+   */
   static std::string compute_hash(const llvm::DIType *t);
+  /**
+   * -
+   * Takes a di_type and returns a unique string representation.
+   */
   static std::string compute_unique_string(const llvm::DIType *t);
   static std::string compute_unique_string(const llvm::Type *t,
                                            std::set<std::string> ids_done = {});

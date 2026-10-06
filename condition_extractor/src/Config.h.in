@@ -30,6 +30,7 @@ struct config_t {
   std::string input_filename;
   std::string cache_folder;
   std::string extract_data_layout;
+  std::string void_policy;
   bool print_dominator;
   bool use_dominator;
   /**

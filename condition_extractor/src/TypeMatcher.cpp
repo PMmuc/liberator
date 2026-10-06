@@ -52,6 +52,12 @@ bool has_data_members(const llvm::DICompositeType *comp) {
 
 std::string di_subroutine_string(const llvm::DISubroutineType *sr,
                                  unsigned depth);
+
+/**
+ * -
+ * Returns a string representation of the struct and if it is a pointer to a
+ * struct the depth.
+ */
 std::string di_array_string(const llvm::DICompositeType *comp, unsigned depth);
 
 /**
@@ -175,9 +181,6 @@ std::string di_array_string(const llvm::DICompositeType *comp, unsigned depth) {
   return hash;
 }
 
-/**
- * -
- */
 std::string TypeMatcher::compute_hash(const llvm::DIType *t) {
   string hash = TypeMatcher::compute_unique_string(t);
   md5::MD5 md5stream;
@@ -186,6 +189,7 @@ std::string TypeMatcher::compute_hash(const llvm::DIType *t) {
 
   return hash;
 }
+
 std::string TypeMatcher::compute_unique_string(const llvm::DIType *t) {
   auto it = di_type_hash_map.find(t);
   if (it != di_type_hash_map.end())

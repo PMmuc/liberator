@@ -23,7 +23,7 @@ if(ENABLE_ASAN)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         # 3. Apply flags to your target
         # Replace 'your_app_name' with the actual name of your executable/library
-        target_compile_options(condition_extractor_core PRIVATE 
+        target_compile_options(condition_ex tractor_core PRIVATE 
             -fsanitize=address 
             -fno-omit-frame-pointer 
             -g

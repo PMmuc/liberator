@@ -3,6 +3,7 @@
 #include "Config.h"
 
 #include "FunctionConditions.hpp"
+#include "Instrumentation.h"
 #include "MyProfiler.hpp"
 
 #include <Util/SVFUtil.h>
@@ -94,6 +95,10 @@ static llvm::cl::list<std::string>
     LogTags("log", llvm::cl::desc("Enable logging for specific tags"),
             llvm::cl::ZeroOrMore, llvm::cl::CommaSeparated);
 
+static llvm::cl::opt<std::string>
+    VoidPolicy("policy", llvm::cl::desc("Which void policy (accept, old, cut)"),
+               llvm::cl::init("cut"));
+
 static llvm::cl::opt<bool>
     EnableProfiling("profiling", llvm::cl::desc("Enable time-trace profiling"),
                     llvm::cl::init(false));
@@ -165,6 +170,7 @@ int main(int argc, char **argv) {
   config->interface_file = LibInterface;
   config->minimize_api = minimizeApi;
   config->cache_folder = cacheFolder;
+  config->void_policy = VoidPolicy;
   config->input_filename = InputFilename;
   config->print_dominator = printDominator;
   config->use_dominator = useDominator;
@@ -261,6 +267,10 @@ int main(int argc, char **argv) {
   SVFUtil::outs() << "\n" << liberator::profiler_t::instance().dump() << "\n";
   SVFUtil::outs() << "\n"
                   << liberator::profiler_t::instance().dump_mem() << "\n";
+  llvm::outs() << "[IS_MALLOC_SIZE] " << type_instr.cleared_is_malloc_sz
+               << "\n";
+  llvm::outs() << "[GEP_TYPE] void_recovered" << di_instr.gep_void_recovered
+               << " untyped_skip=" << di_instr.gep_untyped_skip << "\n";
 
   if (!ProfileCsv.empty()) {
     auto &profiler = liberator::profiler_t::instance();

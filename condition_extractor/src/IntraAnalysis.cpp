@@ -5,6 +5,7 @@
 #include "ValueMetadata.hpp"
 #include <SVF-LLVM/LLVMModule.h>
 #include <SVFIR/SVFIR.h>
+#include <llvm/BinaryFormat/Dwarf.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/Support/Casting.h>
 
@@ -99,6 +100,27 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
         types_matching = compare_types(path_di, sType, dl);
         GEP_LOG("di: {} matches gep source type: {}\n",
                 path_di->getName().str(), types_matching);
+        // if the path tracks a void* try to recover the actual type
+        // using the struct. If that is not possible we skip the path completly,
+        // otherwise flags that are set in the field access would be attributed
+        // to the base object's summary. For example s->f1, if f1 is a
+        // mallocSize would save IsMallocSize in s -> wrong summary for s.
+        if (!types_matching && !decay_di_type(path_di)) {
+          if (auto *llvm_st = dyn_cast<StructType>(sType)) {
+            if (llvm::DIType *rec =
+                    struct_to_di(llvm_st, *gep_inst->getModule())) {
+              acNode.set_type(rec);
+              types_matching = compare_types(rec, sType, dl);
+              di_instr.gep_void_recovered++;
+            }
+          }
+          types_matching = true;
+        }
+        // if the type can not be recovered we skip the path.
+        if (!types_matching && isa<StructType>(sType)) {
+          di_instr.gep_untyped_skip++;
+          return true;
+        }
       } else {
         // No debug info, or the DI chain broke on an earlier GEP.
         // No way to tell which field this GEP is selecting for structs.
@@ -107,8 +129,21 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
         di_instr.gep_no_di++;
         if (gep_inst->hasAllConstantIndices() && gep_inst->getNumIndices() > 1)
           return true;
-        // We track for arrays if the types are matching.
+        // We track arrays accesses if the types are matching.
         types_matching = true;
+      }
+      // GEP is ptr, but path has type information and is a double pointer -> we
+      // still want to track array accesses
+      if (!types_matching && sType->isPointerTy()) {
+        auto tmp_path =
+            dyn_cast_or_null<llvm::DIDerivedType>(peel_di_qualifiers(path_di));
+        if (tmp_path &&
+            tmp_path->getTag() == llvm::dwarf::DW_TAG_pointer_type) {
+          auto elem = dyn_cast_or_null<llvm::DIDerivedType>(
+              peel_di_qualifiers(tmp_path->getBaseType()));
+          if (elem && elem->getTag() == llvm::dwarf::DW_TAG_pointer_type)
+            types_matching = true;
+        }
       }
 
       if (types_matching) {
@@ -185,7 +220,7 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
               acNode.addField(idx);
               // note that next_di can be nullptr
               // keep the old di type if we could not deduce the new one
-              acNode.set_llvm_type(step_result_type, next_di);
+              acNode.set_type(next_di);
               const std::string *visit_key = di_key(decay_di_type(prev_di));
               int visit_idx = container_ty ? static_cast<int>(idx) : -1;
               if (visit_key)
@@ -199,15 +234,20 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
           bool is_array = false;
           if (!SVFUtil::isa<ConstantInt>(d)) { // p[i] with a variable i
                                                // save i in mdata.
+            // case A: %q = getelementptr i8, ptr %p, i64 %n -> p[i]
+            //  and %q = getelementptr i8, ptr %p, i64 %n, i64, i64 3 ->
+            //  p[i]->f3
+            //  but  p->f3[i] is not tracked
             is_array = true;
             // this is for setLenDependency
-            mdata.addIndex(d);        // record the index value
+            mdata.addIndex(d);           // record the index value
             mdata.add_len_source(d, &p); // record the context as well
           } else if (gep_inst->getNumIndices() == 1) // pointer arithmetic
-            if (!SVFUtil::isa<ConstantInt>(d)) {
-              is_array = true;
-              mdata.addIndex(gep_inst); // record the gep instruction itself
-            }
+          {
+            // case B: %r = getelementptr i8, ptr %p, i64 16
+            is_array = true;
+            mdata.addIndex(gep_inst); // record the gep instruction itself
+          }
           if (is_array) {
             GEP_LOG("Setting is_array to true for {}\n", vNode->toString());
             mdata.setIsArray(true);
@@ -319,9 +359,6 @@ local_result_t transfer_function(const VFGNode *vNode, AccessType acNode,
 
       acNode.set_kind(AccessType::kind_e::read);
       ats.insert(acNode, vNode->getICFGNode());
-
-      // XXX: casting operations complitate things a lot. For the time
-      // being I just leave it.
 
       if (auto bitcastinst = SVFUtil::dyn_cast<BitCastInst>(inst)) {
         auto dst_typ = bitcastinst->getDestTy();

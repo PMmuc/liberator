@@ -1,23 +1,37 @@
 #include "AccessTypeHandler.h"
+#include "AccessType.h"
 #include "DebugInfoParser.hpp"
-#include "Instrumentation.h"
 #include "SVFIR/SVFIR.h"
 #include <SVF-LLVM/LLVMModule.h>
+#include <SVF-LLVM/LLVMUtil.h>
 #include <SVF-LLVM/ObjTypeInference.h>
+#include <SVFIR/SVFVariables.h>
 #include <Util/Casting.h>
+#include <Util/ExtAPI.h>
 #include <Util/GeneralType.h>
+#include <WPA/Andersen.h>
+#include <cstdint>
+#include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/BinaryFormat/Dwarf.h>
 #include <llvm/IR/Argument.h>
+#include <llvm/IR/CFG.h>
 #include <llvm/IR/DataLayout.h>
+#include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/GetElementPtrTypeIterator.h>
 #include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/InlineAsm.h>
+#include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/Operator.h>
 #include <llvm/IR/Type.h>
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/raw_ostream.h>
 
 #include "Config.h"
+#include "ValueMetadata.hpp"
 
 /// Defined in GlobalStruct.cpp. Declared here rather than including
 /// GlobalStruct.h, whose header-scope `using namespace SVF/SVFUtil` would make
@@ -25,48 +39,6 @@
 SVF::Andersen *global_struct_pta(SVF::SVFIR *pag);
 
 namespace {
-
-llvm::Type *deduce_type(llvm::Value *v) {
-  llvm::Type *t = nullptr;
-  if (auto AI = SVFUtil::dyn_cast<llvm::AllocaInst>(v)) {
-    t = AI->getAllocatedType();
-  } else if (auto *GEP = SVFUtil::dyn_cast<llvm::GetElementPtrInst>(v)) {
-    t = GEP->getResultElementType();
-  } else if (auto *ARG = SVFUtil::dyn_cast<llvm::Argument>(v)) {
-    // TODO: there is no easy way to find what type a pointer argument points
-    // to. We would need to find the uses of the function and determine the
-    // actual parameter types.
-    t = nullptr;
-  } else if (const auto *GLOBAL = SVFUtil::dyn_cast<llvm::GlobalVariable>(v)) {
-    t = GLOBAL->getValueType();
-  } else if (auto *CI = SVFUtil::dyn_cast<llvm::CallInst>(v)) {
-    llvm::Function *callee = CI->getCalledFunction();
-    if (callee && !callee->isDeclaration()) {
-      // TODO: This can also be a pointer, where we would need to search for
-      // the underlying type again. So this is recursive
-      t = callee->getType();
-    }
-  }
-  return t;
-}
-
-llvm::Type *deduce_argument_type(llvm::Argument *arg) {
-  llvm::Function *F = arg->getParent();
-  unsigned arg_index = arg->getArgNo();
-
-  for (auto user : F->users()) {
-    if (auto CI = SVFUtil::dyn_cast<CallBase>(user)) {
-      if (arg_index > CI->arg_size())
-        continue;
-      auto actual_arg = CI->getArgOperand(arg_index);
-      llvm::Value *stripped = actual_arg->stripPointerCasts();
-
-      return deduce_type(stripped);
-    }
-  }
-
-  return nullptr;
-}
 
 const Type *getPointedType(const Value *V, std::set<const Value *> &Vis) {
   if (!V)
@@ -112,6 +84,163 @@ const Type *getPointedType(const Value *V, std::set<const Value *> &Vis) {
   return nullptr;
 }
 
+llvm::DIDerivedType *as_indirection(llvm::DIType *t) {
+  if (liberator::is_indirection_tag(t->getTag()))
+    return dyn_cast_or_null<llvm::DIDerivedType>(t);
+
+  return nullptr;
+}
+
+llvm::DIType *di_pointee(llvm::DIType *t) {
+  auto *d = as_indirection(liberator::peel_di_qualifiers(t));
+  return d ? liberator::peel_di_qualifiers(d->getBaseType()) : nullptr;
+}
+llvm::DIType *get_pointed_di_type(const llvm::Value *ptr,
+                                  const llvm::DataLayout &dl,
+                                  std::set<const llvm::Value *> &vis);
+
+bool is_di_array(const llvm::DIType *t);
+
+bool di_matches_llvm(llvm::DIType *di, llvm::Type *ty,
+                     const llvm::DataLayout &dl) {
+  if (!di || !ty || !ty->isSized())
+    return false;
+  if (llvm::isa<llvm::StructType>(ty) && !as_indirection(di)) {
+    return liberator::compare_types(di, ty, dl);
+  }
+  return di->getSizeInBits() != 0 &&
+         di->getSizeInBits() == dl.getTypeAllocSizeInBits(ty);
+}
+llvm::DIType *gep_pointed_di_type(const llvm::GEPOperator *gep,
+                                  const llvm::DataLayout &dl,
+                                  std::set<const llvm::Value *> &vis) {
+  llvm::DIType *cur = get_pointed_di_type(gep->getPointerOperand(), dl, vis);
+
+  if (!cur || is_di_array(cur) || gep->getNumIndices() == 0)
+    return cur;
+
+  // First index can be pointer arithmetic -> if !0 it is not a single object
+  // -> therefore must be array or pointer arithmetic -> treated as array by
+  // isAnArray
+  auto *first = llvm::dyn_cast<llvm::ConstantInt>(gep->idx_begin()->get());
+  if (!first || !first->isZero())
+    return nullptr;
+
+  // for getelementptr i8, ptr %s, i64 8 the offset can not be mapped back to a
+  // member because of i8
+  if (!di_matches_llvm(cur, gep->getSourceElementType(), dl))
+    return nullptr;
+
+  // now walk the gep indices and types
+  auto it = llvm::gep_type_begin(gep);
+  ++it; // index 1 is handled above
+  for (auto idx = gep->idx_begin() + 1; idx != gep->idx_end(); ++idx, ++it) {
+    if (is_di_array(cur))
+      return cur;
+    llvm::StructType *st = it.getStructTypeOrNull();
+    auto *ci = llvm::dyn_cast<llvm::ConstantInt>(idx->get());
+    if (!st || !ci)
+      return nullptr;
+    cur = liberator::peel_di_qualifiers(liberator::next_di_field(
+        cur, st, ci->getZExtValue(), it.getIndexedType(), dl));
+    if (!cur)
+      return nullptr;
+  }
+  return cur;
+}
+
+bool is_di_array(const llvm::DIType *t) {
+  auto *c = llvm::dyn_cast_or_null<llvm::DICompositeType>(t);
+  return c && c->getTag() == llvm::dwarf::DW_TAG_array_type;
+}
+
+llvm::DIType *get_pointed_di_type(const llvm::Value *ptr,
+                                  const llvm::DataLayout &dl,
+                                  std::set<const llvm::Value *> &vis) {
+  if (!ptr || !vis.insert(ptr).second)
+    return nullptr;
+
+  if (llvm::isa<llvm::BitCastOperator>(ptr) ||
+      llvm::isa<llvm::AddrSpaceCastOperator>(ptr))
+    return get_pointed_di_type(llvm::cast<llvm::Operator>(ptr)->getOperand(0),
+                               dl, vis);
+
+  // local variables
+  if (auto *ai = llvm::dyn_cast<llvm::AllocaInst>(ptr)) {
+    for (auto rec : llvm::findDVRDeclares(const_cast<llvm::AllocaInst *>(ai))) {
+      if (llvm::DILocalVariable *var = rec->getVariable())
+        return liberator::peel_di_qualifiers(var->getType());
+    }
+    // no dwarf debug info could be found for this local var.
+    return nullptr;
+  }
+
+  if (auto gv = llvm::dyn_cast<llvm::GlobalVariable>(ptr)) {
+    llvm::SmallVector<llvm::DIGlobalVariableExpression *, 1> global_vars;
+    gv->getDebugInfo(global_vars);
+    for (auto *global_expr : global_vars)
+      if (llvm::DIGlobalVariable *var = global_expr->getVariable())
+        return liberator::peel_di_qualifiers(var->getType());
+    return nullptr;
+  }
+
+  if (auto *li = llvm::dyn_cast<llvm::LoadInst>(ptr))
+    return di_pointee(get_pointed_di_type(li->getPointerOperand(), dl, vis));
+
+  if (auto *arg = llvm::dyn_cast<llvm::Argument>(ptr))
+    return di_pointee(liberator::restore_param_di_type(arg));
+
+  if (auto *cb = llvm::dyn_cast<llvm::CallBase>(ptr))
+    return di_pointee(liberator::restore_ret_di_type(cb->getCalledFunction()));
+  if (auto *gep = llvm::dyn_cast<llvm::GEPOperator>(ptr))
+    return gep_pointed_di_type(gep, dl, vis);
+  if (auto *phi = llvm::dyn_cast<llvm::PHINode>(ptr)) {
+    for (const llvm::Value *v : phi->incoming_values()) {
+      // take the first value as type if it can be determined
+      if (llvm::DIType *t = get_pointed_di_type(v, dl, vis))
+        return t;
+    }
+    return nullptr;
+  }
+  if (auto *select = llvm::dyn_cast<llvm::SelectInst>(ptr)) {
+    if (llvm::DIType *t = get_pointed_di_type(select->getTrueValue(), dl, vis))
+      return t;
+    return get_pointed_di_type(select->getFalseValue(), dl, vis);
+  }
+
+  return nullptr;
+}
+
+bool DIIsAnArray(const CallBase *c) {
+  Module *m = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
+  const DataLayout &data_layout = m->getDataLayout();
+
+  const Value *dest = c->getArgOperand(0);
+
+  uint64_t obj_size = 0;
+
+  std::set<const Value *> vis;
+
+  if (llvm::DIType *obj = get_pointed_di_type(dest, data_layout, vis)) {
+    if (is_di_array(obj))
+      return true;
+    obj_size = obj->getSizeInBits();
+  } else {
+    std::set<const Value *> vis_llvm;
+    // if we lucky we can just check the llvm type to be an array
+    if (const Type *t = getPointedType(dest, vis_llvm)) {
+      if (t->isArrayTy())
+        return true;
+      obj_size = data_layout.getTypeStoreSize(const_cast<Type *>(t));
+    }
+  }
+  auto *cpy = dyn_cast<ConstantInt>(c->getArgOperand(2));
+  if (obj_size == 0 || !cpy)
+    return true;
+
+  return obj_size != cpy->getZExtValue();
+}
+
 bool isAnArray(const CallBase *c) {
   // I assume c is at least a memcpy-like function
 
@@ -129,6 +258,7 @@ bool isAnArray(const CallBase *c) {
   // argument 0 should be the dst pointer
   Value *dest = c->getArgOperand(0);
   std::set<const Value *> Vis;
+  // FIXME: this needs a fix
   const Type *base_tye = getPointedType(dest, Vis);
 
   if (base_tye) {
@@ -177,292 +307,53 @@ string_view di_tag_name(unsigned tag) {
   }
 }
 
-/**
- * @AccessType at -
- */
-void return_object_type(const AccessType &at, const ICFGNode *icfg_node,
-                        const llvm::Type *legacy_t) {
-  auto module_set = LLVMModuleSet::getLLVMModuleSet();
-  auto *pag = SVF::SVFIR::getPAG();
-  llvm::Module *mod = module_set->getMainLLVMModule();
-  const llvm::DataLayout &dl = mod->getDataLayout();
-
-  auto type_str = [](const llvm::Type *ty) {
-    if (!ty)
-      return std::string("<null>");
-    if (const auto *st = llvm::dyn_cast<llvm::StructType>(ty))
-      // st->getName() asserts on anonymous structs.
-      if (!st->isLiteral() && st->hasName())
-        return st->getName().str();
-    std::string buf;
-    llvm::raw_string_ostream os(buf);
-    ty->print(os);
-    return os.str();
-  };
-
-  auto llvm_bytes = [&dl](const llvm::Type *ty) -> uint64_t {
-    if (!ty || !ty->isSized())
-      return 0;
-
-    return dl.getTypeAllocSize(const_cast<llvm::Type *>(ty)).getFixedValue();
-  };
-
-  const llvm::Type *dwarf_t = nullptr;
-  llvm::DIType *raw_di = at.get_di_type();
-  llvm::DIType *di = liberator::decay_di_type(raw_di);
-  if (!di) {
-    llvm::outs() << "[TYPE] no dwarf found. CAUSE: "
-                 << (raw_di ? "decayed" : "no DIType on AccessType") << ")\n";
-  } else {
-    llvm::StringRef di_name = di->getName();
-    llvm::outs() << "[TYPE] dwarf"
-                 << (di_name.empty() ? llvm::StringRef("<anonymous>") : di_name)
-                 << " tag=" << di_tag_name(di->getTag())
-                 << " size=" << (di->getSizeInBits() / 8) << "Bytes\n";
-    if (auto *comp = llvm::dyn_cast<llvm::DICompositeType>(di)) {
-      unsigned idx = 0;
-      for (llvm::DINode *e : comp->getElements()) {
-        auto *member = llvm::dyn_cast_or_null<llvm::DIDerivedType>(e);
-        if (!member || member->getTag() != llvm::dwarf::DW_TAG_member)
-          continue;
-        llvm::DIType *peeled = peel_di_qualifiers(member->getBaseType());
-        llvm::StringRef peeled_name =
-            peeled ? peeled->getName() : llvm::StringRef();
-        llvm::outs() << "[TYPE] [" << ++idx << "] " << member->getName()
-                     << " : "
-                     << (peeled_name.empty() ? llvm::StringRef("<anonymous>")
-                                             : peeled_name)
-                     << " (" << (member->getSizeInBits() / 8)
-                     << "Bytes at offset " << (member->getOffsetInBits() / 8)
-                     << ")\n";
-      }
-    }
-
-    dwarf_t = resolve_di_type_to_llvm(di, *mod);
-    llvm::outs() << "[TYPE] -> llvm: " << type_str(dwarf_t) << " ("
-                 << llvm_bytes(dwarf_t) << " Bytes\n";
-  }
-
-  // Fallback to SVF's type system
-  SVF::Andersen *ander = global_struct_pta(pag);
-  const llvm::Type *svf_t = nullptr;
-  uint64_t svf_best = 0;
-  unsigned nobj = 0;
-
-  for (const ICFGNode *n : *icfg_node->getBB()) {
-    const llvm::Value *v = module_set->getLLVMValue(n);
-    const auto *ret_inst = llvm::dyn_cast_or_null<llvm::ReturnInst>(v);
-    if (!ret_inst)
-      continue;
-    const llvm::Value *ret_val = ret_inst->getReturnValue();
-    if (!ret_val || !module_set->hasValueNode(ret_val))
-      continue;
-
-    SVF::NodeID ret_node_id = module_set->getValueNode(ret_val);
-    if (!pag->hasGNode(ret_node_id))
-      continue;
-
-    for (SVF::NodeID target_id : ander->getPts(ret_node_id)) {
-      if (!pag->hasGNode(target_id))
-        continue;
-      SVF::SVFVar *obj = pag->getGNode(target_id);
-      ++nobj;
-
-      if (!module_set->hasLLVMValue(obj)) {
-        llvm::outs() << "[TYPE] pts obj with id: " << target_id
-                     << " has no llvm value - probably a blackhole/dummy\n";
-        continue;
-      }
-
-      const llvm::Value *obj_value = module_set->getLLVMValue(obj);
-      const char *kind = "other ";
-      // NOTE: an object in SVF can only be a stack, global variable, function
-      // or result of malloc (heap).
-      if (llvm::isa<llvm::AllocaInst>(obj_value))
-        kind = "alloca";
-      else if (llvm::isa<llvm::GlobalVariable>(obj_value))
-        kind = "global";
-      else if (llvm::isa<Function>(obj_value)) {
-        kind = "function";
-      } else if (llvm::isa<llvm::CallBase>(obj_value))
-        kind = "heap-call";
-
-      const llvm::Type *obj_type =
-          module_set->getTypeInference()->inferObjType(obj_value);
-      llvm::outs() << "[TYPE] pts obj " << target_id << " " << kind
-                   << " svf-inferred: " << type_str(obj_type) << " ("
-                   << llvm_bytes(obj_type) << "Bytes\n";
-
-      if (llvm_bytes(obj_type) >= svf_best) {
-        svf_best = llvm_bytes(obj_type);
-        svf_t = obj_type;
-      }
-    }
-  }
-
-  // chose between dwarf and svf_t type
-  const llvm::Type *chosen = dwarf_t ? dwarf_t : svf_t;
-  string_view via = dwarf_t ? "dwarf" : (svf_t ? "svf" : "none");
-  llvm::outs() << "[TYPE] objects=" << nobj << " chosen=" << type_str(chosen)
-               << " via=" << via << "\n";
-
-  llvm::outs() << "[TYPE] legacy=" << type_str(legacy_t);
-  if (!legacy_t)
-    llvm::outs() << " (legacy FAILED)";
-  else if (chosen == legacy_t)
-    llvm::outs() << " (agree)";
-  else
-    llvm::outs() << " (DIFFER)";
-  llvm::outs() << "\n";
-
-  if (dwarf_t && svf_t && llvm_bytes(dwarf_t) != llvm_bytes(svf_t)) {
-    llvm::outs() << "[TYPE] size mismatch dwarf=" << llvm_bytes(dwarf_t)
-                 << "Bytes svf=" << llvm_bytes(svf_t)
-                 << "Bytes - likely a cast through a handle type\n";
-  }
-
-  llvm::outs().flush();
-}
 void addWrteToAllFields(ValueMetadata &mdata, AccessType atNode,
                         const ICFGNode *icfgNode) {
 
-  // outs() << "addWrteToAllFields\n";
-  // // outs() << "type: " << *atNode.getType() << "\n";
-  // outs() << "node: " << atNode.toString() << "\n";
-  // if (atNode.getOriginalCastType() == nullptr)
-  //     outs() << "PROBABLY not from a cast\n";
-  // else {
-  //     outs() << "ORIGINAL TYPE BEFORE CAST\n";
-  //     outs() << *atNode.getOriginalCastType() << "\n";
-  // }
-
-  auto moduleSet = LLVMModuleSet::getLLVMModuleSet();
-  auto pag = SVF::SVFIR::getPAG();
-
-  // FIXME: We assume that the code will contain a return instruction. We should
-  // not assume that
-
-  // TODO: Find an efficient solution that finds the type of the underlying
-  // using the use def chain
-  const llvm::Type *t = nullptr;
-  Value *base = nullptr;
-
-  // Singleton: just returns the already-analysed instance. Ask GlobalStruct
-  // rather than AndersenWaveDiff::createAndersenWaveDiff() - GlobalStruct is
-  // itself an Andersen now, and createAndersenWaveDiff() would build and solve
-  // a second, independent one.
-  SVF::Andersen *ander = global_struct_pta(pag);
-
-  // use points to analysis to find the type of the return type of the current
-  // function
-  for (const ICFGNode *icfg : *icfgNode->getBB()) {
-    auto inst = moduleSet->getLLVMValue(icfg);
-    auto ret_inst = SVFUtil::dyn_cast<llvm::ReturnInst>(inst);
-    if (!ret_inst)
-      continue;
-
-    Value *ret_val = ret_inst->getReturnValue();
-
-    // if ret void skip
-    if (!ret_val)
-      continue;
-    auto ret_node_id = moduleSet->getValueNode(ret_val);
-    if (pag->hasGNode(ret_node_id)) {
-      auto node_id = pag->getGNode(ret_node_id);
-
-      // Get all the objects that the return value can point to, in a NodeBS
-      // format (list).
-      const SVF::PointsTo &pts = ander->getPts(node_id->getId());
-
-      // go through each object the points to set can point to.
-      for (SVF::NodeID target_id : pts) {
-        // can be address-taken or top-level variable
-        if (!pag->hasGNode(target_id))
-          continue;
-
-        auto node = pag->getGNode(target_id);
-        // not every SVFVar has a corresponding llvm value.
-        if (!moduleSet->hasLLVMValue(node))
-          continue;
-
-        if (auto *target_obj = moduleSet->getLLVMValue(node)) {
-          // actual allocation site
-          if (auto *AI = llvm::dyn_cast<llvm::AllocaInst>(target_obj)) {
-            t = AI->getAllocatedType();
-            SVFUtil::outs() << "Points to Alloca of type: ";
-            AI->getAllocatedType()->print(llvm::outs());
-            SVFUtil::outs() << "\n";
-          } else if (auto *GV = llvm::dyn_cast<llvm::GlobalValue>(target_obj)) {
-            SVFUtil::outs() << "Points to Global of type: ";
-            t = GV->getValueType();
-            GV->getValueType()->print(llvm::outs());
-            SVFUtil::outs() << "\n";
-          } else if (auto *F = SVFUtil::dyn_cast<llvm::Function>(target_obj)) {
-
-          } else if (auto *CI = SVFUtil::dyn_cast<llvm::CallBase>(target_obj)) {
-            // TODO: Forward logic. Look for constructor for new, look for GEP
-            // for malloc
-            for (auto &U : CI->uses()) {
-              for (auto it = U->uses().begin(); it != U->uses().end(); ++it) {
-                if (auto *GEP =
-                        SVFUtil::dyn_cast<llvm::GetElementPtrInst>(it->get())) {
-                  // TODO: check if a use can also be an index in GEP
-                  // instruction
-                  t = GEP->getResultElementType();
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // strip GEP that have only zero indices to get to the definition of the
-    // base pointer.
-    base = ret_val->stripPointerCasts();
-    auto t = deduce_type(base);
-    if (!t)
-      deduce_type(ret_val);
-  }
-
-  // return_object_type(atNode, icfgNode, t);
-
-  if (!t) {
-    SVFUtil::errs()
-        << "[ERROR] addWrteToAllFields: Type of Function: "
-        << icfgNode->getFun()->getName()
-        << " - could not be deduced. Maybe return type is an argument.\n";
+  auto type = atNode.get_di_type();
+  if (type == nullptr)
     return;
-  }
-  /*
-    if (atNode.getOriginalCastType() != nullptr) {
-      t = atNode.getOriginalCastType();
-    } else {
-      t = atNode.getType();
+
+  if (auto derv = dyn_cast<DIDerivedType>(type)) {
+    if (is_indirection_tag(type->getTag())) {
+      AccessType tmpAcNode = atNode;
+      tmpAcNode.addField(-1);
+      tmpAcNode.set_kind(AccessType::kind_e::write);
+      mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
     }
-    */
+  }
+
+  if (auto st = SVFUtil::dyn_cast<DICompositeType>(type)) {
+    for (int i = 0; i < st->getElements().size(); ++i) {
+      AccessType atField = atNode;
+      atField.set_kind(AccessType::kind_e::write);
+      atField.addField(i);
+      if (auto f = llvm::dyn_cast_or_null<DIType>(st->getElements()[i])) {
+        atField.set_type(f);
+      }
+      mdata.get_access_type_set().insert(atField, icfgNode);
+    }
+  }
 
   // auto t = atNode.getType();
-  // FIXME: fix the opaque pointer problem
-  if (auto pt = SVFUtil::dyn_cast<llvm::PointerType>(t)) {
-
+  /*if (auto pt = SVFUtil::dyn_cast<llvm::PointerType>(type)) {
     AccessType tmpAcNode = atNode;
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::write);
     mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
   }
 
+  llvm::Type *t;
   if (auto st = SVFUtil::dyn_cast<llvm::StructType>(t)) {
     for (int f = 0; f < st->getNumElements(); f++) {
       auto ft = st->getElementType(f);
       AccessType atField = atNode;
       atField.set_kind(AccessType::kind_e::write);
       atField.addField(f);
-      // FIXME: add di type for that struct element
-      atField.set_llvm_type(ft, nullptr);
+      atField.set_type(struct_to_di(st, ));
       mdata.get_access_type_set().insert(atField, icfgNode);
     }
-  }
+  }*/
 }
 
 bool handlerDispatcher(ValueMetadata &mdata, const std::string &fun,
@@ -470,6 +361,7 @@ bool handlerDispatcher(ValueMetadata &mdata, const std::string &fun,
                        int param_num, AccessType atNode, H_SCOPE h_scope,
                        liberator::Path *path) {
   std::string suffix = "*";
+  bool found = false;
   for (auto f : accessTypeHandlers) {
     std::string fk = f.first;
     auto handler = f.second;
@@ -479,11 +371,19 @@ bool handlerDispatcher(ValueMetadata &mdata, const std::string &fun,
         fun.size() >= fk_size) {
       std::string fk_clean = fk.substr(0, fk_size);
       std::string fun_clean = fun.substr(0, fk_size);
-      if (fk_clean == fun_clean)
+      if (fk_clean == fun_clean) {
         handler(mdata, fun, icfgNode, cs, param_num, atNode, h_scope, path);
+        found = true;
+      }
     } else if (fun == f.first) {
       handler(mdata, fun, icfgNode, cs, param_num, atNode, h_scope, path);
+      found = true;
     }
+  }
+  if (!found) {
+    auto handler = handler_from_annotation(fun);
+    if (handler != nullptr)
+      handler(mdata, fun, icfgNode, cs, param_num, atNode, h_scope, path);
   }
   return true;
 }
@@ -508,6 +408,9 @@ bool hasHandlerDispatcher(ValueMetadata *mdata, const std::string &fun,
       return true;
     }
   }
+  auto handler = handler_from_annotation(fun);
+  if (handler != nullptr)
+    return true;
   return false;
 }
 
@@ -577,7 +480,7 @@ bool memcpy_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
-
+  // memcpy(void*, void*, int count)
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
 
   // outs() << icfgNode->toString() << "\n";
@@ -648,7 +551,7 @@ bool memset_handler(ValueMetadata &mdata, std::string fun_name,
                     const ICFGNode *icfgNode, const CallICFGNode *cs,
                     int param_num, AccessType atNode, H_SCOPE scope,
                     Path *path) {
-
+  // memset(void*, int offset, int size);
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
 
   // outs() << "memset_hander\n";
@@ -660,9 +563,12 @@ bool memset_handler(ValueMetadata &mdata, std::string fun_name,
     tmpAcNode.addField(-1);
     tmpAcNode.set_kind(AccessType::kind_e::read);
     mdata.get_access_type_set().insert(tmpAcNode, icfgNode);
-    mdata.setIsArray(true);
-
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
+    auto c = SVFUtil::dyn_cast<CallBase>(llvm_val);
+    // this change should allow, Liberator to differentiate between
+    // calls where the destination pointer is an array or not
+    mdata.setIsArray(isAnArray(c));
+
     auto i = SVFUtil::dyn_cast<CallBase>(llvm_val);
     // Get parameter n from memset call which is the number of bytes
     // to set the memory to.
@@ -704,6 +610,37 @@ bool calloc_handler(ValueMetadata &mdata, std::string fun_name,
     return false;
   }
 
+  return false;
+}
+
+// realloc(void*, size_t)
+bool realloc_handler(ValueMetadata &mdata, std::string fun_name,
+                     const ICFGNode *icfgNode, const CallICFGNode *cs,
+                     int param_num, AccessType atNode, H_SCOPE scope,
+                     Path *path) {
+  // as in malloc returned pointer is a new object.
+  if (param_num == -1 && scope & C_RETURN) {
+    atNode.set_kind(AccessType::kind_e::create);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    return true;
+  }
+  // the old pointer invalidates the new pointer
+  // therefore we log a read and delete
+  if (param_num == 0 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    atNode.set_kind(AccessType::kind_e::read);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    atNode.set_kind(AccessType::kind_e::del);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    return false;
+  }
+
+  // the size
+  if (param_num == 1 && atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    atNode.set_kind(AccessType::kind_e::read);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    mdata.setMallocSize(true);
+    return false;
+  }
   return false;
 }
 
@@ -770,6 +707,101 @@ bool strdup_handler(ValueMetadata &mdata, std::string fun_name,
   return false;
 }
 
+// This function resolves the annotations for function fun in the extapi.bc.
+// With this information we can resolve the correct position of the allocSize
+// parameter. All it does is find all "Arg" in the code.
+static vector<int> annotated_size_args(const std::string &fun) {
+  std::vector<int> args;
+
+  const FunObjVar *f = LLVMUtil::getFunObjVar(fun);
+
+  if (!f)
+    return args;
+
+  // this will get a comma separated list of Args that belong to AllocSize
+  // annotation in extapi
+  std::string annotations =
+      ExtAPI::getExtAPI()->getExtFuncAnnotation(f, "AllocSize:");
+  for (size_t arg = annotations.find("Arg"); arg != std::string::npos;
+       arg = annotations.find("Arg", arg + 3)) {
+    args.push_back(std::stoi(annotations.substr(arg + 3)));
+  }
+  return args;
+}
+
+// looks up if param_num can be found in the size_args array. If it does
+// that parameter on that position is a MallocSize parameter.
+static bool is_annotated_size_arg(const std::string &fun, int param_num) {
+  auto size_args = annotated_size_args(fun);
+  return std::find(size_args.begin(), size_args.end(), param_num) !=
+         size_args.end();
+}
+static size_t is_annotated_old_ptr(const std::string &fun) {
+  const FunObjVar *f = LLVMUtil::getFunObjVar(fun);
+
+  if (!f)
+    return false;
+  std::string annotations =
+      ExtAPI::getExtAPI()->getExtFuncAnnotation(f, "OldPtr:");
+  auto pos = annotations.find("Arg");
+
+  return pos != std::string::npos ? std::stoi(annotations.substr(pos + 3))
+                                  : std::string::npos;
+}
+bool annotated_alloc_handler(ValueMetadata &mdata, std::string fun_name,
+                             const ICFGNode *icfgNode, const CallICFGNode *cs,
+                             int param_num, AccessType atNode, H_SCOPE scope,
+                             Path *path) {
+  if (param_num == -1 && scope & C_RETURN) {
+    atNode.set_kind(AccessType::kind_e::create);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    return true;
+  }
+  if (atNode.get_num_fields() == 0 && scope & C_PARAM &&
+      is_annotated_size_arg(fun_name, param_num)) {
+    atNode.set_kind(AccessType::kind_e::read);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    mdata.setMallocSize(true);
+  }
+
+  return false;
+}
+bool annotated_realloc_handler(ValueMetadata &mdata, std::string fun_name,
+                               const ICFGNode *icfgNode, const CallICFGNode *cs,
+                               int param_num, AccessType atNode, H_SCOPE scope,
+                               Path *path) {
+
+  // does the same thing as annotated_alloc_handler
+  bool r = annotated_alloc_handler(mdata, fun_name, icfgNode, cs, param_num,
+                                   atNode, scope, path);
+
+  if (atNode.get_num_fields() == 0 && scope & C_PARAM &&
+      is_annotated_old_ptr(fun_name) == param_num) {
+    atNode.set_kind(AccessType::kind_e::read);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    atNode.set_kind(AccessType::kind_e::del);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+  }
+
+  return r;
+}
+
+static handler_t handler_from_annotation(const std::string &name) {
+  const FunObjVar *f = LLVMUtil::getFunObjVar(name);
+  if (!f)
+    return nullptr;
+
+  ExtAPI *ext = ExtAPI::getExtAPI();
+  if (ext->is_realloc(f))
+    return annotated_realloc_handler;
+  if (ext->is_alloc(f))
+    return annotated_alloc_handler;
+  if (ext->is_memcpy(f))
+    return memcpy_handler;
+  if (ext->is_memset(f))
+    return memset_handler;
+  return nullptr;
+}
 /**
 See explanation in AccessType.cpp function: predefined_access_type_dispatcher
 
@@ -790,6 +822,7 @@ AccessTypeHandlerMap accessTypeHandlers = {
     {"llvm.memset.*", memset_handler},
     {"calloc", calloc_handler},
     {"posix_memalign", posix_memalign_handler},
+    {"realloc", realloc_handler},
     // {"__asprintf_chk", &asprintf_handler},
     {"strdup", strdup_handler}};
 } // namespace liberator

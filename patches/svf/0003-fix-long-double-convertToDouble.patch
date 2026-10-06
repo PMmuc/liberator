@@ -1,0 +1,17 @@
+--- a/svf-llvm/include/SVF-LLVM/LLVMUtil.h
++++ b/svf-llvm/include/SVF-LLVM/LLVMUtil.h
+@@ -64,7 +64,13 @@ inline double getDoubleValue(const ConstantFP* fpValue)
+                 &semantics == &llvm::APFloat::IEEEquad() ||
+                 &semantics == &llvm::APFloat::x87DoubleExtended())
+         {
+-            dval = fpValue->getValueAPF().convertToDouble();
++            // convertToDouble() asserts unless the semantics are exactly
++            // representable as a double (fails for x87 / quad), so round first
++            llvm::APFloat apf = fpValue->getValueAPF();
++            bool losesInfo = false;
++            apf.convert(llvm::APFloat::IEEEdouble(),
++                        llvm::APFloat::rmNearestTiesToEven, &losesInfo);
++            dval = apf.convertToDouble();
+         }
+         else
+         {

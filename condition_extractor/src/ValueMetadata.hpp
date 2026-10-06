@@ -27,8 +27,8 @@ class ValueMetadata {
   const llvm::Value *val;
   // for an array this stores the values to the indices from the GEP handling.
   std::set<llvm::Value *> indexes;
-  // this is set by handler memset, and by GEP handler if it is an array access.
-  // stores the GEP instruction and the path that lead to it.
+  // entries are added memset, memcpy and by GEP handler, if it is an
+  // array access. stores the GEP instruction and the path that lead to it.
   std::vector<std::pair<llvm::Value *, Path>> length_sources;
   friend std::string to_string(const ValueMetadata &, bool);
   friend std::string print_summary(const ValueMetadata &, bool);

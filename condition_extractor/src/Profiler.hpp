@@ -6,13 +6,14 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits.h>
 #include <map>
 #include <sstream>
 #include <string>
 
 // Profile macro for release mode only
-#define PROFILE_CONCAT_INNER(a, b) a##b
-#define PROFILE_CONCAT(a, b) PROFILE_CONCAT_INNER(a, b)
+#define PROFILE_CONCATINNER(a, b) a##b
+#define PROFILE_CONCAT(a, b) PROFILE_CONCATINNER(a, b)
 
 #if defined(NDEBUG) && defined(PROFILING)
 #define PROFILE_SCOPE(name)                                                    \
@@ -56,8 +57,8 @@ public:
       out << "timestamp,target,label,key,count,total_ms,avg_ms,min_ms,max_ms"
           << "\n";
 
-    auto now = std::chrono::system_clock::to_time_t(
-        std::chrono::system_clock::now());
+    auto now =
+        std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     char timestamp[32];
     std::strftime(timestamp, sizeof(timestamp), "%Y-%m-%dT%H:%M:%S",
                   std::localtime(&now));

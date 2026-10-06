@@ -30,14 +30,41 @@
 
 using namespace SVF;
 
+// How many nodes a maximal considered in the backward_slice.
 static constexpr unsigned int MAX_SLICE_NODES = 10000;
+// How many fixpoint iterations in process_scc before returning
 static constexpr unsigned int MAX_FIXPOINT_ITERATIONS = 3;
+// How many depth fields are tracked before returning.
 static constexpr unsigned int MAX_FIELD_DEPTH = 6;
+// How many indirect callsites are merged maximally for function pointers.
+static constexpr size_t MAX_INDIRECT_TARGETS = 4;
+// How many maximal contexts are saved before returning
+// Limits the number for recursive functions.
+static constexpr unsigned int MAX_LEN_CTX_DEPTH = 8;
 static constexpr size_t MAX_BAD_AT_REPORTS = 200;
 static constexpr size_t MAX_REPORTS_PER_FORMAL = 5;
-static constexpr size_t MAX_INDIRECT_TARGETS = 4;
+
+// type matching in have_compatible_types
+// e_reject - types do not match
+// e_match - types match
+// e_is_void - types are void -> look up policy
+enum class matching_e { e_reject, e_match, e_is_void };
+// accept - void types are accepted and traced.
+// old_liberator - void types are all rejected.
+// cut - void types are only rejected for paths with more than 1 field
+enum class void_policy_e { accept, old_liberator, cut };
 
 namespace {
+// get void policy
+void_policy_e get_void_policy() {
+  string_view policy = config_t::instance()->void_policy;
+
+  if (policy == "cut")
+    return void_policy_e::cut;
+  if (policy == "old")
+    return void_policy_e::old_liberator;
+  return void_policy_e::accept;
+}
 
 // malloc 8-byte header, rounded up to 16
 size_t chunk(size_t n) {
@@ -71,6 +98,15 @@ bool returns_pointer(const FunObjVar *f) {
       LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(f));
 
   return llvm_fun && llvm_fun->getReturnType()->isPointerTy();
+}
+
+static bool is_formal_pointer_type(const VFGNode *n) {
+  auto *fp = SVFUtil::dyn_cast<FormalParmVFGNode>(n);
+  if (!fp)
+    return false;
+  const auto v =
+      LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(fp->getParam());
+  return v && v->getType()->isPointerTy();
 }
 
 /**
@@ -131,31 +167,35 @@ static pair<string, unsigned> di_shape_id(llvm::DIType *di) {
 /**
  * type matcher: Tries to match di types of callee and caller.
  */
-bool have_compatible_types(llvm::DIType *prefix_di, llvm::DIType *suffix_di,
-                           liberator::compose_instr_t &ci,
-                           unsigned prefix_extra_depth) {
+matching_e have_compatible_types(llvm::DIType *prefix_di,
+                                 llvm::DIType *suffix_di,
+                                 liberator::compose_instr_t &ci,
+                                 unsigned prefix_extra_depth) {
+  if (!prefix_di || !suffix_di)
+    ci.di_absent++;
+
   auto prefix = di_shape_id(prefix_di);
   auto suffix = di_shape_id(suffix_di);
 
   prefix.second += prefix_extra_depth;
   if (prefix.first == "VO" || suffix.first == "VO") {
     ci.di_void++;
-    return true;
+    return matching_e::e_is_void;
   }
 
   if (prefix.first.empty() || suffix.first.empty()) {
     ci.di_unnamed++;
     ci.di_undecidable++;
-    return false;
+    return matching_e::e_reject;
   }
 
   if (prefix == suffix) {
     ci.di_match++;
-    return true;
+    return matching_e::e_match;
   }
 
   ci.di_reject++;
-  return false;
+  return matching_e::e_reject;
 }
 /**
  * Returns the DIType of the parameter if a DILocalVariable record exists for
@@ -250,7 +290,177 @@ size_t rss_mib() {
   f >> total >> resident;
   return resident * static_cast<size_t>(sysconf(_SC_PAGESIZE)) / (1024 * 1024);
 }
+std::set<const VFGNode *> getDefinitionSetCtx(const VFGNode *n,
+                                              liberator::Path *path_in) {
 
+  std::set<const VFGNode *> definitions;
+
+  std::set<const VFGNode *> visited;
+  std::vector<const VFGNode *> worklist;
+
+  liberator::Path path = *path_in;
+
+  // outs() << "n: " << n->toString() << "\n";
+
+  worklist.push_back(n);
+  while (!worklist.empty()) {
+    auto n = worklist.back();
+    worklist.pop_back();
+    if (visited.find(n) != visited.end())
+      continue;
+    int n_parents = 0;
+    for (auto in : n->getInEdges()) {
+      if (auto src = SVFUtil::dyn_cast<ActualParmVFGNode>(in->getSrcNode())) {
+        auto cs = src->getCallSite();
+        if (path.isCorrect(cs)) {
+          path.popFrame();
+          // outs() << "This is correct!!!\n";
+        } else
+          continue;
+      }
+      // outs() << in->toString() << "\n";
+
+      auto pn = in->getSrcNode();
+      worklist.push_back(pn);
+      n_parents++;
+    }
+    // Maybe select some classes, e.g., alloca, param
+    if (n_parents == 0)
+      definitions.insert(n);
+    visited.insert(n);
+  }
+
+  return definitions;
+}
+std::set<const VFGNode *> getDefinitionSet(const VFGNode *n) {
+  std::set<const VFGNode *> definitions;
+  std::set<const VFGNode *> visited;
+  std::vector<const VFGNode *> worklist;
+
+  worklist.push_back(n);
+  while (!worklist.empty()) {
+    auto n = worklist.back();
+    worklist.pop_back();
+    if (visited.find(n) != visited.end())
+      continue;
+    int n_parents = 0;
+    for (auto in : n->getInEdges()) {
+      auto pn = in->getSrcNode();
+      worklist.push_back(pn);
+      n_parents++;
+    }
+    // Maybe select some classes, e.g., alloca, param
+    if (n_parents == 0)
+      definitions.insert(n);
+    visited.insert(n);
+  }
+
+  return definitions;
+}
+/**
+ * This function tries to retrieve the source node from the value flow for
+ * the variable v.
+ *
+ * The idea is given that in -O0 every load is stored on the stack,
+ * everytime the index variable of the array is loaded, another SSA
+ * register is used. For example in the icmp instruction register %1 will be
+ * used in the comparision p1 < len1. And later in the array indexing arr[p1],
+ * register %2 will be used. They mean the same variable so we have to map them
+ * to it. We do that by first removing any zext/sext/trunc casts, and arithmetic
+ * with constant of the index variable. On the stripped variable we
+ * getUnderlyingObject to return the alloca instruction as each use shares the
+ * same stack variable.
+ * Note that for struct objects this can lead to false positives because alloca
+ * returns the struct object.
+ *
+ * @return the source node of v
+ */
+static const llvm::Value *get_cannonical_index(const llvm::Value *v) {
+  // We need to find the LOAD instruction that reads our value before
+  // we can call getUnderlyingObject otherwise the value stays unchanged.
+  while (true) {
+    // remove zext/sext/trunc
+    if (auto *c = dyn_cast<llvm::CastInst>(v)) {
+      v = c->getOperand(0);
+      continue;
+    }
+    if (auto b = dyn_cast<BinaryOperator>(v)) {
+      if (isa<Constant>(b->getOperand(1))) {
+        v = b->getOperand(0);
+        continue;
+      }
+      if (isa<Constant>(b->getOperand(0))) {
+        v = b->getOperand(1);
+        continue;
+      }
+    }
+    break;
+  }
+
+  if (auto *ld = SVFUtil::dyn_cast<llvm::LoadInst>(v))
+    return llvm::getUnderlyingObject(ld->getPointerOperand());
+
+  return v;
+}
+
+/**
+ * @param returns true if n walks by target.
+ */
+bool backward_flow(const VFGNode *n, const VFGNode *target, const SVFG &svfg) {
+  std::set<const VFGNode *> visited;
+  vector<const VFGNode *> worklist{n};
+  while (!worklist.empty()) {
+    const VFGNode *curr = worklist.back();
+    worklist.pop_back();
+
+    if (curr == target)
+      return true;
+
+    if (!visited.insert(curr).second)
+      continue;
+
+    for (auto e : curr->getInEdges()) {
+      const VFGNode *v = e->getSrcNode();
+
+      // do not track the pointer operand. we are only interested in the
+      // indirect value operand that gets loaded
+      if (SVFUtil::isa<LoadVFGNode>(curr) && e->isDirectVFGEdge())
+        continue;
+
+      // Store has edges for value and address; keep only the value
+      if (auto store = SVFUtil::dyn_cast<StoreVFGNode>(curr)) {
+        if (e->isDirectVFGEdge()) {
+          auto val = SVFUtil::dyn_cast<ValVar>(store->getSrcNode());
+          if (!val || !svfg.hasDefSVFGNode(val) ||
+              svfg.getDefSVFGNode(val) != v)
+            continue;
+        }
+      }
+      worklist.push_back(v);
+    }
+  }
+  return false;
+}
+
+/**
+ * Walks both sets and if one node is equal returns true
+ * @param s1 - first node
+ * @param s2 - second node
+ */
+static bool intersects(const std::set<const VFGNode *> &s1,
+                       const std::set<const VFGNode *> &s2) {
+  auto it1 = s1.begin(), it2 = s2.begin();
+  while (it1 != s1.end() && it2 != s2.end()) {
+    // because both are sorted by the same key, we can just compare them.
+    if (*it1 < *it2)
+      ++it1;
+    else if (*it1 > *it2)
+      ++it2;
+    else
+      return true;
+  }
+  return false;
+}
 } // namespace
 
 namespace liberator {
@@ -260,6 +470,7 @@ compose_instr_t cinstr;
 addr_instr_t addr_instr;
 instr_t instr;
 di_chain_instr_t di_instr;
+type_instr_t type_instr;
 
 std::set<const FunObjVar *> ind_collected_function_calls;
 
@@ -284,23 +495,6 @@ void compose_instr_t::dump(llvm::raw_ostream &os) const {
      << " di_reject=" << di_reject << " di_void=" << di_void
      << " undecidable=" << di_undecidable << " absent=" << di_absent
      << " unnamed=" << di_unnamed << ")\n";
-}
-
-/**
- * @param n the VFGNode
- * @return the LLVM type of n. If n does not correspond to an LLVM Value, get
- * the return type of f instead.
- */
-const llvm::Type *llvm_base_type(const VFGNode *n, const FunObjVar *f) {
-  auto module_set = LLVMModuleSet::getLLVMModuleSet();
-  const llvm::Value *v =
-      n->getValue() ? module_set->getLLVMValue(n->getValue()) : nullptr;
-  if (auto ai = dyn_cast<AllocaInst>(v))
-    return ai->getAllocatedType();
-  if (v)
-    if (auto *t = restore_llvm_type(v))
-      return t;
-  return dyn_cast<llvm::Function>(module_set->getLLVMValue(f))->getReturnType();
 }
 
 SVF::NodeID access_tracker_t::formal_id_of(const FunObjVar *f, int n) {
@@ -465,8 +659,25 @@ void access_tracker_t::merge_summary(VFGNode *succ, const CallICFGNode *cs,
         summ.effects.setIsFilePath(true);
       if (suffix_sum.effects.isMallocSize())
         summ.effects.setMallocSize(true);
-      for (auto &fp : suffix_sum.effects.get_len_source())
-        summ.effects.add_len_source(fp.first, &fp.second);
+      for (llvm::Value *idx : suffix_sum.effects.getIndexes())
+        summ.effects.addIndex(idx);
+
+      // if it is a self recursive function summ and suffix_sum alias.
+      // therefore if summ.effects.add_len_source pushes and reallocates
+      // the vector the fp points to unallocated memory leading to a crash.
+      // We don't need to update the len source for recursive functions anyway
+      // so just skip it.
+      if (&summ != &suffix_sum)
+        for (auto &fp : suffix_sum.effects.get_len_source()) {
+          // the path from get_len_source gets copied and appended with the
+          // current callsite.
+          Path ctx = fp.second;
+          if (ctx.getStackSize() >= MAX_LEN_CTX_DEPTH)
+            continue;
+          // we save callsites only if we have get_len_sources.
+          ctx.push_callsite(cs);
+          summ.effects.add_len_source(fp.first, &ctx);
+        }
     }
 
     for (const exit_state_t &exit : suffix_sum.exits) {
@@ -520,9 +731,27 @@ std::optional<AccessType> access_tracker_t::merge_access_type(
   if (!passed_di)
     passed_di = prefix.get_di_type();
 
-  if (!have_compatible_types(passed_di, callee_base_di, cinstr,
-                             addr_of ? 1 : 0))
+  auto matching =
+      have_compatible_types(passed_di, callee_base_di, cinstr, addr_of ? 1 : 0);
+
+  if (matching == matching_e::e_reject)
     return std::nullopt;
+
+  if (matching == matching_e::e_is_void) {
+    switch (get_void_policy()) {
+    case void_policy_e::old_liberator:
+      cinstr.void_dropped++;
+      return std::nullopt;
+    case void_policy_e::accept:
+      break;
+    case void_policy_e::cut:
+      if (suffix.get_num_fields() > 0) {
+        cinstr.void_dropped++;
+        return std::nullopt;
+      }
+      break;
+    }
+  }
 
   // stop for self referencing data structures after MAX_GEP_RECURSION_DEPTH
   // rounds.
@@ -556,7 +785,7 @@ std::optional<AccessType> access_tracker_t::merge_access_type(
   if (suffix.get_num_fields() > 0) {
     if (!suffix.get_di_type())
       di_instr.compose_null_di++;
-    out.set_llvm_type(suffix.get_llvm_type(), suffix.get_di_type());
+    out.set_type(suffix.get_di_type());
   }
 
   for (const auto &kv : suffix.get_visited_types()) {
@@ -571,7 +800,7 @@ const VFGNode *access_tracker_t::def_node_of(const SVFVar *var) {
   return (vv && svfg->hasDefSVFGNode(vv) ? svfg->getDefSVFGNode(vv) : nullptr);
 }
 
-bool access_tracker_t::summarize_from(const VFGNode *entry, const llvm::Type *t,
+bool access_tracker_t::summarize_from(const VFGNode *entry,
                                       llvm::DIType *di_type,
                                       func_summary_t &summ) {
   // We can use this to check for changes, because effects will grow in
@@ -708,6 +937,16 @@ bool access_tracker_t::summarize_from(const VFGNode *entry, const llvm::Type *t,
       worklist.push_back(ps);
     }
   }
+
+  // if the entry node was a pointer set the malloc size to false
+  // regardless what the analysis said because pointer types can not be
+  // malloc sizes.
+  if (is_formal_pointer_type(entry)) {
+    if (summ.effects.isMallocSize())
+      type_instr.cleared_is_malloc_sz++;
+    summ.effects.setMallocSize(false);
+  }
+
   return summ.effects.get_access_type_set().size() != org_effects ||
          summ.exits.size() != org_exists ||
          summ.effects.isArray() != org_is_array ||
@@ -854,11 +1093,11 @@ bool access_tracker_t::summarize_return(const FunObjVar *f) {
         for (unsigned i : ret_sum.return_params) {
           if (i < cs->getActualParms().size())
             if (const VFGNode *arg_def = def_node_of(cs->getActualParms()[i]))
-              summarize_from(arg_def, ret_sum.type, ret_sum.base_di, tmp_summ);
+              summarize_from(arg_def, ret_sum.base_di, tmp_summ);
         }
       }
       // now walk forward to get further accesses to the return value.
-      summarize_from(src, llvm_base_type(src, f), rs.base_di, tmp_summ);
+      summarize_from(src, rs.base_di, tmp_summ);
       continue;
     }
 
@@ -888,10 +1127,14 @@ bool access_tracker_t::summarize_return(const FunObjVar *f) {
                            pag->getICFG()->getFunExitICFGNode(f));
         continue;
       }
-      summarize_from(src, llvm_base_type(src, f), rs.base_di, tmp_summ);
+      summarize_from(src, rs.base_di, tmp_summ);
     }
   } // end backward_slice
   rs.effects = std::move(tmp_summ.effects);
+  if (returns_pointer(f) && rs.effects.isMallocSize()) {
+    rs.effects.setMallocSize(false);
+    type_instr.cleared_is_malloc_sz++;
+  }
   if (!rs.type) {
     if (!rs.effects.get_access_type_set().empty())
       rs.type = rs.effects.get_access_type_set().begin()->get_llvm_type();
@@ -1265,25 +1508,8 @@ func_summary_t &access_tracker_t::get_summary(SVF::NodeID param_id) {
 
 bool access_tracker_t::summarize_formal(SVF::NodeID formal_id,
                                         func_summary_t &summ) {
-  return summarize_from(svfg->getGNode(formal_id), formal_entry_type(formal_id),
-                        formal_di_type(formal_id), summ);
-}
-const llvm::Type *access_tracker_t::formal_entry_type(SVF::NodeID formal_id) {
-  const VFGNode *entry = svfg->getGNode(formal_id);
-  if (auto formal_param = SVFUtil::dyn_cast<FormalParmVFGNode>(entry)) {
-    auto *llvm_module_set = LLVMModuleSet::getLLVMModuleSet();
-    const llvm::Value *val =
-        llvm_module_set->getLLVMValue(formal_param->getParam());
-    if (!val)
-      return nullptr;
-    // for base types like i32, i8, float, half, etc...
-    if (!val->getType()->isPointerTy())
-      return val->getType();
-    if (auto *seek_type = restore_llvm_type(val))
-      return seek_type;
-    return val->getType();
-  }
-  return nullptr;
+  return summarize_from(svfg->getGNode(formal_id), formal_di_type(formal_id),
+                        summ);
 }
 
 llvm::DIType *access_tracker_t::formal_di_type(SVF::NodeID formal_id) {
@@ -1682,5 +1908,248 @@ ValueMetadata access_tracker_t::extract_parameter_metadata(const SVFG &vfg,
   ValueMetadata mdata = s.effects;
   mdata.setValue(val);
   return mdata;
+}
+len_dependency_tracker_t::len_dependency_tracker_t(const SVFG &svfg) noexcept
+    : svfg_(svfg) {}
+
+std::string len_dependency_tracker_t::extract(const SVF::SVFVar *current_param,
+                                              ValueMetadata &mdata) {
+  auto fun = current_param->getFunction();
+  if (!fun || fun->isDeclaration())
+    return {};
+  // optimization return asap if no parameter is a non-pointer.
+  auto fun_arg_list = PAG::getPAG()->getFunArgsList(fun);
+  bool has_non_ptr = false;
+  for (auto arg : fun_arg_list) {
+    has_non_ptr |= !arg->getType()->isPointerTy();
+  }
+  if (!has_non_ptr)
+    return {};
+
+  auto module_set = LLVMModuleSet::getLLVMModuleSet();
+  auto pag = PAG::getPAG();
+
+  auto llvm_fun = dyn_cast<llvm::Function>(module_set->getLLVMValue(fun));
+  auto param_type = current_param->getType();
+
+  // if param is no pointer we skip checking asap.
+  if (!param_type->isPointerTy())
+    return "";
+
+  // gets the SVFG node for a PAG node, if it exists.
+  auto def_node = [&](const SVF::SVFVar *var) -> const VFGNode * {
+    auto *valvar = var ? SVFUtil::dyn_cast<SVF::ValVar>(var) : nullptr;
+    return valvar && svfg_.hasDefSVFGNode(valvar) ? svfg_.getDefSVFGNode(valvar)
+                                                  : nullptr;
+  };
+
+  const auto &fun_params = pag->getFunArgsList(fun);
+
+  // gets the SVFG node for an llvm::Value, if it exists.
+  auto value_def_node = [&](const llvm::Value *v) -> const VFGNode * {
+    if (!v || !module_set->hasValueNode(v)) {
+      return nullptr;
+    }
+    return def_node(pag->getGNode(module_set->getValueNode(v)));
+  };
+
+  // (index of param, SVFG node of parameter)
+  vector<pair<int, const VFGNode *>> len_params;
+  size_t param_idx = 0;
+  // Formal Parameters in fun_params.
+  for (auto param : fun_params) {
+    // we need to check size only for parameters that are non pointers.
+    if (param != current_param && !param->getType()->isPointerTy()) {
+      // push (param_idx, SVFG node) to len_params
+      len_params.emplace_back(param_idx, def_node(param));
+    }
+    param_idx++;
+  }
+
+  // if not length parameters candidates are found, we just return.
+  if (len_params.empty())
+    return {};
+
+  // evalute and cache the definitionSets (root nodes) of each formal
+  // parameter beforehand.
+  map<const VFGNode *, set<const VFGNode *>> def_cache;
+  auto defs_of = [&](const VFGNode *node) -> const std::set<const VFGNode *> & {
+    auto it = def_cache.find(node);
+    if (it == def_cache.end()) {
+      it = def_cache
+               .emplace(node, node ? getDefinitionSet(node)
+                                   : std::set<const VFGNode *>{})
+               .first;
+    }
+    return it->second;
+  };
+
+  std::string dependent_param = "";
+
+  std::optional<std::set<const VFGNode *>> index_defs;
+  std::set<const Loop *> visited_loops;
+
+  std::vector<const SVFVar *> param_list(fun_params.begin(), fun_params.end());
+  int cmp_param = track_compares(current_param, mdata, param_list);
+  if (cmp_param >= 0)
+    return "param_" + std::to_string(cmp_param);
+
+  for (auto i : mdata.getIndexes()) {
+    llvm::Instruction *ii = llvm::dyn_cast<Instruction>(i);
+    if (!ii)
+      continue;
+
+    llvm::Function *f = ii->getFunction();
+    auto &li = loop_infos_[f];
+    if (!li.first) {
+      li.first = std::make_unique<DominatorTree>(*f);
+      li.second = std::make_unique<LoopInfo>(*li.first);
+    }
+
+    Loop *l = li.second->getLoopFor(ii->getParent());
+
+    if (l == nullptr || !visited_loops.insert(l).second)
+      continue;
+
+    if (!index_defs) {
+      index_defs.emplace();
+      for (auto idx : mdata.getIndexes()) {
+        if (const VFGNode *n = value_def_node(idx)) {
+          const auto &defs = defs_of(n);
+          index_defs->insert(defs.begin(), defs.end());
+        }
+      }
+    }
+
+    SmallVector<BasicBlock *> exits;
+    l->getExitingBlocks(exits);
+
+    // exit blocks of loops are contain branches that branch to places outside
+    // the loop.
+    for (auto e : exits) {
+      // find terminator instruction in the cache and evaluate the defintions if
+      // not available.
+      const auto &exit_defs = defs_of(value_def_node(&e->back()));
+
+      // instead of evaluating the intersection of the root nodes O(n+m) (n size
+      // of set1, m size of set2), we notice that both sets are sorted by the
+      // same key (VFGNode*) so equal values should be equal pointers. We just
+      // walk both sets until we find the first matching pointers instead of
+      // evaluating the whole set.
+      if (!intersects(*index_defs, exit_defs))
+        continue;
+
+      for (const auto &[idx, vP] : len_params) {
+        if (intersects(defs_of(vP), exit_defs)) {
+          dependent_param = "param_" + std::to_string(idx);
+          break;
+        }
+      } // end of for len params
+    } // end of for exits
+  }
+
+  // If the first pass could not find a dependent_param
+  if (dependent_param == "") {
+    // (array index var, Path)
+    for (const auto &el : mdata.get_len_source()) {
+      const VFGNode *vS = value_def_node(el.first);
+      if (!vS)
+        continue;
+
+      auto path = el.second;
+
+      std::set<const VFGNode *> slot_defs = getDefinitionSetCtx(vS, &path);
+
+      for (const auto &[idx, vP] : len_params) {
+        if (intersects(defs_of(vP), slot_defs)) {
+          dependent_param = "param_" + std::to_string(idx);
+          break;
+        }
+      }
+    }
+  }
+
+  return dependent_param;
+}
+
+int len_dependency_tracker_t::track_compares(
+    const SVFVar *current_parm, liberator::ValueMetadata &mdata,
+    const std::vector<const SVFVar *> &params) {
+  SVFIR *pag = SVFIR::getPAG();
+  auto llvm_module_set = LLVMModuleSet::getLLVMModuleSet();
+
+  // candiate parameter -> number of comparisons naming it
+  std::map<int, unsigned> votes;
+
+  for (auto idx : mdata.getIndexes()) {
+    // for pointer arithmetic, we store the GEP in handleGep
+    // therefore there is index variable to compare
+    if (SVFUtil::isa<llvm::GetElementPtrInst>(idx))
+      continue;
+
+    auto *inst = llvm::dyn_cast<llvm::Instruction>(idx);
+    if (!inst)
+      continue;
+    const llvm::Function *f = inst->getFunction();
+    auto &kv = loop_infos_[f];
+    if (!kv.first) {
+      kv.first =
+          std::make_unique<DominatorTree>(*const_cast<llvm::Function *>(f));
+      kv.second = std::make_unique<LoopInfo>(*kv.first);
+    }
+    Loop *loop = kv.second->getLoopFor(inst->getParent());
+
+    if (!loop)
+      continue;
+
+    const Value *unique_idx = get_cannonical_index(idx);
+
+    for (llvm::BasicBlock *bb : loop->blocks()) {
+      // search for the CmpInstructions
+      for (llvm::Instruction &inst : *bb) {
+        auto *cmp = dyn_cast<llvm::ICmpInst>(&inst);
+        if (!cmp)
+          continue;
+        const Value *other = nullptr;
+        if (get_cannonical_index(cmp->getOperand(0)) == unique_idx)
+          other = cmp->getOperand(1);
+        else if (get_cannonical_index(cmp->getOperand(1)) == unique_idx)
+          other = cmp->getOperand(0);
+        if (!other || isa<llvm::Constant>(other))
+          continue;
+
+        // other var must be the parameter value
+        auto *other_var = dyn_cast<ValVar>(
+            pag->getGNode(llvm_module_set->getValueNode(other)));
+        if (!other_var || !svfg_.hasDefSVFGNode(other_var))
+          continue;
+        const VFGNode *other_vfg = svfg_.getDefSVFGNode(other_var);
+
+        int param_idx = 0;
+        for (const SVFVar *p : params) {
+          const int this_idx = param_idx++;
+          if (p == current_parm)
+            continue;
+          auto llvm_param = llvm_module_set->getLLVMValue(p);
+          if (!llvm_param || isa<PointerType>(llvm_param->getType()))
+            continue;
+          auto *param_var = dyn_cast<ValVar>(p);
+          if (!param_var || !svfg_.hasDefSVFGNode(param_var))
+            continue;
+          if (backward_flow(other_vfg, svfg_.getDefSVFGNode(param_var), svfg_))
+            votes[this_idx]++;
+        }
+      }
+    }
+  }
+  int best = -1;
+  size_t best_votes = 0;
+  for (auto [idx, n] : votes) {
+    if (n > best_votes) {
+      best = idx;
+      best_votes = n;
+    }
+  }
+  return best;
 }
 } // namespace liberator

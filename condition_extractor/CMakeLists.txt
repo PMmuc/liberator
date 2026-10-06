@@ -13,7 +13,7 @@ option(BUILD_TESTS "Build the unit tests" ON)
   if(CMAKE_BUILD_TYPE MATCHES "Debug")
     set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++23 -O0 -Wno-deprecated")
   else()
-  set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++23 -O0 -Wno-deprecated")
+   set(CMAKE_CXX_FLAGS "-fPIC -std=gnu++23 -Wno-deprecated")
   endif()
 
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")

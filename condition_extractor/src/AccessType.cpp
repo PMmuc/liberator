@@ -12,7 +12,6 @@
 #include "Graphs/ICFGNode.h"
 #include "Graphs/IRGraph.h"
 #include "Graphs/SVFG.h"
-#include "Instrumentation.h"
 #include "PhiFunction.h"
 #include "SVF-LLVM/BasicTypes.h"
 #include "SVF-LLVM/LLVMModule.h"
@@ -38,6 +37,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/BinaryFormat/Dwarf.h>
 #include <llvm/IR/Attributes.h>
+#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/DebugInfoMetadata.h>
@@ -54,8 +54,6 @@
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/TimeProfiler.h>
 #include <llvm/TargetParser/Triple.h>
-#include <memory>
-#include <optional>
 #include <string>
 #include <unistd.h>
 #include <vector>
@@ -91,26 +89,6 @@ static constexpr unsigned int MAX_FIELD_DEPTH = 6;
 static constexpr int MAX_FIXPOINT_ITERATIONS = 3;
 
 namespace {
-
-/**
- * Walks both sets and if one node is equal returns true
- * @param s1 - first node
- * @param s2 - second node
- */
-static bool intersects(const std::set<const VFGNode *> &s1,
-                       const std::set<const VFGNode *> &s2) {
-  auto it1 = s1.begin(), it2 = s2.begin();
-  while (it1 != s1.end() && it2 != s2.end()) {
-    // because both are sorted by the same key, we can just compare them.
-    if (*it1 < *it2)
-      ++it1;
-    else if (*it1 > *it2)
-      ++it2;
-    else
-      return true;
-  }
-  return false;
-}
 
 bool leadsToBitCastOfType(const VFGNode *vn, Type *targetType) {
   // TODO: follow def-use only inside the function!
@@ -180,12 +158,6 @@ bool leadsToBitCastOfType(const VFGNode *vn, Type *targetType) {
 
   return false;
 }
-// NOT EXPOSED FUNCTIONS -- THESE FUNCTIONS ARE MEANT FOR ONLY INTERNAL USAGE!
-bool areConnected(const VFGNode *, const VFGNode *);
-bool areConnectedCtx(const VFGNode *, const VFGNode *, liberator::Path *);
-std::set<const VFGNode *> getDefinitionSet(const VFGNode *);
-std::set<const VFGNode *> getDefinitionSetCtx(const VFGNode *,
-                                              liberator::Path *);
 /**
  * @return: the node that has no predecessors.
  */
@@ -196,44 +168,6 @@ bool leadsToBitCastOfType(const VFGNode *, Type *);
 bool areCompatible(FunctionType *, FunctionType *);
 // NOT EXPOSED FUNCTIONS -- END!
 
-bool areConnectedCtx(const VFGNode *a, const VFGNode *b,
-                     liberator::Path *path) {
-
-  std::set<const VFGNode *> defA = getDefinitionSet(a);
-  std::set<const VFGNode *> defB = getDefinitionSetCtx(b, path);
-  std::set<const VFGNode *> intersection;
-
-  // outs() << "DefA:" << a->toString() << "\n";
-  // for (auto e: defA)
-  //     outs() << e->toString() << "\n";
-  // outs() << "DefB:" << b->toString() << "\n";
-  // for (auto e: defB)
-  //     outs() << e->toString() << "\n";
-
-  std::set_intersection(defA.begin(), defA.end(), defB.begin(), defB.end(),
-                        std::inserter(intersection, intersection.begin()));
-
-  return !intersection.empty();
-}
-
-bool areConnected(const VFGNode *a, const VFGNode *b) {
-
-  std::set<const VFGNode *> defA = getDefinitionSet(a);
-  std::set<const VFGNode *> defB = getDefinitionSet(b);
-  std::set<const VFGNode *> intersection;
-
-  // outs() << "DefA:" << a->toString() << "\n";
-  // for (auto e: defA)
-  //     outs() << e->toString() << "\n";
-  // outs() << "DefB:" << b->toString() << "\n";
-  // for (auto e: defB)
-  //     outs() << e->toString() << "\n";
-
-  std::set_intersection(defA.begin(), defA.end(), defB.begin(), defB.end(),
-                        std::inserter(intersection, intersection.begin()));
-
-  return !intersection.empty();
-}
 std::set<const VFGNode *>
 getDefinitionSetForRet(const VFGNode *n, std::set<const FunObjVar *> &vf) {
   std::set<const VFGNode *> definitions;
@@ -267,74 +201,6 @@ getDefinitionSetForRet(const VFGNode *n, std::set<const FunObjVar *> &vf) {
   return definitions;
 }
 
-std::set<const VFGNode *> getDefinitionSetCtx(const VFGNode *n,
-                                              liberator::Path *path_in) {
-
-  std::set<const VFGNode *> definitions;
-
-  std::set<const VFGNode *> visited;
-  std::vector<const VFGNode *> worklist;
-
-  liberator::Path path = *path_in;
-
-  // outs() << "n: " << n->toString() << "\n";
-
-  worklist.push_back(n);
-  while (!worklist.empty()) {
-    auto n = worklist.back();
-    worklist.pop_back();
-    if (visited.find(n) != visited.end())
-      continue;
-    int n_parents = 0;
-    for (auto in : n->getInEdges()) {
-      if (auto src = SVFUtil::dyn_cast<ActualParmVFGNode>(in->getSrcNode())) {
-        auto cs = src->getCallSite();
-        if (path.isCorrect(cs)) {
-          path.popFrame();
-          // outs() << "This is correct!!!\n";
-        } else
-          continue;
-      }
-      // outs() << in->toString() << "\n";
-
-      auto pn = in->getSrcNode();
-      worklist.push_back(pn);
-      n_parents++;
-    }
-    // Maybe select some classes, e.g., alloca, param
-    if (n_parents == 0)
-      definitions.insert(n);
-    visited.insert(n);
-  }
-
-  return definitions;
-}
-
-std::set<const VFGNode *> getDefinitionSet(const VFGNode *n) {
-  std::set<const VFGNode *> definitions;
-  std::set<const VFGNode *> visited;
-  std::vector<const VFGNode *> worklist;
-
-  worklist.push_back(n);
-  while (!worklist.empty()) {
-    auto n = worklist.back();
-    worklist.pop_back();
-    if (visited.find(n) != visited.end())
-      continue;
-    int n_parents = 0;
-    for (auto in : n->getInEdges()) {
-      auto pn = in->getSrcNode();
-      worklist.push_back(pn);
-      n_parents++;
-    }
-    // Maybe select some classes, e.g., alloca, param
-    if (n_parents == 0)
-      definitions.insert(n);
-    visited.insert(n);
-  }
-
-  return definitions;
-}
 std::set<const FunObjVar *> ind_collected_functions;
 /**
  * Checks if the return value is a global variable
@@ -883,7 +749,6 @@ ValueMetadata extractReturnMetadata(const SVFG &vfg, const Value *llvmval) {
 
     // FIXME: This is performance critical when allocainst_set is huge
     auto t2 = std::chrono::high_resolution_clock::now();
-    ValueMetadata mdata = extractParameterMetadata(vfg, a, retType, a_id);
     auto t3 = std::chrono::high_resolution_clock::now();
     total_extractParam_ns +=
         std::chrono::duration_cast<std::chrono::nanoseconds>(t3 - t2).count();
@@ -1048,21 +913,6 @@ static void find_definitions(llvm::ArrayRef<const VFGNode *> sources,
   }
 }
 
-/**
- * This function is a rewrite optimized version of the
- * extractDependencyAmongParameters function. Algorithmically it does the same
- * thing but uses the following optimizations:
- *
- * 1. Deduplication of the stored set: the accesstypes can have the same store
- * nodes mmultiple time. Therefore we first make sure that each stored parameter
- * is unique.
- * 2. Evaluating the root nodes for the parameter set of function fun only once
- * instead of every iteration (root_to_params).
- * 3. Instead of using the STL standard template library for intersecions of two
- * sets we use find_definitions to walk the SVFG backwards and if it is a root
- * node try to find it in the root_to_params vector. This vector is small.
- *
- */
 vector<string>
 my_extract_dependency_among_parameters(const SVF::SVFVar *current_param,
                                        ValueMetadata &mdata, SVFG &svfg,
@@ -1151,379 +1001,6 @@ my_extract_dependency_among_parameters(const SVF::SVFVar *current_param,
   }
 
   return {set_by.begin(), set_by.end()};
-}
-
-std::vector<std::string>
-extractDependencyAmongParameters(const SVF::SVFVar *current_parm,
-                                 ValueMetadata &mdata, SVF::SVFG &svfg,
-                                 const FunObjVar *fun) {
-
-  LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
-
-  std::set<std::string> set_by;
-
-  SVFIR *pag = SVFIR::getPAG();
-
-  // Returns all fun -> [ValVar]
-  PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
-  auto fun_params = funmap_par[fun];
-
-  auto ats = mdata.get_access_type_set();
-  auto ats_it = ats.begin();
-  auto ats_end = ats.end();
-  for (; ats_it != ats_end; ++ats_it) {
-    auto at = *ats_it;
-    // outs() << at.toString() << "\n";
-    if (at.get_kind() == AccessType::kind_e::write) {
-      // outs() << at.toString() << "\n";
-      // outs() << "the instructions:\n";
-      for (auto node : at.getICFGNodes()) {
-        auto *intra_n = SVFUtil::dyn_cast<IntraICFGNode>(node);
-        if (intra_n == nullptr)
-          continue;
-
-        for (const SVFStmt *s : intra_n->getSVFStmts()) {
-          const auto st = SVFUtil::dyn_cast<StoreStmt>(s);
-
-          if (!st)
-            continue;
-
-          // the value that is stored
-          const auto *src_var = SVFUtil::dyn_cast<ValVar>(st->getRHSVar());
-          if (!src_var || !svfg.hasDefSVFGNode(src_var))
-            continue;
-
-          const VFGNode *vS = svfg.getDefSVFGNode(src_var);
-
-          unsigned p_idx = 0;
-          for (const SVFVar *p : fun_params) {
-            if (p == current_parm) {
-              p_idx++;
-              continue;
-            }
-            const auto *p_var = SVFUtil::dyn_cast<ValVar>(p);
-            if (p_var && svfg.hasDefSVFGNode(p_var)) {
-              const VFGNode *vP = svfg.getDefSVFGNode(p_var);
-              if (areConnected(vP, vS))
-                set_by.insert("param_" + std::to_string(p_idx));
-            }
-            ++p_idx;
-          }
-        }
-      }
-    }
-  }
-
-  std::vector<std::string> set_by_list;
-  for (auto d : set_by)
-    set_by_list.push_back(d);
-
-  return set_by_list;
-}
-
-std::string
-my_extract_len_dependence_parameter(const SVF::SVFVar *current_param,
-                                    ValueMetadata &mdata, SVFG &svfg,
-                                    const FunObjVar *fun) {
-  if (!fun || fun->isDeclaration())
-    return {};
-  // optimization return asap if no parameter is a non-pointer.
-  auto fun_arg_list = PAG::getPAG()->getFunArgsList(fun);
-  bool all_non_ptr = true;
-  for (auto arg : fun_arg_list) {
-    all_non_ptr &= !arg->getType()->isPointerTy();
-  }
-  if (!all_non_ptr)
-    return {};
-
-  auto module_set = LLVMModuleSet::getLLVMModuleSet();
-  auto pag = PAG::getPAG();
-
-  auto llvm_fun = dyn_cast<llvm::Function>(module_set->getLLVMValue(fun));
-  auto param_type = current_param->getType();
-  if (!param_type->isPointerTy())
-    return "";
-
-  auto def_node = [&](const SVF::SVFVar *var) -> const VFGNode * {
-    auto *valvar = var ? SVFUtil::dyn_cast<SVF::ValVar>(var) : nullptr;
-    return valvar && svfg.hasDefSVFGNode(valvar) ? svfg.getDefSVFGNode(valvar)
-                                                 : nullptr;
-  };
-
-  const auto &fun_params = pag->getFunArgsList(fun);
-  auto value_def_node = [&](const llvm::Value *v) -> const VFGNode * {
-    if (!v || !module_set->hasValueNode(v)) {
-      return nullptr;
-    }
-    return def_node(pag->getGNode(module_set->getValueNode(v)));
-  };
-
-  // (index of param, GEP of access node)
-  vector<pair<int, const VFGNode *>> len_params;
-  int p_idx = 0;
-  for (auto p : fun_params) {
-    if (p != current_param && !p->getType()->isPointerTy()) {
-      // get def not from ValVar.
-      auto vv = dyn_cast<SVF::ValVar>(p);
-      len_params.emplace_back(p_idx, def_node(vv));
-    }
-    p_idx++;
-  }
-
-  if (len_params.empty())
-    return {};
-
-  map<const VFGNode *, set<const VFGNode *>> def_cache;
-  auto defs_of = [&](const VFGNode *n) -> const std::set<const VFGNode *> & {
-    auto it = def_cache.find(n);
-    if (it == def_cache.end()) {
-      it =
-          def_cache
-              .emplace(n, n ? getDefinitionSet(n) : std::set<const VFGNode *>{})
-              .first;
-    }
-    return it->second;
-  };
-
-  std::string dependent_param = "";
-
-  std::map<const llvm::Function *,
-           std::pair<unique_ptr<DominatorTree>, unique_ptr<LoopInfo>>>
-      loop_infos;
-  std::optional<std::set<const VFGNode *>> index_defs;
-  std::set<const Loop *> visited_loops;
-
-  for (auto i : mdata.getIndexes()) {
-    llvm::Instruction *ii = llvm::dyn_cast<Instruction>(i);
-    if (!ii)
-      continue;
-
-    llvm::Function *f = ii->getFunction();
-    auto &li = loop_infos[f];
-    if (!li.first) {
-      li.first = std::make_unique<DominatorTree>(*f);
-      li.second = std::make_unique<LoopInfo>(*li.first);
-    }
-
-    Loop *l = li.second->getLoopFor(ii->getParent());
-
-    if (l == nullptr || !visited_loops.insert(l).second)
-      continue;
-
-    if (!index_defs) {
-      vector<const VFGNode *> index_nodes;
-      for (auto idx : mdata.getIndexes())
-        index_nodes.push_back(value_def_node(idx));
-    }
-
-    SmallVector<BasicBlock *> exits;
-    l->getExitingBlocks(exits);
-
-    for (auto e : exits) {
-      // find terminator instruction in the cache
-      const auto &exit_defs = defs_of(value_def_node(&e->back()));
-
-      if (!intersects(*index_defs, exit_defs))
-        continue;
-
-      for (const auto &[idx, vP] : len_params) {
-        if (intersects(defs_of(vP), exit_defs)) {
-          dependent_param = "param_" + std::to_string(idx);
-          break;
-        }
-      } // end of for len params
-    } // end of for exits
-  }
-
-  if (dependent_param == "") {
-    // (array index var, Path)
-    for (const auto &el : mdata.get_len_source()) {
-      const VFGNode *vS = value_def_node(el.first);
-      if (!vS)
-        continue;
-
-      auto path = el.second;
-
-      std::set<const VFGNode *> slot_defs = getDefinitionSetCtx(vS, &path);
-
-      for (const auto &[idx, vP] : len_params) {
-        if (intersects(defs_of(vP), slot_defs)) {
-          dependent_param = "param_" + std::to_string(idx);
-          break;
-        }
-      }
-    }
-  }
-
-  return dependent_param;
-}
-
-std::string extractLenDependencyParameter(const SVF::SVFVar *current_parm,
-                                          ValueMetadata &mdata, SVF::SVFG &svfg,
-                                          const FunObjVar *fun) {
-
-  // // outs() << "CURRENT PARAM: \n";
-  // // outs() << current_parm->toString() << "\n";
-
-  auto par_type = current_parm->getType();
-  auto llvm_type = LLVMModuleSet::getLLVMModuleSet()->getLLVMType(par_type);
-
-  if (!SVFUtil::isa<PointerType>(llvm_type))
-    return "";
-
-  std::string dependent_param = "";
-
-  SVFIR *pag = SVFIR::getPAG();
-
-  PAG::FunToArgsListMap funmap_par = pag->getFunArgsMap();
-  auto fun_params = funmap_par[fun];
-
-  LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
-
-  // seek dependencies through loops
-  for (auto i : mdata.getIndexes()) {
-    // outs() << "I: " << *i << "\n";
-
-    llvm::Instruction *ii = SVFUtil::dyn_cast<llvm::Instruction>(i);
-
-    // just in case
-    if (ii == nullptr)
-      continue;
-
-    DominatorTree dom_tree(*ii->getFunction());
-    LoopInfo loop_info(dom_tree);
-    Loop *l = loop_info.getLoopFor(ii->getParent());
-
-    if (l == nullptr) {
-      continue;
-    }
-
-    SmallVector<llvm::BasicBlock *> exits;
-    // get the basic blocks that can exit the loop
-    l->getExitingBlocks(exits);
-    // get the last instruction in the exit blocks
-    for (auto e : exits) {
-      auto v = &e->back();
-      // outs() << "Exit Cond:\n" << *v << "\n";
-
-      PAGNode *pV = pag->getGNode(llvmModuleSet->getValueNode(v));
-      const VFGNode *vV = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pV));
-      PAGNode *pI = nullptr;
-      PAGNode *pP = nullptr;
-
-      bool index_control_loop = false;
-      bool param_control_loop = false;
-      for (auto i : mdata.getIndexes()) {
-        pI = pag->getGNode(llvmModuleSet->getValueNode(i));
-        const VFGNode *vI = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pI));
-
-        if (areConnected(vI, vV)) {
-          // outs() << "Index control Loop\n";
-          index_control_loop = true;
-          break;
-        }
-      }
-
-      int p_idx = 0;
-      for (auto p : fun_params) {
-        if (p == current_parm) {
-          p_idx++;
-          continue;
-        }
-
-        auto llvm_p_val = LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(p);
-
-        // std::string str;
-        // llvm::raw_string_ostream rawstr(str);
-        // rawstr << *llvm_p_val->getType();
-        // outs() << "Testing par " << p_idx << "  (index loop phase)\n";
-        // outs() << str << "\n";
-        if (SVFUtil::isa<PointerType>(llvm_p_val->getType())) {
-          // outs() << "It is a pointer, skip it (index loop phase)!\n";
-          p_idx++;
-          continue;
-        }
-
-        // pP = const_cast<llvm::Value*>(p->getValue());
-        pP = pag->getGNode(p->getId());
-        const VFGNode *vP = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pP));
-        // const_cast<llvm::Value*>(p->getValue());
-        // outs() << "P: " << pP->toString() << "\n";
-        if (areConnected(vP, vV)) {
-          // outs() << "Param control Loop\n";
-          param_control_loop = true;
-          break;
-        }
-        p_idx++;
-        // else
-        //     outs() << "no control!\n";
-      }
-
-      if (param_control_loop && index_control_loop) {
-        // outs() << "Index: " << pI->toString() << "\n";
-        // outs() << "Param: " << pP->toString() << "\n";
-        dependent_param = "param_" + std::to_string(p_idx);
-      }
-    }
-  }
-
-  if (dependent_param == "")
-    for (auto el : mdata.get_len_source()) {
-      // outs() << *fs << "\n";
-      // constant array index
-      auto fs = el.first;
-      // path to that constant array index
-      auto path = el.second; // Path == Context == Stack
-      // path.dump_stack();
-      // SVFUtil::outs() << "---------\n";
-      // continue;
-
-      auto llvm_val = llvmModuleSet->getValueNode(fs);
-      PAGNode *pS = pag->getGNode(llvm_val);
-      const VFGNode *vS = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pS));
-
-      int p_idx = 0;
-      bool param_control_len = false;
-      for (auto p : fun_params) {
-        if (p == current_parm) {
-          p_idx++;
-          continue;
-        }
-
-        auto p_val = p;
-
-        auto llvm_p_val =
-            LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(p_val);
-
-        // can not be a length parameter -> skip
-        if (SVFUtil::isa<PointerType>(llvm_p_val->getType())) {
-          p_idx++;
-          continue;
-        }
-
-        PAGNode *pP = pag->getGNode(p->getId());
-        const VFGNode *vP = svfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pP));
-        // const_cast<llvm::Value*>(p->getValue());
-        // outs() << "P: " << pP->toString() << "\n";
-        // vS -> array index node
-        // vP -> the length parameter in the signature
-        // find if they have the same origin nodes
-        if (areConnectedCtx(vP, vS, &path)) {
-          // outs() << "connected!\n";
-          param_control_len = true;
-          break;
-        }
-        p_idx++;
-        // else
-        //     outs() << "no control!\n";
-      }
-
-      if (param_control_len) {
-        dependent_param = "param_" + std::to_string(p_idx);
-      }
-    }
-
-  return dependent_param;
 }
 
 ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
@@ -1728,7 +1205,6 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
           }
         } break;
         case SVF::VFGNode::VFGNodeK::Gep:
-          (acNode.get_di_type() ? di_instr.gep_td_ok : di_instr.gep_td_null)++;
           skipNode = handleGep(vNode, acNode, ats, mdata, p);
           break;
         case VFGNode::VFGNodeK::Copy: {
@@ -1976,9 +1452,9 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
 
           // A Path's identity is (VFGNode, fields, kind, type), so an
           // unbounded GEP chain multiplies the search space per node instead
-          // of visiting it once. MAX_GEP_RECURSION_DEPTH only bounds how often
-          // a single (aggregate type, field) repeats along a path, not the
-          // overall length, so bound the length here with the same limit
+          // of visiting it once. MAX_GEP_RECURSION_DEPTH only bounds how
+          // often a single (aggregate type, field) repeats along a path, not
+          // the overall length, so bound the length here with the same limit
           // merge_access_type() applies when composing summaries.
           if (ok_continue && p_succ.get_access_type().get_num_fields() >
                                  static_cast<int>(MAX_FIELD_DEPTH)) {
@@ -2030,8 +1506,8 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
       outs() << "  Node Switch    : " << (total_switch_ns / 1e6) << " ms ("
              << ((double)total_switch_ns / total_loop_ns) * 100.0 << "%)\n";
       outs() << "  Edge Traversal : " << (total_out_edges_ns / 1e6) << " ms ("
-             << ((double)total_out_edges_ns / total_loop_ns) * 100.0 << "%)\n";
-      outs() << "    - Path Copy  : " << (total_edge_path_copy_ns / 1e6)
+             << ((double)total_out_edges_ns / total_loop_ns) * 100.0 <<
+  "%)\n"; outs() << "    - Path Copy  : " << (total_edge_path_copy_ns / 1e6)
              << "ms\n";
       outs() << "    - Call Check : " << (total_edge_call_ns / 1e6) << "ms\n";
       outs() << "    - Ret Check  : " << (total_edge_ret_ns / 1e6) << "ms\n";

@@ -140,13 +140,6 @@ private:
 
   // void walk_scc(const FunObjVar *f);
   void process_scc(NodeID id);
-  /**
-   * TODO: maybe we can leave this all together, when we don't carry it in the
-   * MetadataValue param.
-   * @param formal_id - the id of the formal
-   * @return the llvm type
-   */
-  const llvm::Type *formal_entry_type(SVF::NodeID formal_id);
 
   /**
    * @param formal_id the id of the FormalParmVFGNode
@@ -167,8 +160,8 @@ private:
    * Evaluates a summary of accesses starting from entry. Accesses are
    * (fields, type, kind) properties.
    */
-  bool summarize_from(const VFGNode *entry, const llvm::Type *t,
-                      llvm::DIType *di_type, func_summary_t &summ);
+  bool summarize_from(const VFGNode *entry, llvm::DIType *di_type,
+                      func_summary_t &summ);
 
   /**
    * @return the return DIType of the function f.
@@ -350,5 +343,32 @@ size_t access_tracker_t::largest_component(Fn keep,
   }
   return largest;
 }
+
+struct len_dependency_tracker_t {
+public:
+  len_dependency_tracker_t(const SVFG &svfg) noexcept;
+
+  /**
+   * @param current_param - the formal parameter of the buffer.
+   * @param mdata - the tracked accesses of the current_param. Therefore must be
+   * called after AccessTracker::extract_parameter_metadata.
+   * @return the parameter that this depends on in format "param_0" for index 0
+   * parameter in the signature.
+   */
+  std::string extract(const SVF::SVFVar *current_param, ValueMetadata &mdata);
+
+private:
+  /**
+   * @param current_param - Formal parameter to track
+   * @return the index of the length parameter that current_param, depends on.
+   */
+  int track_compares(const SVFVar *current_parm, ValueMetadata &mdata,
+                     const std::vector<const SVFVar *> &params);
+
+  const SVFG &svfg_;
+  std::map<const llvm::Function *,
+           std::pair<unique_ptr<DominatorTree>, unique_ptr<LoopInfo>>>
+      loop_infos_;
+};
 
 } // namespace liberator

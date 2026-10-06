@@ -5,9 +5,10 @@ namespace liberator {
 struct instr_t {
   uint64_t pops = 0;       // paths taken from the worklist
   uint64_t dedup_hits = 0; // pops rejected by visited
-  size_t max_worklist = 0; // max number that went into the worklist
+  size_t max_worklist = 0; // max number in the worklist
   size_t max_visited = 0;  // max number of nodes in visited
-  size_t depth_cuts = 0;
+  size_t depth_cuts =
+      0; // how many paths were cut (not tracked because limit exceeded)
 };
 
 struct di_chain_instr_t {
@@ -20,7 +21,8 @@ struct di_chain_instr_t {
   size_t gep_no_di = 0; // the gep handler has no di info on the path anymore.
   // Which pase feeds handleGep a path that already lost its DIType.
   size_t gep_bu_null = 0, gep_bu_ok = 0; // bottom-up
-  size_t gep_td_null = 0, gep_td_ok = 0; // top-down
+  size_t gep_void_recovered = 0;         // recovered void* type in handleGep
+  size_t gep_untyped_skip = 0;           //
 };
 
 /**
@@ -47,18 +49,26 @@ struct addr_instr_t {
  */
 struct compose_instr_t {
   size_t attempts = 0;       // compositions with a non-empty suffix path
-  size_t di_match = 0;       // same di_types
-  size_t di_reject = 0;      // different di_types
-  size_t di_void = 0;        // one side is void*, pointee erased -> allowed
-  size_t di_undecidable = 0; // DWARF could not discriminate
+  size_t di_match = 0;       // same di_types -> continue with path
+  size_t di_reject = 0;      // different di_types -> stop analysing path
+  size_t di_void = 0;        // one side is void*
+  size_t di_undecidable = 0; // DWARF type could not be determined from prefix
+                             // or suffix -> stop analysing path
   size_t di_absent = 0;      // prefix or suffix DIType is null
   size_t di_unnamed = 0;     // anonymous record without a typedef name
+  size_t void_dropped = 0;   // void composition dropped by current policy
 
   static compose_instr_t &instance();
 
   void dump(llvm::raw_ostream &os) const;
 };
 
+struct type_instr_t {
+  size_t cleared_is_malloc_sz =
+      0; // number of is malloc size flag removed for pointer types
+};
+
+extern type_instr_t type_instr;
 extern compose_instr_t cinstr;
 extern addr_instr_t addr_instr;
 extern instr_t instr;

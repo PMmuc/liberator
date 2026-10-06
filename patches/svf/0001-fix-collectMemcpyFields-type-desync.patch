@@ -1,6 +1,8 @@
+diff --git a/svf-llvm/lib/SVFIRExtAPI.cpp b/svf-llvm/lib/SVFIRExtAPI.cpp
+index 934041a2..01e075cc 100644
 --- a/svf-llvm/lib/SVFIRExtAPI.cpp
 +++ b/svf-llvm/lib/SVFIRExtAPI.cpp
-@@ -111,7 +111,8 @@
+@@ -112,7 +112,8 @@ void collectMemcpyFields(const Type* llvmType, const SVFType* svfType,
          for (u32_t i = 0; i < structType->getNumElements(); ++i)
          {
              const Type* elemLLVMType = structType->getElementType(i);
@@ -9,8 +11,8 @@
 +                LLVMModuleSet::getLLVMModuleSet()->getSVFType(elemLLVMType);
              if (elemSVFType == nullptr)
                  return;
-             APOffset elemByteOffset = baseByteOffset + static_cast<APOffset>(layout->getElementOffset(i));
-@@ -124,7 +130,8 @@
+             APOffset elemByteOffset =
+@@ -129,7 +130,8 @@ void collectMemcpyFields(const Type* llvmType, const SVFType* svfType,
      if (const auto* arrayType = SVFUtil::dyn_cast<ArrayType>(llvmType))
      {
          const Type* elemLLVMType = arrayType->getElementType();
@@ -19,4 +21,4 @@
 +            LLVMModuleSet::getLLVMModuleSet()->getSVFType(elemLLVMType);
          if (elemSVFType == nullptr)
              return;
-         const APOffset elemByteSize = static_cast<APOffset>(dl.getTypeAllocSize(const_cast<Type*>(elemLLVMType)));
+         const APOffset elemByteSize = static_cast<APOffset>(

@@ -1,11 +1,10 @@
 #ifndef INCLUDE_DOM_ACCESSTYPE_H_
 #define INCLUDE_DOM_ACCESSTYPE_H_
 
-#include "Graphs/ICFG.h"
 #include "Graphs/SVFG.h"
 #include "SVFIR/SVFVariables.h"
-#include "WPA/Andersen.h"
 #include <Graphs/GenericGraph.h>
+#include <Graphs/ICFGNode.h>
 #include <Util/GeneralType.h>
 #include <cstddef>
 #include <llvm/Analysis/LoopInfo.h>
@@ -13,7 +12,6 @@
 #include <llvm/IR/Dominators.h>
 #include <llvm/Support/raw_ostream.h>
 
-#include <fstream>
 #include <map>
 #include <utility>
 
@@ -26,6 +24,8 @@ class Value;
 }
 
 namespace liberator {
+
+class ValueMetadata;
 
 const std::string *di_key(const llvm::DIType *di);
 
@@ -218,8 +218,7 @@ public:
 
   kind_e get_kind() const { return access; }
 
-  void set_llvm_type(const llvm::Type *typ, llvm::DIType *di_typ) {
-    type = typ;
+  void set_type(llvm::DIType *di_typ) {
     di_type = di_typ;
     di_key_ = di_key(di_type);
   }
@@ -391,6 +390,25 @@ public:
   const std::vector<std::pair<const ICFGNode *, AccessType>> getSteps() {
     return history;
   }*/
+
+  void push_callsite(const CallICFGNode *cs) {
+    std::stack<const CallICFGNode *> reverse;
+    // we have to reverse the stack two times
+    // to keep the ordering.
+    // It is in reverse order because we are tracking callees
+    // first then callers, because of our bottom-up approach.
+    while (!stack.empty()) {
+      reverse.push(stack.top());
+      stack.pop();
+    }
+    stack.push(cs);
+    while (!reverse.empty()) {
+      stack.push(reverse.top());
+      reverse.pop();
+    }
+  }
+
+  const std::stack<const CallICFGNode *> &get_cs_stack() const { return stack; }
 
   const Value *getPrevValue() { return prevValue; }
 

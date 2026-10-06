@@ -522,6 +522,7 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
   unsigned int tot_function = functions_.size();
   unsigned int num_function = 0;
   auto svfg = svfg_builder_->getSVFG();
+  len_dependency_tracker_t len_dep(*svfg);
 
   for (auto f : functions_) {
     int current_index = num_function++;
@@ -574,8 +575,7 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
             PROFILE_SCOPED("Function 2: extractLenDependencyParameter: " + f);
             PROFILE_MEM("Function 2: extractLenDependencyParameter");
             PROFILE_MEM("Function 2: extractLenDependencyParameter: " + f);
-            depends_on = extractLenDependencyParameter(param, param_metadata,
-                                                       *svfg, svf_fun);
+            depends_on = len_dep.extract(param, param_metadata);
           }
           if (!depends_on.empty())
             param_metadata.setLenDependency(depends_on);

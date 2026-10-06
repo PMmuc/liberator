@@ -6,6 +6,8 @@
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/Analysis/ValueTracking.h"
 #include "llvm/IR/DebugInfoMetadata.h"
+#include <cmath>
+#include <llvm/ADT/StringMap.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/BinaryFormat/Dwarf.h>
 #include <llvm/IR/DebugInfo.h>
@@ -14,10 +16,43 @@
 #include <llvm/IR/Operator.h>
 #include <llvm/IR/TypedPointerType.h>
 #include <llvm/Support/Casting.h>
+#include <string>
 #include <unordered_map>
 #include <utility>
 
 using namespace llvm;
+
+constexpr unsigned int MAX_DI_PRINT_DEPTH = 16;
+
+namespace {
+
+/**
+ * -
+ */
+std::string print_array(const llvm::DICompositeType *comp, unsigned depth) {
+  auto element =
+      liberator::print_di_type(comp->getBaseType(), false, depth + 1);
+
+  std::vector<uint64_t> counts;
+  for (auto *e : comp->getElements()) {
+    auto *sub = llvm::dyn_cast_or_null<llvm::DISubrange>(e);
+    if (!sub)
+      continue;
+
+    auto *ci = llvm::dyn_cast_if_present<llvm::ConstantInt *>(sub->getCount());
+    counts.push_back(ci ? ci->getZExtValue() : 0);
+  }
+
+  if (counts.empty())
+    counts.push_back(0);
+
+  std::string out = element;
+  for (auto it = counts.rbegin(); it != counts.rend(); ++it)
+    out = "[" + std::to_string(*it) + " x " + out + " ] ";
+
+  return out;
+}
+} // namespace
 
 namespace liberator {
 struct_padding_info_t::struct_padding_info_t(
@@ -263,11 +298,144 @@ std::string unique_composite_name(const llvm::DICompositeType *comp,
   return name + "@" + file + ":" + std::to_string(comp->getLine());
 }
 
+std::string print_subroutine(const llvm::DISubroutineType *sr, unsigned depth) {
+  // array types
+  auto types = sr->getTypeArray();
+
+  // return type
+  std::string out;
+  if (types.size() == 0)
+    out = "void";
+  else
+    out = print_di_type(types[0], false, depth + 1);
+
+  // parameters
+  out += " (";
+  for (int i = 1; i < types.size(); ++i) {
+    if (i > 1)
+      out += ", ";
+    // a 0 at the end of the type array means vararg
+    if (types[i] == 0 && i + 1 == types.size())
+      out += "...";
+    else
+      out += print_di_type(types[i], false, depth + 1);
+  }
+  out += ")";
+  return out;
+}
+
+std::string build_di_key(const llvm::DIType *di) {
+  std::string indirections;
+  llvm::StringRef typedef_name;
+  const llvm::DIType *cur = di;
+
+  while (true) {
+    typedef_name = {};
+    cur = peel_di_type(cur, typedef_name);
+    auto *d = llvm::dyn_cast_or_null<llvm::DIDerivedType>(cur);
+    if (!d || !is_indirection_tag(static_cast<llvm::dwarf::Tag>(d->getTag())))
+      break;
+    indirections += '*';
+    cur = d->getBaseType();
+  }
+
+  std::string base;
+  auto *comp = dyn_cast_or_null<DICompositeType>(cur);
+  if (comp && (comp->getTag() == llvm::dwarf::DW_TAG_structure_type ||
+               comp->getTag() == llvm::dwarf::DW_TAG_class_type ||
+               comp->getTag() == llvm::dwarf::DW_TAG_union_type)) {
+    base = unique_composite_name(comp, typedef_name);
+  } else
+    base = print_di_type(cur, false, 0);
+
+  if (base == "void" && !indirections.empty())
+    base = "i8"; // the old llvm where i8* == void*
+  return base + indirections;
+}
 /**
- * Removes qualifiers and returns the name of the typedef if it exists.
- * @param type to remove the qualifiers.
- * @param typedef_name the name of the typedef.
+ * Converts DIBasicType to string.
  */
+std::string to_string(const llvm::DIBasicType *b) {
+  using namespace llvm::dwarf;
+  auto bits = b->getSizeInBits();
+  if (bits == 0)
+    return "void";
+
+  if (b->getEncoding() == DW_ATE_float) {
+    switch (bits) {
+    case 16:
+      return "half";
+    case 32:
+      return "float";
+    case 64:
+      return "double";
+    case 80:
+      return "x86_fp80";
+    case 128:
+      return "fp128";
+    default:
+      break;
+    }
+  }
+
+  if (b->getEncoding() == DW_ATE_boolean)
+    return "i1";
+
+  return "i" + std::to_string(bits);
+}
+
+std::string print_di_type(const llvm::DIType *di, bool expand_composite,
+                          unsigned depth) {
+  di = peel_di_qualifiers(const_cast<llvm::DIType *>(di));
+  if (!di)
+    return "void";
+  // avoid recursion
+  if (depth > MAX_DI_PRINT_DEPTH)
+    return "...";
+
+  if (auto sr = llvm::dyn_cast<llvm::DISubroutineType>(di)) {
+    return print_subroutine(sr, depth);
+  }
+
+  if (auto *d = llvm::dyn_cast<llvm::DIDerivedType>(di)) {
+    switch (d->getTag()) {
+    case llvm::dwarf::DW_TAG_pointer_type:
+    case llvm::dwarf::DW_TAG_reference_type:
+    case llvm::dwarf::DW_TAG_rvalue_reference_type:
+    case llvm::dwarf::DW_TAG_ptr_to_member_type: {
+      std::string str_type = print_di_type(d->getBaseType(), false, depth + 1);
+      if (str_type == "void")
+        str_type = "i8";
+    }
+    case llvm::dwarf::DW_TAG_member:
+    case llvm::dwarf::DW_TAG_inheritance:
+      return print_di_type(d->getBaseType(), expand_composite, depth + 1);
+    default:
+      break;
+    }
+  }
+
+  if (auto *b = llvm::dyn_cast<llvm::DIBasicType>(di)) {
+    return to_string(b);
+  }
+
+  if (auto comp = llvm::dyn_cast<llvm::DICompositeType>(di)) {
+    switch (comp->getTag()) {
+    case dwarf::DW_TAG_array_type:
+      return print_array(comp, depth);
+    case dwarf::DW_TAG_enumeration_type: {
+      auto bits = comp->getSizeInBits();
+      return "i" + std::to_string(bits ? bits : 32);
+    }
+    }
+  }
+
+  if (di->getName().empty())
+    return "not_known";
+  else
+    return di->getName().str();
+}
+
 const llvm::DIType *peel_di_type(const DIType *type, StringRef &typedef_name) {
   if (!type) {
     TYPE_LOG("peel_di_qualifiers: null input\n");
@@ -289,13 +457,8 @@ const llvm::DIType *peel_di_type(const DIType *type, StringRef &typedef_name) {
   return type;
 }
 
-/**
- * - Removes qualifiers such as typedef, const, volatile, atomic, restrict from
- *   the type definition.
- */
 llvm::DIType *peel_di_qualifiers(DIType *type) {
   if (!type) {
-    TYPE_LOG("peel_di_qualifiers: null input\n");
     return nullptr;
   }
 
@@ -601,6 +764,61 @@ llvm::StringRef canonical_name(const StructType *st) {
 
   return name_ref;
 }
+llvm::DIType *struct_to_di(const llvm::StructType *llvm_struct,
+                           const llvm::Module &mod) {
+  // we cache the types per module and per name, because it is needed a lot of
+  // times.
+  static std::unordered_map<const llvm::Module *,
+                            llvm::StringMap<llvm::DICompositeType *>>
+      cache;
+
+  auto [it, inserted] = cache.try_emplace(&mod);
+
+  llvm::StringMap<llvm::DICompositeType *> &name2di = it->second;
+
+  if (inserted) {
+    llvm::DebugInfoFinder finder;
+    finder.processModule(mod);
+    for (llvm::DIType *type : finder.types()) {
+      if (auto *comp = dyn_cast<DICompositeType>(type)) {
+        auto tag = comp->getTag();
+        if (comp->isForwardDecl() || comp->getName().empty() ||
+            (tag != dwarf::DW_TAG_structure_type &&
+             tag != dwarf::DW_TAG_union_type &&
+             tag != dwarf::DW_TAG_class_type))
+          continue;
+        name2di.try_emplace(comp->getName(), comp);
+      } else if (auto td = dyn_cast<DIDerivedType>(type)) {
+        // for typedef struct names where the struct itself has no name.
+        if (td->getTag() != dwarf::DW_TAG_typedef || td->getName().empty())
+          continue;
+        auto *comp = dyn_cast_or_null<DICompositeType>(
+            peel_di_qualifiers(td->getBaseType()));
+        if (comp && !comp->isForwardDecl())
+          // add the typedef name
+          name2di.try_emplace(td->getName(), comp);
+      }
+    }
+  }
+
+  llvm::StringRef llvm_name = canonical_name(llvm_struct);
+  if (llvm_name.empty())
+    return nullptr;
+
+  auto it1 = name2di.find(llvm_name);
+  if (it1 == name2di.end())
+    return nullptr;
+
+  // the name can exist in other translation modules as well.
+  // Add a size check to "confirm" they are the same struct.
+  const llvm::DataLayout &dl = mod.getDataLayout();
+  if (!llvm_struct->isSized() ||
+      dl.getTypeAllocSizeInBits(const_cast<llvm::StructType *>(llvm_struct)) !=
+          it1->second->getSizeInBits())
+    return nullptr;
+
+  return it1->second;
+}
 
 bool compare_types(llvm::DIType *di, const llvm::Type *type,
                    const llvm::DataLayout &dl) {
@@ -618,7 +836,7 @@ bool compare_types(llvm::DIType *di, const llvm::Type *type,
   }
   // there can also be anonymous composites like in struct A { struct {int x,
   // int y} f1;};. Then we can not compare the names but have to rely on size
-  // comparisons.
+  // comparisons. Same heuristic as in struct_to_di
   if (type->isSized() && tmp->getSizeInBits() != 0)
     return dl.getTypeAllocSizeInBits(const_cast<llvm::Type *>(type)) ==
            tmp->getSizeInBits();
