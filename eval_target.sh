@@ -19,7 +19,7 @@ NUM_IT=${ARGS[1]:-7}
 TARGET_DIR=analysis/${TARGET}
 
 for i in $(seq $NUM_IT); do
-  LOG=test_results/dp/${TARGET}_$i.log
+  LOG=test_results/dp/${TARGET}/${TARGET}_$i.log
   rm -f ${TARGET_DIR}/work/apipass/conditions.json
   if [ "$USE_DOCKER" = true ]; then
     SKIP_BUILD=1 TARGET=${TARGET} ./docker/run_analysis.sh >$LOG 2>&1
