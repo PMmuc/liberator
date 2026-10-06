@@ -18,15 +18,14 @@ mkdir -p "$WORK/lib" "$WORK/include"
 
 echo "make 1"
 cd "$TARGET/repo"
-# libplist 1.3+ builds with cmake; force the static lib and a g++ host compiler
-export CXX=g++
+# libplist 1.3+ builds with cmake; force the static lib
 find . -name CMakeLists.txt -exec sed -i 's/SHARED//g' {} \;
 
 # Compile library for coverage
 rm -rf build
 mkdir build
 cd build
-cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
         -DENABLE_STATIC=on \
         -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
         -DCMAKE_C_FLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
@@ -46,7 +45,7 @@ cd "$TARGET/repo"
 rm -rf build
 mkdir build
 cd build
-cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
         -DENABLE_STATIC=on \
         -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address -g" \
         -DCMAKE_C_FLAGS="-fsanitize=fuzzer-no-link,address -g" \
@@ -66,7 +65,7 @@ cd "$TARGET/repo"
 rm -rf build
 mkdir build
 cd build
-cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+cmake .. -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
         -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_CXX_FLAGS="-fsanitize=fuzzer-no-link,address" \
         -DCMAKE_C_FLAGS="-fsanitize=fuzzer-no-link,address" \
