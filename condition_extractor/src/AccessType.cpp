@@ -1110,12 +1110,6 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
 
       if (acNode.toString().rfind(ValueMetadata::debug_condition, 0) == 0) {
         outs() << "[STOP]\n";
-        for (auto h : p.getSteps()) {
-          outs() << h.first->toString() << "\n";
-          outs() << h.first->getFun()->getName() << "\n";
-          outs() << h.second.toString() << "\n";
-          outs() << "\n";
-        }
 
         outs() << "-> last node <-\n";
         outs() << vNode->toString() << "\n";
@@ -1449,7 +1443,7 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
               std::chrono::duration_cast<std::chrono::nanoseconds>(t_path_end -
                                                                    t_path_start)
                   .count();
-          p_succ.addStep(vNode->getICFGNode());
+          // p_succ.addStep(vNode->getICFGNode());
 
           bool ok_continue = true;
 
