@@ -1078,17 +1078,6 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
 
   /// Traverse along VFG
   // while S is not empty do
-  uint64_t total_visited_lookup_ns = 0;
-  uint64_t total_visited_insert_ns = 0;
-  uint64_t total_switch_ns = 0;
-  uint64_t total_out_edges_ns = 0;
-
-  uint64_t total_edge_path_copy_ns = 0;
-  uint64_t total_edge_call_ns = 0;
-  uint64_t total_edge_ret_ns = 0;
-  uint64_t total_edge_worklist_ns = 0;
-
-  auto loop_start_time = std::chrono::high_resolution_clock::now();
 
   while (!worklist.empty()) {
     // v = S.pop()
@@ -1152,13 +1141,7 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
 
     bool not_visited = false;
     {
-      llvm::TimeTraceScope TimeScope("Visited Set Lookup");
-      auto t_start = std::chrono::high_resolution_clock::now();
       not_visited = visited.find(p) == visited.end();
-      auto t_end = std::chrono::high_resolution_clock::now();
-      total_visited_lookup_ns +=
-          std::chrono::duration_cast<std::chrono::nanoseconds>(t_end - t_start)
-              .count();
     }
 
     // if v is not labeled as discovered then
@@ -1168,22 +1151,12 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
       // outs() << vNode->toString() << "\n";
 
       // label v as discovered
-      {
-        llvm::TimeTraceScope TimeScope("Visited Set Insert");
-        auto t_start = std::chrono::high_resolution_clock::now();
-        visited.insert(p);
-        auto t_end = std::chrono::high_resolution_clock::now();
-        total_visited_insert_ns +=
-            std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
-                                                                 t_start)
-                .count();
-      }
+      visited.insert(p);
 
       bool skipNode = false;
 
       {
         // process the node!
-        auto t_start = std::chrono::high_resolution_clock::now();
         if (vNode->getNodeKind() == VFGNode::VFGNodeK::Load) {
           acNode.setAccess(AccessType::Access::read);
           ats->insert(acNode, vNode->getICFGNode());
@@ -1384,10 +1357,6 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
             }
           }
         }
-        auto t_end = std::chrono::high_resolution_clock::now();
-        total_switch_ns += std::chrono::duration_cast<std::chrono::nanoseconds>(
-                               t_end - t_start)
-                               .count();
       } // anonymous block
 
       // else if (vNode->getNodeKind() == VFGNode::VFGNodeK::FRet) {
@@ -1410,7 +1379,6 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
         p.setPrevValue(llvmModuleSet->getLLVMValue(vNode->getValue()));
 
       if (vNode->hasOutgoingEdge()) {
-        auto t_start = std::chrono::high_resolution_clock::now();
         // outs() << "Children of: \n";
         // outs() << vNode->toString() << "\n";
         for (VFGNode::const_iterator it = vNode->OutEdgeBegin(),
@@ -1435,14 +1403,7 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
           // outs() << "I PROCEED WITH THIS\n";
 
           VFGNode *succNode = edge->getDstNode();
-
-          auto t_path_start = std::chrono::high_resolution_clock::now();
           Path p_succ = p;
-          auto t_path_end = std::chrono::high_resolution_clock::now();
-          total_edge_path_copy_ns +=
-              std::chrono::duration_cast<std::chrono::nanoseconds>(t_path_end -
-                                                                   t_path_start)
-                  .count();
           // p_succ.addStep(vNode->getICFGNode());
 
           bool ok_continue = true;
@@ -1467,7 +1428,6 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
             isACall = false;
           }
 
-          auto t_call_start = std::chrono::high_resolution_clock::now();
           if (cs && isACall) {
             // outs() << "[INFO] ActualParmVFGNode:\n";
             p_succ.pushFrame(cs);
@@ -1521,48 +1481,22 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
               }
             }
           }
-          auto t_call_end = std::chrono::high_resolution_clock::now();
-          total_edge_call_ns +=
-              std::chrono::duration_cast<std::chrono::nanoseconds>(t_call_end -
-                                                                   t_call_start)
-                  .count();
 
           // aka is a ret
-          auto t_ret_start = std::chrono::high_resolution_clock::now();
           if (cs && !isACall) {
             ok_continue = p_succ.isCorrect(cs);
             if (ok_continue)
               p_succ.popFrame();
           }
-          auto t_ret_end = std::chrono::high_resolution_clock::now();
-          total_edge_ret_ns +=
-              std::chrono::duration_cast<std::chrono::nanoseconds>(t_ret_end -
-                                                                   t_ret_start)
-                  .count();
 
-          auto t_wl_start = std::chrono::high_resolution_clock::now();
           if (ok_continue) {
             p_succ.setNode(succNode);
             worklist.push_back(p_succ);
           }
-          auto t_wl_end = std::chrono::high_resolution_clock::now();
-          total_edge_worklist_ns +=
-              std::chrono::duration_cast<std::chrono::nanoseconds>(t_wl_end -
-                                                                   t_wl_start)
-                  .count();
         } // end out_edge processing
-        auto t_end = std::chrono::high_resolution_clock::now();
-        total_out_edges_ns +=
-            std::chrono::duration_cast<std::chrono::nanoseconds>(t_end -
-                                                                 t_start)
-                .count();
       } // end if has  OudgoingEdges
     } // end visited
   } // end worklist empty
-  auto loop_end_time = std::chrono::high_resolution_clock::now();
-  uint64_t total_loop_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                               loop_end_time - loop_start_time)
-                               .count();
 
   // outs() << "I visited these functions:\n";
   // for (auto x: visitedFunctions) {
@@ -1573,41 +1507,6 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
     mdata.setIsArray(is_array);
   }
 
-#if defined(PROFILING)
-  if (total_loop_ns > 0) {
-    outs() << "\n[PROFILING] `extractParameterMetadata` Time Breakdown:\n";
-    outs() << "  Total Loop Time: " << (total_loop_ns / 1e6) << " ms\n";
-    outs() << "  Visited Lookup : " << (total_visited_lookup_ns / 1e6)
-           << " ms ("
-           << ((double)total_visited_lookup_ns / total_loop_ns) * 100.0
-           << "%)\n";
-    outs() << "  Visited Insert : " << (total_visited_insert_ns / 1e6)
-           << " ms ("
-           << ((double)total_visited_insert_ns / total_loop_ns) * 100.0
-           << "%)\n";
-    outs() << "  Node Switch    : " << (total_switch_ns / 1e6) << " ms ("
-           << ((double)total_switch_ns / total_loop_ns) * 100.0 << "%)\n";
-    outs() << "  Edge Traversal : " << (total_out_edges_ns / 1e6) << " ms ("
-           << ((double)total_out_edges_ns / total_loop_ns) * 100.0 << "%)\n";
-    outs() << "    - Path Copy  : " << (total_edge_path_copy_ns / 1e6)
-           << "ms\n";
-    outs() << "    - Call Check : " << (total_edge_call_ns / 1e6) << "ms\n";
-    outs() << "    - Ret Check  : " << (total_edge_ret_ns / 1e6) << "ms\n";
-    outs() << "    - Worklist   : " << (total_edge_worklist_ns / 1e6) << "ms\n";
-    outs() << "    - Unmeasured Overhead: "
-           << ((total_out_edges_ns - total_edge_path_copy_ns -
-                total_edge_call_ns - total_edge_ret_ns -
-                total_edge_worklist_ns) /
-               1e6)
-           << " ms\n";
-    outs() << "  Other (Wait)   : "
-           << ((total_loop_ns - total_visited_lookup_ns -
-                total_visited_insert_ns - total_switch_ns -
-                total_out_edges_ns) /
-               1e6)
-           << " ms\n\n";
-  }
-#endif
   return mdata;
 }
 

@@ -14,5 +14,3 @@ cd ${LIBFUZZ}/targets/${TARGET_NAME}
 sudo ./preinstall.sh
 ./fetch.sh
 { time ./analysis.sh; } 2>${TARGET}/${TARGET_NAME}_analysis_time.txt
-
-$LIBFUZZ/targets/generate_prof_remote.sh --as-excel
