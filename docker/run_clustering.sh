@@ -6,10 +6,9 @@
 ##
 
 if [ -z $TARGET ]; then
-    echo '$TARGET must be specified as environment variable.'
-    exit 1
+  echo '$TARGET must be specified as environment variable.'
+  exit 1
 fi
-
 
 IMG_NAME="libpp-clustering-$TARGET"
 LIBPP=../
@@ -17,14 +16,14 @@ LIBPP=../
 source "$(dirname "$0")/llvm_source.sh"
 set -x
 DOCKER_BUILDKIT=1 docker build \
-    --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
-    --build-arg target_name="$TARGET" \
-    --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
-    -t "$IMG_NAME" --target libfuzzpp_crash_cluster \
-    -f "$LIBPP/Dockerfile" "$LIBPP"
+  --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
+  --build-arg target_name="$TARGET" \
+  --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
+  -t "$IMG_NAME" --target libfuzzpp_crash_cluster_new \
+  -f "$LIBPP/Dockerfile" "$LIBPP"
 set +x
 
 echo "[INFO] Running: $IMG_NAME"
 
 docker run --privileged --env DRIVER=${DRIVER} --env TIMEOUT=${TIMEOUT} \
-    -v $(pwd)/..:/workspaces/libfuzz $IMG_NAME
+  -v $(pwd)/..:/workspaces/libfuzz $IMG_NAME

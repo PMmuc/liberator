@@ -6,18 +6,18 @@
 ##
 
 if [ -z $TARGET ] || [ -z $TIMEOUT ]; then
-    echo '$TARGET, and $TIMEOUT must be specified as environment variables.'
-    exit 1
+  echo '$TARGET, and $TIMEOUT must be specified as environment variables.'
+  exit 1
 fi
 
 # if DRIVER unset, we consider all the driver.cc in the folder
 if [ -z $DRIVER ]; then
-    echo "[INFO] DRIVER unset, selecting all the driver.cc produced"
-    DRIVER="*"
+  echo "[INFO] DRIVER unset, selecting all the driver.cc produced"
+  DRIVER="*"
 fi
 
 if [ -z $FORK_MODE ]; then
-    FORK_MODE=0
+  FORK_MODE=0
 fi
 
 IMG_NAME="libpp-fuzzing-$TARGET"
@@ -26,15 +26,15 @@ LIBPP=../
 source "$(dirname "$0")/llvm_source.sh"
 set -x
 DOCKER_BUILDKIT=1 docker build \
-    --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
-    --build-arg target_name="$TARGET" \
-    --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
-    -t "$IMG_NAME" --target libfuzzpp_fuzzing \
-    -f "$LIBPP/Dockerfile" "$LIBPP"
+  --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
+  --build-arg target_name="$TARGET" \
+  --build-arg LLVM_SOURCE="$LLVM_SOURCE" \
+  -t "$IMG_NAME" --target libfuzzpp_fuzzing_new \
+  -f "$LIBPP/Dockerfile" "$LIBPP"
 set +x
 
 echo "[INFO] Running: $IMG_NAME"
 
 docker run --env DRIVER=${DRIVER} --env TIMEOUT=${TIMEOUT} \
-    --env FORK_MODE=${FORK_MODE} \
-    -v $(pwd)/..:/workspaces/libfuzz $IMG_NAME
+  --env FORK_MODE=${FORK_MODE} \
+  -v $(pwd)/..:/workspaces/libfuzz $IMG_NAME
