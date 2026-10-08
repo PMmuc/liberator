@@ -2,6 +2,7 @@
 
 FROM ubuntu:20.04 AS libfuzzpp_dev_image_org
 
+# time for reporting runtime and RSS
 RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
     DEBIAN_FRONTEND="noninteractive" \
     apt-get -y install --no-install-suggests --no-install-recommends \
@@ -14,7 +15,7 @@ RUN --mount=type=cache,target=/var/cache/apt apt-get -q update && \
     bash-completion less apt-utils apt-transport-https curl  \
     ca-certificates gnupg dialog libpixman-1-dev gnuplot-nox \
     nodejs npm graphviz libtinfo-dev libz-dev zip unzip libclang-12-dev \
-    tmux tree gdb jq bc cloc ccache lsb-release lsof cargo \
+    tmux tree gdb jq bc cloc ccache lsb-release lsof cargo time \
     && rm -rf /var/lib/apt/lists/*
 
 # Clang dependencies
@@ -128,8 +129,7 @@ ENV TOOLS_DIR ${HOME}
 
 RUN mkdir -p ${TOOLS_DIR}/condition_extractor/
 RUN mkdir -p ${TOOLS_DIR}/tool/misc/
-# time for reporting runtime and RSS
-RUN sudo apt-get update && sudo apt-get install -y zlib1g-dev unzip cmake gcc g++ libtinfo5 nodejs time
+RUN sudo apt-get update && sudo apt-get install -y zlib1g-dev unzip cmake gcc g++ libtinfo5 nodejs
 COPY --chown=${USERNAME}:${USERNAME} ./condition_extractor ${TOOLS_DIR}/condition_extractor/
 COPY --chown=${USERNAME}:${USERNAME} ./tool/misc/extract_included_functions.py ${TOOLS_DIR}/tool/misc/
 # ENV SVF_DIR /home/libfuzz/SVF
