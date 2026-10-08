@@ -94,6 +94,7 @@ RUN sudo apt-get update && \
     sudo apt-get install -y \
     zlib1g-dev \
     unzip \
+    time \
     cmake \
     gcc \
     g++ \
@@ -268,8 +269,7 @@ ENV TOOLS_DIR=${HOME}
 
 RUN mkdir -p ${TOOLS_DIR}/condition_extractor/
 RUN mkdir -p ${TOOLS_DIR}/tool/misc/
-# time: GNU /usr/bin/time, reports the extractor's runtime and peak RSS
-RUN sudo apt-get update && sudo apt-get install -y zlib1g-dev unzip cmake gcc g++ libtinfo6 nodejs time
+RUN sudo apt-get update && sudo apt-get install -y zlib1g-dev unzip cmake gcc g++ libtinfo6 nodejs
 COPY --chown=${USERNAME}:${USERNAME} ./condition_extractor ${TOOLS_DIR}/condition_extractor/
 COPY --chown=${USERNAME}:${USERNAME} ./tool/misc/extract_included_functions.py ${TOOLS_DIR}/tool/misc/
 ENV PATH="/home/libfuzz/llvm-21/bin:${PATH}"
