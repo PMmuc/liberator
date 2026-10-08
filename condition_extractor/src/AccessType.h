@@ -532,8 +532,6 @@ public:
     this->access_type = rhs.access_type;
     this->stack = rhs.stack;
 
-    this->history = rhs.history;
-
     return *this;
   };
 
