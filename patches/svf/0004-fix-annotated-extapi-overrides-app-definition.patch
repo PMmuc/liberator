@@ -12,18 +12,3 @@ index 749c320d..84169cf3 100644
 +            ExtFuncsVec.push_back(appFuncDef);
          }
      }
- 
-@@ -1427,6 +1431,13 @@ SVFType* LLVMModuleSet::addSVFTypeInfo(const Type* T)
-         svfat->setTypeOfElement(getSVFType(at->getElementType()));
-         svftype = svfat;
-     }
-+    else if (const FixedVectorType* vt = SVFUtil::dyn_cast<FixedVectorType>(T))
-+    {
-+        auto svfat = new SVFArrayType(id, byteSize);
-+        svfat->setNumOfElement(vt->getNumElements());
-+        svfat->setTypeOfElement(getSVFType(vt->getElementType()));
-+        svftype = svfat;
-+    }
-     else
-     {
-         std::string buffer;
