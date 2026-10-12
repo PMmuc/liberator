@@ -121,7 +121,11 @@ void GlobalStruct::analyze() {
 
   CallEdgeMap newEdges;
 
-  auto slot_map = build_slot_map(*llvmModuleSet->getMainLLVMModule());
+  {
+    PROFILE_SCOPED("GlobalStruct: Build Slot Map");
+    PROFILE_MEM("GlobalStruct: Build Slot Map");
+    auto slot_map = build_slot_map(*llvmModuleSet->getMainLLVMModule());
+  }
 
   {
     PROFILE_SCOPED("GlobalStruct: Resolve Indirect Calls");
