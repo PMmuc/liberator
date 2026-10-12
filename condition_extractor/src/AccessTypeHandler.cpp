@@ -241,14 +241,19 @@ bool DIIsAnArray(const CallBase *c) {
   return obj_size != cpy->getZExtValue();
 }
 
-bool isAnArray(const CallBase *c) {
-  // I assume c is at least a memcpy-like function
+uint64_t di_pointee_size(llvm::DIType *t) {
+  t = liberator::peel_di_qualifiers(t);
+  if (auto *d = dyn_cast_or_null<DIDerivedType>(t);
+      d && d->getTag() == dwarf::DW_TAG_pointer_type) {
+    t = liberator::peel_di_qualifiers(d->getBaseType());
+  }
 
+  return t ? t->getSizeInBits() / 8 : 0;
+}
+
+bool isAnArray(const CallBase *c, llvm::DIType *tracked_di) {
   Module *m = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
   const DataLayout &data_layout = m->getDataLayout();
-
-  // outs() << "isAnArray?\n";
-  // outs() << *c << "\n";
 
   bool obj_size_found = false;
   bool cpy_size_found = false;
@@ -263,6 +268,9 @@ bool isAnArray(const CallBase *c) {
 
   if (base_tye) {
     obj_size = data_layout.getTypeStoreSize(const_cast<Type *>(base_tye));
+    obj_size_found = true;
+  } else if (uint64_t size = di_pointee_size(tracked_di)) {
+    obj_size = size;
     obj_size_found = true;
   }
 
@@ -449,6 +457,26 @@ bool free_handler(ValueMetadata &mdata, std::string fun_name,
   return false;
 }
 
+// (func name -> set of parameters)
+static const std::map<std::string, std::set<size_t>> args = {
+    {"chroot", {0}},
+    {"mount", {0, 1}},
+    {"pivot_root", {0, 1}},
+    {"execve", {0}}};
+
+bool path_handler(ValueMetadata &mdata, std::string fun_name,
+                  const ICFGNode *icfgNode, const CallICFGNode *cs,
+                  int param_num, AccessType atNode, H_SCOPE scope, Path *path) {
+  auto it = args.find(fun_name);
+  if (it != args.end() && it->second.count(param_num) &&
+      atNode.get_num_fields() == 0 && scope & C_PARAM) {
+    atNode.set_kind(AccessType::kind_e::read);
+    mdata.get_access_type_set().insert(atNode, icfgNode);
+    mdata.setIsFilePath(true);
+  }
+  return false;
+}
+
 bool open_handler(ValueMetadata &mdata, std::string fun_name,
                   const ICFGNode *icfgNode, const CallICFGNode *cs,
                   int param_num, AccessType atNode, H_SCOPE scope, Path *path) {
@@ -496,7 +524,7 @@ bool memcpy_handler(ValueMetadata &mdata, std::string fun_name,
 
     auto llvm_val = llvmModuleSet->getLLVMValue(cs);
     auto c = SVFUtil::dyn_cast<CallBase>(llvm_val);
-    mdata.setIsArray(isAnArray(c));
+    mdata.setIsArray(isAnArray(c, atNode.get_di_type()));
     // if (param_num == 1) {
     //  outs() << cs->getCallSite()->toString() << "\n";
     //
@@ -567,7 +595,7 @@ bool memset_handler(ValueMetadata &mdata, std::string fun_name,
     auto c = SVFUtil::dyn_cast<CallBase>(llvm_val);
     // this change should allow, Liberator to differentiate between
     // calls where the destination pointer is an array or not
-    mdata.setIsArray(isAnArray(c));
+    mdata.setIsArray(isAnArray(c, atNode.get_di_type()));
 
     auto i = SVFUtil::dyn_cast<CallBase>(llvm_val);
     // Get parameter n from memset call which is the number of bytes
@@ -815,6 +843,10 @@ AccessTypeHandlerMap accessTypeHandlers = {
     {"open64", open_handler},
     {"fopen", open_handler},
     {"fopen64", open_handler},
+    {"chroot", path_handler},
+    {"mount", path_handler},
+    {"pivot_root", path_handler},
+    {"execve", path_handler},
     {"llvm.memcpy.*", memcpy_handler},
     {"strcpy", strcpy_handler},
     // {"strdup", &strcpy_handler},

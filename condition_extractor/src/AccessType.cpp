@@ -1040,8 +1040,8 @@ ValueMetadata extractParameterMetadata(const SVFG &vfg, const Value *val,
   std::set<Path> visited;
   // S.push(v)
   // worklist.push_back(Path(vNode));
-  worklist.push_back(Path(vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pNode)),
-                          val, seek_type));
+  worklist.push_back(
+      Path(vfg.getDefSVFGNode(SVFUtil::cast<SVF::ValVar>(pNode)), seek_type));
 
   // if (seek_type)
   //     outs() << "DEBUG: seek_type: " << *seek_type << "\n";

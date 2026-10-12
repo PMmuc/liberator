@@ -17,7 +17,14 @@ fi
 mkdir -p "$WORK"
 mkdir -p "$WORK/lib" "$WORK/include"
 
-export LIBFUZZ_LOG_PATH=$WORK/apipass
+if [ -n "$FUNCTION" ]; then
+  export LIBFUZZ_LOG_PATH=$WORK/apipass_debug/$FUNCTION
+  EXTRACTOR_BUILD_DIR=${EXTRACTOR_BUILD_DIR:-build}
+  LOG_TAGS=${LOG_TAGS:-Summary,GEPHandler,handler,APARAM, paramMetadata,returnMetadata}
+else
+  export LIBFUZZ_LOG_PATH=$WORK/apipass
+fi
+
 # Clean analysis logs only
 rm -rf "$LIBFUZZ_LOG_PATH"
 mkdir -p "$LIBFUZZ_LOG_PATH"
@@ -60,12 +67,10 @@ fi
 # Let WLLVM generate bitcode file
 extract-bc -b "$ARCHIVE_PATH"
 
-# Extract included functions
-# Use public_headers.txt from target dir if it exists
-PUBLIC_HEADERS="$TARGET/public_headers.txt"
-if [ ! -f "$PUBLIC_HEADERS" ]; then
-  echo "Warning: public_headers.txt not found at $PUBLIC_HEADERS, creating an empty one."
-  touch "$PUBLIC_HEADERS"
+PUBLIC_HEADERS="$LIBFUZZ/targets/$TARGET_NAME/public_headers.txt"
+if [ ! -s "$PUBLIC_HEADERS" ]; then
+  echo "Error: public_headers.txt is missing"
+  exit 1
 fi
 
 INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
@@ -77,6 +82,16 @@ INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
   -I "$LIBFUZZ_LOG_PATH/incomplete_types.txt" \
   -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
   -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
+
+if [ -n "$FUNCTION" ]; then
+  API_LIST="$LIBFUZZ_LOG_PATH/apis_clang.json"
+  jq -c --arg f "$FUNCTION" 'select(.function_name == $f)' "$API_LIST" >"$API_LIST.tmp"
+  if [ ! -s "$API_LIST.tmp" ]; then
+    echo "[ERROR] $FUNCTION is not in $API_LIST"
+    exit 1
+  fi
+  mv "$API_LIST.tmp" "$API_LIST"
+fi
 
 EXTRACTOR_BUILD_DIR=${EXTRACTOR_BUILD_DIR:-build_release}
 EXTRACTOR_BIN="$TOOLS_DIR/condition_extractor/$EXTRACTOR_BUILD_DIR/bin/extractor"

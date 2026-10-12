@@ -18,18 +18,37 @@ FETCH_ONLY=false
 RUN_ONLY=false
 DEBUG_ONLY=false
 BUILD_ONLY=false
+FUNCTION=""
+LOG_TAGS=""
 
-if [ "$2" == "--fetch-only" ]; then
-  FETCH_ONLY=true
-elif [ "$2" == "--run-only" ]; then
+shift # $1 is the target
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --fetch-only) FETCH_ONLY=true ;;
+  --run-only) RUN_ONLY=true ;;
+  --debug-only) DEBUG_ONLY=true ;;
+  --function)
+    FUNCTION="$2"
+    shift
+    ;;
+  --log)
+    LOG_TAGS="$2"
+    shift
+    ;;
+  *)
+    echo "[ERROR] unknown option: $1"
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+if [ -n "$FUNCTION" ]; then
   RUN_ONLY=true
-elif [ "$2" == "--debug-only" ]; then
-  DEBUG_ONLY=true
-elif [ "$2" == "--build-only" ]; then
-  BUILD_ONLY=true
 fi
 
-# Check if running in Docker
+export FUNCTION LOG_TAGS
+
 is_docker() {
   [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null
 }

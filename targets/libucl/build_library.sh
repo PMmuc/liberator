@@ -18,6 +18,7 @@ mkdir -p "$WORK/lib" "$WORK/include"
 
 echo "make 1"
 cd "$TARGET/repo"
+sed -i 's/AC_PREREQ(\[2.70\])/AC_PREREQ([2.69])/g' configure.ac
 ./autogen.sh
 echo "./configure"
 

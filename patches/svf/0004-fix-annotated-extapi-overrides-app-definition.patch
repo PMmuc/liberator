@@ -12,3 +12,4 @@ index 749c320d..84169cf3 100644
 +            ExtFuncsVec.push_back(appFuncDef);
          }
      }
+ 

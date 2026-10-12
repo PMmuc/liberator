@@ -235,7 +235,7 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
           if (!SVFUtil::isa<ConstantInt>(d)) { // p[i] with a variable i
                                                // save i in mdata.
             // case A: %q = getelementptr i8, ptr %p, i64 %n -> p[i]
-            //  and %q = getelementptr i8, ptr %p, i64 %n, i64, i64 3 ->
+            //  and %q = getelementptr i8, ptr %p, i64 %n, i64 3 ->
             //  p[i]->f3
             //  but  p->f3[i] is not tracked
             is_array = true;
@@ -248,7 +248,12 @@ bool handleGep(const VFGNode *vNode, AccessType &acNode, AccessTypeSet &ats,
             is_array = true;
             mdata.addIndex(gep_inst); // record the gep instruction itself
           }
-          if (is_array) {
+          // Only a pointer can be an array, but an integer will reach the GEP
+          // node as well as index parameter.
+          auto tag = ditype ? ditype->getTag() : 0;
+          bool tracks_pointer = !ditype || tag == dwarf::DW_TAG_pointer_type ||
+                                tag == dwarf::DW_TAG_array_type;
+          if (is_array && tracks_pointer) {
             GEP_LOG("Setting is_array to true for {}\n", vNode->toString());
             mdata.setIsArray(true);
           }

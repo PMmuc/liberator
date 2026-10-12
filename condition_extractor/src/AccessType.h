@@ -301,6 +301,11 @@ public:
     return it;
   }
 
+  // Removes AccessTypes for which pred returns true.
+  template <typename P> size_t erase_if(P pred) {
+    return std::erase_if(ats_set, pred);
+  }
+
   bool empty() const { return ats_set.empty(); }
 
   template <typename T>
@@ -354,7 +359,12 @@ class Path {
 private:
   const VFGNode *node;
   AccessType access_type;
+  // PrevValue is used to distinguish read and write accesses in store handler
+  // in IntraAnalysis.cpp
   const Value *prevValue;
+  // PAG node of the address the tracked value was stored to.
+  // value is zero as long as the tracked value is not in memory.
+  SVF::NodeID mem_addr = 0;
   std::stack<const CallICFGNode *> stack;
   // std::vector<std::pair<const ICFGNode *, AccessType>> history;
   friend std::string to_string(const Path &);
@@ -365,13 +375,11 @@ public:
   //     prevValue = nullptr;
   // }
 
-  // BUG: this is probably a bug where val is not used in the constructor.
-  Path(const VFGNode *p_node, const llvm::Value *val, const llvm::Type *type,
+  Path(const VFGNode *p_node, const llvm::Type *type,
        llvm::DIType *di = nullptr)
       : access_type(type, di) {
     node = p_node;
     prevValue = nullptr;
-    // access_type.setType(val->getType());
   }
 
   // copy assignment operator
@@ -407,6 +415,9 @@ public:
       reverse.pop();
     }
   }
+
+  SVF::NodeID get_mem_addr() const { return mem_addr; }
+  void set_mem_addr(SVF::NodeID id) { mem_addr = id; }
 
   const std::stack<const CallICFGNode *> &get_cs_stack() const { return stack; }
 

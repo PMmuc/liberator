@@ -19,9 +19,12 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Analysis/ValueTracking.h>
 #include <llvm/BinaryFormat/Dwarf.h>
+#include <llvm/IR/DataLayout.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/Operator.h>
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/TargetParser/Triple.h>
 #include <optional>
 #include <unordered_map>
 
@@ -107,6 +110,14 @@ static bool is_formal_pointer_type(const VFGNode *n) {
   const auto v =
       LLVMModuleSet::getLLVMModuleSet()->getLLVMValue(fp->getParam());
   return v && v->getType()->isPointerTy();
+}
+
+bool stores_value(const StoreVFGNode *st, liberator::Path &p) {
+  auto *llvm_store = llvm::dyn_cast_or_null<llvm::StoreInst>(
+      LLVMModuleSet::getLLVMModuleSet()->getLLVMModuleSet()->getLLVMValue(
+          st->getValue()));
+  return llvm_store && p.getPrevValue() &&
+         llvm_store->getValueOperand() == p.getPrevValue();
 }
 
 /**
@@ -461,6 +472,53 @@ static bool intersects(const std::set<const VFGNode *> &s1,
   }
   return false;
 }
+
+/**
+ * @param id of the address of a pointer to a struct.
+ * @param src_ty - source type of the pointer that go loaded.
+ * @return nullptr if PAG node is not a GEP and (offset, offset+size) for this
+ * gep.
+ * A struct A {int f1;; int f2; } with gep %struct.A, ptr %base, i64 0, i64 1
+ * will return something like
+ */
+std::optional<pair<int64_t, uint64_t>>
+struct_field_range(NodeID id, const llvm::Type *&src_ty) {
+  auto *module_set = LLVMModuleSet::getLLVMModuleSet();
+  const SVFVar *var = SVFIR::getPAG()->getGNode(id);
+  if (!var || !module_set->hasLLVMValue(var))
+    return std::nullopt;
+
+  // For ConstantExpr and GetElementPtrInst we use GEPOperator
+  auto gep = dyn_cast<llvm::GEPOperator>(module_set->getLLVMValue(var));
+  if (!gep || !gep->getSourceElementType()->isStructTy())
+    return std::nullopt;
+
+  const llvm::DataLayout &dl = module_set->getMainLLVMModule()->getDataLayout();
+  // Returns the pointer index size in bits (64 on x64 32 on x86)
+  llvm::APInt off(dl.getIndexTypeSizeInBits(gep->getType()), 0);
+  // returns the byte offset for this gep for instruction and adds off to it.
+  if (!gep->accumulateConstantOffset(dl, off))
+    return std::nullopt;
+
+  src_ty = gep->getSourceElementType();
+  return std::make_pair(
+      off.getSExtValue(),
+      dl.getTypeStoreSize(gep->getResultElementType()).getFixedValue());
+}
+
+bool disjoint_fields(NodeID a, NodeID b) {
+  const llvm::Type *ty_a = nullptr, *ty_b = nullptr;
+  auto ra = struct_field_range(a, ty_a);
+  auto rb = struct_field_range(b, ty_b);
+  if (!ra || !rb || ty_a != ty_b)
+    return false;
+
+  auto [off_a, size_a] = *ra;
+  auto [off_b, size_b] = *rb;
+  return off_a + static_cast<int64_t>(size_a) <= off_b ||
+         off_b + static_cast<int64_t>(size_b) <= off_a;
+}
+
 } // namespace
 
 namespace liberator {
@@ -484,9 +542,10 @@ struct visit_key_t {
   const std::string *di;
   AccessType::kind_e kind;
   vector<int> fields;
+  SVF::NodeID mem;
   bool operator<(const visit_key_t &o) const {
-    return std::tie(node, fields, kind, di) <
-           std::tie(o.node, o.fields, o.kind, o.di);
+    return std::tie(node, fields, kind, di, mem) <
+           std::tie(o.node, o.fields, o.kind, o.di, o.mem);
   }
 };
 
@@ -696,7 +755,7 @@ void access_tracker_t::merge_summary(VFGNode *succ, const CallICFGNode *cs,
 
       if (!composed_opt)
         continue;
-      Path r(poss_ret, nullptr, exit.at.get_llvm_type());
+      Path r(poss_ret, exit.at.get_llvm_type());
       r.set_access_type(*composed_opt);
       worklist.push_back(r);
     }
@@ -823,7 +882,7 @@ bool access_tracker_t::summarize_from(const VFGNode *entry,
 
   (di_type ? di_instr.formal_with_di : di_instr.formal_no_di)++;
 
-  worklist.push_back(Path(entry, nullptr, nullptr, di_type));
+  worklist.push_back(Path(entry, nullptr, di_type));
 
   // llvm::outs() << "Tracking key: " << key_str(di_key(di_type)) << "\n";
 
@@ -862,13 +921,19 @@ bool access_tracker_t::summarize_from(const VFGNode *entry,
 
     if (!visited
              .insert(visit_key_t{p.getNode(), path_at.get_di_key(),
-                                 path_at.get_kind(), path_at.get_fields()})
+                                 path_at.get_kind(), path_at.get_fields(),
+                                 p.get_mem_addr()})
              .second) {
       instr.dedup_hits++;
       continue;
     }
 
     const VFGNode *curr = p.getNode();
+
+    SVF::NodeID mem_addr = p.get_mem_addr();
+    if (auto *st = llvm::dyn_cast<StoreVFGNode>(curr))
+      if (stores_value(st, p))
+        mem_addr = st->getDstNodeID();
 
     // Intra procedural analysis.
     auto lr = transfer_function(curr, p.get_access_type(), work, p);
@@ -907,6 +972,30 @@ bool access_tracker_t::summarize_from(const VFGNode *entry,
 
       auto *succ = edge->getDstNode();
 
+      // For a field-insensitive SVF analysis, it keeps all fields of one object
+      // in one region -> the indirect edges out of a store connect loads of
+      // other fields. For example "chunk->remain = len;" is connected to the
+      // load: "... = chunk->begin"). We only want to continue if our tracked
+      // field gets loaded and not any other fields. Therefore use points-to
+      // alias analysis to check if the pts(mem_addr) \intersect pts(load). If
+      // this is empty we continue because then another field is loaded not our
+      // tracked value.
+      if (mem_addr && SVFUtil::isa<SVF::IndirectSVFGEdge>(edge)) {
+        if (auto load = SVFUtil::dyn_cast<LoadVFGNode>(succ)) {
+          if (pta->alias(mem_addr, load->getSrcNodeID()) == SVF::NoAlias) {
+            SUMM_LOG(
+                "memory edge {} -> {} skipped: load reads another object\n",
+                curr->getId(), succ->getId());
+            continue;
+          }
+          if (disjoint_fields(mem_addr, load->getSrcNodeID())) {
+            SUMM_LOG("memory edge {} -> {} skipped: load reads another field\n",
+                     curr->getId(), succ->getId());
+            continue;
+          }
+        }
+      }
+
       const CallICFGNode *cs = nullptr;
 
       // Case1: A call: merge the summaries.
@@ -934,6 +1023,9 @@ bool access_tracker_t::summarize_from(const VFGNode *entry,
       // continuation point.
       Path ps = p;
       ps.setNode(succ);
+      // If we have a load the actual parameter that was stored got loaded.
+      // Else just pass the memory on to the next path.
+      ps.set_mem_addr(SVFUtil::isa<LoadVFGNode>(succ) ? 0 : mem_addr);
       worklist.push_back(ps);
     }
   }
@@ -1895,6 +1987,13 @@ ValueMetadata access_tracker_t::extract_return_metadata(const SVFG &vfg,
   tracker.walk_inverted_scc(f);
   ValueMetadata mdata = tracker.get_ret_summary(f).effects;
   mdata.setValue(ret_val);
+  // To make the analysis more precise, we remove AT entries that have a delete
+  // on the return value because that would mean the caller gets returned a
+  // freed object which shouldn't be the case. There is usually something
+  // calling create and free for errors on the returned valued.
+  mdata.get_access_type_set().erase_if([](const AccessType &at) {
+    return at.get_kind() == AccessType::kind_e::del && at.get_num_fields() == 0;
+  });
   return mdata;
 }
 ValueMetadata access_tracker_t::extract_parameter_metadata(const SVFG &vfg,

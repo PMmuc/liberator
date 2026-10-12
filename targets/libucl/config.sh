@@ -4,6 +4,7 @@ REPO_COMMIT="058286f4f85e2a66130e8bdaddf402d9c78d259c"
 BC_FILE_NAME="libucl.a"
 
 target_configure() {
+  sed -i 's/AC_PREREQ(\[2.70\])/AC_PREREQ([2.69])/g' configure.ac
   ./autogen.sh
   ./configure --disable-shared --prefix="$WORK" \
     CC=wllvm CXX=wllvm++ \
