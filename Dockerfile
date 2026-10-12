@@ -211,7 +211,7 @@ RUN --mount=type=cache,target=${HOME}/.ccache/  export PATH="${HOME}/llvm-${LLVM
     cd SVF && \
     for p in ${HOME}/svf-patches/*.patch; do echo "Applying $p" && (git apply "$p" || echo "WARNING: failed to apply $p, skipping"); done && \
     mkdir -p build && cd build && \
-    CC="${HOME}/llvm-${LLVM_VERSION}/bin/clang" CXX="${HOME}/llvm-${LLVM_VERSION}/bin/clang++" cmake -G Ninja -DSVF_WARN_AS_ERROR=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSVF_ENABLE_ASSERTIONS=ON -DCMAKE_INSTALL_PREFIX=${SVF_DIR} -DSVF_ENABLE_RTTI=ON -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld" .. && \
+    CC="${HOME}/llvm-${LLVM_VERSION}/bin/clang" CXX="${HOME}/llvm-${LLVM_VERSION}/bin/clang++" cmake -G Ninja -DSVF_WARN_AS_ERROR=OFF -DCMAKE_BUILD_TYPE=Release -DSVF_ENABLE_ASSERTIONS=OFF -DCMAKE_INSTALL_PREFIX=${SVF_DIR} -DSVF_ENABLE_RTTI=OFF -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld" .. && \
     ninja install
 
 # remove z3 and zstd and SVF source
