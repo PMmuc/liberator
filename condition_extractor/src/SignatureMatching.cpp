@@ -215,10 +215,6 @@ const llvm::DIType *trace_callee_ditype(const llvm::Value *v,
   // best case: found alloca or global var.
   // here we can read the type that is associated to the function pointer.
   if (auto it = slots.find(v); it != slots.end()) {
-    std::string out;
-    raw_string_ostream os(out);
-    v->print(os);
-    // GLOBAL_LOG("Found the allocation of the function pointer {}", out);
     return it->second;
   }
 
@@ -283,14 +279,9 @@ slot_type_map_t build_slot_map(const llvm::Module &M) {
         if (auto *DVR = llvm::dyn_cast<DbgVariableRecord>(&DR)) {
           if (DVR->isDbgDeclare()) {
             llvm::DILocalVariable *Var = DVR->getVariable();
+            // the alloca of the variable
             auto val = DVR->getAddress();
-            std::string str;
-            raw_string_ostream os(str);
-            val->print(os);
             auto type = Var->getType();
-            GLOBAL_LOG("Found var: {}", str);
-            GLOBAL_LOG("Var Name: {}", Var->getName().str());
-            GLOBAL_LOG("Var Type: {}\n\n", type->getName().str());
             slot_map.insert({val, type});
           } else if (DVR->isDbgValue()) {
             llvm::Value *Val = DVR->getValue();

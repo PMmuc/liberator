@@ -121,10 +121,11 @@ void GlobalStruct::analyze() {
 
   CallEdgeMap newEdges;
 
+  slot_type_map_t slot_map;
   {
     PROFILE_SCOPED("GlobalStruct: Build Slot Map");
     PROFILE_MEM("GlobalStruct: Build Slot Map");
-    auto slot_map = build_slot_map(*llvmModuleSet->getMainLLVMModule());
+    slot_map = build_slot_map(*svfModule);
   }
 
   {
@@ -192,11 +193,6 @@ void GlobalStruct::analyze() {
       std::string lookup_key;
       if (const auto *sr = resolve_callbase(llvm_cs, slot_map)) {
         lookup_key = "DW " + signature(sr);
-        string out;
-        raw_string_ostream os(out);
-        llvm_cs->print(os);
-        GLOBAL_LOG("Callsite {} has function pointer type {}\n", out,
-                   lookup_key);
       }
 
       unsigned int x = 0;
@@ -218,12 +214,6 @@ void GlobalStruct::analyze() {
 
       for (auto f : it->second) {
         auto fun_callee = llvmModuleSet->getFunObjVar(f);
-
-        std::string out;
-        raw_string_ostream os(out);
-        llvm_cs->print(os);
-        GLOBAL_LOG("The function: {} called at {} got matched with key: {}\n",
-                   f->getName().str(), out, lookup_key);
 
         // if (ExtAPI::getExtAPI()->is_ext(fun_callee))
         //     SVFUtil::outs() << "it is external!\n";

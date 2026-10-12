@@ -8,6 +8,7 @@
 
 /**
  * All variables and their associated debug information type.
+ * (alloca Value -> DIType)
  */
 using slot_type_map_t =
     std::unordered_map<const llvm::Value *, const llvm::DIType *>;
