@@ -382,6 +382,7 @@ void setDataLayout(const Function *F) {
     DL = new DataLayout(F->getParent());
 }
 
+extern uint64_t num_global_processed_nodes = 0;
 int main(int argc, char **argv) {
 
   int arg_num = 0;
@@ -887,6 +888,8 @@ int main(int argc, char **argv) {
   }
 
   llvm::timeTraceProfilerCleanup();
+  SVFUtil::outs() << "[NODES] baseline_processed=" << num_global_processed_nodes
+                  << "\n";
 
   // clean up memory
   if (dom)

@@ -1033,6 +1033,7 @@ bool areConnected(const VFGNode *a, const VFGNode *b) {
   return !intersection.empty();
 }
 
+uint64_t num_global_processed_nodes = 0;
 ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
                                                       const Value *val,
                                                       const Type *seek_type) {
@@ -1146,6 +1147,7 @@ ValueMetadata ValueMetadata::extractParameterMetadata(const SVFG *vfg,
 
     // if v is not labeled as discovered then
     if (not_visited) {
+      num_global_processed_nodes++;
 
       // outs() << "Process:\n";
       // outs() << vNode->toString() << "\n";
