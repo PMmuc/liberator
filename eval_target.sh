@@ -13,5 +13,5 @@ for i in $(seq $NUM_IT); do
   (cd docker && SKIP_BUILD=1 TARGET=${TARGET} ./run_analysis.sh) \
     >test_results/base/${TARGET}/${TARGET}_$i.log 2>&1
   cat analysis/${TARGET}/${TARGET}_analysis_time.txt \
-    >>test_results/base/${TARGET}_$i.log 2>/dev/null
+    >>test_results/base/${TARGET}/${TARGET}_$i.log 2>/dev/null
 done
