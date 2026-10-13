@@ -17,7 +17,7 @@ target_configure() {
   # the config script supports env var LDLIBS instead of LIBS
   export LDLIBS="$LIBS"
 
-  ./config --debug $CFLAGS -fno-sanitize=alignment $CONFIGURE_FLAGS --prefix="$WORK"
+  ./config --debug no-tests $CFLAGS -fno-sanitize=alignment $CONFIGURE_FLAGS --prefix="$WORK"
 }
 
 target_build() {
