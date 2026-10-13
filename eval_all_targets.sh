@@ -8,6 +8,9 @@
 #
 # Restrict to specific targets with:  TARGETS="zlib cjson" ./eval_all_targets.sh
 #
+# If analysis/<target>/repo already exists, the library build is skipped and
+# the analysis is run with --run-only.
+#
 set -u
 cd "$(dirname "$0")"
 
@@ -38,7 +41,12 @@ echo "[INFO] ${#targets[@]} targets: ${targets[*]}"
 failed=()
 for target in "${targets[@]}"; do
   echo "[INFO] === $target ($(date '+%F %T')) ==="
-  if ! ./eval_target.sh "${DOCKER_FLAG[@]}" "$target" "${NUM_IT[@]}"; then
+  run_only=()
+  if [ -d "analysis/$target/repo" ]; then
+    echo "[INFO] analysis/$target/repo exists, skipping build (--run-only)"
+    run_only=(--run-only)
+  fi
+  if ! ./eval_target.sh "${DOCKER_FLAG[@]}" "${run_only[@]}" "$target" "${NUM_IT[@]}"; then
     echo "[WARN] $target failed"
     failed+=("$target")
   fi

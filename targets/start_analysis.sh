@@ -12,5 +12,6 @@ mkdir -p $TARGET_DIR
 echo "Start analysis"
 # NOTE: write the timing file into TARGET_DIR, not WORK: analysis.sh does
 # `rm -rf "$WORK"` at the start of a full run, which would unlink this file.
-{ time ./analysis.sh ${TARGET_NAME}; } 2>${TARGET_DIR}/${TARGET_NAME}_analysis_time.txt
+# ANALYSIS_ARGS: extra args passed in from docker/run_analysis.sh (e.g. --run-only)
+{ time ./analysis.sh ${TARGET_NAME} ${ANALYSIS_ARGS:-}; } 2>${TARGET_DIR}/${TARGET_NAME}_analysis_time.txt
 echo "Finished analysis"
