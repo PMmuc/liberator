@@ -15,15 +15,10 @@
 #include "llvm/IR/DataLayout.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/Function.h"
-#include "llvm/IR/IRBuilder.h"
-#include "llvm/IR/Module.h"
 #include "llvm/IR/Type.h"
-#include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
-#include <algorithm>
 #include <format>
-#include <list>
-#include <set>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <string>
 #include <vector>
 
@@ -32,6 +27,9 @@ using namespace llvm;
 std::string remove_quotes(std::string s);
 
 namespace liberator {
+std::string pointer_flag(const llvm::DIType *di);
+llvm::DIType *restore_param_di_type(const llvm::Value *param);
+std::string typed_pointer_string(llvm::Type *type, const llvm::DIType *di);
 
 struct argument_record {
 public:
@@ -39,61 +37,43 @@ public:
   std::string flag; // val, ref, ret
   uint64_t size;
   std::string type;
-  void set_from_type(llvm::Type *arg_type) {
+
+  void set_from_type(llvm::Type *arg_type, const llvm::DIType *di = nullptr) {
 
     if (arg_type->isPtrOrPtrVectorTy()) {
-
-      llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(arg_type);
-
-      /*if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
-        this->flag = "fun";
-      } else {
-        this->flag = "ref";
-      }*/
-
+      flag = pointer_flag(di);
     } else {
-      this->flag = "val";
+      flag = "val";
     }
-    llvm::raw_string_ostream ostream(type);
-    arg_type->print(ostream);
-  };
+
+    type = typed_pointer_string(arg_type, di);
+  }
+
   void set_from_argument(const llvm::Argument &arg) {
 
     this->name = arg.getName().str();
 
     llvm::Type *a_type = arg.getType();
+    const llvm::DIType *di = restore_param_di_type(&arg);
 
-    if (arg.hasPointeeInMemoryValueAttr())
-      this->flag = "ret";
-    else {
-      if (a_type->isPtrOrPtrVectorTy()) {
-
-        llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(a_type);
-
-        if (a_ptype == nullptr) {
-          this->flag = "ref";
-        } else {
-          // FIXME: opaque pointers
-          /*if (isa<llvm::FunctionType>(a_ptype->getPointerElementType())) {
-            this->flag = "fun";
-          } else {
-            this->flag = "ref";
-          } */
-        }
-
-      } else {
-        this->flag = "val";
-      }
+    if (arg.hasPointeeInMemoryValueAttr()) {
+      flag = "ret";
+      llvm::raw_string_ostream ostream(this->type);
+      arg.getPointeeInMemoryValueType()->print(ostream);
+      type += "*";
+      return;
     }
 
-    llvm::raw_string_ostream ostream(this->type);
-    a_type->print(ostream);
-  }
-  std::string to_json() const {
-    std::string str_ret;
+    if (a_type->isPtrOrPtrVectorTy()) {
 
-    return str_ret;
+      llvm::PointerType *a_ptype = llvm::dyn_cast<llvm::PointerType>(a_type);
+      flag = pointer_flag(di);
+    } else {
+      flag = "val";
+    }
+    this->type = typed_pointer_string(a_type, di);
   }
+  std::string to_json() const;
 };
 
 struct function_record {
@@ -101,30 +81,7 @@ struct function_record {
   argument_record return_info;
   std::string is_vararg;
   std::vector<argument_record> arguments_info;
-  std::string to_json() {
-    std::string str_ret;
-    /*
-        str_ret += "{";
-        str_ret += "\"function_name\": \"" + this->function_name + "\", ";
-        str_ret += "\"return_info\": " + this->return_info.to_json() + ", ";
-        str_ret += "\"is_vararg\": " + this->is_vararg + ", ";
-        str_ret += "\"arguments_info\": ["; */
-
-    int max_arg = this->arguments_info.size();
-    int n_arg = 0;
-    for (auto arg : this->arguments_info) {
-      str_ret += arg.to_json();
-      if (n_arg < max_arg - 1)
-        str_ret += ", ";
-      n_arg++;
-    }
-
-    str_ret += "]"; // close argument_info list
-
-    str_ret += "}";
-
-    return str_ret;
-  }
+  std::string to_json();
 };
 
 // void dumpCoerceMap(std::string func_name, unsigned arg_pos, std::string

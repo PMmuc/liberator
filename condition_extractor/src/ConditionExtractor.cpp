@@ -376,7 +376,7 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
 
     my_fun.function_name = function_name.str();
     my_fun.is_vararg = is_vararg ? "true" : "false";
-    my_fun.return_info.set_from_type(retType);
+    my_fun.return_info.set_from_type(retType, restore_ret_di_type(&F));
     my_fun.return_info.size = estimate_size(retType, DL);
     my_fun.return_info.name = "return";
 
@@ -387,9 +387,7 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
       my_fun.arguments_info.push_back(an_argument);
     }
 
-    auto api_logger = *logger_manager_t::instance()->logger("llvm.json");
-    api_logger->info("{}\n", my_fun.to_json());
-    // libfuzz::dumpApiInfo(my_fun);
+    dumpApiInfo(my_fun);
   }
   /// Build Program Assignment Graph (SVFIR)
   SVFIRBuilder ir_builder;
