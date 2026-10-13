@@ -10,7 +10,7 @@ if [ -z $TARGET ]; then
   exit 1
 fi
 
-IMG_NAME="libpp-drvgen"
+IMG_NAME="libpp-drvgen_new"
 LIBPP=../
 
 source "$(dirname "$0")/llvm_source.sh"

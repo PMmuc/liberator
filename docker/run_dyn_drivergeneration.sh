@@ -28,7 +28,7 @@ fi
 
 DRIVER_TIMEOUT=5m
 
-IMG_NAME="libpp-dyndrvgen-${TARGET}"
+IMG_NAME="libpp-dyndrvgen-${TARGET}_new"
 LIBPP=../
 
 source "$(dirname "$0")/llvm_source.sh"

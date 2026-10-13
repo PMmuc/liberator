@@ -8,6 +8,7 @@
 # - BUILD_ONLY: build the image and exit (no container is run)
 # - SKIP_BUILD: skip the image build, just run the container
 # - CPUSET:     pin the container to these CPUs (e.g. "0" or "0,1")
+# - ANALYSIS_ARGS: extra args for analysis.sh inside the container (e.g. "--run-only")
 ##
 
 # Builds the docker image for target libfuzzpp_analysis
@@ -52,11 +53,11 @@ cpu_arg=()
 [ -n "${CPUSET:-}" ] && cpu_arg=(--cpuset-cpus "$CPUSET")
 
 if [[ "${DEVENV:-}" ]]; then
-  docker run --env TARGET=${TARGET} -v "$LIBPP:/workspaces/libfuzz" \
+  docker run --env TARGET=${TARGET} --env ANALYSIS_ARGS="${ANALYSIS_ARGS:-}" -v "$LIBPP:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
   # Remove any leftover container with the same name
   docker rm -f "${IMG_NAME}-${TARGET}" >/dev/null 2>&1 || true
   docker run --rm --name "${IMG_NAME}-${TARGET}" "${cpu_arg[@]}" \
-    --env TARGET=${TARGET} -v "$LIBPP:/workspaces/libfuzz" "$IMG_NAME"
+    --env TARGET=${TARGET} --env ANALYSIS_ARGS="${ANALYSIS_ARGS}" -v "$LIBPP:/workspaces/libfuzz" "$IMG_NAME"
 fi
