@@ -730,6 +730,9 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
   }
 
   cinstr.dump(llvm::outs());
+  llvm::outs() << "[NODES] tota_dp_processed="
+               << (instr.pops - instr.dedup_hits) << " pops=" << instr.pops
+               << " dedup=" << instr.dedup_hits << "\n";
 
   return result;
 }
