@@ -137,7 +137,7 @@ std::string argument_record::to_json() const {
   str_ret += "{";
   str_ret += "\"name\": \"" + this->name + "\", ";
   str_ret += "\"flag\": \"" + this->flag + "\", ";
-  str_ret += "\"size\": \"" + std::to_string(this->size) + "\", ";
+  str_ret += "\"size\": " + std::to_string(this->size) + ", ";
   str_ret += "\"type\": \"" + remove_quotes(this->type) + "\"";
   str_ret += "}";
 
