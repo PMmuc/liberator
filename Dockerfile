@@ -291,6 +291,7 @@ CMD ${LIBFUZZ}/targets/start_analysis.sh
 FROM libfuzzpp_dev_image_new AS libfuzzpp_drivergeneration_new
 
 ARG target_name=c-ares
+ENV TARGET_NAME=${target_name}
 
 # NOTE: start_generate_drivers.sh finds out its configuration automatically
 WORKDIR ${LIBFUZZ}/targets/${TARGET_NAME}
@@ -313,7 +314,7 @@ ARG target_name=c-ares
 ENV LLVM_DIR=${HOME}/llvm-${LLVM_VERSION}
 
 ENV TARGET_NAME=${target_name}
-ENV TARGET=${LIBFUZZ}/targets/${TARGET_NAME}
+ENV TARGET=${LIBFUZZ}/analysis/${TARGET_NAME}
 ENV DRIVER_FOLDER=${LIBFUZZ}/workdir/${TARGET_NAME}/drivers
 
 # I want to install the library at building time, so later I only need to build
