@@ -314,7 +314,9 @@ ARG target_name=c-ares
 ENV LLVM_DIR=${HOME}/llvm-${LLVM_VERSION}
 
 ENV TARGET_NAME=${target_name}
-ENV TARGET=${LIBFUZZ}/analysis/${TARGET_NAME}
+# NOTE: TARGET must live outside ${LIBFUZZ}: run_*.sh bind-mount the host repo
+# over ${LIBFUZZ}, which would hide the libraries built below
+ENV TARGET=${HOME}/fuzz_build/${TARGET_NAME}
 ENV DRIVER_FOLDER=${LIBFUZZ}/workdir/${TARGET_NAME}/drivers
 
 # I want to install the library at building time, so later I only need to build
@@ -325,6 +327,8 @@ COPY --chown=${USERNAME}:${USERNAME}  ./analysis.sh ./setup_target.sh ./setup.sh
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/targets.txt ${LIBFUZZ}/targets/
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/config.sh ${LIBFUZZ}/targets/${TARGET_NAME}/
 RUN cd ${LIBFUZZ} && ./analysis.sh ${TARGET_NAME} --fetch-only
+# analysis.sh always fetches into ${LIBFUZZ}/analysis/, move the repo to ${TARGET}
+RUN mv ${LIBFUZZ}/analysis/${TARGET_NAME}/repo ${TARGET}/repo && rm -rf ${LIBFUZZ}/analysis/${TARGET_NAME}
 COPY --chown=${USERNAME}:${USERNAME}  ./targets/${TARGET_NAME}/build_library.sh ./
 RUN ./build_library.sh
 
