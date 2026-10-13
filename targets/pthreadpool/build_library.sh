@@ -35,7 +35,9 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
         -DCMAKE_C_FLAGS_DEBUG="-fprofile-instr-generate -fcoverage-mapping -g" \
         -DCMAKE_CXX_FLAGS_DEBUG="-fprofile-instr-generate -fcoverage-mapping -g" \
         -DBENCHMARK_ENABLE_GTEST_TESTS=off \
-        -DBENCHMARK_ENABLE_INSTALL=off
+        -DBENCHMARK_ENABLE_INSTALL=off \
+        -DPTHREADPOOL_BUILD_TESTS=OFF \
+        -DPTHREADPOOL_BUILD_BENCHMARKS=OFF
 
 find . -name "*.make" -exec sed -i 's/\-Werror//g' {} \;
 
@@ -57,7 +59,9 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
         -DCMAKE_C_FLAGS_DEBUG="-fsanitize=fuzzer-no-link,address -g" \
         -DCMAKE_CXX_FLAGS_DEBUG="-fsanitize=fuzzer-no-link,address -g" \
         -DBENCHMARK_ENABLE_GTEST_TESTS=off \
-        -DBENCHMARK_ENABLE_INSTALL=off
+        -DBENCHMARK_ENABLE_INSTALL=off \
+        -DPTHREADPOOL_BUILD_TESTS=OFF \
+        -DPTHREADPOOL_BUILD_BENCHMARKS=OFF
 
 find . -name "*.make" -exec sed -i 's/\-Werror//g' {} \;
 
@@ -79,7 +83,9 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
         -DCMAKE_C_FLAGS_RELEASE="-fsanitize=fuzzer-no-link,address" \
         -DCMAKE_CXX_FLAGS_RELEASE="-fsanitize=fuzzer-no-link,address" \
         -DBENCHMARK_ENABLE_GTEST_TESTS=off \
-        -DBENCHMARK_ENABLE_INSTALL=off
+        -DBENCHMARK_ENABLE_INSTALL=off \
+        -DPTHREADPOOL_BUILD_TESTS=OFF \
+        -DPTHREADPOOL_BUILD_BENCHMARKS=OFF
 
 find . -name "*.make" -exec sed -i 's/\-Werror//g' {} \;
 
