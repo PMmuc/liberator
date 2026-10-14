@@ -26,5 +26,5 @@ target_preinstall() { return 0; }
 
 
 target_preinstall_docker() {
-  sudo apt-get -y install --no-install-suggests --no-install-recommends cmake git flex pkg-config
+  sudo apt-get -y install --no-install-suggests --no-install-recommends cmake git flex bison pkg-config
 }

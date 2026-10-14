@@ -8,6 +8,13 @@ if [ -z "$TOOLS_DIR" ]; then
     TOOLS_DIR=$LIBFUZZ
 fi
 
+# libpcap needs flex and bison to generate its scanner and grammar
+if ! command -v flex &>/dev/null || ! command -v bison &>/dev/null; then
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        --no-install-suggests --no-install-recommends flex bison
+fi
+
 WORK="$TARGET/work"
 rm -rf "$WORK"
 mkdir -p "$WORK"
