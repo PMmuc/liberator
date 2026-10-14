@@ -153,11 +153,6 @@ index cf0f39bd..669576b2 100644
 +void *_TIFFCheckRealloc(void *tif, void* buffer, unsigned long nmemb, unsigned long elem_size, const char* what) { return NULL; }
 +
 +// LIBHTP
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
-+void* bstr_alloc(unsigned long len) { return NULL; }
-+
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
-+void *bstr_dup_mem(const void* data, unsigned long len) { return NULL; }
 +
 +// OPENSSL
 +__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
