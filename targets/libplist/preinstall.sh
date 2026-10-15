@@ -6,4 +6,4 @@ DEBIAN_FRONTEND="noninteractive" \
   git \
   autoconf \
   automake \
-  libtool-bin autopoint libdw-dev flex gawk cython3 cython pkg-config libxml2-dev
+  libtool-bin autopoint libdw-dev flex gawk cython3 cython pkg-config libxml2-dev libglib2.0-dev
