@@ -8,6 +8,15 @@ if [ -z "$TOOLS_DIR" ]; then
     TOOLS_DIR=$LIBFUZZ
 fi
 
+# compile_driver.sh links -lopus -lvorbis -logg -lmp3lame -lmpg123 -lFLAC;
+# the original libfuzz image installed them through preinstall.sh
+CODEC_PKGS="libflac-dev libogg-dev libvorbis-dev libopus-dev libmp3lame-dev libmpg123-dev pkg-config"
+if ! dpkg -s $CODEC_PKGS >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        --no-install-suggests --no-install-recommends $CODEC_PKGS
+fi
+
 WORK="$TARGET/work"
 rm -rf "$WORK"
 mkdir -p "$WORK"
