@@ -139,7 +139,7 @@ class Context:
         # change it to char*.
         # For force_pointer and len_depends_on non empty, the variable lands on the heap
         # so we can stay void*.
-        if (self.is_stack_void_pointer(type) and not force_pointer and cond.len_depends_on == ""):
+        if (self.is_stack_void_pointer(type, force_pointer) and not force_pointer and cond.len_depends_on == ""):
             type = self.stub_char_array
 
         buffer = self.create_new_buffer(type, force_pointer)
