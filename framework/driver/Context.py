@@ -125,11 +125,22 @@ class Context:
 
         return new_buffer
 
+    def is_stack_void_pointer(self, type, force_pointer):
+        # const and forced pointers go to the heap
+        return (self.is_void_pointer(type) and not type.is_const and not force_pointer)
+
     def create_new_var(self, type: Type, force_pointer: bool):
 
         # in case of void, I just return a void from a buffer void
         if type == self.stub_void:
             return self.buffer_void[0]
+
+        # a stack buffer for void* would be declared as void x[1]
+        # change it to char*.
+        # For force_pointer and len_depends_on non empty, the variable lands on the heap
+        # so we can stay void*.
+        if (self.is_stack_void_pointer(type) and not force_pointer and cond.len_depends_on = ""):
+            type = self.stub_char_array
 
         buffer = self.create_new_buffer(type, force_pointer)
 
