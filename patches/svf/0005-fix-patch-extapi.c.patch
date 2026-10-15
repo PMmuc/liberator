@@ -131,13 +131,13 @@ index cf0f39bd..669576b2 100644
 +void* xmlReallocLoc(void* ptr, unsigned long size, const char* file, int line) { return NULL; }
 +
 +// LIBTIFF
-+__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
 +void *_TIFFmalloc(unsigned long s) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0*Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0*Arg1")))
 +void *_TIFFcalloc(unsigned long nmemb, unsigned long s) { return NULL; }
 +
-+__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void *_TIFFrealloc(void* p, unsigned long s) { return NULL; }
 +__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
