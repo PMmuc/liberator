@@ -2,153 +2,154 @@ diff --git a/svf-llvm/lib/extapi.c b/svf-llvm/lib/extapi.c
 index cf0f39bd..669576b2 100644
 --- a/svf-llvm/lib/extapi.c
 +++ b/svf-llvm/lib/extapi.c
-@@ -5,6 +5,8 @@
+@@ -5,6 +5,9 @@
  #  define NULL ((void *)0)
  #endif
  
++#define OVERRIDE annotate("OVERRIDE")
 +#define SQ_ALLOC(sz) __attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:" sz)))
 +
  /*
      Functions with __attribute__((annotate("XXX"))) will be handle by SVF specifcially.
      Their logical behaviours can't be described by C/C++ language. For example, "malloc()" functionality is to alloc an object to it's return value.
-@@ -98,6 +100,169 @@ long *nhalloc(unsigned int a, const char *b, int c)
+@@ -98,6 +100,164 @@ long *nhalloc(unsigned int a, const char *b, int c)
      return NULL;
  }
  
-+SQ_ALLOC("Arg0") void* sqlite3Malloc(unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg0") void* sqlite3MallocZero(unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg0") void* sqlite3_malloc(int n) { return NULL; }
-+SQ_ALLOC("Arg0") void* sqlite3_malloc64(unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg0") void* sqlite3PageMalloc(int sz) { return NULL; }
-+SQ_ALLOC("Arg1") void* sqlite3DbMallocRaw(void* db, unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg1") void* sqlite3DbMallocRawNN(void* db, unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg1") void* sqlite3WhereMalloc(void* w, unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg1") void* sqlite3DbMallocZero(void* db, unsigned long long n) { return NULL; }
-+SQ_ALLOC("UNKNOWN") char* sqlite3DbStrDup(void* db, const char* z) { return NULL; }
-+SQ_ALLOC("Arg2") char* sqlite3DbStrNDup(void* db, const char* z, unsigned long long n) { return NULL; }
-+SQ_ALLOC("UNKNOWN") char* sqlite3DbSpanDup(void* db, const char* s, const char* e) { return NULL; }
-+SQ_ALLOC("UNKNOWN") char* sqlite3MPrintf(void* db, const char* f, ...) { return NULL; }
-+SQ_ALLOC("UNKNOWN") char* sqlite3VMPrintf(void* db, const char* f, void* ap) { return NULL; }
-+SQ_ALLOC("UNKNOWN") char* sqlite3_mprintf(void* db, ...) { return NULL; }
-+SQ_ALLOC("UNKNOWN") char* sqlite3_vmprintf(void* db, void* ap) { return NULL; }
++SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3Malloc(unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3MallocZero(unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3_malloc(int n) { return NULL; }
++SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3_malloc64(unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3PageMalloc(int sz) { return NULL; }
++SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3DbMallocRaw(void* db, unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3DbMallocRawNN(void* db, unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3WhereMalloc(void* w, unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3DbMallocZero(void* db, unsigned long long n) { return NULL; }
++SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3DbStrDup(void* db, const char* z) { return NULL; }
++SQ_ALLOC("Arg2", OVERRIDE) char* sqlite3DbStrNDup(void* db, const char* z, unsigned long long n) { return NULL; }
++SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3DbSpanDup(void* db, const char* s, const char* e) { return NULL; }
++SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3MPrintf(void* db, const char* f, ...) { return NULL; }
++SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3VMPrintf(void* db, const char* f, void* ap) { return NULL; }
++SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3_mprintf(void* db, ...) { return NULL; }
++SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3_vmprintf(void* db, void* ap) { return NULL; }
 +
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void* sqlite3Realloc(void* p, unsigned long long n) { return NULL; }
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void* sqlite3_realloc(void* p, int n) { return NULL; }
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void* sqlite3_realloc64(void* p, unsigned long long n) { return NULL; }
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg1"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg1"),
 +			annotate("AllocSize:Arg2")))
 +void* sqlite3DbRealloc(void* db, void* p, unsigned long long n) { return NULL; }
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg1"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg1"),
 +			annotate("AllocSize:Arg2")))
 +void* sqlite3DbReallocOrFree(void* db, void* p, unsigned long long n) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg2")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg2")))
 +void* sqlite3WhereRealloc(void* db, void* p, unsigned long long n) { return NULL; }
 +
 +// LITTLECMS
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1"))) void*
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1"))) void*
 +_cmsMalloc(void* ContextID, unsigned int size)
 +{
 +    return NULL;
 +}
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1"))) void*
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1"))) void*
 +_cmsMallocZero(void* ContextID, unsigned int size)
 +{
 +    return NULL;
 +}
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"),
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE,
 +               annotate("AllocSize:Arg1*Arg2"))) void*
 +_cmsCalloc(void* ContextID, unsigned int num, unsigned int size)
 +{
 +    return NULL;
 +}
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("OldPtr:Arg1"),
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg1"),
 +               annotate("AllocSize:Arg2"))) void*
 +_cmsDupMem(void* ContextID, const void* Org, unsigned int size)
 +{
 +    return NULL;
 +}
 +
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg1"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg1"),
 +			annotate("AllocSize:Arg2")))
 +void *_cmsRealloc(void* ContextID, void* Ptr, unsigned int size) { return NULL; }
 +
 +// LIBVPX
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
 +void* vpx_memalign(unsigned long align, unsigned long size) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
 +void* vpx_malloc(unsigned long size) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0*Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0*Arg1")))
 +void* vpx_calloc(unsigned long num, unsigned long size) { return NULL; }
 +
 +// LIBAOM
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
 +void *aom_memalign(unsigned long align, unsigned long size) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
 +void *aom_malloc(unsigned long size) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0*Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0*Arg1")))
 +void* aom_calloc(unsigned long num, unsigned long size) { return NULL; }
 +
 +// LIBXML2
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
 +unsigned char* xmlStrndup(const unsigned char* cur, int len) { return NULL; }
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
 +unsigned char* xmlCharStrndup(const char* cur, int len) { return NULL; }
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
 +unsigned char* xmlUTF8Strndup(const unsigned char* utf, int len) { return NULL; }
 +
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
 +void *xmlMemMalloc(unsigned long size) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
 +void *xmlMallocLoc(unsigned long size, const char* file, int line) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
 +void *xmlMallocAtomicLoc(unsigned long size, const char* file, int len) { return NULL; }
 +
 +
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void* xmlMemRealloc(void* ptr, unsigned long size) { return NULL; }
 +
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void* xmlReallocLoc(void* ptr, unsigned long size, const char* file, int line) { return NULL; }
 +
 +// LIBTIFF
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0")))
 +void *_TIFFmalloc(unsigned long s) { return NULL; }
 +
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg0*Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg0*Arg1")))
 +void *_TIFFcalloc(unsigned long nmemb, unsigned long s) { return NULL; }
 +
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg0"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
 +void *_TIFFrealloc(void* p, unsigned long s) { return NULL; }
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1")))
 +void *_TIFFmallocExt(void* p, unsigned long s) { return NULL; }
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1*Arg2")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1*Arg2")))
 +void *_TIFFcallocExt(void* p, unsigned long nmemb, unsigned long s) { return NULL; }
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg1"),
++__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg1"),
 +			annotate("AllocSize:Arg2")))
 +void *_TIFFreallocExt(void* tif, void* p, unsigned long s) { return NULL; }
-+__attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:Arg1*Arg2")))
++__attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:Arg1*Arg2")))
 +void *_TIFFCheckMalloc(void* tiff, unsigned long nmemb, unsigned long elem_size, const char* what) { return NULL; }
-+__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg1"),
++__attribute__((annotate("REALLOC_HEAP_RET"), annotate("OldPtr:Arg1"), OVERRIDE,
 +			annotate("AllocSize:Arg2*Arg3")))
 +void *_TIFFCheckRealloc(void *tif, void* buffer, unsigned long nmemb, unsigned long elem_size, const char* what) { return NULL; }
 +
