@@ -8,6 +8,13 @@ if [ ! -d "$TARGET/repo" ]; then
     exit 1
 fi
 
+# libplist's CMakeLists.txt requires LibXml2 and GLIB2
+if ! pkg-config --exists libxml-2.0 glib-2.0 2>/dev/null; then
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        --no-install-suggests --no-install-recommends pkg-config libxml2-dev libglib2.0-dev
+fi
+
 export CC=$LLVM_DIR/bin/clang
 export CXX=$LLVM_DIR/bin/clang++
 

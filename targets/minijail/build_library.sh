@@ -15,6 +15,15 @@ if [ ! -d "$TARGET/repo" ]; then
     exit 1
 fi
 
+# minijail includes <sys/capability.h> from libcap-dev; compile_driver.sh
+# links -lcap and a static -llzma
+if [ ! -f /usr/include/sys/capability.h ] ||
+   [ -z "$(find /usr/lib -name liblzma.a -print -quit 2>/dev/null)" ]; then
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install \
+        --no-install-suggests --no-install-recommends libcap-dev liblzma-dev
+fi
+
 export CC=$LLVM_DIR/bin/clang
 export CXX=$LLVM_DIR/bin/clang++
 
