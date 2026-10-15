@@ -18,7 +18,40 @@ type_incomplete = set()    # List of incomplete types
 apis_definition = []       # List of APIs with original argument types and extra info (e.g., const)
 type_enum = set()
 
-all_types = set()
+def restore_namespace(type):
+    base = type
+    # first get the underlying type because we want the declaration.
+    while True:
+        # node is a LVALUEREFERNCE or a POINTER:
+        if base.kind in (clang.cindex.TypeKind.POINTER, clang.cindex.TypeKind.LVALUEREFERNCE):
+            base = base.get_pointee();
+        # node is a base array or an incomplete array -> get base element [most underlying element]
+        elif base.kind in (clang.cindex.TypeKind.CONSTANTARRAY, clang.cindex.TypeKind.INCOMPLETEARRAY):
+            base = base.element_type
+        else:
+            break
+
+    # returns where the type is declared (in which namespace)
+    # decl.spelling is the base name
+    # for built-in types NO_DECL_FOUND is returned.
+    decl = base.get_declaration()
+    if decl.kind == clang.cindex.CursorKind.NO_DECL_FOUND or not decl.spelling:
+        return type.spelling
+
+    scopes, p = [], decl.semantic_parent
+    while p is not None and p.kind != clang.cindex.CursorKind.TRANSLATION_UNIT:
+        if p.kind in SCOPE_KINDS and p.spelling:
+            scopes.append(p.spelling)
+        p= p.semantic_parent
+    if not scopes:
+        return type.spelling
+
+    name = decl.spelling
+    qualified = "::".join(reversed(scopes)) + "::" + name
+
+    return re.sub(rf"(?<![\w:])(?:\w+::)*{re.escape(name)}\b", qualified, type.spelling, count=1)
+
+
 
 def find_api(api, apis_definition):
     # from IPython import embed; embed(); exit(1)
@@ -35,6 +68,13 @@ def get_argument_info(type):
 
     info = {}
 
+    qualified_str = restore_namespace(type)
+    type_decl = type.get_declaration()
+    if (atd.kind.is_declaration() and "::" not in qualified_str and type_decl.underlying_typedef_type.spelling != ""):
+        type_str = atd.underlying_typedef_type.spelling
+    else:
+        type_str = qualified_str
+
     # this trick expands typedef into their real types
     atd = type.get_declaration()
     if (atd.kind.is_declaration() and 
@@ -44,7 +84,6 @@ def get_argument_info(type):
     else:
         type_str = type.spelling
 
-    all_types.add(type_str)
 
     ## OLD const handling
     # # type is a function pointer
@@ -150,6 +189,7 @@ def get_api(node, namespace):
 
     return api_obj
 
+
 # SOME NOTES HOW TO NAVIGATE THE CURSOR
 # a = [f for f in node.get_arguments()][0]
 # at = a.type
@@ -227,13 +267,17 @@ def get_stub_file(include_folder, public_headers):
             if l:
                 public_headers_lst.add(l)
 
+    if len(public_headers_lst) == 0:
+        print(f"No header in {public_headers}. Aborting...")
+        exit(1)
+
     with open(stub_file, 'w') as tmp:
         for root, _, files in os.walk(include_folder):
             for h in files:
                 # print(f"candidate header {h}: ", end='')
                 if (h.endswith(".h") or h.endswith(".h++") or h.endswith(".hh") 
                     or h.endswith(".hpp")):
-                    if len(public_headers_lst) == 0 or h in public_headers_lst:
+                    if h in public_headers_lst:
                         h_path = os.path.join(root, h)
                         tmp.write(f"#include \"{h_path}\"\n")
 
@@ -267,8 +311,6 @@ def _main():
     if len(target) == 0:
         target = os.environ["TARGET_NAME"]
 
-    type_log = f"./alltypes_{target}.txt"
-
     tmp_file = get_stub_file(include_folder, public_headers)
 
     print(tmp_file)
@@ -298,11 +340,11 @@ def _main():
     index = clang.cindex.Index.create()
 
     # Generate AST from filepath passed in the command line
+    # Files are needed to find stddef.h. Otherwise clang will assume type
+    # int for types it can not resolve such as "size_t" leading to mismatches in the driver generator.
     include_paths = [f"-I{include_folder}", 
-                     "-I/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9", 
-                     "-I/usr/bin/../lib/gcc/x86_64-linux-gnu/9/../../../../include/c++/9/backward", 
-                     "-I/usr/lib/llvm-12/lib/clang/12.0.0/include", 
-                     "-I/usr/include/x86_64-linux-gnu", 
+                     "-I/home/libfuzz/llvm-21/lib/clang/21/include",
+                     "-I/usr/include/x86_64-linux-gnu",
                      "-I/usr/include"]
 
 
@@ -314,11 +356,6 @@ def _main():
 
     root = tu.cursor        # Get the root of the AST
     traverse(root, include_folder, [])
-
-    # FOR DEBUGGING TYPE PARSING
-    with open(type_log, "w") as log:
-        for t in all_types:
-            log.write(f"{t}\n")
 
     with open(exported_functions, 'w') as out_f:
         for f in function_declarations:
