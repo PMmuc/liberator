@@ -23,7 +23,7 @@ def restore_namespace(type):
     # first get the underlying type because we want the declaration.
     while True:
         # node is a LVALUEREFERNCE or a POINTER:
-        if base.kind in (clang.cindex.TypeKind.POINTER, clang.cindex.TypeKind.LVALUEREFERNCE):
+        if base.kind in (clang.cindex.TypeKind.POINTER, clang.cindex.TypeKind.LVALUEREFERENCE):
             base = base.get_pointee();
         # node is a base array or an incomplete array -> get base element [most underlying element]
         elif base.kind in (clang.cindex.TypeKind.CONSTANTARRAY, clang.cindex.TypeKind.INCOMPLETEARRAY):
