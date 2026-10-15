@@ -7,7 +7,7 @@ index cf0f39bd..669576b2 100644
  #endif
  
 +#define OVERRIDE annotate("OVERRIDE")
-+#define SQ_ALLOC(sz) __attribute__((annotate("ALLOC_HEAP_RET"), annotate("AllocSize:" sz)))
++#define SQ_ALLOC(sz) __attribute__((annotate("ALLOC_HEAP_RET"), OVERRIDE, annotate("AllocSize:" sz)))
 +
  /*
      Functions with __attribute__((annotate("XXX"))) will be handle by SVF specifcially.
@@ -16,22 +16,22 @@ index cf0f39bd..669576b2 100644
      return NULL;
  }
  
-+SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3Malloc(unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3MallocZero(unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3_malloc(int n) { return NULL; }
-+SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3_malloc64(unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg0", OVERRIDE) void* sqlite3PageMalloc(int sz) { return NULL; }
-+SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3DbMallocRaw(void* db, unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3DbMallocRawNN(void* db, unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3WhereMalloc(void* w, unsigned long long n) { return NULL; }
-+SQ_ALLOC("Arg1", OVERRIDE) void* sqlite3DbMallocZero(void* db, unsigned long long n) { return NULL; }
-+SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3DbStrDup(void* db, const char* z) { return NULL; }
-+SQ_ALLOC("Arg2", OVERRIDE) char* sqlite3DbStrNDup(void* db, const char* z, unsigned long long n) { return NULL; }
-+SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3DbSpanDup(void* db, const char* s, const char* e) { return NULL; }
-+SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3MPrintf(void* db, const char* f, ...) { return NULL; }
-+SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3VMPrintf(void* db, const char* f, void* ap) { return NULL; }
-+SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3_mprintf(void* db, ...) { return NULL; }
-+SQ_ALLOC("UNKNOWN", OVERRIDE) char* sqlite3_vmprintf(void* db, void* ap) { return NULL; }
++SQ_ALLOC("Arg0") void* sqlite3Malloc(unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg0") void* sqlite3MallocZero(unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg0") void* sqlite3_malloc(int n) { return NULL; }
++SQ_ALLOC("Arg0") void* sqlite3_malloc64(unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg0") void* sqlite3PageMalloc(int sz) { return NULL; }
++SQ_ALLOC("Arg1") void* sqlite3DbMallocRaw(void* db, unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg1") void* sqlite3DbMallocRawNN(void* db, unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg1") void* sqlite3WhereMalloc(void* w, unsigned long long n) { return NULL; }
++SQ_ALLOC("Arg1") void* sqlite3DbMallocZero(void* db, unsigned long long n) { return NULL; }
++SQ_ALLOC("UNKNOWN") char* sqlite3DbStrDup(void* db, const char* z) { return NULL; }
++SQ_ALLOC("Arg2") char* sqlite3DbStrNDup(void* db, const char* z, unsigned long long n) { return NULL; }
++SQ_ALLOC("UNKNOWN") char* sqlite3DbSpanDup(void* db, const char* s, const char* e) { return NULL; }
++SQ_ALLOC("UNKNOWN") char* sqlite3MPrintf(void* db, const char* f, ...) { return NULL; }
++SQ_ALLOC("UNKNOWN") char* sqlite3VMPrintf(void* db, const char* f, void* ap) { return NULL; }
++SQ_ALLOC("UNKNOWN") char* sqlite3_mprintf(void* db, ...) { return NULL; }
++SQ_ALLOC("UNKNOWN") char* sqlite3_vmprintf(void* db, void* ap) { return NULL; }
 +
 +__attribute__((annotate("REALLOC_HEAP_RET"), OVERRIDE, annotate("OldPtr:Arg0"),
 +			annotate("AllocSize:Arg1")))
