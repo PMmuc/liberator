@@ -29,7 +29,7 @@ cd "$TARGET/repo"
 echo "./configure"
 
 # Compile library for coverage
-./configure --disable-shared --prefix="$WORK" \
+./configure --disable-shared --disable-zstd --disable-webp --disable-lerc --disable-jbig --disable-libdeflate --prefix="$WORK" \
         CXXFLAGS="-fprofile-instr-generate -fcoverage-mapping -g" \
         CFLAGS="-fprofile-instr-generate -fcoverage-mapping -g"
 
@@ -44,7 +44,7 @@ mv $WORK/lib/libtiff.a $WORK/lib/libtiff_profile.a
 mv $WORK/lib/libtiffxx.a $WORK/lib/libtiffxx_profile.a
 
 # Compile library for debugging
-./configure --disable-shared --prefix="$WORK" \
+./configure --disable-shared --disable-zstd --disable-webp --disable-lerc --disable-jbig --disable-libdeflate --prefix="$WORK" \
         CXXFLAGS="-fsanitize=address -g -fPIE" \
         CFLAGS="-fsanitize=address -g -fPIE"
 
@@ -59,7 +59,7 @@ mv $WORK/lib/libtiff.a $WORK/lib/libtiff_cluster.a
 mv $WORK/lib/libtiffxx.a $WORK/lib/libtiffxx_cluster.a
 
 # Compile library for fuzzing
-./configure --disable-shared --prefix="$WORK" \
+./configure --disable-shared --disable-zstd --disable-webp --disable-lerc --disable-jbig --disable-libdeflate --prefix="$WORK" \
         CXXFLAGS="-fsanitize=fuzzer-no-link,address" \
         CFLAGS="-fsanitize=fuzzer-no-link,address"
         

@@ -34,6 +34,7 @@ mkdir -p "$WORK/lib" "$WORK/include"
 
 echo "make 1"
 cd "$TARGET/repo"
+sed -i 's/(SIGRTMAX|SIGRTMIN|SIG_|NULL)/(SIGRTMAX|SIGRTMIN|SIG_|NULL|BLKTRACESETUP2)/g' gen_constants.sh
 
 CFLAGS_BASE=$CFLAGS
 CXXFLAGS_BASE=$CXXFLAGS
