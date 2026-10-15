@@ -191,7 +191,6 @@ Json::Value to_json(const AccessType &at, bool verbose) {
     fieldsJson.append(field);
 
   accessTypeJson["fields"] = fieldsJson;
-  accessTypeJson["llvm_type"] = to_string(at.get_llvm_type());
   accessTypeJson["type"] = TypeMatcher::compute_hash(at.get_di_type());
   accessTypeJson["type_string"] = to_string(at.get_di_type());
 
