@@ -72,22 +72,13 @@ def get_argument_info(type):
 
     info = {}
 
+    # expand typedef into real name
     qualified_str = restore_namespace(type)
     type_decl = type.get_declaration()
-    if (atd.kind.is_declaration() and "::" not in qualified_str and type_decl.underlying_typedef_type.spelling != ""):
+    if (type_decl.kind.is_declaration() and "::" not in qualified_str and type_decl.underlying_typedef_type.spelling != ""):
         type_str = atd.underlying_typedef_type.spelling
     else:
         type_str = qualified_str
-
-    # this trick expands typedef into their real types
-    atd = type.get_declaration()
-    if (atd.kind.is_declaration() and 
-        "::" not in type.spelling and 
-        atd.underlying_typedef_type.spelling != ""):
-        type_str = atd.underlying_typedef_type.spelling
-    else:
-        type_str = type.spelling
-
 
     ## OLD const handling
     # # type is a function pointer
