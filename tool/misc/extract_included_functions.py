@@ -18,6 +18,10 @@ type_incomplete = set()    # List of incomplete types
 apis_definition = []       # List of APIs with original argument types and extra info (e.g., const)
 type_enum = set()
 
+SCOPE_KINDS = (clang.cindex.CursorKind.NAMESPACE,
+               clang.cindex.CursorKind.STRUCT_DECL,
+               clang.cindex.CursorKind.CLASS_DECL)
+
 def restore_namespace(type):
     base = type
     # first get the underlying type because we want the declaration.
