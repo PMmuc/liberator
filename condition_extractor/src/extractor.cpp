@@ -382,7 +382,7 @@ void setDataLayout(const Function *F) {
     DL = new DataLayout(F->getParent());
 }
 
-extern uint64_t num_global_processed_nodes = 0;
+extern uint64_t num_global_processed_nodes;
 int main(int argc, char **argv) {
 
   int arg_num = 0;
