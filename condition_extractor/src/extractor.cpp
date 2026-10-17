@@ -851,6 +851,7 @@ int main(int argc, char **argv) {
 
   SVFUtil::outs() << fun_cond_set.getSummary();
 
+  SVFUtil::outs().flush();
   SVFUtil::outs() << "\n" << liberator::profiler_t::instance().dump() << "\n";
   SVFUtil::outs() << "\n"
                   << liberator::profiler_t::instance().dump_mem() << "\n";

@@ -85,16 +85,16 @@ public:
   std::string dump_mem() const {
     std::stringstream ss;
     ss << "Memory Stats (MB):\n";
-    ss << std::left << std::setw(40) << "Key" << std::right << std::setw(12)
-       << "AvgDelta" << std::setw(12) << "MaxDelta" << std::setw(12)
-       << "MaxPeak" << std::setw(8) << "Count" << "\n";
+    ss << std::left << std::setw(80) << "Key" << std::right << ", "
+       << "AvgDelta" << ", " << "MaxDelta" << ", "
+       << "MaxPeak" << ", " << "Count" << "\n";
 
     for (const auto &[key, data] : mem_samples_) {
-      ss << std::left << std::setw(40) << key << std::right << std::fixed
-         << std::setprecision(1) << std::setw(12)
-         << (data.total_delta_kb / 1024.0 / data.count) << std::setw(12)
-         << (data.max_delta_kb / 1024.0) << std::setw(12)
-         << (data.max_peak_kb / 1024.0) << std::setw(8) << data.count << "\n";
+      ss << std::left << std::setw(80) << key << std::right << std::fixed
+         << std::setprecision(1) << ", "
+         << (data.total_delta_kb / 1024.0 / data.count) << ", "
+         << (data.max_delta_kb / 1024.0) << ", " << (data.max_peak_kb / 1024.0)
+         << ", " << data.count << "\n";
     }
 
     return ss.str();
@@ -103,16 +103,15 @@ public:
   std::string dump() const {
     std::stringstream ss;
     ss << "Profiler Stats:\n";
-    ss << std::left << std::setw(40) << "Key" << std::right << std::setw(10)
-       << "Total(ms)" << std::setw(10) << "Count" << std::setw(10) << "Avg(ms)"
+    ss << std::left << std::setw(80) << "Key" << std::right << ", "
+       << "Total(ms)" << ", " << "Count" << ", " << "Avg(ms)"
        << "\n";
     ss << std::string(70, '-') << "\n";
 
     for (const auto &[key, data] : samples_) {
-      ss << std::left << std::setw(40) << key << std::right << std::fixed
-         << std::setprecision(2) << std::setw(10) << data.total_ms
-         << std::setw(10) << data.count << std::setw(10)
-         << (data.total_ms / data.count) << "\n";
+      ss << std::left << std::setw(80) << key << std::right << std::fixed
+         << std::setprecision(2) << ", " << data.total_ms << ", " << data.count
+         << ", " << (data.total_ms / data.count) << "\n";
     }
 
     return ss.str();
