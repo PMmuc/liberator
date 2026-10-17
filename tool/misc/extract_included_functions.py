@@ -76,7 +76,7 @@ def get_argument_info(type):
     qualified_str = restore_namespace(type)
     type_decl = type.get_declaration()
     if (type_decl.kind.is_declaration() and "::" not in qualified_str and type_decl.underlying_typedef_type.spelling != ""):
-        type_str = atd.underlying_typedef_type.spelling
+        type_str = type_decl.underlying_typedef_type.spelling
     else:
         type_str = qualified_str
 
