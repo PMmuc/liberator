@@ -264,13 +264,15 @@ int main(int argc, char **argv) {
     llvm::timeTraceProfilerCleanup();
   }
 
-  SVFUtil::outs() << "\n" << liberator::profiler_t::instance().dump() << "\n";
-  SVFUtil::outs() << "\n"
-                  << liberator::profiler_t::instance().dump_mem() << "\n";
   llvm::outs() << "[IS_MALLOC_SIZE] " << type_instr.cleared_is_malloc_sz
                << "\n";
   llvm::outs() << "[GEP_TYPE] void_recovered" << di_instr.gep_void_recovered
                << " untyped_skip=" << di_instr.gep_untyped_skip << "\n";
+  llvm::outs().flush();
+
+  SVFUtil::outs() << "\n" << liberator::profiler_t::instance().dump() << "\n";
+  SVFUtil::outs() << "\n"
+                  << liberator::profiler_t::instance().dump_mem() << "\n";
 
   if (!ProfileCsv.empty()) {
     auto &profiler = liberator::profiler_t::instance();
