@@ -41,10 +41,16 @@ echo "$IMG_NAME"
 
 # Parse arguments
 PROF_FLAG=()
+# --run-only: skip fetching/building the library, reuse the previous build in work/
+RUN_ONLY=0
 while [[ "$#" -gt 0 ]]; do
   case $1 in
   --prof)
     PROF_FLAG=("PROF_EXTRACTOR=perf record -g --call-graph dwarf -F 99")
+    shift
+    ;;
+  --run-only)
+    RUN_ONLY=1
     shift
     ;;
   *)
@@ -58,12 +64,12 @@ done
 CPUSET="${CPUSET:-0}"
 
 if [[ "${DEVENV}" ]]; then
-  docker run --env PROF_FLAG=${PROF_FLAG} --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
+  docker run --env PROF_FLAG=${PROF_FLAG} --env RUN_ONLY=${RUN_ONLY} --env TARGET=${TARGET} -v "$(pwd)/..:/workspaces/libfuzz" \
     "$IMG_NAME"
 else
   # Drop any stale container of the same name, then run pinned to $CPUSET in the
   # foreground so the caller can wait for completion and capture the real exit code.
   docker rm -f "${IMG_NAME}-${TARGET}" >/dev/null 2>&1 || true
-  docker run --env PROF_FLAG=${PROF_FLAG} --rm --cpuset-cpus="$CPUSET" --name "${IMG_NAME}-${TARGET}" --user root \
+  docker run --env PROF_FLAG=${PROF_FLAG} --env RUN_ONLY=${RUN_ONLY} --rm --cpuset-cpus="$CPUSET" --name "${IMG_NAME}-${TARGET}" --user root \
     --env TARGET=${TARGET} -v "$ROOT_DIR:/workspaces/libfuzz" "$IMG_NAME"
 fi

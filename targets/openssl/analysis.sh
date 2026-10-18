@@ -2,14 +2,30 @@
 set -e
 
 export LIBFUZZ=/workspaces/libfuzz/
-export TARGET=$LIBFUZZ/analysis/openssl/ 
+export TARGET=$LIBFUZZ/analysis/openssl/
 
-./fetch.sh
+# RUN_ONLY=1 (or --run-only): skip fetching/building, reuse the previous build in $WORK
+RUN_ONLY=${RUN_ONLY:-0}
+if [ "$1" == "--run-only" ]; then
+  RUN_ONLY=1
+fi
 
 WORK="$TARGET/work"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-mkdir -p "$WORK/lib" "$WORK/include"
+
+if [ "$RUN_ONLY" = "1" ]; then
+  if [ ! -f "$WORK/lib/libssl.a" ]; then
+    echo "[ERROR] --run-only: $WORK/lib/libssl.a not found, run a full build first"
+    exit 1
+  fi
+  # Only clean the analysis results, keep the built library and headers
+  rm -rf "$WORK/apipass"
+else
+  ./fetch.sh
+
+  rm -rf "$WORK"
+  mkdir -p "$WORK"
+  mkdir -p "$WORK/lib" "$WORK/include"
+fi
 
 export CC=wllvm
 export CXX=wllvm++
@@ -31,7 +47,9 @@ cd "$TARGET/repo"
 # the config script supports env var LDLIBS instead of LIBS
 export LDLIBS="$LIBS"
 
-./config --debug $CFLAGS -fno-sanitize=alignment $CONFIGURE_FLAGS --prefix="$WORK"
+if [ "$RUN_ONLY" != "1" ]; then
+  ./config --debug no-tests $CFLAGS -fno-sanitize=alignment $CONFIGURE_FLAGS --prefix="$WORK"
+fi
 
 # configure compiles some shits for testing, better remove it
 rm -f $LIBFUZZ_LOG_PATH/apis_clang.json
@@ -43,9 +61,11 @@ touch $LIBFUZZ_LOG_PATH/coerce.log
 
 # CXXFLAGS="-fPIC -DOPENSSL_PIC"
 
-make -j$(nproc) clean
-make -j$(nproc) LDCMD="$CXX $CXXFLAGS"
-make install
+if [ "$RUN_ONLY" != "1" ]; then
+  make -j$(nproc) clean
+  make -j$(nproc) LDCMD="$CXX $CXXFLAGS"
+  make install
+fi
 # # make -j$(nproc) 
 
 extract-bc -b $WORK/lib/libssl.a

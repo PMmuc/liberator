@@ -9,9 +9,24 @@ if [ -z "$TOOLS_DIR" ]; then
 fi
 
 WORK="$TARGET/work"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-mkdir -p "$WORK/lib" "$WORK/include"
+# RUN_ONLY=1 (or --run-only): skip the build, reuse the previous build in $WORK
+RUN_ONLY=${RUN_ONLY:-0}
+if [ "$1" == "--run-only" ]; then
+  RUN_ONLY=1
+fi
+
+if [ "$RUN_ONLY" = "1" ]; then
+  if [ ! -d "$WORK/lib" ]; then
+    echo "[ERROR] --run-only: $WORK/lib not found, run a full build first"
+    exit 1
+  fi
+  # Only clean the analysis results, keep the built library and headers
+  rm -rf "$WORK/apipass"
+else
+  rm -rf "$WORK"
+  mkdir -p "$WORK"
+  mkdir -p "$WORK/lib" "$WORK/include"
+fi
 
 export CC=wllvm
 export CXX=wllvm++
@@ -27,33 +42,35 @@ export LIBFUZZ_LOG_PATH=$WORK/apipass
 
 mkdir -p "$LIBFUZZ_LOG_PATH"
 
-echo "make 1"
-export CXX=g++
-rm -rf "$TARGET/repo/aom_build"
-mkdir -p "$TARGET/repo/aom_build"
-cd "$TARGET/repo/aom_build"
-
-
-cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
-        -DENABLE_TESTS=0 -DENABLE_EXAMPLES=0 -DENABLE_TOOLS=0 \
-        -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
-        -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
-# configure compiles some shits for testing, better remove it
-rm -rf "$LIBFUZZ_LOG_PATH"/apis.log
-
 touch "$LIBFUZZ_LOG_PATH"/exported_functions.txt
 touch "$LIBFUZZ_LOG_PATH"/incomplete_types.txt
 touch "$LIBFUZZ_LOG_PATH"/apis_clang.json
 touch "$LIBFUZZ_LOG_PATH"/apis_llvm.json
 touch "$LIBFUZZ_LOG_PATH"/coerce.log
 
-echo "make clean"
-make -j"$(nproc)" clean
-echo "make"
-make -j"$(nproc)"
-echo "make install"
-make install
+# Build the library (skipped with --run-only)
+if [ "$RUN_ONLY" != "1" ]; then
+  echo "make 1"
+  export CXX=g++
+  rm -rf "$TARGET/repo/aom_build"
+  mkdir -p "$TARGET/repo/aom_build"
+  cd "$TARGET/repo/aom_build"
+
+  cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX="$WORK" -DBUILD_SHARED_LIBS=off \
+          -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+          -DENABLE_TESTS=0 -DENABLE_EXAMPLES=0 -DENABLE_TOOLS=0 \
+          -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+          -DCMAKE_CXX_FLAGS_DEBUG="-g -O0"
+  # configure compiles some shits for testing, better remove it
+  rm -rf "$LIBFUZZ_LOG_PATH"/apis.log
+
+  echo "make clean"
+  make -j"$(nproc)" clean
+  echo "make"
+  make -j"$(nproc)"
+  echo "make install"
+  make install
+fi
 
 extract-bc -b "$WORK"/lib/libaom.a
 

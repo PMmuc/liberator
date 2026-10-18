@@ -6,9 +6,24 @@ if [ -z $TOOLS_DIR ]; then
 fi
 
 WORK="$TARGET/work"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-mkdir -p "$WORK/lib" "$WORK/include"
+# RUN_ONLY=1 (or --run-only): skip the build, reuse the previous build in $WORK
+RUN_ONLY=${RUN_ONLY:-0}
+if [ "$1" == "--run-only" ]; then
+  RUN_ONLY=1
+fi
+
+if [ "$RUN_ONLY" = "1" ]; then
+  if [ ! -d "$WORK/lib" ]; then
+    echo "[ERROR] --run-only: $WORK/lib not found, run a full build first"
+    exit 1
+  fi
+  # Only clean the analysis results, keep the built library and headers
+  rm -rf "$WORK/apipass"
+else
+  rm -rf "$WORK"
+  mkdir -p "$WORK"
+  mkdir -p "$WORK/lib" "$WORK/include"
+fi
 
 export CC=wllvm
 export CXX=wllvm++
@@ -20,36 +35,40 @@ export LIBFUZZ_LOG_PATH=$WORK/apipass
 wllvm --version
 mkdir -p $LIBFUZZ_LOG_PATH
 
-echo "make 1"
-cd "$TARGET/repo"
-echo "./configure"
-./configure --disable-shared --prefix="$WORK" \
-                                CC=wllvm CXX=wllvm++ \
-                                CXXFLAGS="-g -O0" \
-                                CFLAGS="-g -O0"
-
-# WATCH OUT PADAWAN! SOMETIME SETTING -O0 IN C{XX}FLAGS MIGHT NOT BE ENOUGH!
-find . -name Makefile -exec sed -i 's/-O2/-O0/g' {} \;
-
-# configure compiles some shits for testing, better remove it
-rm $LIBFUZZ_LOG_PATH/apis.log
-
 touch $LIBFUZZ_LOG_PATH/exported_functions.txt
 touch $LIBFUZZ_LOG_PATH/incomplete_types.txt
 touch $LIBFUZZ_LOG_PATH/apis_clang.json
 touch $LIBFUZZ_LOG_PATH/apis_llvm.json
 touch $LIBFUZZ_LOG_PATH/coerce.log
 
-echo "make clean"
-make -j$(nproc) clean
-echo "make"
-make -j$(nproc)
-echo "make install"
-make install
+# Build the library (skipped with --run-only)
+if [ "$RUN_ONLY" != "1" ]; then
+  echo "make 1"
+  cd "$TARGET/repo"
+  echo "./configure"
+  ./configure --disable-shared --prefix="$WORK" \
+                                  CC=wllvm CXX=wllvm++ \
+                                  CXXFLAGS="-g -O0" \
+                                  CFLAGS="-g -O0"
 
-set -x
-set -e
-ls  $WORK/lib
+  # WATCH OUT PADAWAN! SOMETIME SETTING -O0 IN C{XX}FLAGS MIGHT NOT BE ENOUGH!
+  find . -name Makefile -exec sed -i 's/-O2/-O0/g' {} \;
+
+  # configure compiles some shits for testing, better remove it
+  rm $LIBFUZZ_LOG_PATH/apis.log
+
+  echo "make clean"
+  make -j$(nproc) clean
+  echo "make"
+  make -j$(nproc)
+  echo "make install"
+  make install
+
+  set -x
+  set -e
+  ls  $WORK/lib
+fi
+
 extract-bc -b $WORK/lib/libsqlite3.a
 
 # this extracts the exported functions in a file, to be used later for grammar generations

@@ -12,9 +12,24 @@ if [ -z $TOOLS_DIR ]; then
 fi
 
 WORK="$TARGET/work"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-mkdir -p "$WORK/lib" "$WORK/include"
+# RUN_ONLY=1 (or --run-only): skip the build, reuse the previous build in $WORK
+RUN_ONLY=${RUN_ONLY:-0}
+if [ "$1" == "--run-only" ]; then
+  RUN_ONLY=1
+fi
+
+if [ "$RUN_ONLY" = "1" ]; then
+  if [ ! -d "$WORK/lib" ]; then
+    echo "[ERROR] --run-only: $WORK/lib not found, run a full build first"
+    exit 1
+  fi
+  # Only clean the analysis results, keep the built library and headers
+  rm -rf "$WORK/apipass"
+else
+  rm -rf "$WORK"
+  mkdir -p "$WORK"
+  mkdir -p "$WORK/lib" "$WORK/include"
+fi
 
 export CC=wllvm
 export CXX=wllvm++
@@ -29,31 +44,34 @@ export CFLAGS=""
 
 mkdir -p $LIBFUZZ_LOG_PATH
 
-echo "make 1"
-cd "$TARGET/repo"
-echo "cmake"
-cmake . -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
-        -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
-        -DCMAKE_CXX_FLAGS_DEBUG="-g -O0" \
-        -DBENCHMARK_ENABLE_GTEST_TESTS=off \
-        -DBENCHMARK_ENABLE_INSTALL=off 
-
-# configure compiles some shits for testing, better remove it
-rm -rf $LIBFUZZ_LOG_PATH/apis.log
-
 touch $LIBFUZZ_LOG_PATH/exported_functions.txt
 touch $LIBFUZZ_LOG_PATH/incomplete_types.txt
 touch $LIBFUZZ_LOG_PATH/apis_clang.json
 touch $LIBFUZZ_LOG_PATH/apis_llvm.json
 touch $LIBFUZZ_LOG_PATH/coerce.log
 
-echo "make clean"
-make -j$(nproc) clean
-echo "make"
-make -j$(nproc)
-echo "make install"
-make install
+# Build the library (skipped with --run-only)
+if [ "$RUN_ONLY" != "1" ]; then
+  echo "make 1"
+  cd "$TARGET/repo"
+  echo "cmake"
+  cmake . -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
+          -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_C_FLAGS_DEBUG="-g -O0" \
+          -DCMAKE_CXX_FLAGS_DEBUG="-g -O0" \
+          -DBENCHMARK_ENABLE_GTEST_TESTS=off \
+          -DBENCHMARK_ENABLE_INSTALL=off 
+
+  # configure compiles some shits for testing, better remove it
+  rm -rf $LIBFUZZ_LOG_PATH/apis.log
+
+  echo "make clean"
+  make -j$(nproc) clean
+  echo "make"
+  make -j$(nproc)
+  echo "make install"
+  make install
+fi
 
 extract-bc -b $WORK/lib/libdwarf.a
 

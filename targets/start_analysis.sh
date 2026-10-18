@@ -11,6 +11,8 @@ echo "[TARGET] ${TARGET}"
 echo "[WLLVM] $(which wllvm)"
 
 cd ${LIBFUZZ}/targets/${TARGET_NAME}
-sudo ./preinstall.sh
-./fetch.sh
+if [ "${RUN_ONLY:-0}" != "1" ]; then
+  sudo ./preinstall.sh
+  ./fetch.sh
+fi
 { time ./analysis.sh; } 2>${TARGET}/${TARGET_NAME}_analysis_time.txt

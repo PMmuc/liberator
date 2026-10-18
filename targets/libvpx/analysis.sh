@@ -12,9 +12,24 @@ if [ -z $TOOLS_DIR ]; then
 fi
 
 WORK="$TARGET/work"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-mkdir -p "$WORK/lib" "$WORK/include"
+# RUN_ONLY=1 (or --run-only): skip the build, reuse the previous build in $WORK
+RUN_ONLY=${RUN_ONLY:-0}
+if [ "$1" == "--run-only" ]; then
+  RUN_ONLY=1
+fi
+
+if [ "$RUN_ONLY" = "1" ]; then
+  if [ ! -d "$WORK/lib" ]; then
+    echo "[ERROR] --run-only: $WORK/lib not found, run a full build first"
+    exit 1
+  fi
+  # Only clean the analysis results, keep the built library and headers
+  rm -rf "$WORK/apipass"
+else
+  rm -rf "$WORK"
+  mkdir -p "$WORK"
+  mkdir -p "$WORK/lib" "$WORK/include"
+fi
 
 export CC=wllvm
 export CXX=wllvm++
@@ -29,50 +44,51 @@ export LIBFUZZ_LOG_PATH=$WORK/apipass
 
 mkdir -p $LIBFUZZ_LOG_PATH
 
-echo "make 1"
-cd "$TARGET/repo"
-
-
-
-# configure compiles some shits for testing, better remove it
-rm -rf $LIBFUZZ_LOG_PATH/apis.log
-
 touch $LIBFUZZ_LOG_PATH/exported_functions.txt
 touch $LIBFUZZ_LOG_PATH/incomplete_types.txt
 touch $LIBFUZZ_LOG_PATH/apis_clang.json
 touch $LIBFUZZ_LOG_PATH/apis_llvm.json
 touch $LIBFUZZ_LOG_PATH/coerce.log
 
-# Build libvpx
-build_dir="$TARGET/build"
-rm -rf ${build_dir}
-mkdir -p ${build_dir}
-pushd ${build_dir}
+# Build the library (skipped with --run-only)
+if [ "$RUN_ONLY" != "1" ]; then
+  echo "make 1"
+  cd "$TARGET/repo"
 
-export CXXFLAGS="-g -O0"
-export CFLAGS="-g -O0"
+  # configure compiles some shits for testing, better remove it
+  rm -rf $LIBFUZZ_LOG_PATH/apis.log
 
-# oss-fuzz has 2 GB total memory allocation limit. So, we limit per-allocation
-# limit in libvpx to 1 GB to avoid OOM errors. A smaller per-allocation is
-# needed for MemorySanitizer (see bug oss-fuzz:9497 and bug oss-fuzz:9499).
-if [[ $CFLAGS = *sanitize=memory* ]]; then
-  extra_c_flags='-DVPX_MAX_ALLOCABLE_MEMORY=536870912'
-else
-  extra_c_flags='-DVPX_MAX_ALLOCABLE_MEMORY=1073741824'
+  # Build libvpx
+  build_dir="$TARGET/build"
+  rm -rf ${build_dir}
+  mkdir -p ${build_dir}
+  pushd ${build_dir}
+
+  export CXXFLAGS="-g -O0"
+  export CFLAGS="-g -O0"
+
+  # oss-fuzz has 2 GB total memory allocation limit. So, we limit per-allocation
+  # limit in libvpx to 1 GB to avoid OOM errors. A smaller per-allocation is
+  # needed for MemorySanitizer (see bug oss-fuzz:9497 and bug oss-fuzz:9499).
+  if [[ $CFLAGS = *sanitize=memory* ]]; then
+    extra_c_flags='-DVPX_MAX_ALLOCABLE_MEMORY=536870912'
+  else
+    extra_c_flags='-DVPX_MAX_ALLOCABLE_MEMORY=1073741824'
+  fi
+
+  LDFLAGS="$CXXFLAGS" LD=$CXX $TARGET/repo/configure \
+      --prefix="$WORK" \
+      --enable-vp9-highbitdepth \
+      --disable-unit-tests \
+      --disable-examples \
+      --size-limit=12288x12288 \
+      --extra-cflags="${extra_c_flags}" \
+      --disable-webm-io \
+      --enable-debug 
+  make -j all
+  make install
+  popd
 fi
-
-LDFLAGS="$CXXFLAGS" LD=$CXX $TARGET/repo/configure \
-    --prefix="$WORK" \
-    --enable-vp9-highbitdepth \
-    --disable-unit-tests \
-    --disable-examples \
-    --size-limit=12288x12288 \
-    --extra-cflags="${extra_c_flags}" \
-    --disable-webm-io \
-    --enable-debug 
-make -j all
-make install
-popd
 
 extract-bc -b $WORK/lib/libvpx.a
 

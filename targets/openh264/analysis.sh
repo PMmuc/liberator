@@ -12,9 +12,24 @@ if [ -z $TOOLS_DIR ]; then
 fi
 
 WORK=$TARGET/work
-rm -rf "$WORK"
-mkdir -p "$WORK"
-mkdir -p "$WORK/lib" "$WORK/include"
+# RUN_ONLY=1 (or --run-only): skip the build, reuse the previous build in $WORK
+RUN_ONLY=${RUN_ONLY:-0}
+if [ "$1" == "--run-only" ]; then
+  RUN_ONLY=1
+fi
+
+if [ "$RUN_ONLY" = "1" ]; then
+  if [ ! -d "$WORK/lib" ]; then
+    echo "[ERROR] --run-only: $WORK/lib not found, run a full build first"
+    exit 1
+  fi
+  # Only clean the analysis results, keep the built library and headers
+  rm -rf "$WORK/apipass"
+else
+  rm -rf "$WORK"
+  mkdir -p "$WORK"
+  mkdir -p "$WORK/lib" "$WORK/include"
+fi
 
 export CC=wllvm
 export CFLAGS=$CFLAGS" -Wno-unused-command-line-argument -g -O0"
@@ -31,14 +46,8 @@ export LIBFUZZ_LOG_PATH=$WORK/apipass
 
 mkdir -p "$LIBFUZZ_LOG_PATH"
 
-ls $LIBFUZZ_LOG_PATH
-
-echo "make 1"
-export REPO="$TARGET/repo"
-cd $REPO
-
-# configure compiles some shits for testing, better remove it
-rm -rf $LIBFUZZ_LOG_PATH/apis.log
+LIBNAME=libopenh264.a
+LIBLOCATION=$WORK/lib/$LIBNAME
 
 touch "${LIBFUZZ_LOG_PATH}/exported_functions.txt"
 touch $LIBFUZZ_LOG_PATH/incomplete_types.txt
@@ -46,13 +55,23 @@ touch $LIBFUZZ_LOG_PATH/apis_clang.json
 touch $LIBFUZZ_LOG_PATH/apis_llvm.json
 touch $LIBFUZZ_LOG_PATH/coerce.log
 
-echo "make clean"
-make -j$(nproc) clean
-echo "make"
-make -j$(nproc) DESTDIR=$WORK PREFIX="" OS=linux ARCH=x86_64 V=No install
+# Build the library (skipped with --run-only)
+if [ "$RUN_ONLY" != "1" ]; then
+  ls $LIBFUZZ_LOG_PATH
 
-LIBNAME=libopenh264.a
-LIBLOCATION=$WORK/lib/$LIBNAME
+  echo "make 1"
+  export REPO="$TARGET/repo"
+  cd $REPO
+
+  # configure compiles some shits for testing, better remove it
+  rm -rf $LIBFUZZ_LOG_PATH/apis.log
+
+  echo "make clean"
+  make -j$(nproc) clean
+  echo "make"
+  make -j$(nproc) DESTDIR=$WORK PREFIX="" OS=linux ARCH=x86_64 V=No install
+fi
+
 extract-bc -b $LIBLOCATION
 
 # this extracts the exported functions in a file, to be used later for grammar
