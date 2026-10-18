@@ -51,12 +51,13 @@ make install
 extract-bc -b $WORK/lib/libssl.a
 
 # this extracts the exported functions in a file, to be used later for grammar generations
-$TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include/openssl" \
+$TOOLS_DIR/tool/misc/extract_included_functions.py -i "$WORK/include" \
     -p "$LIBFUZZ/targets/${TARGET_NAME}/public_headers.txt" \
     -e "$LIBFUZZ_LOG_PATH/exported_functions.txt" \
     -t "$LIBFUZZ_LOG_PATH/incomplete_types.txt" \
     -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
-    -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
+    -n "$LIBFUZZ_LOG_PATH/enum_types.txt" \
+    -only_public_headers
 
 # extract fields dependency from the library itself, repeat for each object produced
 cd "$WORK"/apipass
