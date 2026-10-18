@@ -1,0 +1,3091 @@
++ export TARGET_NAME=libpcap
++ TARGET_NAME=libpcap
++ TARGET_DIR=/workspaces/libfuzz/analysis/libpcap
++ WORK=/workspaces/libfuzz/analysis/libpcap/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/libpcap
+Start analysis
++ echo 'Start analysis'
+Analysing libpcap
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmp3fzs557e.cc
+['__u_int']
+['const', 'bpf_insn', '*']
+['const', 'u_char', '*']
+['__u_int']
+['__u_int']
+['int']
+['const', 'bpf_insn', '*']
+['int']
+['char', '*']
+['const', 'bpf_insn', '*']
+['int']
+['void']
+['const', 'bpf_program', '*']
+['int']
+['int']
+['unsigned', 'int']
+['char', '*']
+['char', '*']
+['char', '*']
+['int']
+['const', 'char', '*']
+['bpf_u_int32', '*']
+['bpf_u_int32', '*']
+['char', '*']
+['pcap_t', '*']
+['const', 'char', '*']
+['char', '*']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int', '*', '*']
+['void']
+['int', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['const', 'char', '*']
+['int']
+['int']
+['int']
+['char', '*']
+['pcap_t', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['int']
+['__u_int']
+['pcap_t', '*']
+['const', 'char', '*']
+['__u_int']
+['char', '*']
+['pcap_t', '*']
+['const', 'char', '*']
+['char', '*']
+['pcap_t', '*']
+['FILE', '*']
+['__u_int']
+['char', '*']
+['pcap_t', '*']
+['FILE', '*']
+['char', '*']
+['void']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['u_char', '*']
+['int']
+['pcap_t', '*']
+['int']
+['u_char', '*']
+['const', 'u_char', '*']
+['pcap_t', '*']
+['pcap_pkthdr', '*']
+['int']
+['pcap_t', '*']
+['pcap_pkthdr', '*', '*']
+['const', 'u_char', '*', '*']
+['void']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['pcap_stat', '*']
+['int']
+['pcap_t', '*']
+['bpf_program', '*']
+['int']
+['pcap_t', '*']
+['pcap_direction_t']
+['int']
+['pcap_t', '*']
+['char', '*']
+['int']
+['pcap_t', '*']
+['int']
+['char', '*']
+['int']
+['pcap_t', '*']
+['const', 'void', '*']
+['unsigned', 'long']
+['int']
+['pcap_t', '*']
+['const', 'u_char', '*']
+['int']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['int']
+['char', '*']
+['pcap_t', '*']
+['void']
+['pcap_t', '*']
+['const', 'char', '*']
+['int']
+['pcap_t', '*']
+['bpf_program', '*']
+['const', 'char', '*']
+['int']
+['u_int']
+['int']
+['int']
+['int']
+['bpf_program', '*']
+['const', 'char', '*']
+['int']
+['u_int']
+['void']
+['bpf_program', '*']
+['int']
+['const', 'bpf_program', '*']
+['const', 'pcap_pkthdr', '*']
+['const', 'u_char', '*']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int', '*', '*']
+['int']
+['pcap_t', '*']
+['int']
+['void']
+['int', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['int']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['FILE', '*']
+['pcap_t', '*']
+['int']
+['pcap_t', '*']
+['pcap_dumper_t', '*']
+['pcap_t', '*']
+['const', 'char', '*']
+['pcap_dumper_t', '*']
+['pcap_t', '*']
+['FILE', '*']
+['pcap_dumper_t', '*']
+['pcap_t', '*']
+['const', 'char', '*']
+['FILE', '*']
+['pcap_dumper_t', '*']
+['long']
+['pcap_dumper_t', '*']
+['__int64_t']
+['pcap_dumper_t', '*']
+['int']
+['pcap_dumper_t', '*']
+['void']
+['pcap_dumper_t', '*']
+['void']
+['u_char', '*']
+['const', 'pcap_pkthdr', '*']
+['const', 'u_char', '*']
+['int']
+['pcap_if_t', '*', '*']
+['char', '*']
+['void']
+['pcap_if_t', '*']
+['const', 'char', '*']
+['int']
+['pcap_t', '*']
+['const', 'timeval', '*']
+['pcap_t', '*']
+['pcap_t', '*']
+['const', 'char', '*']
+['int']
+['int']
+['int']
+['pcap_rmtauth', '*']
+['char', '*']
+['int']
+['char', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['char', '*']
+['int']
+['const', 'char', '*']
+['int', '*']
+['char', '*']
+['char', '*']
+['char', '*']
+['char', '*']
+['int']
+['const', 'char', '*']
+['pcap_rmtauth', '*']
+['pcap_if_t', '*', '*']
+['char', '*']
+['pcap_samp', '*']
+['pcap_t', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['char', '*']
+['pcap_rmtauth', '*']
+['char', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['char', '*']
+['pcap_rmtauth', '*']
+['int']
+['char', '*']
+['int']
+['char', '*']
+['char']
+['int']
+['char', '*']
+['int']
+['const', 'char', '*']
+['char', '*']
+['void']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+[INFO] Analysing target: libpcap
+[INFO] Analyze functions in /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_clang.json
+[INFO] Loading library...
+[INFO] Done
+
+*********General Stats***************
+################ (program : libpcap.a.bc)###############
+AddrsNum            5551
+BBWith2Succ         2438
+BBWith3Succ         113
+CallsNum            999
+ConstArrayObj       17
+ConstStructObj      2
+ConstantObj         0
+CopysNum            1531
+FIObjNum            679
+FSObjNum            2736
+FunctionObjs        635
+GepsNum             8878
+GlobalObjs          38
+HeapObjs            64
+IndCallSites        29
+LoadsNum            16445
+MaxStructSize       62
+NonPtrObj           1867
+ReturnsNum          1470
+StackObjs           2678
+StoresNum           8835
+TotalCallSite       3474
+TotalFieldObjects   459
+TotalObjects        3875
+TotalPTASVFStmts    31717
+TotalPointers       57950
+TotalSVFStmts       55065
+VarArrayObj         49
+VarStructObj        123
+----------------Time and memory stats--------------------
+LLVMIRTime          0.18
+SVFIRTime           0.547
+SymbolTableTime     0.038
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : libpcap.a.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   57
+MaxNodeInCycle      1
+NodeInCycle         19
+TotalCycle          19
+TotalEdge           3541
+TotalNode           635
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libpcap.a.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.181012
+AvgIn/OutCopyEdge   0.856549
+AvgIn/OutEdge       1.53279
+AvgIn/OutLoadEdge   0.367656
+AvgIn/OutStoreEdge  0.127574
+AvgPtsSetSize       12.2981
+AvgTopLvlPtsSize    25.003
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    94064
+MemoryUsageVmsize   93744
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           1.761
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       5551
+CopyProcessed       32866
+DummyFieldPtrs      157
+FieldObjs           459
+GepProcessed        13926
+IndCallSites        29
+IndEdgeSolved       86
+LoadProcessed       75213
+LocalVarInRecur     154
+MaxInAddrEdge       1
+MaxInCopyEdge       318
+MaxInLoadEdge       893
+MaxInStoreEdge      182
+MaxNodesInSCC       23
+MaxOutAddrEdge      2137
+MaxOutCopyEdge      1566
+MaxOutLoadEdge      304
+MaxOutStoreEdge     995
+MaxPtsSetSize       90
+MemObjects          3875
+NodesInCycles       416
+NullPointer         880
+NumOfAddrs          5142
+NumOfCGEdge         38400
+NumOfCGNode         28860
+NumOfCopys          15563
+NumOfFieldExpand    0
+NumOfGeps           8769
+NumOfLoads          10444
+NumOfSCCDetect      10
+NumOfSFRs           0
+NumOfStores         3624
+NumOfValidNode      28407
+NumOfValidObjNode   3136
+Pointers            57950
+PointsToBlkPtr      0
+PointsToConstPtr    130
+SolveIterations     10
+StoreProcessed      37178
+TotalCycleNum       82
+TotalObjects        3875
+TotalPWCCycleNum    7
+TotalPointers       57950
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libpcap.a.bc)###############
+UniquePointsToSets       4390
+TotalUnions              58822
+PropertyUnions           37714
+UniqueUnions             346
+LookupUnions             20121
+PreemptiveUnions         641
+TotalComplements         301092
+PropertyComplements      282421
+UniqueComplements        292
+LookupComplements        18088
+PreemptiveComplements    291
+TotalIntersections       25355
+PropertyIntersections    24578
+UniqueIntersections      3
+LookupIntersections      191
+PreemptiveIntersections  583
+#######################################################
+[INFO] Points-to analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libpcap.a.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1.79004
+GenMUCHITime        0.068
+GenRegionTime       0.39
+InsertPHITime       0.01
+SSARenameTime       0.01
+TotalMSSATime       0.48
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        1097
+CSChiNode           3193
+CSHasChi            1772
+CSHasMu             2231
+CSMuNode            4349
+FunEntryChi         4162
+FunHasEntryChi      551
+FunHasRetMu         548
+FunRetMu            4147
+LoadHasMu           16438
+LoadMuNode          17365
+MSSAPhi             4193
+MaxRegSize          90
+MemRegions          3172
+StoreChiNode        8965
+StoreHasChi         7992
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : libpcap.a.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0.041
+AvgWeight           8.24605
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.115
+OptTime             0
+TLNodeTime          0
+TotalTime           0.156
+----------------Numbers stats----------------------------
+ActualIn            4349
+ActualOut           3193
+ActualParam         8764
+ActualRet           2036
+Addr                5551
+AvgInDegree         1
+AvgIndInDeg         1
+AvgIndOutDeg        2
+AvgOutDegree        1
+Copy                1531
+DirectCallEdge      6663
+DirectEdge          69821
+DirectRetEdge       1515
+FormalIn            4162
+FormalOut           4147
+FormalParam         1288
+FormalRet           440
+Gep                 8878
+IndCallEdge         4780
+IndRetEdge          3509
+IndirectEdge        54163
+IndirectEdgeLabels  446631
+Load                16445
+MSSAPhi             4193
+MaxInDegree         318
+MaxIndInDeg         318
+MaxIndOutDeg        315
+MaxOutDegree        4852
+PHI                 524
+Store               8835
+TotalEdge           123984
+TotalNode           85169
+#######################################################
+------- CONFIG ---------
+	Trace Indirect Jumps: true
+	Output Metrics: true
+	Target: libpcap
+
+	Interface file: /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_clang.json----------------------
+[INFO] CallGraph: 635 functions in 635 SCCs
+[SCC] top 10 largest SCCs (biggest first):
+[SCC] scc=281 num functions=1 formals=13 num direct edges=0 num indirect edges=0
+[SCC] scc=433 num functions=1 formals=12 num direct edges=0 num indirect edges=0
+[SCC] scc=282 num functions=1 formals=10 num direct edges=0 num indirect edges=0
+[SCC] scc=62 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=118 num functions=1 formals=7 num direct edges=4 num indirect edges=0
+[SCC] scc=117 num functions=1 formals=7 num direct edges=4 num indirect edges=0
+[SCC] scc=29 num functions=1 formals=6 num direct edges=0 num indirect edges=0
+[SCC] scc=90 num functions=1 formals=6 num direct edges=3 num indirect edges=0
+[SCC] scc=96 num functions=1 formals=6 num direct edges=1 num indirect edges=0
+[SCC] scc=277 num functions=1 formals=6 num direct edges=0 num indirect edges=0
+[SCC] direct edges only: largest=1 functions (0 formals), 0 cyclic components
+[SCC] signature-filtered:largest=1 functions (0 formals),0 cyclic components
+[IND] num of indirect callsites=12
+[IND] pcap_activate(cs=31793) targets=21-> largest=1 functions (0 formals)
+[IND] pcap_activate(cs=31813) targets=19-> largest=1 functions (0 formals)
+[IND] pcap_activate(cs=31759) targets=19-> largest=1 functions (0 formals)
+[IND] pcap_close(cs=32014) targets=19-> largest=1 functions (0 formals)
+[IND] pcap_fopen_offline_with_tstamp_precision(cs=33590) targets=2-> largest=1 functions (0 formals)
+[IND] pcap_setfilter(cs=32970) targets=2-> largest=1 functions (0 formals)
+[IND] pcap_create(cs=31053) targets=2-> largest=1 functions (0 formals)
+[IND] pcap_findalldevs(cs=29925) targets=2-> largest=1 functions (0 formals)
+[IND] pcap_stats(cs=33019) targets=2-> largest=1 functions (0 formals)
+[IND] gen_geneve_check(cs=18098) targets=2-> largest=1 functions (0 formals)
+[IND] removing top 10 indirect callsites. Remaining largest SCC=1 (with0 formals), with 0 cyclic components
+[INFO 1/635 funcs, 1/635 SCCs] callgraph: printf
+[INFO 2/635 funcs, 2/635 SCCs] callgraph: snprintf
+[INFO 3/635 funcs, 3/635 SCCs] callgraph: bpf_print_abs_load_operand
+[INFO 4/635 funcs, 4/635 SCCs] callgraph: llvm.threadlocal.address.p0
+[INFO 5/635 funcs, 5/635 SCCs] callgraph: bpf_image
+[INFO 6/635 funcs, 6/635 SCCs] callgraph: puts
+[INFO 7/635 funcs, 7/635 SCCs] callgraph: bpf_dump
+[INFO 8/635 funcs, 8/635 SCCs] callgraph: abort
+[INFO 9/635 funcs, 9/635 SCCs] callgraph: ntohl
+[INFO 10/635 funcs, 10/635 SCCs] callgraph: EXTRACT_BE_U_4
+[INFO 11/635 funcs, 11/635 SCCs] callgraph: ntohs
+[INFO 12/635 funcs, 12/635 SCCs] callgraph: EXTRACT_BE_U_2
+[INFO 13/635 funcs, 13/635 SCCs] callgraph: pcapint_filter_with_aux_data
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.3(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.3(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.3(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.3(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_2 prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=EXTRACT_BE_U_4 prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 14/635 funcs, 14/635 SCCs] callgraph: pcapint_filter
+[INFO 15/635 funcs, 15/635 SCCs] callgraph: pcapint_validate_filter
+[INFO 16/635 funcs, 16/635 SCCs] callgraph: bpf_filter
+[INFO 17/635 funcs, 17/635 SCCs] callgraph: bpf_validate
+[INFO 18/635 funcs, 18/635 SCCs] callgraph: llvm.memset.p0.i64
+[INFO 19/635 funcs, 19/635 SCCs] callgraph: getc
+[INFO 20/635 funcs, 20/635 SCCs] callgraph: skip_space
+[INFO 21/635 funcs, 21/635 SCCs] callgraph: skip_line
+[INFO 22/635 funcs, 22/635 SCCs] callgraph: xdtoi
+[INFO 23/635 funcs, 23/635 SCCs] callgraph: pcap_next_etherent
+[INFO 24/635 funcs, 24/635 SCCs] callgraph: pcapint_fmt_set_encoding
+[INFO 25/635 funcs, 25/635 SCCs] callgraph: llvm.va_start.p0
+[INFO 26/635 funcs, 26/635 SCCs] callgraph: vsnprintf
+[INFO 27/635 funcs, 27/635 SCCs] callgraph: strlen
+[INFO 28/635 funcs, 28/635 SCCs] callgraph: strerror_r
+[INFO 29/635 funcs, 29/635 SCCs] callgraph: pcap_strerror
+[INFO 30/635 funcs, 30/635 SCCs] callgraph: pcapint_vfmt_errmsg_for_errno
+[INFO 31/635 funcs, 31/635 SCCs] callgraph: llvm.va_end.p0
+[INFO 32/635 funcs, 32/635 SCCs] callgraph: pcapint_fmt_errmsg_for_errno
+[INFO 33/635 funcs, 33/635 SCCs] callgraph: bpf_set_error
+[INFO 34/635 funcs, 34/635 SCCs] callgraph: malloc
+[INFO 35/635 funcs, 35/635 SCCs] callgraph: newchunk_nolongjmp
+[INFO 36/635 funcs, 36/635 SCCs] callgraph: strlcpy
+[INFO 37/635 funcs, 37/635 SCCs] callgraph: sdup
+[INFO 38/635 funcs, 38/635 SCCs] callgraph: initchunks
+[INFO 39/635 funcs, 39/635 SCCs] callgraph: init_regs
+[INFO 40/635 funcs, 40/635 SCCs] callgraph: pcap_snapshot
+[INFO 41/635 funcs, 41/635 SCCs] callgraph: __errno_location
+[INFO 42/635 funcs, 42/635 SCCs] callgraph: pcap_alloc
+[INFO 43/635 funcs, 43/635 SCCs] callgraph: yy_init_globals
+[INFO 44/635 funcs, 44/635 SCCs] callgraph: pcap_lex_init
+[INFO 45/635 funcs, 45/635 SCCs] callgraph: fprintf
+[INFO 46/635 funcs, 46/635 SCCs] callgraph: exit
+[INFO 47/635 funcs, 47/635 SCCs] callgraph: yy_fatal_error
+[INFO 48/635 funcs, 48/635 SCCs] callgraph: realloc
+[INFO 49/635 funcs, 49/635 SCCs] callgraph: pcap_realloc
+[INFO 50/635 funcs, 50/635 SCCs] callgraph: pcap_ensure_buffer_stack
+[INFO 51/635 funcs, 51/635 SCCs] callgraph: pcap__load_buffer_state
+[INFO 52/635 funcs, 52/635 SCCs] callgraph: pcap__switch_to_buffer
+[INFO 53/635 funcs, 53/635 SCCs] callgraph: pcap__scan_buffer
+[INFO 54/635 funcs, 54/635 SCCs] callgraph: pcap__scan_bytes
+[INFO 55/635 funcs, 55/635 SCCs] callgraph: pcap__scan_string
+[INFO 56/635 funcs, 56/635 SCCs] callgraph: pcap_set_extra
+[INFO 57/635 funcs, 57/635 SCCs] callgraph: pcap_datalink
+[INFO 58/635 funcs, 58/635 SCCs] callgraph: llvm.memcpy.p0.p0.i64
+[INFO 59/635 funcs, 59/635 SCCs] callgraph: init_linktype
+[INFO 60/635 funcs, 60/635 SCCs] callgraph: free
+[INFO 61/635 funcs, 61/635 SCCs] callgraph: pcap__flush_buffer
+[INFO 62/635 funcs, 62/635 SCCs] callgraph: pcap__init_buffer
+[INFO 63/635 funcs, 63/635 SCCs] callgraph: pcap__create_buffer
+[INFO 64/635 funcs, 64/635 SCCs] callgraph: stoulen
+[INFO 65/635 funcs, 65/635 SCCs] callgraph: stou
+[INFO 66/635 funcs, 66/635 SCCs] callgraph: getaddrinfo
+[INFO 67/635 funcs, 67/635 SCCs] callgraph: freeaddrinfo
+[INFO 68/635 funcs, 68/635 SCCs] callgraph: fwrite
+[INFO 69/635 funcs, 69/635 SCCs] callgraph: yy_get_previous_state
+[INFO 70/635 funcs, 70/635 SCCs] callgraph: yy_try_NUL_trans
+[INFO 71/635 funcs, 71/635 SCCs] callgraph: ferror
+[INFO 72/635 funcs, 72/635 SCCs] callgraph: fread
+[INFO 73/635 funcs, 73/635 SCCs] callgraph: clearerr
+[INFO 74/635 funcs, 74/635 SCCs] callgraph: pcap_restart
+[INFO 75/635 funcs, 75/635 SCCs] callgraph: yy_get_next_buffer
+[INFO 76/635 funcs, 76/635 SCCs] callgraph: pcap_lex
+[ADDROF] REJ callee=sdup prefix=.(YYSTYPE/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=sdup prefix=.(YYSTYPE/1) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=sdup prefix=.12(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=sdup prefix=.12(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=sdup prefix=.16(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 77/635 funcs, 77/635 SCCs] callgraph: _setjmp
+[INFO 78/635 funcs, 78/635 SCCs] callgraph: longjmp
+[INFO 79/635 funcs, 79/635 SCCs] callgraph: bpf_error
+[INFO 80/635 funcs, 80/635 SCCs] callgraph: alloc_reg
+[INFO 81/635 funcs, 81/635 SCCs] callgraph: newchunk
+[INFO 82/635 funcs, 82/635 SCCs] callgraph: new_stmt
+[INFO 83/635 funcs, 83/635 SCCs] callgraph: sappend
+[INFO 84/635 funcs, 84/635 SCCs] callgraph: gen_load_prism_llprefixlen
+[INFO 85/635 funcs, 85/635 SCCs] callgraph: gen_load_avs_llprefixlen
+[INFO 86/635 funcs, 86/635 SCCs] callgraph: gen_load_radiotap_llprefixlen
+[INFO 87/635 funcs, 87/635 SCCs] callgraph: gen_load_ppi_llprefixlen
+[INFO 88/635 funcs, 88/635 SCCs] callgraph: gen_load_802_11_header_len
+[INFO 89/635 funcs, 89/635 SCCs] callgraph: gen_load_pflog_llprefixlen
+[INFO 90/635 funcs, 90/635 SCCs] callgraph: insert_compute_vloffsets
+[INFO 91/635 funcs, 91/635 SCCs] callgraph: new_block
+[INFO 92/635 funcs, 92/635 SCCs] callgraph: gen_ppi_dlt_check
+[INFO 93/635 funcs, 93/635 SCCs] callgraph: backpatch
+[INFO 94/635 funcs, 94/635 SCCs] callgraph: merge
+[INFO 95/635 funcs, 95/635 SCCs] callgraph: gen_and
+[INFO 96/635 funcs, 96/635 SCCs] callgraph: gen_retblk_internal
+[INFO 97/635 funcs, 97/635 SCCs] callgraph: finish_parse
+[INFO 98/635 funcs, 98/635 SCCs] callgraph: gen_or
+[INFO 99/635 funcs, 99/635 SCCs] callgraph: __isoc99_sscanf
+[INFO 100/635 funcs, 100/635 SCCs] callgraph: __pcap_atodn
+[INFO 101/635 funcs, 101/635 SCCs] callgraph: __pcap_atoin
+[INFO 102/635 funcs, 102/635 SCCs] callgraph: gen_abs_offset_varpart
+[INFO 103/635 funcs, 103/635 SCCs] callgraph: gen_load_absoffsetrel
+[INFO 104/635 funcs, 104/635 SCCs] callgraph: gen_loadx_iphdrlen
+[INFO 105/635 funcs, 105/635 SCCs] callgraph: gen_load_a
+[INFO 106/635 funcs, 106/635 SCCs] callgraph: gen_not
+[INFO 107/635 funcs, 107/635 SCCs] callgraph: gen_ncmp
+[INFO 108/635 funcs, 108/635 SCCs] callgraph: gen_mcmp
+[INFO 109/635 funcs, 109/635 SCCs] callgraph: gen_mpls_linktype
+[INFO 110/635 funcs, 110/635 SCCs] callgraph: gen_geneve_ll_check
+[INFO 111/635 funcs, 111/635 SCCs] callgraph: gen_cmp
+[INFO 112/635 funcs, 112/635 SCCs] callgraph: gen_prevlinkhdr_check
+[INFO 113/635 funcs, 113/635 SCCs] callgraph: gen_cmp_gt
+[INFO 114/635 funcs, 114/635 SCCs] callgraph: EXTRACT_BE_U_4.63
+[INFO 115/635 funcs, 115/635 SCCs] callgraph: EXTRACT_BE_U_2.64
+[INFO 116/635 funcs, 116/635 SCCs] callgraph: gen_bcmp
+[INFO 117/635 funcs, 117/635 SCCs] callgraph: gen_snap
+[INFO 118/635 funcs, 118/635 SCCs] callgraph: gen_ether_linktype
+[INFO 119/635 funcs, 119/635 SCCs] callgraph: gen_check_802_11_data_frame
+[INFO 120/635 funcs, 120/635 SCCs] callgraph: gen_llc_linktype
+[INFO 121/635 funcs, 121/635 SCCs] callgraph: gen_atmfield_code_internal
+[INFO 122/635 funcs, 122/635 SCCs] callgraph: gen_linux_sll_linktype
+[INFO 123/635 funcs, 123/635 SCCs] callgraph: gen_uncond
+[INFO 124/635 funcs, 124/635 SCCs] callgraph: gen_false
+[INFO 125/635 funcs, 125/635 SCCs] callgraph: gen_true
+[INFO 126/635 funcs, 126/635 SCCs] callgraph: ethertype_to_ppptype
+[INFO 127/635 funcs, 127/635 SCCs] callgraph: htonl
+[INFO 128/635 funcs, 128/635 SCCs] callgraph: gen_loopback_linktype
+[INFO 129/635 funcs, 129/635 SCCs] callgraph: gen_ipnet_linktype
+[INFO 130/635 funcs, 130/635 SCCs] callgraph: pcap_datalink_val_to_description
+[INFO 131/635 funcs, 131/635 SCCs] callgraph: pcap_datalink_val_to_description_or_dlt
+[INFO 132/635 funcs, 132/635 SCCs] callgraph: gen_linktype
+[INFO 133/635 funcs, 133/635 SCCs] callgraph: gen_hostop
+gen_hostop
+[FIXPOINT] scc=118 iter=1 formals=7 total_ats=90 exits=1 max_field_depth=6
+[DICHAIN] ok=1260 fresh_break=0 poisoned=0 | formal_with_di=413 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2388/1
+[FIXPOINT] scc=118 iter=2 formals=7 total_ats=90 exits=1 max_field_depth=6
+[DICHAIN] ok=1260 fresh_break=0 poisoned=0 | formal_with_di=425 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2388/1
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53151)
+Effects: ATS 84
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53152)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53153)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53154)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53155)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53156)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop(Formal Param ID: 53157)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 134/635 funcs, 134/635 SCCs] callgraph: gen_dnhostop
+gen_dnhostop
+[FIXPOINT] scc=119 iter=1 formals=3 total_ats=86 exits=1 max_field_depth=6
+[DICHAIN] ok=1260 fresh_break=0 poisoned=0 | formal_with_di=433 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2388/1
+[FIXPOINT] scc=119 iter=2 formals=3 total_ats=86 exits=1 max_field_depth=6
+[DICHAIN] ok=1260 fresh_break=0 poisoned=0 | formal_with_di=441 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2388/1
+[process_scc] Evaluated Function: gen_dnhostop(Formal Param ID: 52801)
+Effects: ATS 84
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_dnhostop(Formal Param ID: 52802)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_dnhostop(Formal Param ID: 52803)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 135/635 funcs, 135/635 SCCs] callgraph: gen_host
+gen_host
+[FIXPOINT] scc=90 iter=1 formals=6 total_ats=89 exits=1 max_field_depth=6
+[DICHAIN] ok=1261 fresh_break=0 poisoned=0 | formal_with_di=455 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2389/1
+[FIXPOINT] scc=90 iter=2 formals=6 total_ats=89 exits=1 max_field_depth=6
+[DICHAIN] ok=1262 fresh_break=0 poisoned=0 | formal_with_di=469 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2390/1
+[process_scc] Evaluated Function: gen_host(Formal Param ID: 52647)
+Effects: ATS 84
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_host(Formal Param ID: 52648)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host(Formal Param ID: 52649)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host(Formal Param ID: 52650)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host(Formal Param ID: 52651)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host(Formal Param ID: 52652)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 136/635 funcs, 136/635 SCCs] callgraph: gen_ipfrag
+[INFO 137/635 funcs, 137/635 SCCs] callgraph: gen_portatom
+[INFO 138/635 funcs, 138/635 SCCs] callgraph: gen_portop
+[INFO 139/635 funcs, 139/635 SCCs] callgraph: gen_port
+[INFO 140/635 funcs, 140/635 SCCs] callgraph: gen_portatom6
+[INFO 141/635 funcs, 141/635 SCCs] callgraph: gen_portop6
+[INFO 142/635 funcs, 142/635 SCCs] callgraph: gen_port6
+[INFO 143/635 funcs, 143/635 SCCs] callgraph: gen_cmp_ge
+[INFO 144/635 funcs, 144/635 SCCs] callgraph: gen_cmp_le
+[INFO 145/635 funcs, 145/635 SCCs] callgraph: gen_portrangeatom
+[INFO 146/635 funcs, 146/635 SCCs] callgraph: gen_portrangeop
+[INFO 147/635 funcs, 147/635 SCCs] callgraph: gen_portrange
+[INFO 148/635 funcs, 148/635 SCCs] callgraph: gen_portrangeatom6
+[INFO 149/635 funcs, 149/635 SCCs] callgraph: gen_portrangeop6
+[INFO 150/635 funcs, 150/635 SCCs] callgraph: gen_portrange6
+[INFO 151/635 funcs, 151/635 SCCs] callgraph: gen_proto
+gen_proto
+[FIXPOINT] scc=71 iter=1 formals=4 total_ats=87 exits=1 max_field_depth=6
+[DICHAIN] ok=1269 fresh_break=0 poisoned=0 | formal_with_di=586 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2399/1
+[FIXPOINT] scc=71 iter=2 formals=4 total_ats=87 exits=1 max_field_depth=6
+[DICHAIN] ok=1270 fresh_break=0 poisoned=0 | formal_with_di=600 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2400/1
+[process_scc] Evaluated Function: gen_proto(Formal Param ID: 52609)
+Effects: ATS 84
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_proto(Formal Param ID: 52610)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_proto(Formal Param ID: 52611)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_proto(Formal Param ID: 52612)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 152/635 funcs, 152/635 SCCs] callgraph: free_reg
+[INFO 153/635 funcs, 153/635 SCCs] callgraph: gen_protochain
+gen_protochain
+[FIXPOINT] scc=103 iter=1 formals=3 total_ats=87 exits=1 max_field_depth=6
+[DICHAIN] ok=1301 fresh_break=0 poisoned=0 | formal_with_di=609 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2494/1
+[FIXPOINT] scc=103 iter=2 formals=3 total_ats=87 exits=1 max_field_depth=6
+[DICHAIN] ok=1331 fresh_break=0 poisoned=0 | formal_with_di=616 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2585/1
+[process_scc] Evaluated Function: gen_protochain(Formal Param ID: 52748)
+Effects: ATS 85
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_protochain(Formal Param ID: 52749)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_protochain(Formal Param ID: 52750)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 154/635 funcs, 154/635 SCCs] callgraph: syntax
+[INFO 155/635 funcs, 155/635 SCCs] callgraph: gen_ncode
+[INFO 156/635 funcs, 156/635 SCCs] callgraph: getnetbyname_r
+[INFO 157/635 funcs, 157/635 SCCs] callgraph: pcap_nametonetaddr
+[INFO 158/635 funcs, 158/635 SCCs] callgraph: ether_hostton
+[INFO 159/635 funcs, 159/635 SCCs] callgraph: pcap_ether_hostton
+[INFO 160/635 funcs, 160/635 SCCs] callgraph: gen_ehostop
+gen_ehostop
+[FIXPOINT] scc=91 iter=1 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1333 fresh_break=0 poisoned=0 | formal_with_di=643 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2589/1
+[FIXPOINT] scc=91 iter=2 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1333 fresh_break=0 poisoned=0 | formal_with_di=652 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2589/1
+[process_scc] Evaluated Function: gen_ehostop(Formal Param ID: 52656)
+Effects: ATS 73
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_ehostop(Formal Param ID: 52657)
+Effects: ATS 1
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_ehostop(Formal Param ID: 52658)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 161/635 funcs, 161/635 SCCs] callgraph: gen_fhostop
+gen_fhostop
+[FIXPOINT] scc=92 iter=1 formals=3 total_ats=76 exits=1 max_field_depth=6
+[DICHAIN] ok=1335 fresh_break=0 poisoned=0 | formal_with_di=661 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2591/1
+[FIXPOINT] scc=92 iter=2 formals=3 total_ats=76 exits=1 max_field_depth=6
+[DICHAIN] ok=1337 fresh_break=0 poisoned=0 | formal_with_di=670 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2593/1
+[process_scc] Evaluated Function: gen_fhostop(Formal Param ID: 52191)
+Effects: ATS 74
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_fhostop(Formal Param ID: 52192)
+Effects: ATS 1
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_fhostop(Formal Param ID: 52193)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 162/635 funcs, 162/635 SCCs] callgraph: gen_thostop
+gen_thostop
+[FIXPOINT] scc=93 iter=1 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1337 fresh_break=0 poisoned=0 | formal_with_di=679 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2593/1
+[FIXPOINT] scc=93 iter=2 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1337 fresh_break=0 poisoned=0 | formal_with_di=688 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2593/1
+[process_scc] Evaluated Function: gen_thostop(Formal Param ID: 52675)
+Effects: ATS 73
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_thostop(Formal Param ID: 52676)
+Effects: ATS 1
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_thostop(Formal Param ID: 52677)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 163/635 funcs, 163/635 SCCs] callgraph: gen_wlanhostop
+gen_wlanhostop
+[FIXPOINT] scc=94 iter=1 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1370 fresh_break=0 poisoned=0 | formal_with_di=707 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2654/1
+[FIXPOINT] scc=94 iter=2 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=726 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2715/1
+[process_scc] Evaluated Function: gen_wlanhostop(Formal Param ID: 52585)
+Effects: ATS 73
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_wlanhostop(Formal Param ID: 52586)
+Effects: ATS 1
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_wlanhostop(Formal Param ID: 52587)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 164/635 funcs, 164/635 SCCs] callgraph: gen_ipfchostop
+gen_ipfchostop
+[FIXPOINT] scc=95 iter=1 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=735 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2715/1
+[FIXPOINT] scc=95 iter=2 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=744 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2715/1
+[process_scc] Evaluated Function: gen_ipfchostop(Formal Param ID: 52678)
+Effects: ATS 73
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_ipfchostop(Formal Param ID: 52679)
+Effects: ATS 1
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_ipfchostop(Formal Param ID: 52680)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 165/635 funcs, 165/635 SCCs] callgraph: __pcap_nametodnaddr
+[INFO 166/635 funcs, 166/635 SCCs] callgraph: pcap_nametoaddrinfo
+[INFO 167/635 funcs, 167/635 SCCs] callgraph: gen_hostop6
+gen_hostop6
+[FIXPOINT] scc=117 iter=1 formals=7 total_ats=92 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=761 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2717/1
+[FIXPOINT] scc=117 iter=2 formals=7 total_ats=92 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=773 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2719/1
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52659)
+Effects: ATS 84
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52660)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52661)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52662)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52663)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52664)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_hostop6(Formal Param ID: 52665)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 168/635 funcs, 168/635 SCCs] callgraph: gen_host6
+gen_host6
+[FIXPOINT] scc=96 iter=1 formals=6 total_ats=91 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=782 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2719/1
+[FIXPOINT] scc=96 iter=2 formals=6 total_ats=91 exits=1 max_field_depth=6
+[DICHAIN] ok=1403 fresh_break=0 poisoned=0 | formal_with_di=791 | formal_no_di=5 compose_null_di=0 | gep_bu(ok/null)=2719/1
+[process_scc] Evaluated Function: gen_host6(Formal Param ID: 52704)
+Effects: ATS 84
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_host6(Formal Param ID: 52705)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host6(Formal Param ID: 52706)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host6(Formal Param ID: 52707)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host6(Formal Param ID: 52708)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_host6(Formal Param ID: 52709)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 169/635 funcs, 169/635 SCCs] callgraph: pcap_nametoport
+[INFO 170/635 funcs, 170/635 SCCs] callgraph: strchr
+[INFO 171/635 funcs, 171/635 SCCs] callgraph: nametoport
+[INFO 172/635 funcs, 172/635 SCCs] callgraph: stringtoport
+[INFO 173/635 funcs, 173/635 SCCs] callgraph: stringtoportrange
+[INFO 174/635 funcs, 174/635 SCCs] callgraph: getprotobyname_r
+[INFO 175/635 funcs, 175/635 SCCs] callgraph: pcap_nametoproto
+[INFO 176/635 funcs, 176/635 SCCs] callgraph: strcmp
+[INFO 177/635 funcs, 177/635 SCCs] callgraph: pcap_nametoeproto
+[INFO 178/635 funcs, 178/635 SCCs] callgraph: pcap_nametollc
+[INFO 179/635 funcs, 179/635 SCCs] callgraph: lookup_proto
+[INFO 180/635 funcs, 180/635 SCCs] callgraph: gen_scode
+[INFO 181/635 funcs, 181/635 SCCs] callgraph: gen_mcode
+[INFO 182/635 funcs, 182/635 SCCs] callgraph: gen_mcode6
+[INFO 183/635 funcs, 183/635 SCCs] callgraph: pcapint_xdtoi
+[INFO 184/635 funcs, 184/635 SCCs] callgraph: pcapint_atomac48_xxxxxxxxxxxx
+[INFO 185/635 funcs, 185/635 SCCs] callgraph: pcapint_atomac48_xxxx_3_times
+[INFO 186/635 funcs, 186/635 SCCs] callgraph: pcapint_atomac48_x_xx_6_times
+[INFO 187/635 funcs, 187/635 SCCs] callgraph: pcapint_atomac48
+[INFO 188/635 funcs, 188/635 SCCs] callgraph: pcap_ether_aton
+[INFO 189/635 funcs, 189/635 SCCs] callgraph: gen_ecode
+[INFO 190/635 funcs, 190/635 SCCs] callgraph: pcapint_atoan
+[INFO 191/635 funcs, 191/635 SCCs] callgraph: gen_ahostop
+gen_ahostop
+[FIXPOINT] scc=141 iter=1 formals=3 total_ats=47 exits=1 max_field_depth=3
+[DICHAIN] ok=1440 fresh_break=0 poisoned=0 | formal_with_di=879 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=2948/1
+[FIXPOINT] scc=141 iter=2 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1440 fresh_break=0 poisoned=0 | formal_with_di=888 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=2948/1
+[FIXPOINT] scc=141 iter=3 formals=3 total_ats=75 exits=1 max_field_depth=6
+[DICHAIN] ok=1440 fresh_break=0 poisoned=0 | formal_with_di=897 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=2948/1
+[process_scc] Evaluated Function: gen_ahostop(Formal Param ID: 52239)
+Effects: ATS 73
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: gen_ahostop(Formal Param ID: 52240)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: gen_ahostop(Formal Param ID: 52241)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 192/635 funcs, 192/635 SCCs] callgraph: gen_acode
+[INFO 193/635 funcs, 193/635 SCCs] callgraph: gen_proto_abbrev_internal
+[INFO 194/635 funcs, 194/635 SCCs] callgraph: gen_proto_abbrev
+[INFO 195/635 funcs, 195/635 SCCs] callgraph: xfer_to_x
+[INFO 196/635 funcs, 196/635 SCCs] callgraph: xfer_to_a
+[INFO 197/635 funcs, 197/635 SCCs] callgraph: gen_relation_internal
+[BADAT] gen_relation_internal formal=52432 path=.1.* access=read want=slist/1 got=block/1 (endpoint type disagrees with DWARF walk)
+[BADAT] gen_relation_internal formal=52432 path=.1.8 access=read want=slist/1 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] gen_relation_internal formal=52432 path=.1.8 access=write want=slist/1 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] gen_relation_internal formal=52432 path=.1.9.* access=read want=slist/1 got=edge/0 (field index does not exists on this record)
+[BADAT] gen_relation_internal formal=52432 path=.1.9.3 access=read want=slist/1 got=block/1 (field index does not exists on this record)
+[INFO 198/635 funcs, 198/635 SCCs] callgraph: gen_relation
+[BADAT] gen_relation formal=52779 path=.1.* access=read want=slist/1 got=block/1 (endpoint type disagrees with DWARF walk)
+[BADAT] gen_relation formal=52779 path=.1.8 access=read want=slist/1 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] gen_relation formal=52779 path=.1.8 access=write want=slist/1 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] gen_relation formal=52779 path=.1.9.* access=read want=slist/1 got=edge/0 (field index does not exists on this record)
+[BADAT] gen_relation formal=52779 path=.1.9.3 access=read want=slist/1 got=block/1 (field index does not exists on this record)
+[INFO 199/635 funcs, 199/635 SCCs] callgraph: gen_atmtype_metac
+[INFO 200/635 funcs, 200/635 SCCs] callgraph: gen_atmtype_sc
+[INFO 201/635 funcs, 201/635 SCCs] callgraph: gen_atmtype_llc
+[INFO 202/635 funcs, 202/635 SCCs] callgraph: gen_atmtype_abbrev
+[INFO 203/635 funcs, 203/635 SCCs] callgraph: gen_msg_abbrev
+[INFO 204/635 funcs, 204/635 SCCs] callgraph: gen_atmmulti_abbrev
+[INFO 205/635 funcs, 205/635 SCCs] callgraph: gen_mtp2type_abbrev
+[INFO 206/635 funcs, 206/635 SCCs] callgraph: gen_broadcast
+[INFO 207/635 funcs, 207/635 SCCs] callgraph: gen_mac_multicast
+[INFO 208/635 funcs, 208/635 SCCs] callgraph: gen_multicast
+[INFO 209/635 funcs, 209/635 SCCs] callgraph: gen_len
+[INFO 210/635 funcs, 210/635 SCCs] callgraph: gen_less
+[INFO 211/635 funcs, 211/635 SCCs] callgraph: gen_greater
+[INFO 212/635 funcs, 212/635 SCCs] callgraph: gen_cmp_lt
+[INFO 213/635 funcs, 213/635 SCCs] callgraph: gen_byteop
+[INFO 214/635 funcs, 214/635 SCCs] callgraph: gen_loadi_internal
+[INFO 215/635 funcs, 215/635 SCCs] callgraph: gen_load_internal
+[INFO 216/635 funcs, 216/635 SCCs] callgraph: gen_inbound
+[INFO 217/635 funcs, 217/635 SCCs] callgraph: gen_ifindex
+[INFO 218/635 funcs, 218/635 SCCs] callgraph: gen_vlan_tpid_test
+[INFO 219/635 funcs, 219/635 SCCs] callgraph: gen_vlan_vid_test
+[INFO 220/635 funcs, 220/635 SCCs] callgraph: gen_vlan_vloffset_add
+[INFO 221/635 funcs, 221/635 SCCs] callgraph: gen_vlan_patch_tpid_test
+[INFO 222/635 funcs, 222/635 SCCs] callgraph: gen_vlan_patch_vid_test
+[INFO 223/635 funcs, 223/635 SCCs] callgraph: gen_vlan_bpf_extensions
+[INFO 224/635 funcs, 224/635 SCCs] callgraph: gen_vlan_no_bpf_extensions
+[INFO 225/635 funcs, 225/635 SCCs] callgraph: gen_vlan
+[INFO 226/635 funcs, 226/635 SCCs] callgraph: gen_mpls_internal
+[INFO 227/635 funcs, 227/635 SCCs] callgraph: gen_mpls
+[INFO 228/635 funcs, 228/635 SCCs] callgraph: gen_pppoed
+[INFO 229/635 funcs, 229/635 SCCs] callgraph: gen_pppoes
+[INFO 230/635 funcs, 230/635 SCCs] callgraph: gen_geneve_check
+[INFO 231/635 funcs, 231/635 SCCs] callgraph: gen_geneve4
+[INFO 232/635 funcs, 232/635 SCCs] callgraph: gen_geneve6
+[INFO 233/635 funcs, 233/635 SCCs] callgraph: gen_geneve_offsets
+[INFO 234/635 funcs, 234/635 SCCs] callgraph: gen_geneve
+[INFO 235/635 funcs, 235/635 SCCs] callgraph: gen_pf_ifname
+[INFO 236/635 funcs, 236/635 SCCs] callgraph: gen_pf_ruleset
+[INFO 237/635 funcs, 237/635 SCCs] callgraph: gen_pf_rnr
+[INFO 238/635 funcs, 238/635 SCCs] callgraph: gen_pf_srnr
+[INFO 239/635 funcs, 239/635 SCCs] callgraph: gen_pf_reason
+[INFO 240/635 funcs, 240/635 SCCs] callgraph: gen_pf_action
+[INFO 241/635 funcs, 241/635 SCCs] callgraph: gen_p80211_type
+[INFO 242/635 funcs, 242/635 SCCs] callgraph: gen_p80211_fcdir
+[INFO 243/635 funcs, 243/635 SCCs] callgraph: pcapint_strcasecmp
+[INFO 244/635 funcs, 244/635 SCCs] callgraph: str2tok
+[INFO 245/635 funcs, 245/635 SCCs] callgraph: gen_llc_internal
+[INFO 246/635 funcs, 246/635 SCCs] callgraph: gen_llc
+[INFO 247/635 funcs, 247/635 SCCs] callgraph: gen_llc_i
+[INFO 248/635 funcs, 248/635 SCCs] callgraph: gen_llc_s
+[INFO 249/635 funcs, 249/635 SCCs] callgraph: gen_llc_u
+[INFO 250/635 funcs, 250/635 SCCs] callgraph: gen_llc_s_subtype
+[INFO 251/635 funcs, 251/635 SCCs] callgraph: gen_llc_u_subtype
+[INFO 252/635 funcs, 252/635 SCCs] callgraph: pfreason_to_num
+[INFO 253/635 funcs, 253/635 SCCs] callgraph: pfaction_to_num
+[INFO 254/635 funcs, 254/635 SCCs] callgraph: gen_loadi
+[INFO 255/635 funcs, 255/635 SCCs] callgraph: gen_load
+[INFO 256/635 funcs, 256/635 SCCs] callgraph: gen_arth
+[INFO 257/635 funcs, 257/635 SCCs] callgraph: gen_neg
+[INFO 258/635 funcs, 258/635 SCCs] callgraph: gen_loadlen
+[INFO 259/635 funcs, 259/635 SCCs] callgraph: gen_atmfield_code
+[INFO 260/635 funcs, 260/635 SCCs] callgraph: gen_mtp3field_code_internal
+[INFO 261/635 funcs, 261/635 SCCs] callgraph: gen_mtp3field_code
+[INFO 262/635 funcs, 262/635 SCCs] callgraph: pcap_error
+[INFO 263/635 funcs, 263/635 SCCs] callgraph: yydestruct
+[INFO 264/635 funcs, 264/635 SCCs] callgraph: pcap_parse
+[INFO 265/635 funcs, 265/635 SCCs] callgraph: gen_retblk
+[INFO 266/635 funcs, 266/635 SCCs] callgraph: opt_cleanup
+[INFO 267/635 funcs, 267/635 SCCs] callgraph: count_blocks
+count_blocks
+[FIXPOINT] scc=240 iter=1 formals=2 total_ats=14 exits=0 max_field_depth=4
+[DICHAIN] ok=1934 fresh_break=0 poisoned=0 | formal_with_di=1353 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=3984/1
+[FIXPOINT] scc=240 iter=2 formals=2 total_ats=19 exits=0 max_field_depth=4
+[DICHAIN] ok=1942 fresh_break=0 poisoned=0 | formal_with_di=1355 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=3992/1
+[FIXPOINT] scc=240 iter=3 formals=2 total_ats=19 exits=0 max_field_depth=4
+[DICHAIN] ok=1950 fresh_break=0 poisoned=0 | formal_with_di=1357 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4000/1
+[process_scc] Evaluated Function: count_blocks(Formal Param ID: 52064)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: count_blocks(Formal Param ID: 52065)
+Effects: ATS 16
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 268/635 funcs, 268/635 SCCs] callgraph: calloc
+[INFO 269/635 funcs, 269/635 SCCs] callgraph: opt_error
+[INFO 270/635 funcs, 270/635 SCCs] callgraph: number_blks_r
+number_blks_r
+[FIXPOINT] scc=241 iter=1 formals=3 total_ats=23 exits=0 max_field_depth=4
+[DICHAIN] ok=1966 fresh_break=0 poisoned=0 | formal_with_di=1362 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4018/1
+[FIXPOINT] scc=241 iter=2 formals=3 total_ats=32 exits=0 max_field_depth=4
+[DICHAIN] ok=1978 fresh_break=0 poisoned=0 | formal_with_di=1365 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4032/1
+[FIXPOINT] scc=241 iter=3 formals=3 total_ats=32 exits=0 max_field_depth=4
+[DICHAIN] ok=1990 fresh_break=0 poisoned=0 | formal_with_di=1368 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4046/1
+[process_scc] Evaluated Function: number_blks_r(Formal Param ID: 52535)
+Effects: ATS 7
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: number_blks_r(Formal Param ID: 52536)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: number_blks_r(Formal Param ID: 52537)
+Effects: ATS 22
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 271/635 funcs, 271/635 SCCs] callgraph: slength
+[INFO 272/635 funcs, 272/635 SCCs] callgraph: opt_init
+[INFO 273/635 funcs, 273/635 SCCs] callgraph: find_levels_r
+find_levels_r
+[FIXPOINT] scc=239 iter=1 formals=3 total_ats=42 exits=0 max_field_depth=5
+[DICHAIN] ok=2082 fresh_break=0 poisoned=0 | formal_with_di=1374 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4179/1
+[FIXPOINT] scc=239 iter=2 formals=3 total_ats=62 exits=0 max_field_depth=5
+[DICHAIN] ok=2113 fresh_break=0 poisoned=0 | formal_with_di=1377 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4230/1
+[FIXPOINT] scc=239 iter=3 formals=3 total_ats=66 exits=0 max_field_depth=5
+[DICHAIN] ok=2144 fresh_break=0 poisoned=0 | formal_with_di=1380 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=4281/1
+[WARN] SCC 239 (3 formals) did not reach a fixpoint within 3 iterations[process_scc] Evaluated Function: find_levels_r(Formal Param ID: 52742)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: find_levels_r(Formal Param ID: 52743)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: find_levels_r(Formal Param ID: 52744)
+Effects: ATS 60
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 274/635 funcs, 274/635 SCCs] callgraph: find_levels
+[INFO 275/635 funcs, 275/635 SCCs] callgraph: find_dom
+[INFO 276/635 funcs, 276/635 SCCs] callgraph: find_closure
+[INFO 277/635 funcs, 277/635 SCCs] callgraph: atomuse
+[INFO 278/635 funcs, 278/635 SCCs] callgraph: atomdef
+[INFO 279/635 funcs, 279/635 SCCs] callgraph: compute_local_ud
+[BADAT] compute_local_ud formal=52070 path=.1.0.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[BADAT] compute_local_ud formal=52070 path=.1.1.0.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[BADAT] compute_local_ud formal=52070 path=.2.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[INFO 280/635 funcs, 280/635 SCCs] callgraph: find_ud
+[INFO 281/635 funcs, 281/635 SCCs] callgraph: propedom
+[INFO 282/635 funcs, 282/635 SCCs] callgraph: find_edom
+[INFO 283/635 funcs, 283/635 SCCs] callgraph: init_val
+[INFO 284/635 funcs, 284/635 SCCs] callgraph: link_inedge
+[INFO 285/635 funcs, 285/635 SCCs] callgraph: find_inedges
+[INFO 286/635 funcs, 286/635 SCCs] callgraph: F
+[INFO 287/635 funcs, 287/635 SCCs] callgraph: vstore
+[INFO 288/635 funcs, 288/635 SCCs] callgraph: fold_op
+[INFO 289/635 funcs, 289/635 SCCs] callgraph: opt_stmt
+[INFO 290/635 funcs, 290/635 SCCs] callgraph: this_op
+[INFO 291/635 funcs, 291/635 SCCs] callgraph: opt_not
+[INFO 292/635 funcs, 292/635 SCCs] callgraph: opt_peep
+[INFO 293/635 funcs, 293/635 SCCs] callgraph: deadstmt
+[INFO 294/635 funcs, 294/635 SCCs] callgraph: opt_deadstores
+[BADAT] opt_deadstores formal=52091 path=.1.0.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[BADAT] opt_deadstores formal=52091 path=.1.1.0.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[BADAT] opt_deadstores formal=52091 path=.2.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[INFO 295/635 funcs, 295/635 SCCs] callgraph: opt_blk
+[BADAT] opt_blk formal=52128 path=.1.0.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[BADAT] opt_blk formal=52128 path=.1.1.0.* access=read want=stmt/0 got=stmt/1 (endpoint type disagrees with DWARF walk)
+[INFO 296/635 funcs, 296/635 SCCs] callgraph: use_conflict
+[INFO 297/635 funcs, 297/635 SCCs] callgraph: llvm.cttz.i32
+[INFO 298/635 funcs, 298/635 SCCs] callgraph: fold_edge
+[INFO 299/635 funcs, 299/635 SCCs] callgraph: opt_j
+[INFO 300/635 funcs, 300/635 SCCs] callgraph: or_pullup
+[INFO 301/635 funcs, 301/635 SCCs] callgraph: and_pullup
+[INFO 302/635 funcs, 302/635 SCCs] callgraph: opt_blks
+[INFO 303/635 funcs, 303/635 SCCs] callgraph: opt_loop
+[INFO 304/635 funcs, 304/635 SCCs] callgraph: make_marks
+make_marks
+[FIXPOINT] scc=209 iter=1 formals=2 total_ats=16 exits=0 max_field_depth=4
+[DICHAIN] ok=2843 fresh_break=0 poisoned=0 | formal_with_di=1451 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5460/1
+[FIXPOINT] scc=209 iter=2 formals=2 total_ats=25 exits=0 max_field_depth=4
+[DICHAIN] ok=2853 fresh_break=0 poisoned=0 | formal_with_di=1453 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5470/1
+[FIXPOINT] scc=209 iter=3 formals=2 total_ats=25 exits=0 max_field_depth=4
+[DICHAIN] ok=2863 fresh_break=0 poisoned=0 | formal_with_di=1455 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5480/1
+[process_scc] Evaluated Function: make_marks(Formal Param ID: 52222)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: make_marks(Formal Param ID: 52223)
+Effects: ATS 22
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 305/635 funcs, 305/635 SCCs] callgraph: mark_code
+[INFO 306/635 funcs, 306/635 SCCs] callgraph: eq_slist
+[INFO 307/635 funcs, 307/635 SCCs] callgraph: eq_blk
+[INFO 308/635 funcs, 308/635 SCCs] callgraph: intern_blocks
+[INFO 309/635 funcs, 309/635 SCCs] callgraph: opt_root
+[INFO 310/635 funcs, 310/635 SCCs] callgraph: bpf_optimize
+[BADAT] bpf_optimize formal=52483 path=.0.* access=read want=block/1 got=block/2 (endpoint type disagrees with DWARF walk)
+[INFO 311/635 funcs, 311/635 SCCs] callgraph: count_stmts
+count_stmts
+[FIXPOINT] scc=244 iter=1 formals=2 total_ats=44 exits=7 max_field_depth=6
+[DICHAIN] ok=2969 fresh_break=0 poisoned=0 | formal_with_di=1467 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5633/1
+[FIXPOINT] scc=244 iter=2 formals=2 total_ats=49 exits=9 max_field_depth=6
+[DICHAIN] ok=2980 fresh_break=0 poisoned=0 | formal_with_di=1469 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5644/1
+[FIXPOINT] scc=244 iter=3 formals=2 total_ats=49 exits=9 max_field_depth=6
+[DICHAIN] ok=2991 fresh_break=0 poisoned=0 | formal_with_di=1471 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5655/1
+[process_scc] Evaluated Function: count_stmts(Formal Param ID: 52071)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: count_stmts(Formal Param ID: 52072)
+Effects: ATS 46
+array 0, malloc 0, path 0, depends ''
+Exit Count: 9
+
+[INFO 312/635 funcs, 312/635 SCCs] callgraph: conv_error
+[INFO 313/635 funcs, 313/635 SCCs] callgraph: convert_code_r
+convert_code_r
+[FIXPOINT] scc=245 iter=1 formals=3 total_ats=91 exits=0 max_field_depth=6
+[DICHAIN] ok=3068 fresh_break=0 poisoned=0 | formal_with_di=1476 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5788/1
+[FIXPOINT] scc=245 iter=2 formals=3 total_ats=95 exits=0 max_field_depth=6
+[DICHAIN] ok=3142 fresh_break=0 poisoned=0 | formal_with_di=1479 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=5918/1
+[FIXPOINT] scc=245 iter=3 formals=3 total_ats=95 exits=0 max_field_depth=6
+[DICHAIN] ok=3216 fresh_break=0 poisoned=0 | formal_with_di=1482 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=6048/1
+[process_scc] Evaluated Function: convert_code_r(Formal Param ID: 53231)
+Effects: ATS 7
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: convert_code_r(Formal Param ID: 53232)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: convert_code_r(Formal Param ID: 53233)
+Effects: ATS 85
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 314/635 funcs, 314/635 SCCs] callgraph: icode_to_fcode
+[INFO 315/635 funcs, 315/635 SCCs] callgraph: pcap_free
+[INFO 316/635 funcs, 316/635 SCCs] callgraph: pcap__delete_buffer
+[INFO 317/635 funcs, 317/635 SCCs] callgraph: pcap_pop_buffer_state
+[INFO 318/635 funcs, 318/635 SCCs] callgraph: pcap_lex_destroy
+[INFO 319/635 funcs, 319/635 SCCs] callgraph: freechunks
+[INFO 320/635 funcs, 320/635 SCCs] callgraph: pcap_compile
+[INFO 321/635 funcs, 321/635 SCCs] callgraph: pcap_open_dead_with_tstamp_precision
+[INFO 322/635 funcs, 322/635 SCCs] callgraph: pcap_open_dead
+[INFO 323/635 funcs, 323/635 SCCs] callgraph: pcap_cant_set_rfmon
+[INFO 324/635 funcs, 324/635 SCCs] callgraph: pcap_set_not_initialized_message
+[INFO 325/635 funcs, 325/635 SCCs] callgraph: pcap_getnonblock_not_initialized
+[INFO 326/635 funcs, 326/635 SCCs] callgraph: pcap_freecode
+[INFO 327/635 funcs, 327/635 SCCs] callgraph: close
+[INFO 328/635 funcs, 328/635 SCCs] callgraph: pcapint_cleanup_live_common
+[BADAT] pcapint_cleanup_live_common formal=53030 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 329/635 funcs, 329/635 SCCs] callgraph: pcapint_breakloop_common
+[INFO 330/635 funcs, 330/635 SCCs] callgraph: pcap_can_set_rfmon_dead
+[INFO 331/635 funcs, 331/635 SCCs] callgraph: pcap_getnonblock_dead
+[INFO 332/635 funcs, 332/635 SCCs] callgraph: pcap_breakloop_dead
+[INFO 333/635 funcs, 333/635 SCCs] callgraph: pcap_cleanup_dead
+[INFO 334/635 funcs, 334/635 SCCs] callgraph: fclose
+[INFO 335/635 funcs, 335/635 SCCs] callgraph: pcapint_sf_cleanup
+[BADAT] pcapint_sf_cleanup formal=53002 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 336/635 funcs, 336/635 SCCs] callgraph: pcap_ng_cleanup
+[BADAT] pcap_ng_cleanup formal=52989 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 337/635 funcs, 337/635 SCCs] callgraph: strdup
+[INFO 338/635 funcs, 338/635 SCCs] callgraph: open
+[INFO 339/635 funcs, 339/635 SCCs] callgraph: read
+[INFO 340/635 funcs, 340/635 SCCs] callgraph: __isoc23_strtoll
+[INFO 341/635 funcs, 341/635 SCCs] callgraph: linux_get_stat
+[INFO 342/635 funcs, 342/635 SCCs] callgraph: linux_if_drops
+[INFO 343/635 funcs, 343/635 SCCs] callgraph: socket
+[INFO 344/635 funcs, 344/635 SCCs] callgraph: ioctl
+[INFO 345/635 funcs, 345/635 SCCs] callgraph: iface_get_id
+[INFO 346/635 funcs, 346/635 SCCs] callgraph: enter_rfmon_mode
+[INFO 347/635 funcs, 347/635 SCCs] callgraph: iface_get_arptype
+[INFO 348/635 funcs, 348/635 SCCs] callgraph: strncmp
+[INFO 349/635 funcs, 349/635 SCCs] callgraph: asprintf
+[INFO 350/635 funcs, 350/635 SCCs] callgraph: stat
+[INFO 351/635 funcs, 351/635 SCCs] callgraph: is_wifi
+[INFO 352/635 funcs, 352/635 SCCs] callgraph: iface_dsa_get_proto_info
+[INFO 353/635 funcs, 353/635 SCCs] callgraph: map_arphrd_to_dlt
+[INFO 354/635 funcs, 354/635 SCCs] callgraph: bind
+[INFO 355/635 funcs, 355/635 SCCs] callgraph: getsockopt
+[INFO 356/635 funcs, 356/635 SCCs] callgraph: iface_bind
+[INFO 357/635 funcs, 357/635 SCCs] callgraph: setsockopt
+[INFO 358/635 funcs, 358/635 SCCs] callgraph: set_vlan_offset
+[INFO 359/635 funcs, 359/635 SCCs] callgraph: setup_socket
+[INFO 360/635 funcs, 360/635 SCCs] callgraph: eventfd
+[INFO 361/635 funcs, 361/635 SCCs] callgraph: init_tpacket
+[INFO 362/635 funcs, 362/635 SCCs] callgraph: prepare_tpacket_socket
+[INFO 363/635 funcs, 363/635 SCCs] callgraph: iface_get_mtu
+[INFO 364/635 funcs, 364/635 SCCs] callgraph: iface_ethtool_flag_ioctl
+[INFO 365/635 funcs, 365/635 SCCs] callgraph: iface_get_offload
+[INFO 366/635 funcs, 366/635 SCCs] callgraph: getpagesize
+[INFO 367/635 funcs, 367/635 SCCs] callgraph: mmap
+[INFO 368/635 funcs, 368/635 SCCs] callgraph: munmap
+[INFO 369/635 funcs, 369/635 SCCs] callgraph: destroy_ring
+[INFO 370/635 funcs, 370/635 SCCs] callgraph: create_ring
+[INFO 371/635 funcs, 371/635 SCCs] callgraph: uname
+[INFO 372/635 funcs, 372/635 SCCs] callgraph: __isoc23_sscanf
+[INFO 373/635 funcs, 373/635 SCCs] callgraph: has_broken_tpacket_v3
+[INFO 374/635 funcs, 374/635 SCCs] callgraph: set_poll_timeout
+[INFO 375/635 funcs, 375/635 SCCs] callgraph: setup_mmapped
+[INFO 376/635 funcs, 376/635 SCCs] callgraph: htons
+[INFO 377/635 funcs, 377/635 SCCs] callgraph: pcap_protocol
+[INFO 378/635 funcs, 378/635 SCCs] callgraph: pcapint_remove_from_pcaps_to_close
+[INFO 379/635 funcs, 379/635 SCCs] callgraph: pcap_cleanup_linux
+[BADAT] pcap_cleanup_linux formal=52391 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 380/635 funcs, 380/635 SCCs] callgraph: pcap_activate_linux
+[BADAT] pcap_activate_linux formal=52300 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 381/635 funcs, 381/635 SCCs] callgraph: pcap_can_set_rfmon_linux
+[INFO 382/635 funcs, 382/635 SCCs] callgraph: usb_set_ring_size
+[INFO 383/635 funcs, 383/635 SCCs] callgraph: usb_mmap
+[INFO 384/635 funcs, 384/635 SCCs] callgraph: opendir
+[INFO 385/635 funcs, 385/635 SCCs] callgraph: readdir
+[INFO 386/635 funcs, 386/635 SCCs] callgraph: closedir
+[INFO 387/635 funcs, 387/635 SCCs] callgraph: probe_devices
+[INFO 388/635 funcs, 388/635 SCCs] callgraph: usb_activate
+[INFO 389/635 funcs, 389/635 SCCs] callgraph: strtol
+[INFO 390/635 funcs, 390/635 SCCs] callgraph: time
+[INFO 391/635 funcs, 391/635 SCCs] callgraph: sendto
+[INFO 392/635 funcs, 392/635 SCCs] callgraph: recvfrom
+[INFO 393/635 funcs, 393/635 SCCs] callgraph: netfilter_send_config_msg
+[INFO 394/635 funcs, 394/635 SCCs] callgraph: nflog_send_config_msg
+[INFO 395/635 funcs, 395/635 SCCs] callgraph: nflog_send_config_cmd
+[INFO 396/635 funcs, 396/635 SCCs] callgraph: nflog_send_config_mode
+[INFO 397/635 funcs, 397/635 SCCs] callgraph: nfqueue_send_config_msg
+[INFO 398/635 funcs, 398/635 SCCs] callgraph: nfqueue_send_config_cmd
+[INFO 399/635 funcs, 399/635 SCCs] callgraph: nfqueue_send_config_mode
+[INFO 400/635 funcs, 400/635 SCCs] callgraph: netfilter_activate
+[BADAT] netfilter_activate formal=52423 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 401/635 funcs, 401/635 SCCs] callgraph: fcntl
+[INFO 402/635 funcs, 402/635 SCCs] callgraph: pcapint_getnonblock_fd
+[INFO 403/635 funcs, 403/635 SCCs] callgraph: pcap_getnonblock_linux
+[INFO 404/635 funcs, 404/635 SCCs] callgraph: write
+[INFO 405/635 funcs, 405/635 SCCs] callgraph: pcap_breakloop_linux
+[INFO 406/635 funcs, 406/635 SCCs] callgraph: usb_cleanup_linux_mmap
+[BADAT] usb_cleanup_linux_mmap formal=53234 path=.27.* access=read want=bpf_program/0 got=bpf_program/1 (endpoint type disagrees with DWARF walk)
+[INFO 407/635 funcs, 407/635 SCCs] callgraph: pcap_close
+[INFO 408/635 funcs, 408/635 SCCs] callgraph: pcap_compile_nopcap
+[INFO 409/635 funcs, 409/635 SCCs] callgraph: gethostbyname
+[INFO 410/635 funcs, 410/635 SCCs] callgraph: pcap_nametoaddr
+[INFO 411/635 funcs, 411/635 SCCs] callgraph: pcap_nametoportrange
+[INFO 412/635 funcs, 412/635 SCCs] callgraph: pcapint_install_bpf_program
+[INFO 413/635 funcs, 413/635 SCCs] callgraph: dlt_to_linktype
+[INFO 414/635 funcs, 414/635 SCCs] callgraph: linktype_to_dlt
+[INFO 415/635 funcs, 415/635 SCCs] callgraph: max_snaplen_for_dlt
+[INFO 416/635 funcs, 416/635 SCCs] callgraph: swap_pflog_header
+[INFO 417/635 funcs, 417/635 SCCs] callgraph: EXTRACT_BE_U_2.347
+[INFO 418/635 funcs, 418/635 SCCs] callgraph: swap_socketcan_header
+[INFO 419/635 funcs, 419/635 SCCs] callgraph: swap_linux_sll_socketcan_header
+[INFO 420/635 funcs, 420/635 SCCs] callgraph: swap_linux_sll2_socketcan_header
+[INFO 421/635 funcs, 421/635 SCCs] callgraph: swap_linux_usb_header
+[INFO 422/635 funcs, 422/635 SCCs] callgraph: swap_nflog_header
+[INFO 423/635 funcs, 423/635 SCCs] callgraph: swap_pseudo_headers
+[INFO 424/635 funcs, 424/635 SCCs] callgraph: is_isochronous_transfer_completion
+[INFO 425/635 funcs, 425/635 SCCs] callgraph: iso_pseudo_header_len
+[INFO 426/635 funcs, 426/635 SCCs] callgraph: packet_length_might_be_wrong
+[INFO 427/635 funcs, 427/635 SCCs] callgraph: u_int_sum
+[INFO 428/635 funcs, 428/635 SCCs] callgraph: incoming_isochronous_transfer_completed_len
+[INFO 429/635 funcs, 429/635 SCCs] callgraph: pcapint_post_process
+[INFO 430/635 funcs, 430/635 SCCs] callgraph: pcap_init
+[INFO 431/635 funcs, 431/635 SCCs] callgraph: pcap_can_set_rfmon
+[INFO 432/635 funcs, 432/635 SCCs] callgraph: pcap_list_tstamp_types
+[INFO 433/635 funcs, 433/635 SCCs] callgraph: pcap_free_tstamp_types
+[INFO 434/635 funcs, 434/635 SCCs] callgraph: pcapint_oneshot
+[INFO 435/635 funcs, 435/635 SCCs] callgraph: pcap_dispatch
+[INFO 436/635 funcs, 436/635 SCCs] callgraph: pcap_next
+[INFO 437/635 funcs, 437/635 SCCs] callgraph: pcapint_offline_read
+[INFO 438/635 funcs, 438/635 SCCs] callgraph: pcap_next_ex
+[INFO 439/635 funcs, 439/635 SCCs] callgraph: getifaddrs
+[INFO 440/635 funcs, 440/635 SCCs] callgraph: get_sa_len
+[INFO 441/635 funcs, 441/635 SCCs] callgraph: get_if_description
+[INFO 442/635 funcs, 442/635 SCCs] callgraph: pcapint_find_dev
+[INFO 443/635 funcs, 443/635 SCCs] callgraph: get_figure_of_merit
+[INFO 444/635 funcs, 444/635 SCCs] callgraph: pcapint_add_dev
+[INFO 445/635 funcs, 445/635 SCCs] callgraph: get_if_ioctl_socket
+[INFO 446/635 funcs, 446/635 SCCs] callgraph: fopen
+[INFO 447/635 funcs, 447/635 SCCs] callgraph: __isoc23_fscanf
+[INFO 448/635 funcs, 448/635 SCCs] callgraph: get_if_flags
+[INFO 449/635 funcs, 449/635 SCCs] callgraph: pcapint_find_or_add_dev
+[INFO 450/635 funcs, 450/635 SCCs] callgraph: pcapint_find_or_add_if
+[INFO 451/635 funcs, 451/635 SCCs] callgraph: dup_sockaddr
+[INFO 452/635 funcs, 452/635 SCCs] callgraph: pcapint_add_addr_to_dev
+[INFO 453/635 funcs, 453/635 SCCs] callgraph: pcapint_add_addr_to_if
+[INFO 454/635 funcs, 454/635 SCCs] callgraph: freeifaddrs
+[INFO 455/635 funcs, 455/635 SCCs] callgraph: can_be_bound
+[INFO 456/635 funcs, 456/635 SCCs] callgraph: pcapint_findalldevs_interfaces
+[INFO 457/635 funcs, 457/635 SCCs] callgraph: pcap_add_any_dev
+[INFO 458/635 funcs, 458/635 SCCs] callgraph: pcapint_platform_finddevs
+[INFO 459/635 funcs, 459/635 SCCs] callgraph: pcap_freealldevs
+[INFO 460/635 funcs, 460/635 SCCs] callgraph: usb_dev_add
+[INFO 461/635 funcs, 461/635 SCCs] callgraph: usb_findalldevs
+[INFO 462/635 funcs, 462/635 SCCs] callgraph: netfilter_findalldevs
+[INFO 463/635 funcs, 463/635 SCCs] callgraph: pcap_findalldevs
+[INFO 464/635 funcs, 464/635 SCCs] callgraph: pcap_lookupdev
+[INFO 465/635 funcs, 465/635 SCCs] callgraph: strstr
+[INFO 466/635 funcs, 466/635 SCCs] callgraph: pcap_lookupnet
+[INFO 467/635 funcs, 467/635 SCCs] callgraph: pcap_alloc_pcap_t
+[INFO 468/635 funcs, 468/635 SCCs] callgraph: initialize_ops
+[INFO 469/635 funcs, 469/635 SCCs] callgraph: pcapint_create_common
+[INFO 470/635 funcs, 470/635 SCCs] callgraph: iface_set_all_ts_types
+[INFO 471/635 funcs, 471/635 SCCs] callgraph: iface_get_ts_types
+[INFO 472/635 funcs, 472/635 SCCs] callgraph: pcapint_create_interface
+[INFO 473/635 funcs, 473/635 SCCs] callgraph: strrchr
+[INFO 474/635 funcs, 474/635 SCCs] callgraph: usb_create
+[INFO 475/635 funcs, 475/635 SCCs] callgraph: netfilter_create
+[INFO 476/635 funcs, 476/635 SCCs] callgraph: pcap_create
+[INFO 477/635 funcs, 477/635 SCCs] callgraph: pcap_setnonblock_unactivated
+[INFO 478/635 funcs, 478/635 SCCs] callgraph: pcap_read_not_initialized
+[INFO 479/635 funcs, 479/635 SCCs] callgraph: pcap_inject_not_initialized
+[INFO 480/635 funcs, 480/635 SCCs] callgraph: pcap_setfilter_not_initialized
+[INFO 481/635 funcs, 481/635 SCCs] callgraph: pcap_setdirection_not_initialized
+[INFO 482/635 funcs, 482/635 SCCs] callgraph: pcap_set_datalink_not_initialized
+[INFO 483/635 funcs, 483/635 SCCs] callgraph: pcap_stats_not_initialized
+[INFO 484/635 funcs, 484/635 SCCs] callgraph: pcapint_check_activated
+[INFO 485/635 funcs, 485/635 SCCs] callgraph: pcap_set_snaplen
+[INFO 486/635 funcs, 486/635 SCCs] callgraph: pcap_set_promisc
+[INFO 487/635 funcs, 487/635 SCCs] callgraph: pcap_set_rfmon
+[INFO 488/635 funcs, 488/635 SCCs] callgraph: pcap_set_timeout
+[INFO 489/635 funcs, 489/635 SCCs] callgraph: pcap_set_tstamp_type
+[INFO 490/635 funcs, 490/635 SCCs] callgraph: pcap_set_immediate_mode
+[INFO 491/635 funcs, 491/635 SCCs] callgraph: pcap_set_buffer_size
+[INFO 492/635 funcs, 492/635 SCCs] callgraph: pcap_set_tstamp_precision
+[INFO 493/635 funcs, 493/635 SCCs] callgraph: pcap_get_tstamp_precision
+[INFO 494/635 funcs, 494/635 SCCs] callgraph: pcap_statustostr
+[INFO 495/635 funcs, 495/635 SCCs] callgraph: pcapint_setnonblock_fd
+[INFO 496/635 funcs, 496/635 SCCs] callgraph: fix_offset
+[INFO 497/635 funcs, 497/635 SCCs] callgraph: fix_program
+[INFO 498/635 funcs, 498/635 SCCs] callgraph: recv
+[INFO 499/635 funcs, 499/635 SCCs] callgraph: reset_kernel_filter
+[INFO 500/635 funcs, 500/635 SCCs] callgraph: set_kernel_filter
+[MEM SUMMARIES] num summaries=1010 num ret summaries=178 num ats=17836(max/summary=150) num icfg=249535 num vis=30345 num exits=228 fun_params=336 MiB: maps=0.0 ats=4.4 total ats=13.5 bytes exists=0.1 bytes indexes=0.0 bytes fun_params=0.1 TOTAL=18.0 rss=431MiB
+[DICHAIN periodic] ok=4191 fresh_break=0 poisoned=0 | formal_with_di=1862 | formal_no_di=18 compose_null_di=0 | gep_bu(ok/null)=7501/1
+[INFO 501/635 funcs, 501/635 SCCs] callgraph: pcap_get_ring_frame_status
+[INFO 502/635 funcs, 502/635 SCCs] callgraph: pcap_setfilter_linux
+[INFO 503/635 funcs, 503/635 SCCs] callgraph: pcap_setdirection_linux
+[INFO 504/635 funcs, 504/635 SCCs] callgraph: pcap_set_datalink_linux
+[INFO 505/635 funcs, 505/635 SCCs] callgraph: pcap_setnonblock_linux
+[INFO 506/635 funcs, 506/635 SCCs] callgraph: pcap_stats_linux
+[INFO 507/635 funcs, 507/635 SCCs] callgraph: usb_setdirection_linux
+[INFO 508/635 funcs, 508/635 SCCs] callgraph: usb_stats_linux_bin
+[INFO 509/635 funcs, 509/635 SCCs] callgraph: netfilter_set_datalink
+[INFO 510/635 funcs, 510/635 SCCs] callgraph: netfilter_stats_linux
+[INFO 511/635 funcs, 511/635 SCCs] callgraph: pcap_setfilter_dead
+[INFO 512/635 funcs, 512/635 SCCs] callgraph: pcap_setdirection_dead
+[INFO 513/635 funcs, 513/635 SCCs] callgraph: pcap_set_datalink_dead
+[INFO 514/635 funcs, 514/635 SCCs] callgraph: pcap_setnonblock_dead
+[INFO 515/635 funcs, 515/635 SCCs] callgraph: pcap_stats_dead
+[INFO 516/635 funcs, 516/635 SCCs] callgraph: pcap_activate
+[INFO 517/635 funcs, 517/635 SCCs] callgraph: pcap_open_live
+[INFO 518/635 funcs, 518/635 SCCs] callgraph: pcapint_open_offline_common
+[INFO 519/635 funcs, 519/635 SCCs] callgraph: pcap_loop
+[INFO 520/635 funcs, 520/635 SCCs] callgraph: pcap_breakloop
+[INFO 521/635 funcs, 521/635 SCCs] callgraph: pcap_datalink_ext
+[INFO 522/635 funcs, 522/635 SCCs] callgraph: pcap_list_datalinks
+[INFO 523/635 funcs, 523/635 SCCs] callgraph: pcap_free_datalinks
+[INFO 524/635 funcs, 524/635 SCCs] callgraph: pcap_datalink_val_to_name
+[INFO 525/635 funcs, 525/635 SCCs] callgraph: pcap_set_datalink
+[INFO 526/635 funcs, 526/635 SCCs] callgraph: pcap_datalink_name_to_val
+[INFO 527/635 funcs, 527/635 SCCs] callgraph: pcap_tstamp_type_name_to_val
+[INFO 528/635 funcs, 528/635 SCCs] callgraph: pcap_tstamp_type_val_to_name
+[INFO 529/635 funcs, 529/635 SCCs] callgraph: pcap_tstamp_type_val_to_description
+[INFO 530/635 funcs, 530/635 SCCs] callgraph: pcap_is_swapped
+[INFO 531/635 funcs, 531/635 SCCs] callgraph: pcap_major_version
+[INFO 532/635 funcs, 532/635 SCCs] callgraph: pcap_minor_version
+[INFO 533/635 funcs, 533/635 SCCs] callgraph: pcap_bufsize
+[INFO 534/635 funcs, 534/635 SCCs] callgraph: pcap_file
+[INFO 535/635 funcs, 535/635 SCCs] callgraph: pcap_fileno
+[INFO 536/635 funcs, 536/635 SCCs] callgraph: pcap_get_selectable_fd
+[INFO 537/635 funcs, 537/635 SCCs] callgraph: pcap_get_required_select_timeout
+[INFO 538/635 funcs, 538/635 SCCs] callgraph: pcap_perror
+[INFO 539/635 funcs, 539/635 SCCs] callgraph: pcap_geterr
+[INFO 540/635 funcs, 540/635 SCCs] callgraph: pcap_getnonblock
+[INFO 541/635 funcs, 541/635 SCCs] callgraph: pcap_setnonblock
+[INFO 542/635 funcs, 542/635 SCCs] callgraph: pcap_setfilter
+[INFO 543/635 funcs, 543/635 SCCs] callgraph: pcap_setdirection
+[INFO 544/635 funcs, 544/635 SCCs] callgraph: pcap_stats
+[INFO 545/635 funcs, 545/635 SCCs] callgraph: atexit
+[INFO 546/635 funcs, 546/635 SCCs] callgraph: pcapint_do_addexit
+[INFO 547/635 funcs, 547/635 SCCs] callgraph: pcap_close_all
+[INFO 548/635 funcs, 548/635 SCCs] callgraph: pcapint_add_to_pcaps_to_close
+[INFO 549/635 funcs, 549/635 SCCs] callgraph: pcap_sendpacket
+[INFO 550/635 funcs, 550/635 SCCs] callgraph: pcap_inject
+[INFO 551/635 funcs, 551/635 SCCs] callgraph: pcap_offline_filter
+[INFO 552/635 funcs, 552/635 SCCs] callgraph: pcap_read_dead
+[INFO 553/635 funcs, 553/635 SCCs] callgraph: pcap_inject_dead
+[INFO 554/635 funcs, 554/635 SCCs] callgraph: fileno
+[INFO 555/635 funcs, 555/635 SCCs] callgraph: read_bytes
+[INFO 556/635 funcs, 556/635 SCCs] callgraph: read_block
+[INFO 557/635 funcs, 557/635 SCCs] callgraph: get_from_block_data
+[INFO 558/635 funcs, 558/635 SCCs] callgraph: get_opthdr_from_block_data
+[INFO 559/635 funcs, 559/635 SCCs] callgraph: get_optvalue_from_block_data
+[INFO 560/635 funcs, 560/635 SCCs] callgraph: process_idb_options
+[INFO 561/635 funcs, 561/635 SCCs] callgraph: add_interface
+[INFO 562/635 funcs, 562/635 SCCs] callgraph: pcapint_adjust_snapshot
+[INFO 563/635 funcs, 563/635 SCCs] callgraph: pcap_ng_check_header
+[INFO 564/635 funcs, 564/635 SCCs] callgraph: pcap_check_header
+[INFO 565/635 funcs, 565/635 SCCs] callgraph: pcap_fopen_offline_with_tstamp_precision
+[INFO 566/635 funcs, 566/635 SCCs] callgraph: pcap_open_offline_with_tstamp_precision
+[INFO 567/635 funcs, 567/635 SCCs] callgraph: sf_cant_set_rfmon
+[INFO 568/635 funcs, 568/635 SCCs] callgraph: sf_inject
+[INFO 569/635 funcs, 569/635 SCCs] callgraph: sf_setdirection
+[INFO 570/635 funcs, 570/635 SCCs] callgraph: sf_getnonblock
+[INFO 571/635 funcs, 571/635 SCCs] callgraph: sf_setnonblock
+[INFO 572/635 funcs, 572/635 SCCs] callgraph: sf_stats
+[INFO 573/635 funcs, 573/635 SCCs] callgraph: pcap_open_offline
+[INFO 574/635 funcs, 574/635 SCCs] callgraph: pcap_fopen_offline
+[INFO 575/635 funcs, 575/635 SCCs] callgraph: pcap_ng_next_packet
+[INFO 576/635 funcs, 576/635 SCCs] callgraph: grow_buffer
+[INFO 577/635 funcs, 577/635 SCCs] callgraph: pcap_next_packet
+[INFO 578/635 funcs, 578/635 SCCs] callgraph: pcap_dump
+[INFO 579/635 funcs, 579/635 SCCs] callgraph: sf_write_header
+[INFO 580/635 funcs, 580/635 SCCs] callgraph: pcap_setup_dump
+[INFO 581/635 funcs, 581/635 SCCs] callgraph: pcap_dump_open
+[INFO 582/635 funcs, 582/635 SCCs] callgraph: pcap_dump_fopen
+[INFO 583/635 funcs, 583/635 SCCs] callgraph: fseek
+[INFO 584/635 funcs, 584/635 SCCs] callgraph: feof
+[INFO 585/635 funcs, 585/635 SCCs] callgraph: pcap_dump_open_append
+[INFO 586/635 funcs, 586/635 SCCs] callgraph: pcap_dump_file
+[INFO 587/635 funcs, 587/635 SCCs] callgraph: ftell
+[INFO 588/635 funcs, 588/635 SCCs] callgraph: pcap_dump_ftell
+[INFO 589/635 funcs, 589/635 SCCs] callgraph: ftello
+[INFO 590/635 funcs, 590/635 SCCs] callgraph: pcap_dump_ftell64
+[INFO 591/635 funcs, 591/635 SCCs] callgraph: fflush
+[INFO 592/635 funcs, 592/635 SCCs] callgraph: pcap_dump_flush
+[INFO 593/635 funcs, 593/635 SCCs] callgraph: pcap_dump_close
+[INFO 594/635 funcs, 594/635 SCCs] callgraph: send
+[INFO 595/635 funcs, 595/635 SCCs] callgraph: pcap_inject_linux
+[INFO 596/635 funcs, 596/635 SCCs] callgraph: poll
+[INFO 597/635 funcs, 597/635 SCCs] callgraph: getsockname
+[INFO 598/635 funcs, 598/635 SCCs] callgraph: device_still_exists
+[INFO 599/635 funcs, 599/635 SCCs] callgraph: pcap_wait_for_frames_mmap
+[INFO 600/635 funcs, 600/635 SCCs] callgraph: linux_check_direction
+[INFO 601/635 funcs, 601/635 SCCs] callgraph: llvm.memmove.p0.p0.i64
+[INFO 602/635 funcs, 602/635 SCCs] callgraph: pcap_handle_packet_mmap
+[INFO 603/635 funcs, 603/635 SCCs] callgraph: pcap_read_linux_mmap_v2
+[INFO 604/635 funcs, 604/635 SCCs] callgraph: pcap_read_linux_mmap_v3
+[INFO 605/635 funcs, 605/635 SCCs] callgraph: pcapint_oneshot_linux
+[INFO 606/635 funcs, 606/635 SCCs] callgraph: pcap_set_protocol_linux
+[INFO 607/635 funcs, 607/635 SCCs] callgraph: pcap_lib_version
+[INFO 0/83] processing return for bpf_dump
+[INFO 1/83] processing return for bpf_filter
+[INFO 2/83] processing return for bpf_image
+[INFO 3/83] processing return for bpf_validate
+[INFO 4/83] processing return for pcap_activate
+[INFO 5/83] processing return for pcap_breakloop
+[INFO 6/83] processing return for pcap_bufsize
+[INFO 7/83] processing return for pcap_can_set_rfmon
+[INFO 8/83] processing return for pcap_close
+[INFO 9/83] processing return for pcap_compile
+[INFO 10/83] processing return for pcap_compile_nopcap
+[INFO 11/83] processing return for pcap_create
+[INFO 12/83] processing return for pcap_datalink
+[INFO 13/83] processing return for pcap_datalink_ext
+[INFO 14/83] processing return for pcap_datalink_name_to_val
+[INFO 15/83] processing return for pcap_datalink_val_to_description
+[INFO 16/83] processing return for pcap_datalink_val_to_description_or_dlt
+[INFO 17/83] processing return for pcap_datalink_val_to_name
+[INFO 18/83] processing return for pcap_dispatch
+[INFO 19/83] processing return for pcap_dump
+[INFO 20/83] processing return for pcap_dump_close
+[INFO 21/83] processing return for pcap_dump_file
+[INFO 22/83] processing return for pcap_dump_flush
+[INFO 23/83] processing return for pcap_dump_fopen
+[INFO 24/83] processing return for pcap_dump_ftell
+[INFO 25/83] processing return for pcap_dump_ftell64
+[INFO 26/83] processing return for pcap_dump_open
+[INFO 27/83] processing return for pcap_dump_open_append
+[INFO 28/83] processing return for pcap_file
+[INFO 29/83] processing return for pcap_fileno
+[INFO 30/83] processing return for pcap_findalldevs
+[INFO 31/83] processing return for pcap_fopen_offline
+[INFO 32/83] processing return for pcap_fopen_offline_with_tstamp_precision
+[INFO 33/83] processing return for pcap_free_datalinks
+[INFO 34/83] processing return for pcap_free_tstamp_types
+[INFO 35/83] processing return for pcap_freealldevs
+[INFO 36/83] processing return for pcap_freecode
+[INFO 37/83] processing return for pcap_get_required_select_timeout
+[INFO 38/83] processing return for pcap_get_selectable_fd
+[INFO 39/83] processing return for pcap_get_tstamp_precision
+[INFO 40/83] processing return for pcap_geterr
+[INFO 41/83] processing return for pcap_getnonblock
+[INFO 42/83] processing return for pcap_init
+[INFO 43/83] processing return for pcap_inject
+[INFO 44/83] processing return for pcap_is_swapped
+[INFO 45/83] processing return for pcap_lib_version
+[INFO 46/83] processing return for pcap_list_datalinks
+[INFO 47/83] processing return for pcap_list_tstamp_types
+[INFO 48/83] processing return for pcap_lookupdev
+[INFO 49/83] processing return for pcap_lookupnet
+[INFO 50/83] processing return for pcap_loop
+[INFO 51/83] processing return for pcap_major_version
+[INFO 52/83] processing return for pcap_minor_version
+[INFO 53/83] processing return for pcap_next
+[INFO 54/83] processing return for pcap_next_ex
+[INFO 55/83] processing return for pcap_offline_filter
+[INFO 56/83] processing return for pcap_open_dead
+[INFO 57/83] processing return for pcap_open_dead_with_tstamp_precision
+[INFO 58/83] processing return for pcap_open_live
+[INFO 59/83] processing return for pcap_open_offline
+[INFO 60/83] processing return for pcap_open_offline_with_tstamp_precision
+[INFO 61/83] processing return for pcap_perror
+[INFO 62/83] processing return for pcap_sendpacket
+[INFO 63/83] processing return for pcap_set_buffer_size
+[INFO 64/83] processing return for pcap_set_datalink
+[INFO 65/83] processing return for pcap_set_immediate_mode
+[INFO 66/83] processing return for pcap_set_promisc
+[INFO 67/83] processing return for pcap_set_protocol_linux
+[INFO 68/83] processing return for pcap_set_rfmon
+[INFO 69/83] processing return for pcap_set_snaplen
+[INFO 70/83] processing return for pcap_set_timeout
+[INFO 71/83] processing return for pcap_set_tstamp_precision
+[INFO 72/83] processing return for pcap_set_tstamp_type
+[INFO 73/83] processing return for pcap_setdirection
+[INFO 74/83] processing return for pcap_setfilter
+[INFO 75/83] processing return for pcap_setnonblock
+[INFO 76/83] processing return for pcap_snapshot
+[INFO 77/83] processing return for pcap_stats
+[INFO 78/83] processing return for pcap_statustostr
+[INFO 79/83] processing return for pcap_strerror
+[INFO 80/83] processing return for pcap_tstamp_type_name_to_val
+[INFO 81/83] processing return for pcap_tstamp_type_val_to_description
+[INFO 82/83] processing return for pcap_tstamp_type_val_to_name
+[INFO] Summary bpf_dump:
+param_0: 9 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary bpf_filter:
+param_0: 6 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary bpf_image:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary bpf_validate:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_activate:
+param_0: 21 access types
+return: 0 access types
+[INFO] Summary pcap_breakloop:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary pcap_bufsize:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_can_set_rfmon:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary pcap_close:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_compile:
+param_0: 10 access types
+param_1: 5 access types
+param_2: 2 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary pcap_compile_nopcap:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 5 access types
+param_3: 2 access types
+param_4: 1 access types
+param_5: 1 access types
+return: 0 access types
+[INFO] Summary pcap_create:
+param_0: 2 access types
+param_1: 3 access types
+return: 47 access types
+[INFO] Summary pcap_datalink:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_datalink_ext:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_datalink_name_to_val:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary pcap_datalink_val_to_description:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_datalink_val_to_description_or_dlt:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_datalink_val_to_name:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_dispatch:
+param_0: 3 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary pcap_dump:
+param_0: 1 access types
+param_1: 7 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary pcap_dump_close:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary pcap_dump_file:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_dump_flush:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary pcap_dump_fopen:
+param_0: 11 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary pcap_dump_ftell:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary pcap_dump_ftell64:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary pcap_dump_open:
+param_0: 12 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary pcap_dump_open_append:
+param_0: 10 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary pcap_file:
+param_0: 3 access types
+return: 4 access types
+[INFO] Summary pcap_fileno:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary pcap_findalldevs:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary pcap_fopen_offline:
+param_0: 1 access types
+param_1: 3 access types
+return: 64 access types
+[INFO] Summary pcap_fopen_offline_with_tstamp_precision:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 3 access types
+return: 64 access types
+[INFO] Summary pcap_free_datalinks:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary pcap_free_tstamp_types:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary pcap_freealldevs:
+param_0: 33 access types
+return: 0 access types
+[INFO] Summary pcap_freecode:
+param_0: 6 access types
+return: 0 access types
+[INFO] Summary pcap_get_required_select_timeout:
+param_0: 3 access types
+return: 4 access types
+[INFO] Summary pcap_get_selectable_fd:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary pcap_get_tstamp_precision:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_geterr:
+param_0: 3 access types
+return: 4 access types
+[INFO] Summary pcap_getnonblock:
+param_0: 4 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_init:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_inject:
+param_0: 7 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary pcap_is_swapped:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_lib_version:
+return: 0 access types
+[INFO] Summary pcap_list_datalinks:
+param_0: 10 access types
+param_1: 4 access types
+return: 0 access types
+[INFO] Summary pcap_list_tstamp_types:
+param_0: 8 access types
+param_1: 4 access types
+return: 0 access types
+[INFO] Summary pcap_lookupdev:
+param_0: 3 access types
+return: 2 access types
+[INFO] Summary pcap_lookupnet:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 2 access types
+param_3: 3 access types
+return: 0 access types
+[INFO] Summary pcap_loop:
+param_0: 14 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary pcap_major_version:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_minor_version:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_next:
+param_0: 4 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary pcap_next_ex:
+param_0: 16 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary pcap_offline_filter:
+param_0: 8 access types
+param_1: 4 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary pcap_open_dead:
+param_0: 1 access types
+param_1: 1 access types
+return: 22 access types
+[INFO] Summary pcap_open_dead_with_tstamp_precision:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 22 access types
+[INFO] Summary pcap_open_live:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 3 access types
+return: 55 access types
+[INFO] Summary pcap_open_offline:
+param_0: 1 access types
+param_1: 3 access types
+return: 64 access types
+[INFO] Summary pcap_open_offline_with_tstamp_precision:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 3 access types
+return: 64 access types
+[INFO] Summary pcap_perror:
+param_0: 3 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_sendpacket:
+param_0: 7 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_buffer_size:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_datalink:
+param_0: 8 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_immediate_mode:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_promisc:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_protocol_linux:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_rfmon:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_snaplen:
+param_0: 5 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_timeout:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_tstamp_precision:
+param_0: 8 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_set_tstamp_type:
+param_0: 8 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_setdirection:
+param_0: 4 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_setfilter:
+param_0: 3 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_setnonblock:
+param_0: 4 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary pcap_snapshot:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pcap_stats:
+param_0: 3 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary pcap_statustostr:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_strerror:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_tstamp_type_name_to_val:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary pcap_tstamp_type_val_to_description:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary pcap_tstamp_type_val_to_name:
+param_0: 1 access types
+return: 2 access types
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                        219.96         1    219.96
+2. PAG Builder                              553.55         1    553.55
+3. Points-to Analysis                      1926.40         1   1926.40
+4. Full SVFG Build                          832.38         1    832.38
+Function 1: extract_parameter_metadata      767.19       155      4.95
+Function 1: extract_parameter_metadata: bpf_dump      6.23         2      3.11
+Function 1: extract_parameter_metadata: bpf_filter      3.29         4      0.82
+Function 1: extract_parameter_metadata: bpf_image      0.13         2      0.06
+Function 1: extract_parameter_metadata: bpf_validate      0.21         2      0.10
+Function 1: extract_parameter_metadata: pcap_activate    675.93         1    675.93
+Function 1: extract_parameter_metadata: pcap_breakloop      1.07         1      1.07
+Function 1: extract_parameter_metadata: pcap_bufsize      1.00         1      1.00
+Function 1: extract_parameter_metadata: pcap_can_set_rfmon      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_close      0.10         1      0.10
+Function 1: extract_parameter_metadata: pcap_compile      0.32         5      0.06
+Function 1: extract_parameter_metadata: pcap_compile_nopcap      0.33         6      0.05
+Function 1: extract_parameter_metadata: pcap_create      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_datalink      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_datalink_ext      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_datalink_name_to_val      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_datalink_val_to_description      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_datalink_val_to_description_or_dlt      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_datalink_val_to_name      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_dispatch      0.20         4      0.05
+Function 1: extract_parameter_metadata: pcap_dump     70.81         3     23.60
+Function 1: extract_parameter_metadata: pcap_dump_close      1.41         1      1.41
+Function 1: extract_parameter_metadata: pcap_dump_file      0.04         1      0.04
+Function 1: extract_parameter_metadata: pcap_dump_flush      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_dump_fopen      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_dump_ftell      0.04         1      0.04
+Function 1: extract_parameter_metadata: pcap_dump_ftell64      0.04         1      0.04
+Function 1: extract_parameter_metadata: pcap_dump_open      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_dump_open_append      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_file      0.07         1      0.07
+Function 1: extract_parameter_metadata: pcap_fileno      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_findalldevs      0.11         2      0.06
+Function 1: extract_parameter_metadata: pcap_fopen_offline      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_fopen_offline_with_tstamp_precision      0.18         3      0.06
+Function 1: extract_parameter_metadata: pcap_free_datalinks      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_free_tstamp_types      0.06         1      0.06
+Function 1: extract_parameter_metadata: pcap_freealldevs      0.08         1      0.08
+Function 1: extract_parameter_metadata: pcap_freecode      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_get_required_select_timeout      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_get_selectable_fd      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_get_tstamp_precision      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_geterr      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_getnonblock      0.09         2      0.04
+Function 1: extract_parameter_metadata: pcap_init      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_inject      0.14         3      0.05
+Function 1: extract_parameter_metadata: pcap_is_swapped      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_list_datalinks      0.11         2      0.05
+Function 1: extract_parameter_metadata: pcap_list_tstamp_types      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_lookupdev      0.06         1      0.06
+Function 1: extract_parameter_metadata: pcap_lookupnet      0.18         4      0.05
+Function 1: extract_parameter_metadata: pcap_loop      0.21         4      0.05
+Function 1: extract_parameter_metadata: pcap_major_version      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_minor_version      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_next      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_next_ex      0.18         3      0.06
+Function 1: extract_parameter_metadata: pcap_offline_filter      0.17         3      0.06
+Function 1: extract_parameter_metadata: pcap_open_dead      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_open_dead_with_tstamp_precision      0.14         3      0.05
+Function 1: extract_parameter_metadata: pcap_open_live      0.23         5      0.05
+Function 1: extract_parameter_metadata: pcap_open_offline      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_open_offline_with_tstamp_precision      0.17         3      0.06
+Function 1: extract_parameter_metadata: pcap_perror      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_sendpacket      0.15         3      0.05
+Function 1: extract_parameter_metadata: pcap_set_buffer_size      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_datalink      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_immediate_mode      0.11         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_promisc      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_protocol_linux      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_rfmon      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_snaplen      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_timeout      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_tstamp_precision      0.10         2      0.05
+Function 1: extract_parameter_metadata: pcap_set_tstamp_type      0.09         2      0.04
+Function 1: extract_parameter_metadata: pcap_setdirection      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_setfilter      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_setnonblock      0.13         3      0.04
+Function 1: extract_parameter_metadata: pcap_snapshot      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_stats      0.09         2      0.05
+Function 1: extract_parameter_metadata: pcap_statustostr      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_strerror      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_tstamp_type_name_to_val      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_tstamp_type_val_to_description      0.05         1      0.05
+Function 1: extract_parameter_metadata: pcap_tstamp_type_val_to_name      0.05         1      0.05
+Function 2: extractLenDependencyParameter      6.53        27      0.24
+Function 2: extractLenDependencyParameter: bpf_filter      5.04         2      2.52
+Function 2: extractLenDependencyParameter: bpf_validate      0.11         1      0.11
+Function 2: extractLenDependencyParameter: pcap_compile      0.15         1      0.15
+Function 2: extractLenDependencyParameter: pcap_compile_nopcap      0.11         1      0.11
+Function 2: extractLenDependencyParameter: pcap_create      0.08         2      0.04
+Function 2: extractLenDependencyParameter: pcap_datalink_name_to_val      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_dump_open      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_dump_open_append      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_findalldevs      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_fopen_offline      0.06         1      0.06
+Function 2: extractLenDependencyParameter: pcap_fopen_offline_with_tstamp_precision      0.09         1      0.09
+Function 2: extractLenDependencyParameter: pcap_list_datalinks      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_list_tstamp_types      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_lookupdev      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_lookupnet      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_offline_filter      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_open_live      0.11         2      0.06
+Function 2: extractLenDependencyParameter: pcap_open_offline      0.08         2      0.04
+Function 2: extractLenDependencyParameter: pcap_open_offline_with_tstamp_precision      0.13         2      0.07
+Function 2: extractLenDependencyParameter: pcap_setfilter      0.04         1      0.04
+Function 2: extractLenDependencyParameter: pcap_stats      0.07         1      0.07
+Function 2: extractLenDependencyParameter: pcap_tstamp_type_name_to_val      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameters     36.74       155      0.24
+Function 3: my_extract_dependency_among_parametersbpf_dump      0.11         2      0.05
+Function 3: my_extract_dependency_among_parametersbpf_filter      0.19         4      0.05
+Function 3: my_extract_dependency_among_parametersbpf_image      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersbpf_validate      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_activate      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterspcap_breakloop      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterspcap_bufsize      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterspcap_can_set_rfmon      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_close      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_compile     15.10         5      3.02
+Function 3: my_extract_dependency_among_parameterspcap_compile_nopcap     14.41         6      2.40
+Function 3: my_extract_dependency_among_parameterspcap_create      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameterspcap_datalink      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_datalink_ext      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_datalink_name_to_val      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterspcap_datalink_val_to_description      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_datalink_val_to_description_or_dlt      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_datalink_val_to_name      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_dispatch      0.18         4      0.05
+Function 3: my_extract_dependency_among_parameterspcap_dump      0.17         3      0.06
+Function 3: my_extract_dependency_among_parameterspcap_dump_close      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterspcap_dump_file      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_dump_flush      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_dump_fopen      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_dump_ftell      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_dump_ftell64      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_dump_open      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_dump_open_append      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_file      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_fileno      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_findalldevs      0.43         2      0.21
+Function 3: my_extract_dependency_among_parameterspcap_fopen_offline      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_fopen_offline_with_tstamp_precision      0.17         3      0.06
+Function 3: my_extract_dependency_among_parameterspcap_free_datalinks      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_free_tstamp_types      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_freealldevs      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_freecode      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_get_required_select_timeout      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_get_selectable_fd      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_get_tstamp_precision      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_geterr      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_getnonblock      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_init      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_inject      0.14         3      0.05
+Function 3: my_extract_dependency_among_parameterspcap_is_swapped      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_list_datalinks      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameterspcap_list_tstamp_types      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_lookupdev      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_lookupnet      0.22         4      0.05
+Function 3: my_extract_dependency_among_parameterspcap_loop      0.18         4      0.05
+Function 3: my_extract_dependency_among_parameterspcap_major_version      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_minor_version      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_next      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_next_ex      0.15         3      0.05
+Function 3: my_extract_dependency_among_parameterspcap_offline_filter      0.13         3      0.04
+Function 3: my_extract_dependency_among_parameterspcap_open_dead      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_open_dead_with_tstamp_precision      0.14         3      0.05
+Function 3: my_extract_dependency_among_parameterspcap_open_live      0.23         5      0.05
+Function 3: my_extract_dependency_among_parameterspcap_open_offline      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_open_offline_with_tstamp_precision      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameterspcap_perror      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_sendpacket      0.13         3      0.04
+Function 3: my_extract_dependency_among_parameterspcap_set_buffer_size      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameterspcap_set_datalink      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_set_immediate_mode      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_set_promisc      0.16         2      0.08
+Function 3: my_extract_dependency_among_parameterspcap_set_protocol_linux      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_set_rfmon      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_set_snaplen      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameterspcap_set_timeout      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_set_tstamp_precision      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_set_tstamp_type      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_setdirection      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterspcap_setfilter      0.08         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_setnonblock      0.13         3      0.04
+Function 3: my_extract_dependency_among_parameterspcap_snapshot      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_stats      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterspcap_statustostr      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_strerror      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_tstamp_type_name_to_val      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_tstamp_type_val_to_description      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspcap_tstamp_type_val_to_name      0.04         1      0.04
+Function 4: extract_return_metadata           9.57        83      0.12
+Function 4: extract_return_metadata: bpf_dump      0.07         1      0.07
+Function 4: extract_return_metadata: bpf_filter      0.09         1      0.09
+Function 4: extract_return_metadata: bpf_image      0.05         1      0.05
+Function 4: extract_return_metadata: bpf_validate      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_activate      0.08         1      0.08
+Function 4: extract_return_metadata: pcap_breakloop      0.08         1      0.08
+Function 4: extract_return_metadata: pcap_bufsize      0.06         1      0.06
+Function 4: extract_return_metadata: pcap_can_set_rfmon      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_close      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_compile      0.08         1      0.08
+Function 4: extract_return_metadata: pcap_compile_nopcap      0.08         1      0.08
+Function 4: extract_return_metadata: pcap_create      0.17         1      0.17
+Function 4: extract_return_metadata: pcap_datalink      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_datalink_ext      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_datalink_name_to_val      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_datalink_val_to_description      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_datalink_val_to_description_or_dlt      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_datalink_val_to_name      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_dispatch      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_dump      0.09         1      0.09
+Function 4: extract_return_metadata: pcap_dump_close      0.07         1      0.07
+Function 4: extract_return_metadata: pcap_dump_file      0.06         1      0.06
+Function 4: extract_return_metadata: pcap_dump_flush      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_dump_fopen      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_dump_ftell      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_dump_ftell64      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_dump_open      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_dump_open_append      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_file      0.06         1      0.06
+Function 4: extract_return_metadata: pcap_fileno      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_findalldevs      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_fopen_offline      0.47         1      0.47
+Function 4: extract_return_metadata: pcap_fopen_offline_with_tstamp_precision      0.43         1      0.43
+Function 4: extract_return_metadata: pcap_free_datalinks      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_free_tstamp_types      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_freealldevs      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_freecode      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_get_required_select_timeout      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_get_selectable_fd      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_get_tstamp_precision      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_geterr      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_getnonblock      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_init      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_inject      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_is_swapped      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_lib_version      3.35         1      3.35
+Function 4: extract_return_metadata: pcap_list_datalinks      0.06         1      0.06
+Function 4: extract_return_metadata: pcap_list_tstamp_types      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_lookupdev      0.06         1      0.06
+Function 4: extract_return_metadata: pcap_lookupnet      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_loop      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_major_version      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_minor_version      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_next      0.07         1      0.07
+Function 4: extract_return_metadata: pcap_next_ex      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_offline_filter      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_open_dead      0.10         1      0.10
+Function 4: extract_return_metadata: pcap_open_dead_with_tstamp_precision      0.09         1      0.09
+Function 4: extract_return_metadata: pcap_open_live      0.28         1      0.28
+Function 4: extract_return_metadata: pcap_open_offline      0.42         1      0.42
+Function 4: extract_return_metadata: pcap_open_offline_with_tstamp_precision      0.38         1      0.38
+Function 4: extract_return_metadata: pcap_perror      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_sendpacket      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_set_buffer_size      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_set_datalink      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_set_immediate_mode      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_set_promisc      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_set_protocol_linux      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_set_rfmon      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_set_snaplen      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_set_timeout      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_set_tstamp_precision      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_set_tstamp_type      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_setdirection      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_setfilter      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_setnonblock      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_snapshot      0.04         1      0.04
+Function 4: extract_return_metadata: pcap_stats      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_statustostr      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_strerror      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_tstamp_type_name_to_val      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_tstamp_type_val_to_description      0.05         1      0.05
+Function 4: extract_return_metadata: pcap_tstamp_type_val_to_name      0.05         1      0.05
+GlobalStruct: Build Slot Map                  1.99         1      1.99
+GlobalStruct: Globals Processing              6.87         1      6.87
+GlobalStruct: Resolve Indirect Calls         17.08         1     17.08
+GlobalStruct: Unresolved Calls                0.08         1      0.08
+GlobalStruct::analyze Total Time           1926.36         1   1926.36
+Process Function: bpf_dump                    6.51         1      6.51
+Process Function: bpf_filter                  8.81         1      8.81
+Process Function: bpf_image                   0.35         1      0.35
+Process Function: bpf_validate                0.54         1      0.54
+Process Function: pcap_activate             676.27         1    676.27
+Process Function: pcap_breakloop              1.29         1      1.29
+Process Function: pcap_bufsize                1.19         1      1.19
+Process Function: pcap_can_set_rfmon          0.20         1      0.20
+Process Function: pcap_close                  0.30         1      0.30
+Process Function: pcap_compile               15.87         1     15.87
+Process Function: pcap_compile_nopcap        15.05         1     15.05
+Process Function: pcap_create                 0.60         1      0.60
+Process Function: pcap_datalink               0.20         1      0.20
+Process Function: pcap_datalink_ext           0.19         1      0.19
+Process Function: pcap_datalink_name_to_val      0.26         1      0.26
+Process Function: pcap_datalink_val_to_description      0.20         1      0.20
+Process Function: pcap_datalink_val_to_description_or_dlt      0.19         1      0.19
+Process Function: pcap_datalink_val_to_name      0.19         1      0.19
+Process Function: pcap_dispatch               0.49         1      0.49
+Process Function: pcap_dump                  71.16         1     71.16
+Process Function: pcap_dump_close             1.64         1      1.64
+Process Function: pcap_dump_file              0.22         1      0.22
+Process Function: pcap_dump_flush             0.18         1      0.18
+Process Function: pcap_dump_fopen             0.31         1      0.31
+Process Function: pcap_dump_ftell             0.18         1      0.18
+Process Function: pcap_dump_ftell64           0.18         1      0.18
+Process Function: pcap_dump_open              0.36         1      0.36
+Process Function: pcap_dump_open_append       0.37         1      0.37
+Process Function: pcap_file                   0.23         1      0.23
+Process Function: pcap_fileno                 0.19         1      0.19
+Process Function: pcap_findalldevs            0.73         1      0.73
+Process Function: pcap_fopen_offline          0.90         1      0.90
+Process Function: pcap_fopen_offline_with_tstamp_precision      1.06         1      1.06
+Process Function: pcap_free_datalinks         0.21         1      0.21
+Process Function: pcap_free_tstamp_types      0.20         1      0.20
+Process Function: pcap_freealldevs            0.26         1      0.26
+Process Function: pcap_freecode               0.19         1      0.19
+Process Function: pcap_get_required_select_timeout      0.19         1      0.19
+Process Function: pcap_get_selectable_fd      0.21         1      0.21
+Process Function: pcap_get_tstamp_precision      0.19         1      0.19
+Process Function: pcap_geterr                 0.19         1      0.19
+Process Function: pcap_getnonblock            0.28         1      0.28
+Process Function: pcap_init                   0.28         1      0.28
+Process Function: pcap_inject                 0.39         1      0.39
+Process Function: pcap_is_swapped             0.19         1      0.19
+Process Function: pcap_lib_version            3.42         1      3.42
+Process Function: pcap_list_datalinks         0.44         1      0.44
+Process Function: pcap_list_tstamp_types      0.35         1      0.35
+Process Function: pcap_lookupdev              0.30         1      0.30
+Process Function: pcap_lookupnet              0.57         1      0.57
+Process Function: pcap_loop                   0.57         1      0.57
+Process Function: pcap_major_version          0.20         1      0.20
+Process Function: pcap_minor_version          0.19         1      0.19
+Process Function: pcap_next                   0.30         1      0.30
+Process Function: pcap_next_ex                0.50         1      0.50
+Process Function: pcap_offline_filter         0.56         1      0.56
+Process Function: pcap_open_dead              0.37         1      0.37
+Process Function: pcap_open_dead_with_tstamp_precision      0.44         1      0.44
+Process Function: pcap_open_live              0.98         1      0.98
+Process Function: pcap_open_offline           0.88         1      0.88
+Process Function: pcap_open_offline_with_tstamp_precision      1.04         1      1.04
+Process Function: pcap_perror                 0.31         1      0.31
+Process Function: pcap_sendpacket             0.40         1      0.40
+Process Function: pcap_set_buffer_size        0.31         1      0.31
+Process Function: pcap_set_datalink           0.30         1      0.30
+Process Function: pcap_set_immediate_mode      0.30         1      0.30
+Process Function: pcap_set_promisc            0.36         1      0.36
+Process Function: pcap_set_protocol_linux      0.30         1      0.30
+Process Function: pcap_set_rfmon              0.29         1      0.29
+Process Function: pcap_set_snaplen            0.30         1      0.30
+Process Function: pcap_set_timeout            0.32         1      0.32
+Process Function: pcap_set_tstamp_precision      0.30         1      0.30
+Process Function: pcap_set_tstamp_type        0.28         1      0.28
+Process Function: pcap_setdirection           0.29         1      0.29
+Process Function: pcap_setfilter              0.33         1      0.33
+Process Function: pcap_setnonblock            0.36         1      0.36
+Process Function: pcap_snapshot               0.19         1      0.19
+Process Function: pcap_stats                  0.38         1      0.38
+Process Function: pcap_statustostr            0.20         1      0.20
+Process Function: pcap_strerror               0.19         1      0.19
+Process Function: pcap_tstamp_type_name_to_val      0.24         1      0.24
+Process Function: pcap_tstamp_type_val_to_description      0.19         1      0.19
+Process Function: pcap_tstamp_type_val_to_name      0.19         1      0.19
+Process Parameters: bpf_dump                  6.39         1      6.39
+Process Parameters: bpf_filter                8.65         1      8.65
+Process Parameters: bpf_image                 0.27         1      0.27
+Process Parameters: bpf_validate              0.45         1      0.45
+Process Parameters: pcap_activate           676.13         1    676.13
+Process Parameters: pcap_breakloop            1.18         1      1.18
+Process Parameters: pcap_bufsize              1.09         1      1.09
+Process Parameters: pcap_can_set_rfmon        0.13         1      0.13
+Process Parameters: pcap_close                0.22         1      0.22
+Process Parameters: pcap_compile             15.72         1     15.72
+Process Parameters: pcap_compile_nopcap      14.93         1     14.93
+Process Parameters: pcap_create               0.36         1      0.36
+Process Parameters: pcap_datalink             0.13         1      0.13
+Process Parameters: pcap_datalink_ext         0.12         1      0.12
+Process Parameters: pcap_datalink_name_to_val      0.19         1      0.19
+Process Parameters: pcap_datalink_val_to_description      0.13         1      0.13
+Process Parameters: pcap_datalink_val_to_description_or_dlt      0.12         1      0.12
+Process Parameters: pcap_datalink_val_to_name      0.12         1      0.12
+Process Parameters: pcap_dispatch             0.41         1      0.41
+Process Parameters: pcap_dump                71.03         1     71.03
+Process Parameters: pcap_dump_close           1.54         1      1.54
+Process Parameters: pcap_dump_file            0.13         1      0.13
+Process Parameters: pcap_dump_flush           0.12         1      0.12
+Process Parameters: pcap_dump_fopen           0.24         1      0.24
+Process Parameters: pcap_dump_ftell           0.11         1      0.11
+Process Parameters: pcap_dump_ftell64         0.11         1      0.11
+Process Parameters: pcap_dump_open            0.28         1      0.28
+Process Parameters: pcap_dump_open_append      0.28         1      0.28
+Process Parameters: pcap_file                 0.14         1      0.14
+Process Parameters: pcap_fileno               0.12         1      0.12
+Process Parameters: pcap_findalldevs          0.65         1      0.65
+Process Parameters: pcap_fopen_offline        0.31         1      0.31
+Process Parameters: pcap_fopen_offline_with_tstamp_precision      0.50         1      0.50
+Process Parameters: pcap_free_datalinks       0.13         1      0.13
+Process Parameters: pcap_free_tstamp_types      0.13         1      0.13
+Process Parameters: pcap_freealldevs          0.17         1      0.17
+Process Parameters: pcap_freecode             0.12         1      0.12
+Process Parameters: pcap_get_required_select_timeout      0.12         1      0.12
+Process Parameters: pcap_get_selectable_fd      0.13         1      0.13
+Process Parameters: pcap_get_tstamp_precision      0.12         1      0.12
+Process Parameters: pcap_geterr               0.12         1      0.12
+Process Parameters: pcap_getnonblock          0.21         1      0.21
+Process Parameters: pcap_init                 0.20         1      0.20
+Process Parameters: pcap_inject               0.32         1      0.32
+Process Parameters: pcap_is_swapped           0.12         1      0.12
+Process Parameters: pcap_lib_version          0.03         1      0.03
+Process Parameters: pcap_list_datalinks       0.34         1      0.34
+Process Parameters: pcap_list_tstamp_types      0.28         1      0.28
+Process Parameters: pcap_lookupdev            0.20         1      0.20
+Process Parameters: pcap_lookupnet            0.49         1      0.49
+Process Parameters: pcap_loop                 0.48         1      0.48
+Process Parameters: pcap_major_version        0.12         1      0.12
+Process Parameters: pcap_minor_version        0.12         1      0.12
+Process Parameters: pcap_next                 0.21         1      0.21
+Process Parameters: pcap_next_ex              0.41         1      0.41
+Process Parameters: pcap_offline_filter       0.46         1      0.46
+Process Parameters: pcap_open_dead            0.23         1      0.23
+Process Parameters: pcap_open_dead_with_tstamp_precision      0.31         1      0.31
+Process Parameters: pcap_open_live            0.62         1      0.62
+Process Parameters: pcap_open_offline         0.33         1      0.33
+Process Parameters: pcap_open_offline_with_tstamp_precision      0.53         1      0.53
+Process Parameters: pcap_perror               0.23         1      0.23
+Process Parameters: pcap_sendpacket           0.33         1      0.33
+Process Parameters: pcap_set_buffer_size      0.24         1      0.24
+Process Parameters: pcap_set_datalink         0.23         1      0.23
+Process Parameters: pcap_set_immediate_mode      0.23         1      0.23
+Process Parameters: pcap_set_promisc          0.29         1      0.29
+Process Parameters: pcap_set_protocol_linux      0.23         1      0.23
+Process Parameters: pcap_set_rfmon            0.22         1      0.22
+Process Parameters: pcap_set_snaplen          0.23         1      0.23
+Process Parameters: pcap_set_timeout          0.23         1      0.23
+Process Parameters: pcap_set_tstamp_precision      0.23         1      0.23
+Process Parameters: pcap_set_tstamp_type      0.21         1      0.21
+Process Parameters: pcap_setdirection         0.22         1      0.22
+Process Parameters: pcap_setfilter            0.26         1      0.26
+Process Parameters: pcap_setnonblock          0.29         1      0.29
+Process Parameters: pcap_snapshot             0.12         1      0.12
+Process Parameters: pcap_stats                0.29         1      0.29
+Process Parameters: pcap_statustostr          0.12         1      0.12
+Process Parameters: pcap_strerror             0.12         1      0.12
+Process Parameters: pcap_tstamp_type_name_to_val      0.17         1      0.17
+Process Parameters: pcap_tstamp_type_val_to_description      0.12         1      0.12
+Process Parameters: pcap_tstamp_type_val_to_name      0.12         1      0.12
+Total Condition Extraction (all 4 functions total)    827.19         1    827.19
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                            24.3        24.3        55.0       1
+2. PAG Builder                                 135.1       135.1       190.8       1
+3. Points-to Analysis                           94.0        94.0       284.4       1
+4. Full SVFG Build                             129.7       129.7       414.1       1
+Function 1: extract_parameter_metadata           0.1        17.5       434.7     155
+Function 1: extract_parameter_metadata: bpf_dump         0.0         0.0       414.1       2
+Function 1: extract_parameter_metadata: bpf_filter         0.0         0.0       414.1       4
+Function 1: extract_parameter_metadata: bpf_image         0.0         0.0       414.1       2
+Function 1: extract_parameter_metadata: bpf_validate         0.0         0.0       414.1       2
+Function 1: extract_parameter_metadata: pcap_activate        17.5        17.5       431.6       1
+Function 1: extract_parameter_metadata: pcap_breakloop         0.1         0.1       431.7       1
+Function 1: extract_parameter_metadata: pcap_bufsize         0.0         0.0       431.8       1
+Function 1: extract_parameter_metadata: pcap_can_set_rfmon         0.0         0.0       431.8       1
+Function 1: extract_parameter_metadata: pcap_close         0.0         0.0       431.8       1
+Function 1: extract_parameter_metadata: pcap_compile         0.0         0.0       433.3       5
+Function 1: extract_parameter_metadata: pcap_compile_nopcap         0.0         0.0       433.3       6
+Function 1: extract_parameter_metadata: pcap_create         0.0         0.0       433.3       2
+Function 1: extract_parameter_metadata: pcap_datalink         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_datalink_ext         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_datalink_name_to_val         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_datalink_val_to_description         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_datalink_val_to_description_or_dlt         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_datalink_val_to_name         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_dispatch         0.0         0.0       433.3       4
+Function 1: extract_parameter_metadata: pcap_dump         0.0         0.0       433.3       3
+Function 1: extract_parameter_metadata: pcap_dump_close         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_dump_file         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_dump_flush         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_dump_fopen         0.0         0.0       433.3       2
+Function 1: extract_parameter_metadata: pcap_dump_ftell         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_dump_ftell64         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_dump_open         0.0         0.0       433.3       2
+Function 1: extract_parameter_metadata: pcap_dump_open_append         0.0         0.0       433.3       2
+Function 1: extract_parameter_metadata: pcap_file         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_fileno         0.0         0.0       433.3       1
+Function 1: extract_parameter_metadata: pcap_findalldevs         0.0         0.0       433.3       2
+Function 1: extract_parameter_metadata: pcap_fopen_offline         0.0         0.0       433.3       2
+Function 1: extract_parameter_metadata: pcap_fopen_offline_with_tstamp_precision         0.0         0.0       433.6       3
+Function 1: extract_parameter_metadata: pcap_free_datalinks         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_free_tstamp_types         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_freealldevs         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_freecode         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_get_required_select_timeout         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_get_selectable_fd         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_get_tstamp_precision         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_geterr         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_getnonblock         0.0         0.0       433.8       2
+Function 1: extract_parameter_metadata: pcap_init         0.0         0.0       433.8       2
+Function 1: extract_parameter_metadata: pcap_inject         0.0         0.0       433.8       3
+Function 1: extract_parameter_metadata: pcap_is_swapped         0.0         0.0       433.8       1
+Function 1: extract_parameter_metadata: pcap_list_datalinks         0.0         0.0       433.9       2
+Function 1: extract_parameter_metadata: pcap_list_tstamp_types         0.0         0.0       433.9       2
+Function 1: extract_parameter_metadata: pcap_lookupdev         0.0         0.0       433.9       1
+Function 1: extract_parameter_metadata: pcap_lookupnet         0.0         0.0       434.0       4
+Function 1: extract_parameter_metadata: pcap_loop         0.0         0.0       434.0       4
+Function 1: extract_parameter_metadata: pcap_major_version         0.0         0.0       434.0       1
+Function 1: extract_parameter_metadata: pcap_minor_version         0.0         0.0       434.0       1
+Function 1: extract_parameter_metadata: pcap_next         0.0         0.0       434.0       2
+Function 1: extract_parameter_metadata: pcap_next_ex         0.0         0.0       434.1       3
+Function 1: extract_parameter_metadata: pcap_offline_filter         0.0         0.0       434.1       3
+Function 1: extract_parameter_metadata: pcap_open_dead         0.0         0.0       434.1       2
+Function 1: extract_parameter_metadata: pcap_open_dead_with_tstamp_precision         0.0         0.0       434.1       3
+Function 1: extract_parameter_metadata: pcap_open_live         0.0         0.0       434.1       5
+Function 1: extract_parameter_metadata: pcap_open_offline         0.0         0.0       434.3       2
+Function 1: extract_parameter_metadata: pcap_open_offline_with_tstamp_precision         0.0         0.0       434.6       3
+Function 1: extract_parameter_metadata: pcap_perror         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_sendpacket         0.0         0.0       434.7       3
+Function 1: extract_parameter_metadata: pcap_set_buffer_size         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_datalink         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_immediate_mode         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_promisc         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_protocol_linux         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_rfmon         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_snaplen         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_timeout         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_tstamp_precision         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_set_tstamp_type         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_setdirection         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_setfilter         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_setnonblock         0.0         0.0       434.7       3
+Function 1: extract_parameter_metadata: pcap_snapshot         0.0         0.0       434.7       1
+Function 1: extract_parameter_metadata: pcap_stats         0.0         0.0       434.7       2
+Function 1: extract_parameter_metadata: pcap_statustostr         0.0         0.0       434.7       1
+Function 1: extract_parameter_metadata: pcap_strerror         0.0         0.0       434.7       1
+Function 1: extract_parameter_metadata: pcap_tstamp_type_name_to_val         0.0         0.0       434.7       1
+Function 1: extract_parameter_metadata: pcap_tstamp_type_val_to_description         0.0         0.0       434.7       1
+Function 1: extract_parameter_metadata: pcap_tstamp_type_val_to_name         0.0         0.0       434.7       1
+Function 2: extractLenDependencyParameter         0.0         0.0       434.7      27
+Function 2: extractLenDependencyParameter: bpf_filter         0.0         0.0       414.1       2
+Function 2: extractLenDependencyParameter: bpf_validate         0.0         0.0       414.1       1
+Function 2: extractLenDependencyParameter: pcap_compile         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_compile_nopcap         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_create         0.0         0.0       433.3       2
+Function 2: extractLenDependencyParameter: pcap_datalink_name_to_val         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_dump_open         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_dump_open_append         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_findalldevs         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_fopen_offline         0.0         0.0       433.3       1
+Function 2: extractLenDependencyParameter: pcap_fopen_offline_with_tstamp_precision         0.0         0.0       433.6       1
+Function 2: extractLenDependencyParameter: pcap_list_datalinks         0.0         0.0       433.9       1
+Function 2: extractLenDependencyParameter: pcap_list_tstamp_types         0.0         0.0       433.9       1
+Function 2: extractLenDependencyParameter: pcap_lookupdev         0.0         0.0       433.9       1
+Function 2: extractLenDependencyParameter: pcap_lookupnet         0.0         0.0       434.0       1
+Function 2: extractLenDependencyParameter: pcap_offline_filter         0.0         0.0       434.1       1
+Function 2: extractLenDependencyParameter: pcap_open_live         0.0         0.0       434.1       2
+Function 2: extractLenDependencyParameter: pcap_open_offline         0.0         0.0       434.3       2
+Function 2: extractLenDependencyParameter: pcap_open_offline_with_tstamp_precision         0.0         0.0       434.6       2
+Function 2: extractLenDependencyParameter: pcap_setfilter         0.0         0.0       434.7       1
+Function 2: extractLenDependencyParameter: pcap_stats         0.0         0.0       434.7       1
+Function 2: extractLenDependencyParameter: pcap_tstamp_type_name_to_val         0.0         0.0       434.7       1
+Function 3: my_extract_dependency_among_parameters         0.0         1.4       434.7     155
+Function 3: my_extract_dependency_among_parametersbpf_dump         0.0         0.0       414.1       2
+Function 3: my_extract_dependency_among_parametersbpf_filter         0.0         0.0       414.1       4
+Function 3: my_extract_dependency_among_parametersbpf_image         0.0         0.0       414.1       2
+Function 3: my_extract_dependency_among_parametersbpf_validate         0.0         0.0       414.1       2
+Function 3: my_extract_dependency_among_parameterspcap_activate         0.0         0.0       431.6       1
+Function 3: my_extract_dependency_among_parameterspcap_breakloop         0.0         0.0       431.7       1
+Function 3: my_extract_dependency_among_parameterspcap_bufsize         0.0         0.0       431.8       1
+Function 3: my_extract_dependency_among_parameterspcap_can_set_rfmon         0.0         0.0       431.8       1
+Function 3: my_extract_dependency_among_parameterspcap_close         0.0         0.0       431.8       1
+Function 3: my_extract_dependency_among_parameterspcap_compile         0.3         1.4       433.3       5
+Function 3: my_extract_dependency_among_parameterspcap_compile_nopcap         0.0         0.0       433.3       6
+Function 3: my_extract_dependency_among_parameterspcap_create         0.0         0.0       433.3       2
+Function 3: my_extract_dependency_among_parameterspcap_datalink         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_datalink_ext         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_datalink_name_to_val         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_datalink_val_to_description         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_datalink_val_to_description_or_dlt         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_datalink_val_to_name         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_dispatch         0.0         0.0       433.3       4
+Function 3: my_extract_dependency_among_parameterspcap_dump         0.0         0.0       433.3       3
+Function 3: my_extract_dependency_among_parameterspcap_dump_close         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_dump_file         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_dump_flush         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_dump_fopen         0.0         0.0       433.3       2
+Function 3: my_extract_dependency_among_parameterspcap_dump_ftell         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_dump_ftell64         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_dump_open         0.0         0.0       433.3       2
+Function 3: my_extract_dependency_among_parameterspcap_dump_open_append         0.0         0.0       433.3       2
+Function 3: my_extract_dependency_among_parameterspcap_file         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_fileno         0.0         0.0       433.3       1
+Function 3: my_extract_dependency_among_parameterspcap_findalldevs         0.0         0.0       433.3       2
+Function 3: my_extract_dependency_among_parameterspcap_fopen_offline         0.0         0.0       433.3       2
+Function 3: my_extract_dependency_among_parameterspcap_fopen_offline_with_tstamp_precision         0.0         0.0       433.6       3
+Function 3: my_extract_dependency_among_parameterspcap_free_datalinks         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_free_tstamp_types         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_freealldevs         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_freecode         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_get_required_select_timeout         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_get_selectable_fd         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_get_tstamp_precision         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_geterr         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_getnonblock         0.0         0.0       433.8       2
+Function 3: my_extract_dependency_among_parameterspcap_init         0.0         0.0       433.8       2
+Function 3: my_extract_dependency_among_parameterspcap_inject         0.0         0.0       433.8       3
+Function 3: my_extract_dependency_among_parameterspcap_is_swapped         0.0         0.0       433.8       1
+Function 3: my_extract_dependency_among_parameterspcap_list_datalinks         0.0         0.0       433.9       2
+Function 3: my_extract_dependency_among_parameterspcap_list_tstamp_types         0.0         0.0       433.9       2
+Function 3: my_extract_dependency_among_parameterspcap_lookupdev         0.0         0.0       433.9       1
+Function 3: my_extract_dependency_among_parameterspcap_lookupnet         0.0         0.0       434.0       4
+Function 3: my_extract_dependency_among_parameterspcap_loop         0.0         0.0       434.0       4
+Function 3: my_extract_dependency_among_parameterspcap_major_version         0.0         0.0       434.0       1
+Function 3: my_extract_dependency_among_parameterspcap_minor_version         0.0         0.0       434.0       1
+Function 3: my_extract_dependency_among_parameterspcap_next         0.0         0.0       434.0       2
+Function 3: my_extract_dependency_among_parameterspcap_next_ex         0.0         0.0       434.1       3
+Function 3: my_extract_dependency_among_parameterspcap_offline_filter         0.0         0.0       434.1       3
+Function 3: my_extract_dependency_among_parameterspcap_open_dead         0.0         0.0       434.1       2
+Function 3: my_extract_dependency_among_parameterspcap_open_dead_with_tstamp_precision         0.0         0.0       434.1       3
+Function 3: my_extract_dependency_among_parameterspcap_open_live         0.0         0.0       434.1       5
+Function 3: my_extract_dependency_among_parameterspcap_open_offline         0.0         0.0       434.3       2
+Function 3: my_extract_dependency_among_parameterspcap_open_offline_with_tstamp_precision         0.0         0.0       434.6       3
+Function 3: my_extract_dependency_among_parameterspcap_perror         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_sendpacket         0.0         0.0       434.7       3
+Function 3: my_extract_dependency_among_parameterspcap_set_buffer_size         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_datalink         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_immediate_mode         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_promisc         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_protocol_linux         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_rfmon         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_snaplen         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_timeout         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_tstamp_precision         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_set_tstamp_type         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_setdirection         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_setfilter         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_setnonblock         0.0         0.0       434.7       3
+Function 3: my_extract_dependency_among_parameterspcap_snapshot         0.0         0.0       434.7       1
+Function 3: my_extract_dependency_among_parameterspcap_stats         0.0         0.0       434.7       2
+Function 3: my_extract_dependency_among_parameterspcap_statustostr         0.0         0.0       434.7       1
+Function 3: my_extract_dependency_among_parameterspcap_strerror         0.0         0.0       434.7       1
+Function 3: my_extract_dependency_among_parameterspcap_tstamp_type_name_to_val         0.0         0.0       434.7       1
+Function 3: my_extract_dependency_among_parameterspcap_tstamp_type_val_to_description         0.0         0.0       434.7       1
+Function 3: my_extract_dependency_among_parameterspcap_tstamp_type_val_to_name         0.0         0.0       434.7       1
+Function 4: extract_return_metadata              0.0         0.3       434.7      83
+Function 4: extract_return_metadata: bpf_dump         0.0         0.0       414.1       1
+Function 4: extract_return_metadata: bpf_filter         0.0         0.0       414.1       1
+Function 4: extract_return_metadata: bpf_image         0.0         0.0       414.1       1
+Function 4: extract_return_metadata: bpf_validate         0.0         0.0       414.1       1
+Function 4: extract_return_metadata: pcap_activate         0.0         0.0       431.7       1
+Function 4: extract_return_metadata: pcap_breakloop         0.0         0.0       431.7       1
+Function 4: extract_return_metadata: pcap_bufsize         0.0         0.0       431.8       1
+Function 4: extract_return_metadata: pcap_can_set_rfmon         0.0         0.0       431.8       1
+Function 4: extract_return_metadata: pcap_close         0.0         0.0       431.8       1
+Function 4: extract_return_metadata: pcap_compile         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_compile_nopcap         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_create         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_datalink         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_datalink_ext         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_datalink_name_to_val         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_datalink_val_to_description         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_datalink_val_to_description_or_dlt         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_datalink_val_to_name         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dispatch         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_close         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_file         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_flush         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_fopen         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_ftell         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_ftell64         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_open         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_dump_open_append         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_file         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_fileno         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_findalldevs         0.0         0.0       433.3       1
+Function 4: extract_return_metadata: pcap_fopen_offline         0.3         0.3       433.6       1
+Function 4: extract_return_metadata: pcap_fopen_offline_with_tstamp_precision         0.1         0.1       433.8       1
+Function 4: extract_return_metadata: pcap_free_datalinks         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_free_tstamp_types         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_freealldevs         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_freecode         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_get_required_select_timeout         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_get_selectable_fd         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_get_tstamp_precision         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_geterr         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_getnonblock         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_init         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_inject         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_is_swapped         0.0         0.0       433.8       1
+Function 4: extract_return_metadata: pcap_lib_version         0.2         0.2       433.9       1
+Function 4: extract_return_metadata: pcap_list_datalinks         0.0         0.0       433.9       1
+Function 4: extract_return_metadata: pcap_list_tstamp_types         0.0         0.0       433.9       1
+Function 4: extract_return_metadata: pcap_lookupdev         0.0         0.0       434.0       1
+Function 4: extract_return_metadata: pcap_lookupnet         0.0         0.0       434.0       1
+Function 4: extract_return_metadata: pcap_loop         0.0         0.0       434.0       1
+Function 4: extract_return_metadata: pcap_major_version         0.0         0.0       434.0       1
+Function 4: extract_return_metadata: pcap_minor_version         0.0         0.0       434.0       1
+Function 4: extract_return_metadata: pcap_next         0.0         0.0       434.0       1
+Function 4: extract_return_metadata: pcap_next_ex         0.0         0.0       434.1       1
+Function 4: extract_return_metadata: pcap_offline_filter         0.0         0.0       434.1       1
+Function 4: extract_return_metadata: pcap_open_dead         0.0         0.0       434.1       1
+Function 4: extract_return_metadata: pcap_open_dead_with_tstamp_precision         0.0         0.0       434.1       1
+Function 4: extract_return_metadata: pcap_open_live         0.2         0.2       434.3       1
+Function 4: extract_return_metadata: pcap_open_offline         0.3         0.3       434.6       1
+Function 4: extract_return_metadata: pcap_open_offline_with_tstamp_precision         0.2         0.2       434.7       1
+Function 4: extract_return_metadata: pcap_perror         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_sendpacket         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_buffer_size         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_datalink         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_immediate_mode         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_promisc         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_protocol_linux         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_rfmon         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_snaplen         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_timeout         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_tstamp_precision         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_set_tstamp_type         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_setdirection         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_setfilter         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_setnonblock         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_snapshot         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_stats         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_statustostr         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_strerror         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_tstamp_type_name_to_val         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_tstamp_type_val_to_description         0.0         0.0       434.7       1
+Function 4: extract_return_metadata: pcap_tstamp_type_val_to_name         0.0         0.0       434.7       1
+GlobalStruct: Build Slot Map                     0.0         0.0       284.2       1
+GlobalStruct: Globals Processing                 0.2         0.2       284.2       1
+GlobalStruct: Resolve Indirect Calls             0.2         0.2       284.4       1
+GlobalStruct: Unresolved Calls                   0.0         0.0       284.2       1
+GlobalStruct: base PTA analyze                  93.6        93.6       284.0       1
+GlobalStruct::analyze Total Time                94.0        94.0       284.4       1
+Process Function: bpf_dump                       0.0         0.0       414.1       1
+Process Function: bpf_filter                     0.0         0.0       414.1       1
+Process Function: bpf_image                      0.0         0.0       414.1       1
+Process Function: bpf_validate                   0.0         0.0       414.1       1
+Process Function: pcap_activate                 17.5        17.5       431.7       1
+Process Function: pcap_breakloop                 0.1         0.1       431.7       1
+Process Function: pcap_bufsize                   0.0         0.0       431.8       1
+Process Function: pcap_can_set_rfmon             0.0         0.0       431.8       1
+Process Function: pcap_close                     0.1         0.1       431.8       1
+Process Function: pcap_compile                   1.4         1.4       433.3       1
+Process Function: pcap_compile_nopcap            0.0         0.0       433.3       1
+Process Function: pcap_create                    0.0         0.0       433.3       1
+Process Function: pcap_datalink                  0.0         0.0       433.3       1
+Process Function: pcap_datalink_ext              0.0         0.0       433.3       1
+Process Function: pcap_datalink_name_to_val         0.0         0.0       433.3       1
+Process Function: pcap_datalink_val_to_description         0.0         0.0       433.3       1
+Process Function: pcap_datalink_val_to_description_or_dlt         0.0         0.0       433.3       1
+Process Function: pcap_datalink_val_to_name         0.0         0.0       433.3       1
+Process Function: pcap_dispatch                  0.0         0.0       433.3       1
+Process Function: pcap_dump                      0.0         0.0       433.3       1
+Process Function: pcap_dump_close                0.0         0.0       433.3       1
+Process Function: pcap_dump_file                 0.0         0.0       433.3       1
+Process Function: pcap_dump_flush                0.0         0.0       433.3       1
+Process Function: pcap_dump_fopen                0.0         0.0       433.3       1
+Process Function: pcap_dump_ftell                0.0         0.0       433.3       1
+Process Function: pcap_dump_ftell64              0.0         0.0       433.3       1
+Process Function: pcap_dump_open                 0.0         0.0       433.3       1
+Process Function: pcap_dump_open_append          0.0         0.0       433.3       1
+Process Function: pcap_file                      0.0         0.0       433.3       1
+Process Function: pcap_fileno                    0.0         0.0       433.3       1
+Process Function: pcap_findalldevs               0.0         0.0       433.3       1
+Process Function: pcap_fopen_offline             0.3         0.3       433.6       1
+Process Function: pcap_fopen_offline_with_tstamp_precision         0.1         0.1       433.8       1
+Process Function: pcap_free_datalinks            0.0         0.0       433.8       1
+Process Function: pcap_free_tstamp_types         0.0         0.0       433.8       1
+Process Function: pcap_freealldevs               0.0         0.0       433.8       1
+Process Function: pcap_freecode                  0.0         0.0       433.8       1
+Process Function: pcap_get_required_select_timeout         0.0         0.0       433.8       1
+Process Function: pcap_get_selectable_fd         0.0         0.0       433.8       1
+Process Function: pcap_get_tstamp_precision         0.0         0.0       433.8       1
+Process Function: pcap_geterr                    0.0         0.0       433.8       1
+Process Function: pcap_getnonblock               0.0         0.0       433.8       1
+Process Function: pcap_init                      0.0         0.0       433.8       1
+Process Function: pcap_inject                    0.0         0.0       433.8       1
+Process Function: pcap_is_swapped                0.0         0.0       433.8       1
+Process Function: pcap_lib_version               0.2         0.2       433.9       1
+Process Function: pcap_list_datalinks            0.0         0.0       433.9       1
+Process Function: pcap_list_tstamp_types         0.0         0.0       433.9       1
+Process Function: pcap_lookupdev                 0.0         0.0       434.0       1
+Process Function: pcap_lookupnet                 0.0         0.0       434.0       1
+Process Function: pcap_loop                      0.0         0.0       434.0       1
+Process Function: pcap_major_version             0.0         0.0       434.0       1
+Process Function: pcap_minor_version             0.0         0.0       434.0       1
+Process Function: pcap_next                      0.0         0.0       434.0       1
+Process Function: pcap_next_ex                   0.0         0.0       434.1       1
+Process Function: pcap_offline_filter            0.0         0.0       434.1       1
+Process Function: pcap_open_dead                 0.0         0.0       434.1       1
+Process Function: pcap_open_dead_with_tstamp_precision         0.0         0.0       434.1       1
+Process Function: pcap_open_live                 0.2         0.2       434.3       1
+Process Function: pcap_open_offline              0.3         0.3       434.6       1
+Process Function: pcap_open_offline_with_tstamp_precision         0.2         0.2       434.7       1
+Process Function: pcap_perror                    0.0         0.0       434.7       1
+Process Function: pcap_sendpacket                0.0         0.0       434.7       1
+Process Function: pcap_set_buffer_size           0.0         0.0       434.7       1
+Process Function: pcap_set_datalink              0.0         0.0       434.7       1
+Process Function: pcap_set_immediate_mode         0.0         0.0       434.7       1
+Process Function: pcap_set_promisc               0.0         0.0       434.7       1
+Process Function: pcap_set_protocol_linux         0.0         0.0       434.7       1
+Process Function: pcap_set_rfmon                 0.0         0.0       434.7       1
+Process Function: pcap_set_snaplen               0.0         0.0       434.7       1
+Process Function: pcap_set_timeout               0.0         0.0       434.7       1
+Process Function: pcap_set_tstamp_precision         0.0         0.0       434.7       1
+Process Function: pcap_set_tstamp_type           0.0         0.0       434.7       1
+Process Function: pcap_setdirection              0.0         0.0       434.7       1
+Process Function: pcap_setfilter                 0.0         0.0       434.7       1
+Process Function: pcap_setnonblock               0.0         0.0       434.7       1
+Process Function: pcap_snapshot                  0.0         0.0       434.7       1
+Process Function: pcap_stats                     0.0         0.0       434.7       1
+Process Function: pcap_statustostr               0.0         0.0       434.7       1
+Process Function: pcap_strerror                  0.0         0.0       434.7       1
+Process Function: pcap_tstamp_type_name_to_val         0.0         0.0       434.7       1
+Process Function: pcap_tstamp_type_val_to_description         0.0         0.0       434.7       1
+Process Function: pcap_tstamp_type_val_to_name         0.0         0.0       434.7       1
+Process Parameters: bpf_dump                     0.0         0.0       414.1       1
+Process Parameters: bpf_filter                   0.0         0.0       414.1       1
+Process Parameters: bpf_image                    0.0         0.0       414.1       1
+Process Parameters: bpf_validate                 0.0         0.0       414.1       1
+Process Parameters: pcap_activate               17.5        17.5       431.7       1
+Process Parameters: pcap_breakloop               0.1         0.1       431.7       1
+Process Parameters: pcap_bufsize                 0.0         0.0       431.8       1
+Process Parameters: pcap_can_set_rfmon           0.0         0.0       431.8       1
+Process Parameters: pcap_close                   0.1         0.1       431.8       1
+Process Parameters: pcap_compile                 1.4         1.4       433.3       1
+Process Parameters: pcap_compile_nopcap          0.0         0.0       433.3       1
+Process Parameters: pcap_create                  0.0         0.0       433.3       1
+Process Parameters: pcap_datalink                0.0         0.0       433.3       1
+Process Parameters: pcap_datalink_ext            0.0         0.0       433.3       1
+Process Parameters: pcap_datalink_name_to_val         0.0         0.0       433.3       1
+Process Parameters: pcap_datalink_val_to_description         0.0         0.0       433.3       1
+Process Parameters: pcap_datalink_val_to_description_or_dlt         0.0         0.0       433.3       1
+Process Parameters: pcap_datalink_val_to_name         0.0         0.0       433.3       1
+Process Parameters: pcap_dispatch                0.0         0.0       433.3       1
+Process Parameters: pcap_dump                    0.0         0.0       433.3       1
+Process Parameters: pcap_dump_close              0.0         0.0       433.3       1
+Process Parameters: pcap_dump_file               0.0         0.0       433.3       1
+Process Parameters: pcap_dump_flush              0.0         0.0       433.3       1
+Process Parameters: pcap_dump_fopen              0.0         0.0       433.3       1
+Process Parameters: pcap_dump_ftell              0.0         0.0       433.3       1
+Process Parameters: pcap_dump_ftell64            0.0         0.0       433.3       1
+Process Parameters: pcap_dump_open               0.0         0.0       433.3       1
+Process Parameters: pcap_dump_open_append         0.0         0.0       433.3       1
+Process Parameters: pcap_file                    0.0         0.0       433.3       1
+Process Parameters: pcap_fileno                  0.0         0.0       433.3       1
+Process Parameters: pcap_findalldevs             0.0         0.0       433.3       1
+Process Parameters: pcap_fopen_offline           0.0         0.0       433.3       1
+Process Parameters: pcap_fopen_offline_with_tstamp_precision         0.0         0.0       433.6       1
+Process Parameters: pcap_free_datalinks          0.0         0.0       433.8       1
+Process Parameters: pcap_free_tstamp_types         0.0         0.0       433.8       1
+Process Parameters: pcap_freealldevs             0.0         0.0       433.8       1
+Process Parameters: pcap_freecode                0.0         0.0       433.8       1
+Process Parameters: pcap_get_required_select_timeout         0.0         0.0       433.8       1
+Process Parameters: pcap_get_selectable_fd         0.0         0.0       433.8       1
+Process Parameters: pcap_get_tstamp_precision         0.0         0.0       433.8       1
+Process Parameters: pcap_geterr                  0.0         0.0       433.8       1
+Process Parameters: pcap_getnonblock             0.0         0.0       433.8       1
+Process Parameters: pcap_init                    0.0         0.0       433.8       1
+Process Parameters: pcap_inject                  0.0         0.0       433.8       1
+Process Parameters: pcap_is_swapped              0.0         0.0       433.8       1
+Process Parameters: pcap_lib_version             0.0         0.0       433.8       1
+Process Parameters: pcap_list_datalinks          0.0         0.0       433.9       1
+Process Parameters: pcap_list_tstamp_types         0.0         0.0       433.9       1
+Process Parameters: pcap_lookupdev               0.0         0.0       434.0       1
+Process Parameters: pcap_lookupnet               0.0         0.0       434.0       1
+Process Parameters: pcap_loop                    0.0         0.0       434.0       1
+Process Parameters: pcap_major_version           0.0         0.0       434.0       1
+Process Parameters: pcap_minor_version           0.0         0.0       434.0       1
+Process Parameters: pcap_next                    0.0         0.0       434.0       1
+Process Parameters: pcap_next_ex                 0.0         0.0       434.1       1
+Process Parameters: pcap_offline_filter          0.0         0.0       434.1       1
+Process Parameters: pcap_open_dead               0.0         0.0       434.1       1
+Process Parameters: pcap_open_dead_with_tstamp_precision         0.0         0.0       434.1       1
+Process Parameters: pcap_open_live               0.0         0.0       434.1       1
+Process Parameters: pcap_open_offline            0.0         0.0       434.3       1
+Process Parameters: pcap_open_offline_with_tstamp_precision         0.0         0.0       434.6       1
+Process Parameters: pcap_perror                  0.0         0.0       434.7       1
+Process Parameters: pcap_sendpacket              0.0         0.0       434.7       1
+Process Parameters: pcap_set_buffer_size         0.0         0.0       434.7       1
+Process Parameters: pcap_set_datalink            0.0         0.0       434.7       1
+Process Parameters: pcap_set_immediate_mode         0.0         0.0       434.7       1
+Process Parameters: pcap_set_promisc             0.0         0.0       434.7       1
+Process Parameters: pcap_set_protocol_linux         0.0         0.0       434.7       1
+Process Parameters: pcap_set_rfmon               0.0         0.0       434.7       1
+Process Parameters: pcap_set_snaplen             0.0         0.0       434.7       1
+Process Parameters: pcap_set_timeout             0.0         0.0       434.7       1
+Process Parameters: pcap_set_tstamp_precision         0.0         0.0       434.7       1
+Process Parameters: pcap_set_tstamp_type         0.0         0.0       434.7       1
+Process Parameters: pcap_setdirection            0.0         0.0       434.7       1
+Process Parameters: pcap_setfilter               0.0         0.0       434.7       1
+Process Parameters: pcap_setnonblock             0.0         0.0       434.7       1
+Process Parameters: pcap_snapshot                0.0         0.0       434.7       1
+Process Parameters: pcap_stats                   0.0         0.0       434.7       1
+Process Parameters: pcap_statustost[COMPOSE] attempts=114043 di_match=106368 di_reject=7244 di_void=417 undecidable=14 absent=16 unnamed=14)
+[NODES] tota_dp_processed=173440 pops=293953 dedup=120513
+[IS_MALLOC_SIZE] 2
+[GEP_TYPE] void_recovered600 untyped_skip=1718
+r             0.0         0.0       434.7       1
+Process Parameters: pcap_strerror                0.0         0.0       434.7       1
+Process Parameters: pcap_tstamp_type_name_to_val         0.0         0.0       434.7       1
+Process Parameters: pcap_tstamp_type_val_to_description         0.0         0.0       434.7       1
+Process Parameters: pcap_tstamp_type_val_to_name         0.0         0.0       434.7       1
+Total Condition Extraction (all 4 functions total)        20.6        20.6       434.7       1
+
+Saved to /workspaces/libfuzz/analysis/libpcap//work/apipass/conditions.json
+Analysis complete for libpcap
++ echo 'Finished analysis'
+Finished analysis
++ ./analysis.sh libpcap --run-only
++ echo 'Analysing libpcap'
++ source setup_target.sh libpcap
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z libpcap ]]
+++ export TARGET_NAME=libpcap
+++ TARGET_NAME=libpcap
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/libpcap
+++ TARGET_DIR=/workspaces/libfuzz/targets/libpcap
+++ CONFIG_FILE=/workspaces/libfuzz/targets/libpcap/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/libpcap/
++ TARGET=/workspaces/libfuzz/analysis/libpcap/
++ export WORK=/workspaces/libfuzz/analysis/libpcap//work
++ WORK=/workspaces/libfuzz/analysis/libpcap//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/libpcap/config.sh
+++ REPO_URL=https://github.com/the-tcpdump-group/libpcap.git
+++ REPO_COMMIT=a999701dca5c873779281938baee6bc185a8d4dc
+++ BC_FILE_NAME=libpcap.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/libpcap//work
+++ mkdir -p /workspaces/libfuzz/analysis/libpcap//work/lib /workspaces/libfuzz/analysis/libpcap//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libpcap//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libpcap//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/libpcap//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/libpcap//work/apipass
+++ touch /workspaces/libfuzz/analysis/libpcap//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/libpcap//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/libpcap//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/libpcap//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libpcap.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/libpcap//work/lib/libpcap.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/libpcap//work/lib/libpcap.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/libpcap//work/lib/libpcap.a
+Writing output to /workspaces/libfuzz/analysis/libpcap/work/lib/libpcap.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/libpcap/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/libpcap/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/libpcap//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/libpcap//work/include -t libpcap -p /workspaces/libfuzz/targets/libpcap/public_headers.txt -e /workspaces/libfuzz/analysis/libpcap//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/libpcap//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/libpcap//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/libpcap//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/libpcap//work/lib/libpcap.a.bc -target libpcap -interface /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/libpcap//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/libpcap//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/libpcap//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 4.93
+user 4.66
+sys 0.26
+maxrss_kb 449536
+++ echo 'Saved to /workspaces/libfuzz/analysis/libpcap//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for libpcap'
+
+real	0m5.939s
+user	0m5.160s
+sys	0m0.435s

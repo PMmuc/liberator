@@ -1,0 +1,490 @@
++ export TARGET_NAME=libxml2
++ TARGET_NAME=libxml2
++ TARGET_DIR=/workspaces/libfuzz/analysis/libxml2
++ WORK=/workspaces/libfuzz/analysis/libxml2/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/libxml2
+Start analysis
++ echo 'Start analysis'
+Analysing libxml2
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmp3iu079e1.cc
+['int']
+['xmlHashTable', '*']
+['int']
+['void', '*']
+['const', 'int', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['int', '*']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['xmlHashTable', '*']
+['int']
+['xmlHashTable', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['void', '*']
+['int']
+['xmlHashTable', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['void', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*', '*']
+['int']
+['const', 'char', '*']
+['xmlURI', '*', '*']
+['int']
+['xmlURI', '*']
+['const', 'char', '*']
+['int']
+['FILE', '*']
+['xmlURI', '*']
+['int', '*']
+['const', 'char', '*']
+['int']
+['char', '*']
+['int']
+['char', '*']
+['int']
+['xmlURI', '*']
+['xmlParserInputBufferCreateFilenameFunc', '*']
+['xmlOutputBufferCreateFilenameFunc', '*']
+['int']
+['int']
+['int']
+['int', '*']
+['const', 'char', '*']
+['int']
+['int']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['void', '*']
+['const', 'char', '*']
+['int']
+['void', '*']
+['char', '*']
+['int']
+['int']
+['void', '*']
+['const', 'xmlError', '*']
+['int', '*', '*']
+['int', '*', '*']
+['int']
+['void', '*']
+['int']
+['void', '*']
+['void']
+['void', '*']
+['void']
+['void', '*']
+['int']
+['_xmlParserInput', '*']
+['int']
+['_xmlParserInput', '*']
+['int']
+['const', 'xmlError', '*']
+['void', '*']
+['int']
+['int']
+['void', '*']
+['int']
+['xmlError', '*']
+['int']
+['const', 'xmlError', '*']
+['xmlError', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['int']
+['const', 'unsigned', 'char', '*']
+['int', '*']
+['int']
+['const', 'unsigned', 'char', '*']
+['int']
+['const', 'int', '*']
+['int']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'char', '*']
+['int', '*']
+['int']
+['const', 'char', '*']
+['int', '*']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['int', '*']
+['const', 'char', '*']
+['int']
+['int']
+['FILE', '*']
+['int', '*']
+['int']
+['FILE', '*']
+['int', '*']
+['int', '*']
+['int']
+['FILE', '*']
+['int', '*']
+['int', '*']
+['const', 'char', '*']
+['int']
+['int']
+['const', 'int', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['const', 'char', '*', '*']
+['int', '*']
+['int']
+['int']
+['void']
+['void']
+['int']
+['int', '*']
+['int']
+['int']
+['int', '*']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int', '*']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int']
+['int', '*']
+['int']
+['int', '*']
+['int']
+['int', '*']
+['void', '*']
+['const', 'char', '*']
+['int']
+['int', '*']
+['void', '*']
+['const', 'char', '*']
+['int']
+['int']
+['int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int', '*', '*']
+['void']
+['xmlParserNodeInfoSeq', '*']
+['void']
+['xmlParserNodeInfoSeq', '*']
+['unsigned', 'long']
+['xmlParserNodeInfoSeq', '*']
+['int', '*']
+['int']
+['int']
+['xmlFeature']
+['xmlCatalog', '*']
+['int']
+['xmlCatalog', '*']
+['const', 'char', '*']
+['xmlCatalog', '*']
+['const', 'char', '*']
+['int']
+['xmlCatalog', '*']
+['int']
+['xmlCatalog', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['xmlCatalog', '*']
+['const', 'int', '*']
+['void']
+['xmlCatalog', '*']
+['FILE', '*']
+['void']
+['xmlCatalog', '*']
+['int']
+['xmlCatalog', '*']
+['int']
+['int']
+['const', 'char', '*']
+['int']
+['const', 'char', '*']
+['int']
+['int']
+['FILE', '*']
+['int']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['int']
+['const', 'int', '*']
+['int']
+['int']
+['void', '*']
+['int', '*']
+['void', '*']
+['const', 'int', '*']
+['int']
+['int']
+['xmlCatalogPrefer']
+['xmlCatalogPrefer']
+['int']
+['xmlCatalogAllow']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+['const', 'int', '*']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+
+got 3 SIGTERM/SIGINTs, forcefully exiting
++ ./analysis.sh libxml2 --run-only
++ echo 'Analysing libxml2'
++ source setup_target.sh libxml2
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z libxml2 ]]
+++ export TARGET_NAME=libxml2
+++ TARGET_NAME=libxml2
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/libxml2
+++ TARGET_DIR=/workspaces/libfuzz/targets/libxml2
+++ CONFIG_FILE=/workspaces/libfuzz/targets/libxml2/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/libxml2/
++ TARGET=/workspaces/libfuzz/analysis/libxml2/
++ export WORK=/workspaces/libfuzz/analysis/libxml2//work
++ WORK=/workspaces/libfuzz/analysis/libxml2//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/libxml2/config.sh
+++ REPO_URL=https://github.com/GNOME/libxml2.git
+++ REPO_COMMIT=c94eb0210183b9d7cb43f8e7fddc6be55843ef49
+++ BC_FILE_NAME=libxml2.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/libxml2//work
+++ mkdir -p /workspaces/libfuzz/analysis/libxml2//work/lib /workspaces/libfuzz/analysis/libxml2//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libxml2//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libxml2//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/libxml2//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/libxml2//work/apipass
+++ touch /workspaces/libfuzz/analysis/libxml2//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/libxml2//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/libxml2//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/libxml2//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/libxml2//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/libxml2//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libxml2.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/libxml2//work/lib/libxml2.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/libxml2//work/lib/libxml2.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/libxml2//work/lib/libxml2.a
+Writing output to /workspaces/libfuzz/analysis/libxml2/work/lib/libxml2.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/libxml2/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/libxml2/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/libxml2//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/libxml2//work/include -t libxml2 -p /workspaces/libfuzz/targets/libxml2/public_headers.txt -e /workspaces/libfuzz/analysis/libxml2//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/libxml2//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/libxml2//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/libxml2//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/libxml2//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/libxml2//work/lib/libxml2.a.bc -target libxml2 -interface /workspaces/libfuzz/analysis/libxml2//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/libxml2//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/libxml2//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/libxml2//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found

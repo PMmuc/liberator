@@ -55,7 +55,7 @@ for project in "${PROJECTS[@]}"; do
   DOCKER_BUILDKIT=1 docker build \
     --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
     --build-arg target_name="$project" \
-    -t "${IMG_NAME}-${project}_new" --target libfuzzpp_coverage_new \
+    -t "${IMG_NAME}-${project}" --target libfuzzpp_coverage_new \
     -f "$LIBPP/Dockerfile" "$LIBPP"
   set +x
 done
@@ -86,7 +86,7 @@ for project in "${PROJECTS[@]}"; do
           COVERAGE_FOLDER="${PROJECT_FOLDER}/iter_${i}/coverage_data"
         fi
 
-        export CONTAINER_NAME="${IMG_NAME}-${project}_new-${COV_ID}"
+        export CONTAINER_NAME="${IMG_NAME}-${project}-${COV_ID}"
 
         while [[ $(count_docker_running) -eq ${MAX_CPUs} ]]; do
           # echo "sleep 1m"
@@ -116,7 +116,7 @@ for project in "${PROJECTS[@]}"; do
           ${ADDITIONAL_OPTION} \
           -v $(pwd)/..:/workspaces/libfuzz \
           --mount type=tmpfs,destination=/tmpfs \
-          "${IMG_NAME}-${project}_new"
+          "${IMG_NAME}-${project}"
 
         COV_ID=$((COV_ID + 1))
 

@@ -1,0 +1,2684 @@
++ export TARGET_NAME=minijail
++ TARGET_NAME=minijail
++ TARGET_DIR=/workspaces/libfuzz/analysis/minijail
++ WORK=/workspaces/libfuzz/analysis/minijail/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/minijail
++ echo 'Start analysis'
+Start analysis
+Analysing minijail
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmpd2xf7glf.cc
+['minijail', '*']
+['void']
+['minijail', '*']
+['__uid_t']
+['void']
+['minijail', '*']
+['__gid_t']
+['void']
+['minijail', '*']
+['unsigned', 'long']
+['const', 'gid_t', '*']
+['void']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['bool']
+['void']
+['minijail', '*']
+['bool']
+['bool']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['const', 'sock_fprog', '*']
+['void']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['int']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['__uint64_t']
+['void']
+['minijail', '*']
+['__uint64_t']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['__uint64_t']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['unsigned', 'long']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['bool']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['int']
+['__rlim_t']
+['__rlim_t']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['bool']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['__uint16_t']
+['bool']
+['const', 'minijail', '*']
+['int']
+['minijail', '*']
+['int']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['minijail', '*']
+['void']
+['minijail', '*']
+['unsigned', 'long']
+['void']
+['minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['unsigned', 'long']
+['const', 'char', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['unsigned', 'long']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['int']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['unsigned', 'long']
+['int']
+['minijail', '*']
+['void', '*']
+['minijail_hook_event_t']
+['int']
+['minijail', '*']
+['int']
+['int']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['void']
+['const', 'minijail', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['char', '*', 'const', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['pid_t', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['int', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['pid_t', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['char', '*', 'const', '*']
+['pid_t', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int']
+['minijail', '*']
+['int']
+['char', '*', 'const', '*']
+['char', '*', 'const', '*']
+['pid_t', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['pid_t', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['int']
+['minijail', '*']
+['const', 'char', '*']
+['char', '*', 'const', '*']
+['char', '*', 'const', '*']
+['pid_t', '*']
+['int', '*']
+['int', '*']
+['int', '*']
+['__pid_t']
+['minijail', '*']
+['int']
+['minijail', '*']
+['int']
+['minijail', '*']
+['void']
+['minijail', '*']
+['int']
+['const', 'minijail', '*']
+['minijail', '*']
+['void']
+['int']
+['int']
+['const', 'char', '*']
+['const', 'minijail', '*']
+['long']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+[INFO] Analysing target: minijail
+[INFO] Analyze functions in /workspaces/libfuzz/analysis/minijail//work/apipass/apis_clang.json
+[INFO] Loading library...
+[INFO] Done
+
+*********General Stats***************
+################ (program : libminijail.pie.a.bc)###############
+AddrsNum            7049
+BBWith2Succ         1063
+BBWith3Succ         19
+CallsNum            242
+ConstArrayObj       4
+ConstStructObj      1
+ConstantObj         0
+CopysNum            88
+FIObjNum            368
+FSObjNum            247
+FunctionObjs        351
+GepsNum             1292
+GlobalObjs          15
+HeapObjs            109
+IndCallSites        5
+LoadsNum            1190
+MaxStructSize       18
+NonPtrObj           562
+ReturnsNum          246
+StackObjs           140
+StoresNum           4557
+TotalCallSite       1702
+TotalFieldObjects   179
+TotalObjects        795
+TotalPTASVFStmts    12153
+TotalPointers       17906
+TotalSVFStmts       18698
+VarArrayObj         26
+VarStructObj        63
+----------------Time and memory stats--------------------
+LLVMIRTime          0.179
+SVFIRTime           0.219
+SymbolTableTime     0.02
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : libminijail.pie.a.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   4
+MaxNodeInCycle      1
+NodeInCycle         4
+TotalCycle          4
+TotalEdge           1724
+TotalNode           351
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libminijail.pie.a.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.697405
+AvgIn/OutCopyEdge   0.558835
+AvgIn/OutEdge       1.59103
+AvgIn/OutLoadEdge   0.0536846
+AvgIn/OutStoreEdge  0.281101
+AvgPtsSetSize       0.575103
+AvgTopLvlPtsSize    1.22543
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    24864
+MemoryUsageVmsize   24452
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           0.175
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       7049
+CopyProcessed       3837
+DummyFieldPtrs      76
+FieldObjs           179
+GepProcessed        901
+IndCallSites        5
+IndEdgeSolved       5
+LoadProcessed       1088
+LocalVarInRecur     13
+MaxInAddrEdge       1
+MaxInCopyEdge       2058
+MaxInLoadEdge       12
+MaxInStoreEdge      2058
+MaxNodesInSCC       44
+MaxOutAddrEdge      6435
+MaxOutCopyEdge      79
+MaxOutLoadEdge      8
+MaxOutStoreEdge     52
+MaxPtsSetSize       13
+MemObjects          795
+NodesInCycles       152
+NullPointer         260
+NumOfAddrs          7041
+NumOfCGEdge         9022
+NumOfCGNode         10338
+NumOfCopys          4393
+NumOfFieldExpand    0
+NumOfGeps           1249
+NumOfLoads          542
+NumOfSCCDetect      5
+NumOfSFRs           0
+NumOfStores         2838
+NumOfValidNode      10096
+NumOfValidObjNode   733
+Pointers            17906
+PointsToBlkPtr      0
+PointsToConstPtr    8
+SolveIterations     5
+StoreProcessed      3126
+TotalCycleNum       21
+TotalObjects        795
+TotalPWCCycleNum    5
+TotalPointers       17906
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libminijail.pie.a.bc)###############
+UniquePointsToSets       969
+TotalUnions              12348
+PropertyUnions           11404
+UniqueUnions             184
+LookupUnions             396
+PreemptiveUnions         364
+TotalComplements         51716
+PropertyComplements      51517
+UniqueComplements        33
+LookupComplements        133
+PreemptiveComplements    33
+TotalIntersections       4092
+PropertyIntersections    3883
+UniqueIntersections      26
+LookupIntersections      95
+PreemptiveIntersections  88
+#######################################################
+[INFO] Points-to analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libminijail.pie.a.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1.56263
+GenMUCHITime        0.005
+GenRegionTime       0.028
+InsertPHITime       0.002
+SSARenameTime       0.005
+TotalMSSATime       0.041
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        312
+CSChiNode           598
+CSHasChi            248
+CSHasMu             547
+CSMuNode            1177
+FunEntryChi         861
+FunHasEntryChi      153
+FunHasRetMu         238
+FunRetMu            853
+LoadHasMu           1190
+LoadMuNode          752
+MSSAPhi             1187
+MaxRegSize          16
+MemRegions          471
+StoreChiNode        879
+StoreHasChi         1043
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : libminijail.pie.a.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0.011
+AvgWeight           1.87217
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.018
+OptTime             0
+TLNodeTime          0
+TotalTime           0.029
+----------------Numbers stats----------------------------
+ActualIn            1177
+ActualOut           598
+ActualParam         3384
+ActualRet           814
+Addr                7049
+AvgInDegree         1
+AvgIndInDeg         1
+AvgIndOutDeg        1
+AvgOutDegree        1
+Copy                88
+DirectCallEdge      1633
+DirectEdge          19657
+DirectRetEdge       251
+FormalIn            861
+FormalOut           853
+FormalParam         524
+FormalRet           152
+Gep                 1292
+IndCallEdge         1544
+IndRetEdge          612
+IndirectEdge        8425
+IndirectEdgeLabels  15773
+Load                1190
+MSSAPhi             1187
+MaxInDegree         232
+MaxIndInDeg         164
+MaxIndOutDeg        59
+MaxOutDegree        2058
+PHI                 636
+Store               4557
+TotalEdge           28082
+TotalNode           27761
+#######################################################
+------- CONFIG ---------
+	Trace Indirect Jumps: true
+	Output Metrics: true
+	Target: minijail
+
+	Interface file: /workspaces/libfuzz/analysis/minijail//work/apipass/apis_clang.json----------------------
+[INFO] CallGraph: 351 functions in 351 SCCs
+[SCC] top 10 largest SCCs (biggest first):
+[SCC] scc=157 num functions=1 formals=8 num direct edges=1 num indirect edges=0
+[SCC] scc=125 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=122 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=121 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=124 num functions=1 formals=7 num direct edges=0 num indirect edges=0
+[SCC] scc=120 num functions=1 formals=7 num direct edges=0 num indirect edges=0
+[SCC] scc=74 num functions=1 formals=6 num direct edges=0 num indirect edges=0
+[SCC] scc=154 num functions=1 formals=6 num direct edges=0 num indirect edges=0
+[SCC] scc=152 num functions=1 formals=6 num direct edges=0 num indirect edges=0
+[SCC] scc=218 num functions=1 formals=5 num direct edges=0 num indirect edges=0
+[SCC] direct edges only: largest=1 functions (0 formals), 0 cyclic components
+[SCC] signature-filtered:largest=1 functions (0 formals),0 cyclic components
+[IND] num of indirect callsites=1
+[IND] bpf_arg_comp(cs=9352) targets=5-> largest=1 functions (0 formals)
+[IND] removing top 1 indirect callsites. Remaining largest SCC=1 (with0 formals), with 0 cyclic components
+[INFO 1/351 funcs, 1/351 SCCs] callgraph: free
+[INFO 2/351 funcs, 2/351 SCCs] callgraph: minijail_preenter
+[INFO 3/351 funcs, 3/351 SCCs] callgraph: mount_has_bind_flag
+[INFO 4/351 funcs, 4/351 SCCs] callgraph: mount_has_readonly_flag
+[INFO 5/351 funcs, 5/351 SCCs] callgraph: mount_events_allowed
+[INFO 6/351 funcs, 6/351 SCCs] callgraph: llvm.memset.p0.i64
+[INFO 7/351 funcs, 7/351 SCCs] callgraph: minijail_preexec
+[INFO 8/351 funcs, 8/351 SCCs] callgraph: calloc
+[INFO 9/351 funcs, 9/351 SCCs] callgraph: minijail_new
+[INFO 10/351 funcs, 10/351 SCCs] callgraph: getpid
+[INFO 11/351 funcs, 11/351 SCCs] callgraph: llvm.lifetime.start.p0
+[INFO 12/351 funcs, 12/351 SCCs] callgraph: llvm.va_start.p0
+[INFO 13/351 funcs, 13/351 SCCs] callgraph: llvm.va_copy.p0
+[INFO 14/351 funcs, 14/351 SCCs] callgraph: __vsyslog_chk
+[INFO 15/351 funcs, 15/351 SCCs] callgraph: __vdprintf_chk
+[INFO 16/351 funcs, 16/351 SCCs] callgraph: llvm.va_end.p0
+[INFO 17/351 funcs, 17/351 SCCs] callgraph: llvm.lifetime.end.p0
+[INFO 18/351 funcs, 18/351 SCCs] callgraph: _ZL7dprintfiPKcU25pass_dynamic_object_size1z
+[INFO 19/351 funcs, 19/351 SCCs] callgraph: __vsnprintf_chk
+[INFO 20/351 funcs, 20/351 SCCs] callgraph: alias
+[INFO 21/351 funcs, 21/351 SCCs] callgraph: abort
+[INFO 22/351 funcs, 22/351 SCCs] callgraph: do_fatal_log
+[INFO 23/351 funcs, 23/351 SCCs] callgraph: minijail_change_uid
+[INFO 24/351 funcs, 24/351 SCCs] callgraph: minijail_change_gid
+[INFO 25/351 funcs, 25/351 SCCs] callgraph: minijail_set_supplementary_gids
+[INFO 26/351 funcs, 26/351 SCCs] callgraph: minijail_keep_supplementary_gids
+[INFO 27/351 funcs, 27/351 SCCs] callgraph: sysconf
+[INFO 28/351 funcs, 28/351 SCCs] callgraph: malloc
+[INFO 29/351 funcs, 29/351 SCCs] callgraph: getpwnam_r
+[INFO 30/351 funcs, 30/351 SCCs] callgraph: lookup_user
+[INFO 31/351 funcs, 31/351 SCCs] callgraph: strdup
+[INFO 32/351 funcs, 32/351 SCCs] callgraph: minijail_change_user
+[INFO 33/351 funcs, 33/351 SCCs] callgraph: getgrnam_r
+[INFO 34/351 funcs, 34/351 SCCs] callgraph: lookup_group
+[INFO 35/351 funcs, 35/351 SCCs] callgraph: minijail_change_group
+[INFO 36/351 funcs, 36/351 SCCs] callgraph: minijail_use_seccomp
+[INFO 37/351 funcs, 37/351 SCCs] callgraph: minijail_no_new_privs
+[INFO 38/351 funcs, 38/351 SCCs] callgraph: minijail_use_seccomp_filter
+[INFO 39/351 funcs, 39/351 SCCs] callgraph: fopen64
+[INFO 40/351 funcs, 40/351 SCCs] callgraph: do_log
+[INFO 41/351 funcs, 41/351 SCCs] callgraph: getline
+[INFO 42/351 funcs, 42/351 SCCs] callgraph: strstr
+[INFO 43/351 funcs, 43/351 SCCs] callgraph: fclose
+[INFO 44/351 funcs, 44/351 SCCs] callgraph: seccomp_action_is_available
+[INFO 45/351 funcs, 45/351 SCCs] callgraph: seccomp_ret_log_available
+[INFO 46/351 funcs, 46/351 SCCs] callgraph: minijail_set_seccomp_filter_tsync
+[INFO 47/351 funcs, 47/351 SCCs] callgraph: minijail_set_seccomp_filter_allow_speculation
+[INFO 48/351 funcs, 48/351 SCCs] callgraph: minijail_log_seccomp_filter_failures
+[INFO 49/351 funcs, 49/351 SCCs] callgraph: minijail_set_using_minimalistic_mountns
+[INFO 50/351 funcs, 50/351 SCCs] callgraph: minijail_set_enable_new_sessions
+[INFO 51/351 funcs, 51/351 SCCs] callgraph: minijail_set_enable_default_runtime
+[INFO 52/351 funcs, 52/351 SCCs] callgraph: minijail_get_enable_default_runtime
+[INFO 53/351 funcs, 53/351 SCCs] callgraph: syscall
+[INFO 54/351 funcs, 54/351 SCCs] callgraph: landlock_create_ruleset
+[INFO 55/351 funcs, 55/351 SCCs] callgraph: minijail_is_fs_restriction_available
+[INFO 56/351 funcs, 56/351 SCCs] callgraph: minijail_disable_fs_restrictions
+[INFO 57/351 funcs, 57/351 SCCs] callgraph: minijail_set_enable_profile_fs_restrictions
+[INFO 58/351 funcs, 58/351 SCCs] callgraph: add_fs_restriction_path
+[INFO 59/351 funcs, 59/351 SCCs] callgraph: minijail_enable_default_fs_restrictions
+[INFO 60/351 funcs, 60/351 SCCs] callgraph: minijail_add_minimalistic_mountns_fs_rules
+[INFO 61/351 funcs, 61/351 SCCs] callgraph: minijail_add_fs_restriction_rx
+[INFO 62/351 funcs, 62/351 SCCs] callgraph: minijail_add_fs_restriction_advanced_rw
+[INFO 63/351 funcs, 63/351 SCCs] callgraph: minijail_add_fs_restriction_edit
+[INFO 64/351 funcs, 64/351 SCCs] callgraph: minijail_add_fs_restriction_ro
+[INFO 65/351 funcs, 65/351 SCCs] callgraph: minijail_add_fs_restriction_rw
+[INFO 66/351 funcs, 66/351 SCCs] callgraph: minijail_use_caps
+[INFO 67/351 funcs, 67/351 SCCs] callgraph: minijail_capbset_drop
+[INFO 68/351 funcs, 68/351 SCCs] callgraph: minijail_set_ambient_caps
+[INFO 69/351 funcs, 69/351 SCCs] callgraph: minijail_reset_signal_mask
+[INFO 70/351 funcs, 70/351 SCCs] callgraph: minijail_reset_signal_handlers
+[INFO 71/351 funcs, 71/351 SCCs] callgraph: minijail_namespace_vfs
+[INFO 72/351 funcs, 72/351 SCCs] callgraph: __open64_2
+[INFO 73/351 funcs, 73/351 SCCs] callgraph: minijail_namespace_enter_vfs
+[INFO 74/351 funcs, 74/351 SCCs] callgraph: minijail_new_session_keyring
+[INFO 75/351 funcs, 75/351 SCCs] callgraph: minijail_skip_setting_securebits
+[INFO 76/351 funcs, 76/351 SCCs] callgraph: minijail_remount_mode
+[INFO 77/351 funcs, 77/351 SCCs] callgraph: minijail_skip_remount_private
+[INFO 78/351 funcs, 78/351 SCCs] callgraph: minijail_namespace_pids
+[INFO 79/351 funcs, 79/351 SCCs] callgraph: minijail_namespace_pids_rw_proc
+[INFO 80/351 funcs, 80/351 SCCs] callgraph: minijail_namespace_ipc
+[INFO 81/351 funcs, 81/351 SCCs] callgraph: minijail_namespace_uts
+[INFO 82/351 funcs, 82/351 SCCs] callgraph: minijail_namespace_set_hostname
+[INFO 83/351 funcs, 83/351 SCCs] callgraph: minijail_namespace_net_loopback
+[INFO 84/351 funcs, 84/351 SCCs] callgraph: minijail_namespace_net
+[INFO 85/351 funcs, 85/351 SCCs] callgraph: minijail_namespace_enter_net
+[INFO 86/351 funcs, 86/351 SCCs] callgraph: minijail_namespace_cgroups
+[INFO 87/351 funcs, 87/351 SCCs] callgraph: minijail_close_open_fds
+[INFO 88/351 funcs, 88/351 SCCs] callgraph: minijail_remount_proc_readonly
+[INFO 89/351 funcs, 89/351 SCCs] callgraph: minijail_namespace_user
+[INFO 90/351 funcs, 90/351 SCCs] callgraph: minijail_namespace_user_disable_setgroups
+[INFO 91/351 funcs, 91/351 SCCs] callgraph: minijail_uidmap
+[INFO 92/351 funcs, 92/351 SCCs] callgraph: minijail_gidmap
+[INFO 93/351 funcs, 93/351 SCCs] callgraph: minijail_inherit_usergroups
+[INFO 94/351 funcs, 94/351 SCCs] callgraph: minijail_run_as_init
+[INFO 95/351 funcs, 95/351 SCCs] callgraph: minijail_enter_chroot
+[INFO 96/351 funcs, 96/351 SCCs] callgraph: minijail_enter_pivot_root
+[INFO 97/351 funcs, 97/351 SCCs] callgraph: strcmp
+[INFO 98/351 funcs, 98/351 SCCs] callgraph: strlen
+[INFO 99/351 funcs, 99/351 SCCs] callgraph: strncmp
+[INFO 100/351 funcs, 100/351 SCCs] callgraph: __vasprintf_chk
+[INFO 101/351 funcs, 101/351 SCCs] callgraph: _ZL8asprintfPPcU25pass_dynamic_object_size1PKcz.237
+[INFO 102/351 funcs, 102/351 SCCs] callgraph: path_join
+[INFO 103/351 funcs, 103/351 SCCs] callgraph: minijail_get_original_path
+[INFO 104/351 funcs, 104/351 SCCs] callgraph: minijail_mount_dev
+[INFO 105/351 funcs, 105/351 SCCs] callgraph: minijail_mount_tmp
+[INFO 106/351 funcs, 106/351 SCCs] callgraph: minijail_mount_tmp_size
+[INFO 107/351 funcs, 107/351 SCCs] callgraph: minijail_write_pid_file
+[INFO 108/351 funcs, 108/351 SCCs] callgraph: minijail_add_to_cgroup
+[INFO 109/351 funcs, 109/351 SCCs] callgraph: minijail_rlimit
+[INFO 110/351 funcs, 110/351 SCCs] callgraph: minijail_forward_signals
+[INFO 111/351 funcs, 111/351 SCCs] callgraph: minijail_create_session
+[INFO 112/351 funcs, 112/351 SCCs] callgraph: minijail_add_fs_restriction_access_rights
+[INFO 113/351 funcs, 113/351 SCCs] callgraph: minijail_is_fs_restriction_ruleset_initialized
+[INFO 114/351 funcs, 114/351 SCCs] callgraph: minijail_mount_with_data
+[INFO 115/351 funcs, 115/351 SCCs] callgraph: minijail_mount
+[INFO 116/351 funcs, 116/351 SCCs] callgraph: minijail_bind
+[INFO 117/351 funcs, 117/351 SCCs] callgraph: minijail_add_remount
+[INFO 118/351 funcs, 118/351 SCCs] callgraph: minijail_add_hook
+[INFO 119/351 funcs, 119/351 SCCs] callgraph: minijail_preserve_fd
+[INFO 120/351 funcs, 120/351 SCCs] callgraph: minijail_set_preload_path
+[INFO 121/351 funcs, 121/351 SCCs] callgraph: prctl
+[INFO 122/351 funcs, 122/351 SCCs] callgraph: __errno_location
+[INFO 123/351 funcs, 123/351 SCCs] callgraph: seccomp_can_softfail
+[INFO 124/351 funcs, 124/351 SCCs] callgraph: sys_seccomp
+[INFO 125/351 funcs, 125/351 SCCs] callgraph: seccomp_filter_flags_available
+[INFO 126/351 funcs, 126/351 SCCs] callgraph: seccomp_should_use_filters
+[INFO 127/351 funcs, 127/351 SCCs] callgraph: seccomp_ret_kill_process_available
+[INFO 128/351 funcs, 128/351 SCCs] callgraph: bpf_validate_arch
+[INFO 129/351 funcs, 129/351 SCCs] callgraph: lookup_syscall
+[INFO 130/351 funcs, 130/351 SCCs] callgraph: bpf_allow_syscall
+[INFO 131/351 funcs, 131/351 SCCs] callgraph: append_allow_syscall
+[INFO 132/351 funcs, 132/351 SCCs] callgraph: __getdelim
+[INFO 133/351 funcs, 133/351 SCCs] callgraph: realloc
+[INFO 134/351 funcs, 134/351 SCCs] callgraph: llvm.usub.sat.i64
+[INFO 135/351 funcs, 135/351 SCCs] callgraph: __memcpy_chk
+[INFO 136/351 funcs, 136/351 SCCs] callgraph: getmultiline
+getmultiline
+[FIXPOINT] scc=204 iter=1 formals=3 total_ats=5 exits=1 max_field_depth=0
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=178 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=180/0
+[FIXPOINT] scc=204 iter=2 formals=3 total_ats=5 exits=1 max_field_depth=0
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=181 | formal_no_di=8 compose_null_di=0 | gep_bu(ok/null)=185/0
+[process_scc] Evaluated Function: getmultiline(Formal Param ID: 18406)
+Effects: ATS 3
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: getmultiline(Formal Param ID: 18407)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: getmultiline(Formal Param ID: 18408)
+Effects: ATS 0
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 137/351 funcs, 137/351 SCCs] callgraph: __ctype_b_loc
+[INFO 138/351 funcs, 138/351 SCCs] callgraph: strip
+[INFO 139/351 funcs, 139/351 SCCs] callgraph: strsep
+[INFO 140/351 funcs, 140/351 SCCs] callgraph: parse_include_statement
+[INFO 141/351 funcs, 141/351 SCCs] callgraph: insert_and_check_duplicate_syscall
+[INFO 142/351 funcs, 142/351 SCCs] callgraph: lookup_syscall_name
+[INFO 143/351 funcs, 143/351 SCCs] callgraph: strndup
+[INFO 144/351 funcs, 144/351 SCCs] callgraph: bpf_label_id
+[INFO 145/351 funcs, 145/351 SCCs] callgraph: bpf_allow_syscall_args
+[INFO 146/351 funcs, 146/351 SCCs] callgraph: strtok_r
+[INFO 147/351 funcs, 147/351 SCCs] callgraph: strchr
+[INFO 148/351 funcs, 148/351 SCCs] callgraph: __isoc23_strtol
+[INFO 149/351 funcs, 149/351 SCCs] callgraph: __isoc23_strtoul
+[INFO 150/351 funcs, 150/351 SCCs] callgraph: parse_single_constant
+[INFO 151/351 funcs, 151/351 SCCs] callgraph: parse_constant
+parse_constant
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[FIXPOINT] scc=191 iter=1 formals=2 total_ats=5 exits=1 max_field_depth=1
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=199 | formal_no_di=18 compose_null_di=0 | gep_bu(ok/null)=228/0
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=parse_constant prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[FIXPOINT] scc=191 iter=2 formals=2 total_ats=5 exits=1 max_field_depth=1
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=201 | formal_no_di=18 compose_null_di=0 | gep_bu(ok/null)=239/0
+[process_scc] Evaluated Function: parse_constant(Formal Param ID: 18464)
+Effects: ATS 3
+array 1, malloc 0, path 0, depends ''
+Exit Count: 1
+
+[process_scc] Evaluated Function: parse_constant(Formal Param ID: 18465)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 152/351 funcs, 152/351 SCCs] callgraph: append_ret_errno
+[INFO 153/351 funcs, 153/351 SCCs] callgraph: append_ret_kill
+[INFO 154/351 funcs, 154/351 SCCs] callgraph: append_ret_kill_process
+[INFO 155/351 funcs, 155/351 SCCs] callgraph: append_ret_trap
+[INFO 156/351 funcs, 156/351 SCCs] callgraph: compile_errno
+[INFO 157/351 funcs, 157/351 SCCs] callgraph: tokenize
+[INFO 158/351 funcs, 158/351 SCCs] callgraph: strtol
+[INFO 159/351 funcs, 159/351 SCCs] callgraph: str_to_op
+[INFO 160/351 funcs, 160/351 SCCs] callgraph: _ZL8snprintfPcU25pass_dynamic_object_size1mPKcz.10
+[INFO 161/351 funcs, 161/351 SCCs] callgraph: group_end_lbl
+[INFO 162/351 funcs, 162/351 SCCs] callgraph: bpf_comp_jeq64
+[INFO 163/351 funcs, 163/351 SCCs] callgraph: bpf_comp_jgt64
+[INFO 164/351 funcs, 164/351 SCCs] callgraph: bpf_comp_jge64
+[INFO 165/351 funcs, 165/351 SCCs] callgraph: bpf_comp_jset64
+[INFO 166/351 funcs, 166/351 SCCs] callgraph: bpf_comp_jin
+[INFO 167/351 funcs, 167/351 SCCs] callgraph: bpf_arg_comp
+[INFO 168/351 funcs, 168/351 SCCs] callgraph: append_filter_block
+[INFO 169/351 funcs, 169/351 SCCs] callgraph: compile_atom
+[ADDROF] OK callee=strtol prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/0) suffix=. kind=read
+[INFO 170/351 funcs, 170/351 SCCs] callgraph: append_ret_log
+[INFO 171/351 funcs, 171/351 SCCs] callgraph: compile_policy_line
+[INFO 172/351 funcs, 172/351 SCCs] callgraph: feof
+[INFO 173/351 funcs, 173/351 SCCs] callgraph: compile_file
+compile_file
+[FIXPOINT] scc=157 iter=1 formals=8 total_ats=15 exits=0 max_field_depth=1
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=270 | formal_no_di=21 compose_null_di=0 | gep_bu(ok/null)=424/0
+[FIXPOINT] scc=157 iter=2 formals=8 total_ats=15 exits=0 max_field_depth=1
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=278 | formal_no_di=21 compose_null_di=0 | gep_bu(ok/null)=442/0
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18466)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18467)
+Effects: ATS 0
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18468)
+Effects: ATS 5
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18469)
+Effects: ATS 3
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18470)
+Effects: ATS 2
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18471)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18472)
+Effects: ATS 2
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: compile_file(Formal Param ID: 18473)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 174/351 funcs, 174/351 SCCs] callgraph: bpf_resolve_jumps
+[INFO 175/351 funcs, 175/351 SCCs] callgraph: free_label_strings
+[INFO 176/351 funcs, 176/351 SCCs] callgraph: compile_filter
+[INFO 177/351 funcs, 177/351 SCCs] callgraph: parse_seccomp_filters
+[INFO 178/351 funcs, 178/351 SCCs] callgraph: minijail_parse_seccomp_filters
+[INFO 179/351 funcs, 179/351 SCCs] callgraph: fdopen
+[INFO 180/351 funcs, 180/351 SCCs] callgraph: _ZL8asprintfPPcU25pass_dynamic_object_size1PKcz
+[INFO 181/351 funcs, 181/351 SCCs] callgraph: realpath
+[INFO 182/351 funcs, 182/351 SCCs] callgraph: minijail_parse_seccomp_filters_from_fd
+[INFO 183/351 funcs, 183/351 SCCs] callgraph: llvm.memcpy.p0.p0.i64
+[INFO 184/351 funcs, 184/351 SCCs] callgraph: minijail_set_seccomp_filters
+[INFO 185/351 funcs, 185/351 SCCs] callgraph: minijail_use_alt_syscall
+[INFO 186/351 funcs, 186/351 SCCs] callgraph: llvm.umin.i64
+[INFO 187/351 funcs, 187/351 SCCs] callgraph: minijail_marshal_helper
+[INFO 188/351 funcs, 188/351 SCCs] callgraph: minijail_size
+[INFO 189/351 funcs, 189/351 SCCs] callgraph: minijail_marshal
+[INFO 190/351 funcs, 190/351 SCCs] callgraph: strnlen
+[INFO 191/351 funcs, 191/351 SCCs] callgraph: consumestr
+[INFO 192/351 funcs, 192/351 SCCs] callgraph: consumebytes
+[INFO 193/351 funcs, 193/351 SCCs] callgraph: free_mounts_list
+[INFO 194/351 funcs, 194/351 SCCs] callgraph: free_remounts_list
+[INFO 195/351 funcs, 195/351 SCCs] callgraph: free_fs_rules_list
+[INFO 196/351 funcs, 196/351 SCCs] callgraph: minijail_unmarshal
+[INFO 197/351 funcs, 197/351 SCCs] callgraph: __isoc99_fscanf
+[INFO 198/351 funcs, 198/351 SCCs] callgraph: get_last_valid_cap
+[INFO 199/351 funcs, 199/351 SCCs] callgraph: setns
+[INFO 200/351 funcs, 200/351 SCCs] callgraph: close
+[INFO 201/351 funcs, 201/351 SCCs] callgraph: unshare
+[INFO 202/351 funcs, 202/351 SCCs] callgraph: mount
+[INFO 203/351 funcs, 203/351 SCCs] callgraph: sethostname
+[INFO 204/351 funcs, 204/351 SCCs] callgraph: socket
+[INFO 205/351 funcs, 205/351 SCCs] callgraph: __strcpy_chk
+[INFO 206/351 funcs, 206/351 SCCs] callgraph: ioctl
+[INFO 207/351 funcs, 207/351 SCCs] callgraph: config_net_loopback
+[INFO 208/351 funcs, 208/351 SCCs] callgraph: mkdtemp
+[INFO 209/351 funcs, 209/351 SCCs] callgraph: rmdir
+[INFO 210/351 funcs, 210/351 SCCs] callgraph: umask
+[INFO 211/351 funcs, 211/351 SCCs] callgraph: mknodat
+[INFO 212/351 funcs, 212/351 SCCs] callgraph: symlinkat
+[INFO 213/351 funcs, 213/351 SCCs] callgraph: mkdirat
+[INFO 214/351 funcs, 214/351 SCCs] callgraph: umount2
+[INFO 215/351 funcs, 215/351 SCCs] callgraph: stat64
+[INFO 216/351 funcs, 216/351 SCCs] callgraph: mkdir
+[INFO 217/351 funcs, 217/351 SCCs] callgraph: mkdir_p
+[INFO 218/351 funcs, 218/351 SCCs] callgraph: open64
+[INFO 219/351 funcs, 219/351 SCCs] callgraph: chown
+[INFO 220/351 funcs, 220/351 SCCs] callgraph: setup_mount_destination
+[INFO 221/351 funcs, 221/351 SCCs] callgraph: statvfs64
+[INFO 222/351 funcs, 222/351 SCCs] callgraph: get_mount_flags
+[INFO 223/351 funcs, 223/351 SCCs] callgraph: mount_one
+mount_one
+[FIXPOINT] scc=96 iter=1 formals=3 total_ats=3 exits=0 max_field_depth=0
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=330 | formal_no_di=24 compose_null_di=0 | gep_bu(ok/null)=674/0
+[FIXPOINT] scc=96 iter=2 formals=3 total_ats=3 exits=0 max_field_depth=0
+[DICHAIN] ok=0 fresh_break=0 poisoned=0 | formal_with_di=333 | formal_no_di=24 compose_null_di=0 | gep_bu(ok/null)=684/0
+[process_scc] Evaluated Function: mount_one(Formal Param ID: 18806)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: mount_one(Formal Param ID: 18807)
+Effects: ATS 1
+array 0, malloc 0, path 1, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: mount_one(Formal Param ID: 18808)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 224/351 funcs, 224/351 SCCs] callgraph: mount_dev_cleanup
+[INFO 225/351 funcs, 225/351 SCCs] callgraph: _exit
+[INFO 226/351 funcs, 226/351 SCCs] callgraph: chroot
+[INFO 227/351 funcs, 227/351 SCCs] callgraph: chdir
+[INFO 228/351 funcs, 228/351 SCCs] callgraph: fchdir
+[INFO 229/351 funcs, 229/351 SCCs] callgraph: _ZL8snprintfPcU25pass_dynamic_object_size1mPKcz
+[INFO 230/351 funcs, 230/351 SCCs] callgraph: llvm.umin.i32
+[INFO 231/351 funcs, 231/351 SCCs] callgraph: lock_securebits
+[INFO 232/351 funcs, 232/351 SCCs] callgraph: initgroups
+[INFO 233/351 funcs, 233/351 SCCs] callgraph: setgroups
+[INFO 234/351 funcs, 234/351 SCCs] callgraph: setresgid
+[INFO 235/351 funcs, 235/351 SCCs] callgraph: setresuid
+[INFO 236/351 funcs, 236/351 SCCs] callgraph: drop_ugid
+[INFO 237/351 funcs, 237/351 SCCs] callgraph: cap_get_proc
+[INFO 238/351 funcs, 238/351 SCCs] callgraph: cap_clear
+[INFO 239/351 funcs, 239/351 SCCs] callgraph: cap_set_flag
+[INFO 240/351 funcs, 240/351 SCCs] callgraph: cap_set_proc
+[INFO 241/351 funcs, 241/351 SCCs] callgraph: secure_noroot_set_and_locked
+[INFO 242/351 funcs, 242/351 SCCs] callgraph: cap_ambient_supported
+[INFO 243/351 funcs, 243/351 SCCs] callgraph: cap_free
+[INFO 244/351 funcs, 244/351 SCCs] callgraph: drop_caps
+[INFO 245/351 funcs, 245/351 SCCs] callgraph: sys_set_no_new_privs
+[INFO 246/351 funcs, 246/351 SCCs] callgraph: fstat64
+[INFO 247/351 funcs, 247/351 SCCs] callgraph: populate_ruleset_internal
+[INFO 248/351 funcs, 248/351 SCCs] callgraph: landlock_restrict_self
+[INFO 249/351 funcs, 249/351 SCCs] callgraph: apply_landlock_restrictions
+[INFO 250/351 funcs, 250/351 SCCs] callgraph: sigemptyset
+[INFO 251/351 funcs, 251/351 SCCs] callgraph: sigaddset
+[INFO 252/351 funcs, 252/351 SCCs] callgraph: sigaction
+[INFO 253/351 funcs, 253/351 SCCs] callgraph: sigprocmask
+[INFO 254/351 funcs, 254/351 SCCs] callgraph: llvm.smin.i32
+[INFO 255/351 funcs, 255/351 SCCs] callgraph: install_sigsys_handler
+[INFO 256/351 funcs, 256/351 SCCs] callgraph: signal
+[INFO 257/351 funcs, 257/351 SCCs] callgraph: set_seccomp_filter
+[INFO 258/351 funcs, 258/351 SCCs] callgraph: minijail_enter
+[INFO 259/351 funcs, 259/351 SCCs] callgraph: __read_chk
+[INFO 260/351 funcs, 260/351 SCCs] callgraph: minijail_from_fd
+[INFO 261/351 funcs, 261/351 SCCs] callgraph: write
+[INFO 262/351 funcs, 262/351 SCCs] callgraph: minijail_to_fd
+[INFO 263/351 funcs, 263/351 SCCs] callgraph: minijail_copy_jail
+[INFO 264/351 funcs, 264/351 SCCs] callgraph: fcntl64
+[INFO 265/351 funcs, 265/351 SCCs] callgraph: minijail_fd_is_open
+[INFO 266/351 funcs, 266/351 SCCs] callgraph: minijail_copy_env
+[INFO 267/351 funcs, 267/351 SCCs] callgraph: minijail_setenv
+[INFO 268/351 funcs, 268/351 SCCs] callgraph: minijail_getenv
+[INFO 269/351 funcs, 269/351 SCCs] callgraph: pipe
+[INFO 270/351 funcs, 270/351 SCCs] callgraph: fork
+[INFO 271/351 funcs, 271/351 SCCs] callgraph: __libc_current_sigrtmin
+[INFO 272/351 funcs, 272/351 SCCs] callgraph: __libc_current_sigrtmax
+[INFO 273/351 funcs, 273/351 SCCs] callgraph: __vfprintf_chk
+[INFO 274/351 funcs, 274/351 SCCs] callgraph: _ZL7fprintfP8_IO_FILEU25pass_dynamic_object_size1PKcz
+[INFO 275/351 funcs, 275/351 SCCs] callgraph: write_pid_to_path
+[INFO 276/351 funcs, 276/351 SCCs] callgraph: kill
+[INFO 277/351 funcs, 277/351 SCCs] callgraph: prlimit64
+[INFO 278/351 funcs, 278/351 SCCs] callgraph: _ZL8snprintfPcU25pass_dynamic_object_size1mPKcz.264
+[INFO 279/351 funcs, 279/351 SCCs] callgraph: write_proc_file
+[INFO 280/351 funcs, 280/351 SCCs] callgraph: sigtimedwait
+[INFO 281/351 funcs, 281/351 SCCs] callgraph: strerror
+[INFO 282/351 funcs, 282/351 SCCs] callgraph: llvm.stacksave.p0
+[INFO 283/351 funcs, 283/351 SCCs] callgraph: opendir
+[INFO 284/351 funcs, 284/351 SCCs] callgraph: dirfd
+[INFO 285/351 funcs, 285/351 SCCs] callgraph: readdir64
+[INFO 286/351 funcs, 286/351 SCCs] callgraph: closedir
+[INFO 287/351 funcs, 287/351 SCCs] callgraph: close_open_fds
+[INFO 288/351 funcs, 288/351 SCCs] callgraph: llvm.stackrestore.p0
+[INFO 289/351 funcs, 289/351 SCCs] callgraph: dup2
+[INFO 290/351 funcs, 290/351 SCCs] callgraph: ensure_no_fd_conflict
+[INFO 291/351 funcs, 291/351 SCCs] callgraph: wait_for_parent_setup
+[INFO 292/351 funcs, 292/351 SCCs] callgraph: enter_user_namespace
+[INFO 293/351 funcs, 293/351 SCCs] callgraph: isatty
+[INFO 294/351 funcs, 294/351 SCCs] callgraph: setsid
+[INFO 295/351 funcs, 295/351 SCCs] callgraph: minijail_free_env
+[INFO 296/351 funcs, 296/351 SCCs] callgraph: minijail_free_run_state
+[INFO 297/351 funcs, 297/351 SCCs] callgraph: wait
+[INFO 298/351 funcs, 298/351 SCCs] callgraph: init
+[INFO 299/351 funcs, 299/351 SCCs] callgraph: fexecve
+[INFO 300/351 funcs, 300/351 SCCs] callgraph: execve
+[INFO 301/351 funcs, 301/351 SCCs] callgraph: minijail_run_internal
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=ensure_no_fd_conflict prefix=.(minijail_run_state/1) suffix=(<unnamed di type>/1) suffix=. kind=write
+[INFO 302/351 funcs, 302/351 SCCs] callgraph: minijail_run
+[INFO 303/351 funcs, 303/351 SCCs] callgraph: forward_signal
+[INFO 304/351 funcs, 304/351 SCCs] callgraph: init_term
+[INFO 305/351 funcs, 305/351 SCCs] callgraph: minijail_run_env
+[INFO 306/351 funcs, 306/351 SCCs] callgraph: minijail_run_pid
+[INFO 307/351 funcs, 307/351 SCCs] callgraph: minijail_run_pipe
+[INFO 308/351 funcs, 308/351 SCCs] callgraph: minijail_run_pid_pipes
+[INFO 309/351 funcs, 309/351 SCCs] callgraph: minijail_run_env_pid_pipes
+[INFO 310/351 funcs, 310/351 SCCs] callgraph: minijail_run_fd_env_pid_pipes
+[INFO 311/351 funcs, 311/351 SCCs] callgraph: minijail_run_no_preload
+[INFO 312/351 funcs, 312/351 SCCs] callgraph: minijail_run_pid_pipes_no_preload
+[INFO 313/351 funcs, 313/351 SCCs] callgraph: minijail_run_env_pid_pipes_no_preload
+[INFO 314/351 funcs, 314/351 SCCs] callgraph: minijail_fork
+[INFO 315/351 funcs, 315/351 SCCs] callgraph: waitpid
+[INFO 316/351 funcs, 316/351 SCCs] callgraph: minijail_wait_internal
+[INFO 317/351 funcs, 317/351 SCCs] callgraph: minijail_kill
+[INFO 318/351 funcs, 318/351 SCCs] callgraph: minijail_wait
+[INFO 319/351 funcs, 319/351 SCCs] callgraph: minijail_destroy
+[INFO 320/351 funcs, 320/351 SCCs] callgraph: init_logging
+[INFO 321/351 funcs, 321/351 SCCs] callgraph: minijail_log_to_fd
+[INFO 0/97] processing return for minijail_add_fs_restriction_access_rights
+[INFO 1/97] processing return for minijail_add_fs_restriction_advanced_rw
+[INFO 2/97] processing return for minijail_add_fs_restriction_edit
+[INFO 3/97] processing return for minijail_add_fs_restriction_ro
+[INFO 4/97] processing return for minijail_add_fs_restriction_rw
+[INFO 5/97] processing return for minijail_add_fs_restriction_rx
+[INFO 6/97] processing return for minijail_add_hook
+[INFO 7/97] processing return for minijail_add_minimalistic_mountns_fs_rules
+[INFO 8/97] processing return for minijail_add_remount
+[INFO 9/97] processing return for minijail_add_to_cgroup
+[INFO 10/97] processing return for minijail_bind
+[INFO 11/97] processing return for minijail_capbset_drop
+[INFO 12/97] processing return for minijail_change_gid
+[INFO 13/97] processing return for minijail_change_group
+[INFO 14/97] processing return for minijail_change_uid
+[INFO 15/97] processing return for minijail_change_user
+[INFO 16/97] processing return for minijail_close_open_fds
+[INFO 17/97] processing return for minijail_copy_jail
+[INFO 18/97] processing return for minijail_create_session
+[INFO 19/97] processing return for minijail_destroy
+[INFO 20/97] processing return for minijail_disable_fs_restrictions
+[INFO 21/97] processing return for minijail_enable_default_fs_restrictions
+[INFO 22/97] processing return for minijail_enter
+[INFO 23/97] processing return for minijail_enter_chroot
+[INFO 24/97] processing return for minijail_enter_pivot_root
+[INFO 25/97] processing return for minijail_fork
+[INFO 26/97] processing return for minijail_forward_signals
+[INFO 27/97] processing return for minijail_get_enable_default_runtime
+[INFO 28/97] processing return for minijail_get_original_path
+[INFO 29/97] processing return for minijail_gidmap
+[INFO 30/97] processing return for minijail_inherit_usergroups
+[INFO 31/97] processing return for minijail_is_fs_restriction_available
+[INFO 32/97] processing return for minijail_is_fs_restriction_ruleset_initialized
+[INFO 33/97] processing return for minijail_keep_supplementary_gids
+[INFO 34/97] processing return for minijail_kill
+[INFO 35/97] processing return for minijail_log_seccomp_filter_failures
+[INFO 36/97] processing return for minijail_log_to_fd
+[INFO 37/97] processing return for minijail_mount
+[INFO 38/97] processing return for minijail_mount_dev
+[INFO 39/97] processing return for minijail_mount_tmp
+[INFO 40/97] processing return for minijail_mount_tmp_size
+[INFO 41/97] processing return for minijail_mount_with_data
+[INFO 42/97] processing return for minijail_namespace_cgroups
+[INFO 43/97] processing return for minijail_namespace_enter_net
+[INFO 44/97] processing return for minijail_namespace_enter_vfs
+[INFO 45/97] processing return for minijail_namespace_ipc
+[INFO 46/97] processing return for minijail_namespace_net
+[INFO 47/97] processing return for minijail_namespace_net_loopback
+[INFO 48/97] processing return for minijail_namespace_pids
+[INFO 49/97] processing return for minijail_namespace_pids_rw_proc
+[INFO 50/97] processing return for minijail_namespace_set_hostname
+[INFO 51/97] processing return for minijail_namespace_user
+[INFO 52/97] processing return for minijail_namespace_user_disable_setgroups
+[INFO 53/97] processing return for minijail_namespace_uts
+[INFO 54/97] processing return for minijail_namespace_vfs
+[INFO 55/97] processing return for minijail_new
+[INFO 56/97] processing return for minijail_new_session_keyring
+[INFO 57/97] processing return for minijail_no_new_privs
+[INFO 58/97] processing return for minijail_parse_seccomp_filters
+[INFO 59/97] processing return for minijail_parse_seccomp_filters_from_fd
+[INFO 60/97] processing return for minijail_preserve_fd
+[INFO 61/97] processing return for minijail_remount_mode
+[INFO 62/97] processing return for minijail_remount_proc_readonly
+[INFO 63/97] processing return for minijail_reset_signal_handlers
+[INFO 64/97] processing return for minijail_reset_signal_mask
+[INFO 65/97] processing return for minijail_rlimit
+[INFO 66/97] processing return for minijail_run
+[INFO 67/97] pro[INFO 322/351 funcs, 322/351 SCCs] callgraph: minijail_syscall_name
+cessing return for minijail_run_as_init
+[INFO 68/97] processing return for minijail_run_env
+[INFO 69/97] processing return for minijail_run_env_pid_pipes
+[INFO 70/97] processing return for minijail_run_env_pid_pipes_no_preload
+[INFO 71/97] processing return for minijail_run_fd_env_pid_pipes
+[INFO 72/97] processing return for minijail_run_no_preload
+[INFO 73/97] processing return for minijail_run_pid
+[INFO 74/97] processing return for minijail_run_pid_pipes
+[INFO 75/97] processing return for minijail_run_pid_pipes_no_preload
+[INFO 76/97] processing return for minijail_run_pipe
+[INFO 77/97] processing return for minijail_set_ambient_caps
+[INFO 78/97] processing return for minijail_set_enable_default_runtime
+[INFO 79/97] processing return for minijail_set_enable_new_sessions
+[INFO 80/97] processing return for minijail_set_enable_profile_fs_restrictions
+[INFO 81/97] processing return for minijail_set_preload_path
+[INFO 82/97] processing return for minijail_set_seccomp_filter_allow_speculation
+[INFO 83/97] processing return for minijail_set_seccomp_filter_tsync
+[INFO 84/97] processing return for minijail_set_seccomp_filters
+[INFO 85/97] processing return for minijail_set_supplementary_gids
+[INFO 86/97] processing return for minijail_set_using_minimalistic_mountns
+[INFO 87/97] processing return for minijail_skip_remount_private
+[INFO 88/97] processing return for minijail_skip_setting_securebits
+[INFO 89/97] processing return for minijail_syscall_name
+[INFO 90/97] processing return for minijail_uidmap
+[INFO 91/97] processing return for minijail_use_alt_syscall
+[INFO 92/97] processing return for minijail_use_caps
+[INFO 93/97] processing return for minijail_use_seccomp
+[INFO 94/97] processing return for minijail_use_seccomp_filter
+[INFO 95/97] processing return for minijail_wait
+[INFO 96/97] processing return for minijail_write_pid_file
+[INFO] Summary minijail_add_fs_restriction_access_rights:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 0 access types
+return: 0 access types
+[INFO] Summary minijail_add_fs_restriction_advanced_rw:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_fs_restriction_edit:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_fs_restriction_ro:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_fs_restriction_rw:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_fs_restriction_rx:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_hook:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_minimalistic_mountns_fs_rules:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_add_remount:
+param_0: 2 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary minijail_add_to_cgroup:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_bind:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 2 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary minijail_capbset_drop:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_change_gid:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_change_group:
+param_0: 2 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_change_uid:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_change_user:
+param_0: 2 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary minijail_close_open_fds:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_copy_jail:
+param_0: 2 access types
+param_1: 6 access types
+return: 0 access types
+[INFO] Summary minijail_create_session:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_destroy:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary minijail_disable_fs_restrictions:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_enable_default_fs_restrictions:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_enter:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_enter_chroot:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_enter_pivot_root:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_fork:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary minijail_forward_signals:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_get_enable_default_runtime:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary minijail_get_original_path:
+param_0: 2 access types
+param_1: 1 access types
+return: 4 access types
+[INFO] Summary minijail_gidmap:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_inherit_usergroups:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_is_fs_restriction_available:
+return: 0 access types
+[INFO] Summary minijail_is_fs_restriction_ruleset_initialized:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary minijail_keep_supplementary_gids:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_kill:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary minijail_log_seccomp_filter_failures:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_log_to_fd:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_mount:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 2 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary minijail_mount_dev:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_mount_tmp:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_mount_tmp_size:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_mount_with_data:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 2 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_cgroups:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_enter_net:
+param_0: 2 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_enter_vfs:
+param_0: 2 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_ipc:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_net:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_net_loopback:
+param_0: 2 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_pids:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_pids_rw_proc:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_set_hostname:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_user:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_user_disable_setgroups:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_uts:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_namespace_vfs:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_new:
+return: 4 access types
+[INFO] Summary minijail_new_session_keyring:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_no_new_privs:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_parse_seccomp_filters:
+param_0: 6 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary minijail_parse_seccomp_filters_from_fd:
+param_0: 6 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_preserve_fd:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary minijail_remount_mode:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_remount_proc_readonly:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_reset_signal_handlers:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_reset_signal_mask:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_rlimit:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary minijail_run:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary minijail_run_as_init:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_env:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary minijail_run_env_pid_pipes:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 2 access types
+param_5: 2 access types
+param_6: 2 access types
+param_7: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_env_pid_pipes_no_preload:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 2 access types
+param_5: 2 access types
+param_6: 2 access types
+param_7: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_fd_env_pid_pipes:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 2 access types
+param_5: 2 access types
+param_6: 2 access types
+param_7: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_no_preload:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary minijail_run_pid:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_pid_pipes:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 2 access types
+param_4: 2 access types
+param_5: 2 access types
+param_6: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_pid_pipes_no_preload:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 2 access types
+param_4: 2 access types
+param_5: 2 access types
+param_6: 2 access types
+return: 0 access types
+[INFO] Summary minijail_run_pipe:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 2 access types
+return: 0 access types
+[INFO] Summary minijail_set_ambient_caps:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_set_enable_default_runtime:
+param_0: 2 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_set_enable_new_sessions:
+param_0: 2 access types
+param_1: 0 access types
+return: 0 access types
+[INFO] Summary minijail_set_enable_profile_fs_restrictions:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_set_preload_path:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_set_seccomp_filter_allow_speculation:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_set_seccomp_filter_tsync:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_set_seccomp_filters:
+param_0: 6 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary minijail_set_supplementary_gids:
+param_0: 5 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary minijail_set_using_minimalistic_mountns:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_skip_remount_private:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary minijail_skip_setting_securebits:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_syscall_name:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_uidmap:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_use_alt_syscall:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_use_caps:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary minijail_use_seccomp:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_use_seccomp_filter:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary minijail_wait:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary minijail_write_pid_file:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                        202.54         1    202.54
+2. PAG Builder                              221.40         1    221.40
+3. Points-to Analysis                       234.81         1    234.81
+4. Full SVFG Build                          141.50         1    141.50
+Function 1: extract_parameter_metadata       35.36       202      0.18
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_access_rights      4.55         3      1.52
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_advanced_rw      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_edit      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_ro      0.09         2      0.04
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_rw      0.09         2      0.04
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_rx      0.09         2      0.04
+Function 1: extract_parameter_metadata: minijail_add_hook      0.50         4      0.12
+Function 1: extract_parameter_metadata: minijail_add_minimalistic_mountns_fs_rules      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_add_remount      0.14         3      0.05
+Function 1: extract_parameter_metadata: minijail_add_to_cgroup      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_bind      0.18         4      0.04
+Function 1: extract_parameter_metadata: minijail_capbset_drop      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_change_gid      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_change_group      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_change_uid      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_change_user      0.09         2      0.04
+Function 1: extract_parameter_metadata: minijail_close_open_fds      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_copy_jail     13.78         2      6.89
+Function 1: extract_parameter_metadata: minijail_create_session      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_destroy      6.35         1      6.35
+Function 1: extract_parameter_metadata: minijail_disable_fs_restrictions      0.06         1      0.06
+Function 1: extract_parameter_metadata: minijail_enable_default_fs_restrictions      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_enter      0.08         1      0.08
+Function 1: extract_parameter_metadata: minijail_enter_chroot      0.10         2      0.05
+Function 1: extract_parameter_metadata: minijail_enter_pivot_root      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_fork      0.16         1      0.16
+Function 1: extract_parameter_metadata: minijail_forward_signals      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_get_enable_default_runtime      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_get_original_path      0.10         2      0.05
+Function 1: extract_parameter_metadata: minijail_gidmap      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_inherit_usergroups      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_is_fs_restriction_ruleset_initialized      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_keep_supplementary_gids      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_kill      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_log_seccomp_filter_failures      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_log_to_fd      0.19         2      0.09
+Function 1: extract_parameter_metadata: minijail_mount      0.22         5      0.04
+Function 1: extract_parameter_metadata: minijail_mount_dev      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_mount_tmp      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_mount_tmp_size      0.09         2      0.04
+Function 1: extract_parameter_metadata: minijail_mount_with_data      0.27         6      0.04
+Function 1: extract_parameter_metadata: minijail_namespace_cgroups      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_enter_net      0.10         2      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_enter_vfs      0.12         2      0.06
+Function 1: extract_parameter_metadata: minijail_namespace_ipc      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_net      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_net_loopback      0.10         2      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_pids      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_pids_rw_proc      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_set_hostname      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_user      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_user_disable_setgroups      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_uts      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_namespace_vfs      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_new_session_keyring      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_no_new_privs      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_parse_seccomp_filters      0.12         2      0.06
+Function 1: extract_parameter_metadata: minijail_parse_seccomp_filters_from_fd      0.11         2      0.05
+Function 1: extract_parameter_metadata: minijail_preserve_fd      0.13         3      0.04
+Function 1: extract_parameter_metadata: minijail_remount_mode      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_remount_proc_readonly      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_reset_signal_handlers      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_reset_signal_mask      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_rlimit      0.18         4      0.04
+Function 1: extract_parameter_metadata: minijail_run      0.25         3      0.08
+Function 1: extract_parameter_metadata: minijail_run_as_init      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_run_env      0.26         4      0.06
+Function 1: extract_parameter_metadata: minijail_run_env_pid_pipes      0.43         8      0.05
+Function 1: extract_parameter_metadata: minijail_run_env_pid_pipes_no_preload      0.44         8      0.06
+Function 1: extract_parameter_metadata: minijail_run_fd_env_pid_pipes      0.43         8      0.05
+Function 1: extract_parameter_metadata: minijail_run_no_preload      0.20         3      0.07
+Function 1: extract_parameter_metadata: minijail_run_pid      0.24         4      0.06
+Function 1: extract_parameter_metadata: minijail_run_pid_pipes      0.37         7      0.05
+Function 1: extract_parameter_metadata: minijail_run_pid_pipes_no_preload      0.38         7      0.05
+Function 1: extract_parameter_metadata: minijail_run_pipe      0.25         4      0.06
+Function 1: extract_parameter_metadata: minijail_set_ambient_caps      0.06         1      0.06
+Function 1: extract_parameter_metadata: minijail_set_enable_default_runtime      0.10         2      0.05
+Function 1: extract_parameter_metadata: minijail_set_enable_new_sessions      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_set_enable_profile_fs_restrictions      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_set_preload_path      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_set_seccomp_filter_allow_speculation      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_set_seccomp_filter_tsync      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_set_seccomp_filters      0.11         2      0.05
+Function 1: extract_parameter_metadata: minijail_set_supplementary_gids      0.14         3      0.05
+Function 1: extract_parameter_metadata: minijail_set_using_minimalistic_mountns      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_skip_remount_private      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_skip_setting_securebits      0.09         2      0.04
+Function 1: extract_parameter_metadata: minijail_syscall_name      0.20         2      0.10
+Function 1: extract_parameter_metadata: minijail_uidmap      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_use_alt_syscall      0.10         2      0.05
+Function 1: extract_parameter_metadata: minijail_use_caps      0.09         2      0.05
+Function 1: extract_parameter_metadata: minijail_use_seccomp      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_use_seccomp_filter      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_wait      0.05         1      0.05
+Function 1: extract_parameter_metadata: minijail_write_pid_file      0.11         2      0.06
+Function 2: extractLenDependencyParameter      2.52        50      0.05
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_access_rights      0.05         1      0.05
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_advanced_rw      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_edit      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_ro      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_rw      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_rx      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_minimalistic_mountns_fs_rules      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_remount      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_add_to_cgroup      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_bind      0.08         2      0.04
+Function 2: extractLenDependencyParameter: minijail_change_user      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_copy_jail      0.10         2      0.05
+Function 2: extractLenDependencyParameter: minijail_enter      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_enter_chroot      0.05         1      0.05
+Function 2: extractLenDependencyParameter: minijail_enter_pivot_root      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_fork      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_get_original_path      0.08         2      0.04
+Function 2: extractLenDependencyParameter: minijail_gidmap      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_mount      0.14         3      0.05
+Function 2: extractLenDependencyParameter: minijail_mount_with_data      0.17         4      0.04
+Function 2: extractLenDependencyParameter: minijail_namespace_set_hostname      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_parse_seccomp_filters      0.10         2      0.05
+Function 2: extractLenDependencyParameter: minijail_parse_seccomp_filters_from_fd      0.06         1      0.06
+Function 2: extractLenDependencyParameter: minijail_run      0.05         1      0.05
+Function 2: extractLenDependencyParameter: minijail_run_env      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_run_env_pid_pipes      0.05         1      0.05
+Function 2: extractLenDependencyParameter: minijail_run_env_pid_pipes_no_preload      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_run_fd_env_pid_pipes      0.19         1      0.19
+Function 2: extractLenDependencyParameter: minijail_run_no_preload      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_run_pid      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_run_pid_pipes      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_run_pid_pipes_no_preload      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_run_pipe      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_set_preload_path      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_set_seccomp_filters      0.08         2      0.04
+Function 2: extractLenDependencyParameter: minijail_set_supplementary_gids      0.22         2      0.11
+Function 2: extractLenDependencyParameter: minijail_uidmap      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_use_alt_syscall      0.04         1      0.04
+Function 2: extractLenDependencyParameter: minijail_write_pid_file      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameters     14.46       202      0.07
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_access_rights      0.19         3      0.06
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_advanced_rw      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_edit      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_ro      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_rw      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_rx      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_add_hook      0.17         4      0.04
+Function 3: my_extract_dependency_among_parametersminijail_add_minimalistic_mountns_fs_rules      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_add_remount      0.15         3      0.05
+Function 3: my_extract_dependency_among_parametersminijail_add_to_cgroup      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_bind      0.18         4      0.05
+Function 3: my_extract_dependency_among_parametersminijail_capbset_drop      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_change_gid      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_change_group      0.11         2      0.06
+Function 3: my_extract_dependency_among_parametersminijail_change_uid      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_change_user      0.12         2      0.06
+Function 3: my_extract_dependency_among_parametersminijail_close_open_fds      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_copy_jail      0.24         2      0.12
+Function 3: my_extract_dependency_among_parametersminijail_create_session      0.05         1      0.05
+Function 3: my_extract_dependency_among_parametersminijail_destroy      0.06         1      0.06
+Function 3: my_extract_dependency_among_parametersminijail_disable_fs_restrictions      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_enable_default_fs_restrictions      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_enter      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_enter_chroot      0.11         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_enter_pivot_root      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_fork      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_forward_signals      0.06         1      0.06
+Function 3: my_extract_dependency_among_parametersminijail_get_enable_default_runtime      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_get_original_path      0.08         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_gidmap      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_inherit_usergroups      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_is_fs_restriction_ruleset_initialized      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_keep_supplementary_gids      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_kill      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_log_seccomp_filter_failures      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_log_to_fd      0.08         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_mount      0.25         5      0.05
+Function 3: my_extract_dependency_among_parametersminijail_mount_dev      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_mount_tmp      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_mount_tmp_size      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_mount_with_data      1.12         6      0.19
+Function 3: my_extract_dependency_among_parametersminijail_namespace_cgroups      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_enter_net      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_namespace_enter_vfs      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_namespace_ipc      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_net      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_net_loopback      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_pids      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_pids_rw_proc      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_set_hostname      0.09         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_namespace_user      0.05         1      0.05
+Function 3: my_extract_dependency_among_parametersminijail_namespace_user_disable_setgroups      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_uts      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_namespace_vfs      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_new_session_keyring      0.05         1      0.05
+Function 3: my_extract_dependency_among_parametersminijail_no_new_privs      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_parse_seccomp_filters      1.22         2      0.61
+Function 3: my_extract_dependency_among_parametersminijail_parse_seccomp_filters_from_fd      0.89         2      0.44
+Function 3: my_extract_dependency_among_parametersminijail_preserve_fd      0.14         3      0.05
+Function 3: my_extract_dependency_among_parametersminijail_remount_mode      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_remount_proc_readonly      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_reset_signal_handlers      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_reset_signal_mask      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_rlimit      0.18         4      0.05
+Function 3: my_extract_dependency_among_parametersminijail_run      0.37         3      0.12
+Function 3: my_extract_dependency_among_parametersminijail_run_as_init      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_run_env      0.29         4      0.07
+Function 3: my_extract_dependency_among_parametersminijail_run_env_pid_pipes      0.73         8      0.09
+Function 3: my_extract_dependency_among_parametersminijail_run_env_pid_pipes_no_preload      0.64         8      0.08
+Function 3: my_extract_dependency_among_parametersminijail_run_fd_env_pid_pipes      0.60         8      0.07
+Function 3: my_extract_dependency_among_parametersminijail_run_no_preload      0.19         3      0.06
+Function 3: my_extract_dependency_among_parametersminijail_run_pid      0.24         4      0.06
+Function 3: my_extract_dependency_among_parametersminijail_run_pid_pipes      0.63         7      0.09
+Function 3: my_extract_dependency_among_parametersminijail_run_pid_pipes_no_preload      0.61         7      0.09
+Function 3: my_extract_dependency_among_parametersminijail_run_pipe      0.32         4      0.08
+Function 3: my_extract_dependency_among_parametersminijail_set_ambient_caps      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_set_enable_default_runtime      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_set_enable_new_sessions      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_set_enable_profile_fs_restrictions      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_set_preload_path      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_set_seccomp_filter_allow_speculation      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_set_seccomp_filter_tsync      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_set_seccomp_filters      0.12         2      0.06
+Function 3: my_extract_dependency_among_parametersminijail_set_supplementary_gids      0.16         3      0.05
+Function 3: my_extract_dependency_among_parametersminijail_set_using_minimalistic_mountns      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_skip_remount_private      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_skip_setting_securebits      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_syscall_name      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersminijail_uidmap      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_use_alt_syscall      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_use_caps      0.10         2      0.05
+Function 3: my_extract_dependency_among_parametersminijail_use_seccomp      0.05         1      0.05
+Function 3: my_extract_dependency_among_parametersminijail_use_seccomp_filter      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_wait      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersminijail_write_pid_file      0.10         2      0.05
+Function 4: extract_return_metadata           4.48        97      0.05
+Function 4: extract_return_metadata: minijail_add_fs_restriction_access_rights      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_add_fs_restriction_advanced_rw      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_fs_restriction_edit      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_fs_restriction_ro      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_fs_restriction_rw      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_fs_restriction_rx      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_hook      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_minimalistic_mountns_fs_rules      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_remount      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_add_to_cgroup      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_bind      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_capbset_drop      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_change_gid      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_change_group      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_change_uid      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_change_user      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_close_open_fds      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_copy_jail      0.06         1      0.06
+Function 4: extract_return_metadata: minijail_create_session      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_destroy      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_disable_fs_restrictions      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_enable_default_fs_restrictions      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_enter      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_enter_chroot      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_enter_pivot_root      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_fork      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_forward_signals      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_get_enable_default_runtime      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_get_original_path      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_gidmap      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_inherit_usergroups      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_is_fs_restriction_available      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_is_fs_restriction_ruleset_initialized      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_keep_supplementary_gids      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_kill      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_log_seccomp_filter_failures      0.07         1      0.07
+Function 4: extract_return_metadata: minijail_log_to_fd      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_mount      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_mount_dev      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_mount_tmp      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_mount_tmp_size      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_mount_with_data      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_namespace_cgroups      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_enter_net      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_namespace_enter_vfs      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_ipc      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_net      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_net_loopback      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_pids      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_pids_rw_proc      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_set_hostname      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_user      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_user_disable_setgroups      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_namespace_uts      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_namespace_vfs      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_new      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_new_session_keyring      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_no_new_privs      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_parse_seccomp_filters      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_parse_seccomp_filters_from_fd      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_preserve_fd      0.06         1      0.06
+Function 4: extract_return_metadata: minijail_remount_mode      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_remount_proc_readonly      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_reset_signal_handlers      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_reset_signal_mask      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_rlimit      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_run      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_as_init      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_run_env      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_env_pid_pipes      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_env_pid_pipes_no_preload      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_fd_env_pid_pipes      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_no_preload      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_pid      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_pid_pipes      0.06         1      0.06
+Function 4: extract_return_metadata: minijail_run_pid_pipes_no_preload      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_run_pipe      0.06         1      0.06
+Function 4: extract_return_metadata: minijail_set_ambient_caps      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_set_enable_default_runtime      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_set_enable_new_sessions      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_set_enable_profile_fs_restrictions      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_set_preload_path      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_set_seccomp_filter_allow_speculation      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_set_seccomp_filter_tsync      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_set_seccomp_filters      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_set_supplementary_gids      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_set_using_minimalistic_mountns      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_skip_remount_private      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_skip_setting_securebits      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_syscall_name      0.05         1      0.05
+Function 4: extract_return_metadata: minijail_uidmap      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_use_alt_syscall      0.06         1      0.06
+Function 4: extract_return_metadata: minijail_use_caps      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_use_seccomp      0.06         1      0.06
+Function 4: extract_return_metadata: minijail_use_seccomp_filter      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_wait      0.04         1      0.04
+Function 4: extract_return_metadata: minijail_write_pid_file      0.04         1      0.04
+GlobalStruct: Build Slot Map                  1.26         1      1.26
+GlobalStruct: Globals Processing              2.17         1      2.17
+GlobalStruct: Resolve Indirect Calls          0.07         1      0.07
+GlobalStruct: Unresolved Calls                0.05         1      0.05
+GlobalStruct::analyze Total Time            234.76         1    234.76
+Process Function: minijail_add_fs_restriction_access_rights      4.93         1      4.93
+Process Function: minijail_add_fs_restriction_advanced_rw      0.34         1      0.34
+Process Function: minijail_add_fs_restriction_edit      0.32         1      0.32
+Process Function: minijail_add_fs_restriction_ro      0.32         1      0.32
+Process Function: minijail_add_fs_restriction_rw      0.31         1      0.31
+Process Function: minijail_add_fs_restriction_rx      0.31         1      0.31
+Process Function: minijail_add_hook           0.78         1      0.78
+Process Function: minijail_add_minimalistic_mountns_fs_rules      0.23         1      0.23
+Process Function: minijail_add_remount        0.43         1      0.43
+Process Function: minijail_add_to_cgroup      0.33         1      0.33
+Process Function: minijail_bind               0.55         1      0.55
+Process Function: minijail_capbset_drop       0.28         1      0.28
+Process Function: minijail_change_gid         0.27         1      0.27
+Process Function: minijail_change_group       0.29         1      0.29
+Process Function: minijail_change_uid         0.27         1      0.27
+Process Function: minijail_change_user        0.35         1      0.35
+Process Function: minijail_close_open_fds      0.18         1      0.18
+Process Function: minijail_copy_jail         14.39         1     14.39
+Process Function: minijail_create_session      0.22         1      0.22
+Process Function: minijail_destroy            6.59         1      6.59
+Process Function: minijail_disable_fs_restrictions      0.20         1      0.20
+Process Function: minijail_enable_default_fs_restrictions      0.19         1      0.19
+Process Function: minijail_enter              0.31         1      0.31
+Process Function: minijail_enter_chroot       0.35         1      0.35
+Process Function: minijail_enter_pivot_root      0.32         1      0.32
+Process Function: minijail_fork               0.54         1      0.54
+Process Function: minijail_forward_signals      0.21         1      0.21
+Process Function: minijail_get_enable_default_runtime      0.18         1      0.18
+Process Function: minijail_get_original_path      0.37         1      0.37
+Process Function: minijail_gidmap             0.33         1      0.33
+Process Function: minijail_inherit_usergroups      0.18         1      0.18
+Process Function: minijail_is_fs_restriction_available      0.09         1      0.09
+Process Function: minijail_is_fs_restriction_ruleset_initialized      0.18         1      0.18
+Process Function: minijail_keep_supplementary_gids      0.18         1      0.18
+Process Function: minijail_kill               0.18         1      0.18
+Process Function: minijail_log_seccomp_filter_failures      0.21         1      0.21
+Process Function: minijail_log_to_fd          0.37         1      0.37
+Process Function: minijail_mount              0.71         1      0.71
+Process Function: minijail_mount_dev          0.19         1      0.19
+Process Function: minijail_mount_tmp          0.18         1      0.18
+Process Function: minijail_mount_tmp_size      0.27         1      0.27
+Process Function: minijail_mount_with_data      1.67         1      1.67
+Process Function: minijail_namespace_cgroups      0.19         1      0.19
+Process Function: minijail_namespace_enter_net      0.30         1      0.30
+Process Function: minijail_namespace_enter_vfs      0.30         1      0.30
+Process Function: minijail_namespace_ipc      0.18         1      0.18
+Process Function: minijail_namespace_net      0.18         1      0.18
+Process Function: minijail_namespace_net_loopback      0.28         1      0.28
+Process Function: minijail_namespace_pids      0.19         1      0.19
+Process Function: minijail_namespace_pids_rw_proc      0.18         1      0.18
+Process Function: minijail_namespace_set_hostname      0.32         1      0.32
+Process Function: minijail_namespace_user      0.19         1      0.19
+Process Function: minijail_namespace_user_disable_setgroups      0.19         1      0.19
+Process Function: minijail_namespace_uts      0.18         1      0.18
+Process Function: minijail_namespace_vfs      0.18         1      0.18
+Process Function: minijail_new                0.09         1      0.09
+Process Function: minijail_new_session_keyring      0.19         1      0.19
+Process Function: minijail_no_new_privs       0.18         1      0.18
+Process Function: minijail_parse_seccomp_filters      1.58         1      1.58
+Process Function: minijail_parse_seccomp_filters_from_fd      1.19         1      1.19
+Process Function: minijail_preserve_fd        0.39         1      0.39
+Process Function: minijail_remount_mode       0.28         1      0.28
+Process Function: minijail_remount_proc_readonly      0.19         1      0.19
+Process Function: minijail_reset_signal_handlers      0.18         1      0.18
+Process Function: minijail_reset_signal_mask      0.18         1      0.18
+Process Function: minijail_rlimit             0.47         1      0.47
+Process Function: minijail_run                0.98         1      0.98
+Process Function: minijail_run_as_init        0.21         1      0.21
+Process Function: minijail_run_env            0.87         1      0.87
+Process Function: minijail_run_env_pid_pipes      1.49         1      1.49
+Process Function: minijail_run_env_pid_pipes_no_preload      1.48         1      1.48
+Process Function: minijail_run_fd_env_pid_pipes      1.53         1      1.53
+Process Function: minijail_run_no_preload      0.72         1      0.72
+Process Function: minijail_run_pid            0.79         1      0.79
+Process Function: minijail_run_pid_pipes      1.35         1      1.35
+Process Function: minijail_run_pid_pipes_no_preload      1.37         1      1.37
+Process Function: minijail_run_pipe           0.92         1      0.92
+Process Function: minijail_set_ambient_caps      0.20         1      0.20
+Process Function: minijail_set_enable_default_runtime      0.30         1      0.30
+Process Function: minijail_set_enable_new_sessions      0.29         1      0.29
+Process Function: minijail_set_enable_profile_fs_restrictions      0.20         1      0.20
+Process Function: minijail_set_preload_path      0.36         1      0.36
+Process Function: minijail_set_seccomp_filter_allow_speculation      0.20         1      0.20
+Process Function: minijail_set_seccomp_filter_tsync      0.19         1      0.19
+Process Function: minijail_set_seccomp_filters      0.43         1      0.43
+Process Function: minijail_set_supplementary_gids      0.63         1      0.63
+Process Function: minijail_set_using_minimalistic_mountns      0.19         1      0.19
+Process Function: minijail_skip_remount_private      0.19         1      0.19
+Process Function: minijail_skip_setting_securebits      0.28         1      0.28
+Process Function: minijail_syscall_name       0.39         1      0.39
+Process Function: minijail_uidmap             0.34         1      0.34
+Process Function: minijail_use_alt_syscall      0.35         1      0.35
+Process Function: minijail_use_caps           0.29         1      0.29
+Process Function: minijail_use_seccomp        0.21         1      0.21
+Process Function: minijail_use_seccomp_filter      0.19         1      0.19
+Process Function: minijail_wait               0.19         1      0.19
+Process Function: minijail_write_pid_file      0.35         1      0.35
+Process Parameters: minijail_add_fs_restriction_access_rights      4.84         1      4.84
+Process Parameters: minijail_add_fs_restriction_advanced_rw      0.27         1      0.27
+Process Parameters: minijail_add_fs_restriction_edit      0.25         1      0.25
+Process Parameters: minijail_add_fs_restriction_ro      0.25         1      0.25
+Process Parameters: minijail_add_fs_restriction_rw      0.25         1      0.25
+Process Parameters: minijail_add_fs_restriction_rx      0.25         1      0.25
+Process Parameters: minijail_add_hook         0.71         1      0.71
+Process Parameters: minijail_add_minimalistic_mountns_fs_rules      0.17         1      0.17
+Process Parameters: minijail_add_remount      0.36         1      0.36
+Process Parameters: minijail_add_to_cgroup      0.26         1      0.26
+Process Parameters: minijail_bind             0.48         1      0.48
+Process Parameters: minijail_capbset_drop      0.21         1      0.21
+Process Parameters: minijail_change_gid       0.21         1      0.21
+Process Parameters: minijail_change_group      0.23         1      0.23
+Process Parameters: minijail_change_uid       0.21         1      0.21
+Process Parameters: minijail_change_user      0.28         1      0.28
+Process Parameters: minijail_close_open_fds      0.12         1      0.12
+Process Parameters: minijail_copy_jail       14.28         1     14.28
+Process Parameters: minijail_create_session      0.14         1      0.14
+Process Parameters: minijail_destroy          6.48         1      6.48
+Process Parameters: minijail_disable_fs_restrictions      0.13         1      0.13
+Process Parameters: minijail_enable_default_fs_restrictions      0.12         1      0.12
+Process Parameters: minijail_enter            0.23         1      0.23
+Process Parameters: minijail_enter_chroot      0.28         1      0.28
+Process Parameters: minijail_enter_pivot_root      0.25         1      0.25
+Process Parameters: minijail_fork             0.43         1      0.43
+Process Parameters: minijail_forward_signals      0.14         1      0.14
+Process Parameters: minijail_get_enable_default_runtime      0.12         1      0.12
+Process Parameters: minijail_get_original_path      0.30         1      0.30
+Process Parameters: minijail_gidmap           0.26         1      0.26
+Process Parameters: minijail_inherit_usergroups      0.11         1      0.11
+Process Parameters: minijail_is_fs_restriction_available      0.02         1      0.02
+Process Parameters: minijail_is_fs_restriction_ruleset_initialized      0.12         1      0.12
+Process Parameters: minijail_keep_supplementary_gids      0.12         1      0.12
+Process Parameters: minijail_kill             0.12         1      0.12
+Process Parameters: minijail_log_seccomp_filter_failures      0.12         1      0.12
+Process Parameters: minijail_log_to_fd        0.30         1      0.30
+Process Parameters: minijail_mount            0.64         1      0.64
+Process Parameters: minijail_mount_dev        0.12         1      0.12
+Process Parameters: minijail_mount_tmp        0.11         1      0.11
+Process Parameters: minijail_mount_tmp_size      0.21         1      0.21
+Process Parameters: minijail_mount_with_data      1.59         1      1.59
+Process Parameters: minijail_namespace_cgroups      0.12         1      0.12
+Process Parameters: minijail_namespace_enter_net      0.23         1      0.23
+Process Parameters: minijail_namespace_enter_vfs      0.24         1      0.24
+Process Parameters: minijail_namespace_ipc      0.12         1      0.12
+Process Parameters: minijail_namespace_net      0.11         1      0.11
+Process Parameters: minijail_namespace_net_loopback      0.21         1      0.21
+Process Parameters: minijail_namespace_pids      0.12         1      0.12
+Process Parameters: minijail_namespace_pids_rw_proc      0.11         1      0.11
+Process Parameters: minijail_namespace_set_hostname      0.25         1      0.25
+Process Parameters: minijail_namespace_user      0.12         1      0.12
+Process Parameters: minijail_namespace_user_disable_setgroups      0.11         1      0.11
+Process Parameters: minijail_namespace_uts      0.11         1      0.11
+Process Parameters: minijail_namespace_vfs      0.11         1      0.11
+Process Parameters: minijail_new              0.02         1      0.02
+Process Parameters: minijail_new_session_keyring      0.12         1      0.12
+Process Parameters: minijail_no_new_privs      0.12         1      0.12
+Process Parameters: minijail_parse_seccomp_filters      1.50         1      1.50
+Process Parameters: minijail_parse_seccomp_filters_from_fd      1.11         1      1.11
+Process Parameters: minijail_preserve_fd      0.31         1      0.31
+Process Parameters: minijail_remount_mode      0.21         1      0.21
+Process Parameters: minijail_remount_proc_readonly      0.12         1      0.12
+Process Parameters: minijail_reset_signal_handlers      0.12         1      0.12
+Process Parameters: minijail_reset_signal_mask      0.12         1      0.12
+Process Parameters: minijail_rlimit           0.40         1      0.40
+Process Parameters: minijail_run              0.87         1      0.87
+Process Parameters: minijail_run_as_init      0.13         1      0.13
+Process Parameters: minijail_run_env          0.77         1      0.77
+Process Parameters: minijail_run_env_pid_pipes      1.37         1      1.37
+Process Parameters: minijail_run_env_pid_pipes_no_preload      1.35         1      1.35
+Process Parameters: minijail_run_fd_env_pid_pipes      1.41         1      1.41
+Process Parameters: minijail_run_no_preload      0.61         1      0.61
+Process Parameters: minijail_run_pid          0.68         1      0.68
+Process Parameters: minijail_run_pid_pipes      1.21         1      1.21
+Process Parameters: minijail_run_pid_pipes_no_preload      1.24         1      1.24
+Process Parameters: minijail_run_pipe         0.79         1      0.79
+Process Parameters: minijail_set_ambient_caps      0.13         1      0.13
+Process Parameters: minijail_set_enable_default_runtime      0.23         1      0.23
+Process Parameters: minijail_set_enable_new_sessions      0.22         1      0.22
+Process Parameters: minijail_set_enable_profile_fs_restrictions      0.13         1      0.13
+Process Parameters: minijail_set_preload_path      0.27         1      0.27
+Process Parameters: minijail_set_seccomp_filter_allow_speculation      0.12         1      0.12
+Process Parameters: minijail_set_seccomp_filter_tsync      0.12         1      0.12
+Process Parameters: minijail_set_seccomp_filters      0.36         1      0.36
+Process Parameters: minijail_set_supplementary_gids      0.55         1      0.55
+Process Parameters: minijail_set_using_minimalistic_mountns      0.13         1      0.13
+Process Parameters: minijail_skip_remount_private      0.12         1      0.12
+Process Parameters: minijail_skip_setting_securebits      0.21         1      0.21
+Process Parameters: minijail_syscall_name      0.32         1      0.32
+Process Parameters: minijail_uidmap           0.27         1      0.27
+Process Parameters: minijail_use_alt_syscall      0.27         1      0.27
+Process Parameters: minijail_use_caps         0.22         1      0.22
+Process Parameters: minijail_use_seccomp      0.13         1      0.13
+Process Parameters: minijail_use_seccomp_filter      0.12         1      0.12
+Process Parameters: minijail_wait             0.12         1      0.12
+Process Parameters: minijail_write_pid_file      0.28         1      0.28
+Total Condition Extraction (all 4 functions total)     64.63         1     64.63
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                            14.8        14.8        45.3       1
+2. PAG Builder                                  36.8        36.8        82.3       1
+3. Points-to Analysis                           25.9        25.9       108.3       1
+4. Full SVFG Build                              22.6        22.6       130.9       1
+Function 1: extract_parameter_metadata           0.0         1.2       134.4     202
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_access_rights         0.0         0.0       130.9       3
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_advanced_rw         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_edit         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_ro         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_rw         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_add_fs_restriction_rx         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_add_hook         0.0         0.0       130.9       4
+Function 1: extract_parameter_metadata: minijail_add_minimalistic_mountns_fs_rules         0.0         0.0       130.9       1
+Function 1: extract_parameter_metadata: minijail_add_remount         0.0         0.0       130.9       3
+Function 1: extract_parameter_metadata: minijail_add_to_cgroup         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_bind         0.0         0.0       130.9       4
+Function 1: extract_parameter_metadata: minijail_capbset_drop         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_change_gid         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_change_group         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_change_uid         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_change_user         0.0         0.0       130.9       2
+Function 1: extract_parameter_metadata: minijail_close_open_fds         0.0         0.0       130.9       1
+Function 1: extract_parameter_metadata: minijail_copy_jail         0.3         0.6       131.7       2
+Function 1: extract_parameter_metadata: minijail_create_session         0.0         0.0       131.7       1
+Function 1: extract_parameter_metadata: minijail_destroy         1.2         1.2       132.9       1
+Function 1: extract_parameter_metadata: minijail_disable_fs_restrictions         0.0         0.0       132.9       1
+Function 1: extract_parameter_metadata: minijail_enable_default_fs_restrictions         0.0         0.0       132.9       1
+Function 1: extract_parameter_metadata: minijail_enter         0.0         0.0       132.9       1
+Function 1: extract_parameter_metadata: minijail_enter_chroot         0.0         0.0       132.9       2
+Function 1: extract_parameter_metadata: minijail_enter_pivot_root         0.0         0.0       132.9       2
+Function 1: extract_parameter_metadata: minijail_fork         0.1         0.1       133.0       1
+Function 1: extract_parameter_metadata: minijail_forward_signals         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_get_enable_default_runtime         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_get_original_path         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_gidmap         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_inherit_usergroups         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_is_fs_restriction_ruleset_initialized         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_keep_supplementary_gids         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_kill         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_log_seccomp_filter_failures         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_log_to_fd         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_mount         0.0         0.0       133.2       5
+Function 1: extract_parameter_metadata: minijail_mount_dev         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_mount_tmp         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_mount_tmp_size         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_mount_with_data         0.0         0.0       133.2       6
+Function 1: extract_parameter_metadata: minijail_namespace_cgroups         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_enter_net         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_namespace_enter_vfs         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_namespace_ipc         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_net         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_net_loopback         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_namespace_pids         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_pids_rw_proc         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_set_hostname         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_namespace_user         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_user_disable_setgroups         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_uts         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_namespace_vfs         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_new_session_keyring         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_no_new_privs         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_parse_seccomp_filters         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_parse_seccomp_filters_from_fd         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_preserve_fd         0.0         0.0       133.2       3
+Function 1: extract_parameter_metadata: minijail_remount_mode         0.0         0.0       133.2       2
+Function 1: extract_parameter_metadata: minijail_remount_proc_readonly         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_reset_signal_handlers         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_reset_signal_mask         0.0         0.0       133.2       1
+Function 1: extract_parameter_metadata: minijail_rlimit         0.0         0.0       133.2       4
+Function 1: extract_parameter_metadata: minijail_run         0.0         0.0       133.4       3
+Function 1: extract_parameter_metadata: minijail_run_as_init         0.0         0.0       133.4       1
+Function 1: extract_parameter_metadata: minijail_run_env         0.0         0.0       133.5       4
+Function 1: extract_parameter_metadata: minijail_run_env_pid_pipes         0.0         0.0       133.6       8
+Function 1: extract_parameter_metadata: minijail_run_env_pid_pipes_no_preload         0.0         0.0       133.8       8
+Function 1: extract_parameter_metadata: minijail_run_fd_env_pid_pipes         0.0         0.0       133.9       8
+Function 1: extract_parameter_metadata: minijail_run_no_preload         0.0         0.0       134.0       3
+Function 1: extract_parameter_metadata: minijail_run_pid         0.0         0.0       134.1       4
+Function 1: extract_parameter_metadata: minijail_run_pid_pipes         0.0         0.0       134.2       7
+Function 1: extract_parameter_metadata: minijail_run_pid_pipes_no_preload         0.0         0.0       134.3       7
+Function 1: extract_parameter_metadata: minijail_run_pipe         0.0         0.0       134.4       4
+Function 1: extract_parameter_metadata: minijail_set_ambient_caps         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_set_enable_default_runtime         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_set_enable_new_sessions         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_set_enable_profile_fs_restrictions         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_set_preload_path         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_set_seccomp_filter_allow_speculation         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_set_seccomp_filter_tsync         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_set_seccomp_filters         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_set_supplementary_gids         0.0         0.0       134.4       3
+Function 1: extract_parameter_metadata: minijail_set_using_minimalistic_mountns         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_skip_remount_private         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_skip_setting_securebits         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_syscall_name         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_uidmap         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_use_alt_syscall         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_use_caps         0.0         0.0       134.4       2
+Function 1: extract_parameter_metadata: minijail_use_seccomp         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_use_seccomp_filter         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_wait         0.0         0.0       134.4       1
+Function 1: extract_parameter_metadata: minijail_write_pid_file         0.0         0.0       134.4       2
+Function 2: extractLenDependencyParameter         0.0         0.0       134.4      50
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_access_rights         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_advanced_rw         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_edit         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_ro         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_rw         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_fs_restriction_rx         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_minimalistic_mountns_fs_rules         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_remount         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_add_to_cgroup         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_bind         0.0         0.0       130.9       2
+Function 2: extractLenDependencyParameter: minijail_change_user         0.0         0.0       130.9       1
+Function 2: extractLenDependencyParameter: minijail_copy_jail         0.0         0.0       131.7       2
+Function 2: extractLenDependencyParameter: minijail_enter         0.0         0.0       132.9       1
+Function 2: extractLenDependencyParameter: minijail_enter_chroot         0.0         0.0       132.9       1
+Function 2: extractLenDependencyParameter: minijail_enter_pivot_root         0.0         0.0       132.9       1
+Function 2: extractLenDependencyParameter: minijail_fork         0.0         0.0       133.0       1
+Function 2: extractLenDependencyParameter: minijail_get_original_path         0.0         0.0       133.2       2
+Function 2: extractLenDependencyParameter: minijail_gidmap         0.0         0.0       133.2       1
+Function 2: extractLenDependencyParameter: minijail_mount         0.0         0.0       133.2       3
+Function 2: extractLenDependencyParameter: minijail_mount_with_data         0.0         0.0       133.2       4
+Function 2: extractLenDependencyParameter: minijail_namespace_set_hostname         0.0         0.0       133.2       1
+Function 2: extractLenDependencyParameter: minijail_parse_seccomp_filters         0.0         0.0       133.2       2
+Function 2: extractLenDependencyParameter: minijail_parse_seccomp_filters_from_fd         0.0         0.0       133.2       1
+Function 2: extractLenDependencyParameter: minijail_run         0.0         0.0       133.3       1
+Function 2: extractLenDependencyParameter: minijail_run_env         0.0         0.0       133.4       1
+Function 2: extractLenDependencyParameter: minijail_run_env_pid_pipes         0.0         0.0       133.5       1
+Function 2: extractLenDependencyParameter: minijail_run_env_pid_pipes_no_preload         0.0         0.0       133.6       1
+Function 2: extractLenDependencyParameter: minijail_run_fd_env_pid_pipes         0.0         0.0       133.8       1
+Function 2: extractLenDependencyParameter: minijail_run_no_preload         0.0         0.0       133.9       1
+Function 2: extractLenDependencyParameter: minijail_run_pid         0.0         0.0       134.0       1
+Function 2: extractLenDependencyParameter: minijail_run_pid_pipes         0.0         0.0       134.1       1
+Function 2: extractLenDependencyParameter: minijail_run_pid_pipes_no_preload         0.0         0.0       134.2       1
+Function 2: extractLenDependencyParameter: minijail_run_pipe         0.0         0.0       134.3       1
+Function 2: extractLenDependencyParameter: minijail_set_preload_path         0.0         0.0       134.4       1
+Function 2: extractLenDependencyParameter: minijail_set_seccomp_filters         0.0         0.0       134.4       2
+Function 2: extractLenDependencyParameter: minijail_set_supplementary_gids         0.0         0.0       134.4       2
+Function 2: extractLenDependencyParameter: minijail_uidmap         0.0         0.0       134.4       1
+Function 2: extractLenDependencyParameter: minijail_use_alt_syscall         0.0         0.0       134.4       1
+Function 2: extractLenDependencyParameter: minijail_write_pid_file         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parameters         0.0         0.0       134.4     202
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_access_rights         0.0         0.0       130.9       3
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_advanced_rw         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_edit         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_ro         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_rw         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_add_fs_restriction_rx         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_add_hook         0.0         0.0       130.9       4
+Function 3: my_extract_dependency_among_parametersminijail_add_minimalistic_mountns_fs_rules         0.0         0.0       130.9       1
+Function 3: my_extract_dependency_among_parametersminijail_add_remount         0.0         0.0       130.9       3
+Function 3: my_extract_dependency_among_parametersminijail_add_to_cgroup         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_bind         0.0         0.0       130.9       4
+Function 3: my_extract_dependency_among_parametersminijail_capbset_drop         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_change_gid         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_change_group         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_change_uid         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_change_user         0.0         0.0       130.9       2
+Function 3: my_extract_dependency_among_parametersminijail_close_open_fds         0.0         0.0       130.9       1
+Function 3: my_extract_dependency_among_parametersminijail_copy_jail         0.0         0.0       131.7       2
+Function 3: my_extract_dependency_among_parametersminijail_create_session         0.0         0.0       131.7       1
+Function 3: my_extract_dependency_among_parametersminijail_destroy         0.0         0.0       132.9       1
+Function 3: my_extract_dependency_among_parametersminijail_disable_fs_restrictions         0.0         0.0       132.9       1
+Function 3: my_extract_dependency_among_parametersminijail_enable_default_fs_restrictions         0.0         0.0       132.9       1
+Function 3: my_extract_dependency_among_parametersminijail_enter         0.0         0.0       132.9       1
+Function 3: my_extract_dependency_among_parametersminijail_enter_chroot         0.0         0.0       132.9       2
+Function 3: my_extract_dependency_among_parametersminijail_enter_pivot_root         0.0         0.0       132.9       2
+Function 3: my_extract_dependency_among_parametersminijail_fork         0.0         0.0       133.0       1
+Function 3: my_extract_dependency_among_parametersminijail_forward_signals         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_get_enable_default_runtime         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_get_original_path         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_gidmap         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_inherit_usergroups         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_is_fs_restriction_ruleset_initialized         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_keep_supplementary_gids         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_kill         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_log_seccomp_filter_failures         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_log_to_fd         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_mount         0.0         0.0       133.2       5
+Function 3: my_extract_dependency_among_parametersminijail_mount_dev         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_mount_tmp         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_mount_tmp_size         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_mount_with_data         0.0         0.0       133.2       6
+Function 3: my_extract_dependency_among_parametersminijail_namespace_cgroups         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_enter_net         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_namespace_enter_vfs         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_namespace_ipc         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_net         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_net_loopback         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_namespace_pids         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_pids_rw_proc         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_set_hostname         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_namespace_user         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_user_disable_setgroups         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_uts         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_namespace_vfs         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_new_session_keyring         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_no_new_privs         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_parse_seccomp_filters         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_parse_seccomp_filters_from_fd         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_preserve_fd         0.0         0.0       133.2       3
+Function 3: my_extract_dependency_among_parametersminijail_remount_mode         0.0         0.0       133.2       2
+Function 3: my_extract_dependency_among_parametersminijail_remount_proc_readonly         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_reset_signal_handlers         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_reset_signal_mask         0.0         0.0       133.2       1
+Function 3: my_extract_dependency_among_parametersminijail_rlimit         0.0         0.0       133.2       4
+Function 3: my_extract_dependency_among_parametersminijail_run         0.0         0.0       133.4       3
+Function 3: my_extract_dependency_among_parametersminijail_run_as_init         0.0         0.0       133.4       1
+Function 3: my_extract_dependency_among_parametersminijail_run_env         0.0         0.0       133.5       4
+Function 3: my_extract_dependency_among_parametersminijail_run_env_pid_pipes         0.0         0.0       133.6       8
+Function 3: my_extract_dependency_among_parametersminijail_run_env_pid_pipes_no_preload         0.0         0.0       133.8       8
+Function 3: my_extract_dependency_among_parametersminijail_run_fd_env_pid_pipes         0.0         0.0       133.9       8
+Function 3: my_extract_dependency_among_parametersminijail_run_no_preload         0.0         0.0       134.0       3
+Function 3: my_extract_dependency_among_parametersminijail_run_pid         0.0         0.0       134.1       4
+Function 3: my_extract_dependency_among_parametersminijail_run_pid_pipes         0.0         0.0       134.2       7
+Function 3: my_extract_dependency_among_parametersminijail_run_pid_pipes_no_preload         0.0         0.0       134.3       7
+Function 3: my_extract_dependency_among_parametersminijail_run_pipe         0.0         0.0       134.4       4
+Function 3: my_extract_dependency_among_parametersminijail_set_ambient_caps         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_set_enable_default_runtime         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_set_enable_new_sessions         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_set_enable_profile_fs_restrictions         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_set_preload_path         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_set_seccomp_filter_allow_speculation         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_set_seccomp_filter_tsync         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_set_seccomp_filters         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_set_supplementary_gids         0.0         0.0       134.4       3
+Function 3: my_extract_dependency_among_parametersminijail_set_using_minimalistic_mountns         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_skip_remount_private         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_skip_setting_securebits         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_syscall_name         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_uidmap         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_use_alt_syscall         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_use_caps         0.0         0.0       134.4       2
+Function 3: my_extract_dependency_among_parametersminijail_use_seccomp         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_use_seccomp_filter         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_wait         0.0         0.0       134.4       1
+Function 3: my_extract_dependency_among_parametersminijail_write_pid_file         0.0         0.0       134.4       2
+Function 4: extract_return_metadata              0.0         0.0       134.4      97
+Function 4: extract_return_metadata: minijail_add_fs_restriction_access_rights         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_fs_restriction_advanced_rw         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_fs_restriction_edit         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_fs_restriction_ro         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_fs_restriction_rw         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_fs_restriction_rx         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_hook         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_minimalistic_mountns_fs_rules         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_remount         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_add_to_cgroup         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_bind         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_capbset_drop         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_change_gid         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_change_group         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_change_uid         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_change_user         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_close_open_fds         0.0         0.0       130.9       1
+Function 4: extract_return_metadata: minijail_copy_jail         0.0         0.0       131.7       1
+Function 4: extract_return_metadata: minijail_create_session         0.0         0.0       131.7       1
+Function 4: extract_return_metadata: minijail_destroy         0.0         0.0       132.9       1
+Function 4: extract_return_metadata: minijail_disable_fs_restrictions         0.0         0.0       132.9       1
+Function 4: extract_return_metadata: minijail_enable_default_fs_restrictions         0.0         0.0       132.9       1
+Function 4: extract_return_metadata: minijail_enter         0.0         0.0       132.9       1
+Function 4: extract_return_metadata: minijail_enter_chroot         0.0         0.0       132.9       1
+Function 4: extract_return_metadata: minijail_enter_pivot_root         0.0         0.0       132.9       1
+Function 4: extract_return_metadata: minijail_fork         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_forward_signals         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_get_enable_default_runtime         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_get_original_path         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_gidmap         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_inherit_usergroups         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_is_fs_restriction_available         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_is_fs_restriction_ruleset_initialized         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_keep_supplementary_gids         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_kill         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_log_seccomp_filter_failures         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_log_to_fd         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_mount         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_mount_dev         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_mount_tmp         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_mount_tmp_size         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_mount_with_data         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_cgroups         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_enter_net         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_enter_vfs         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_ipc         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_net         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_net_loopback         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_pids         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_pids_rw_proc         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_set_hostname         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_user         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_user_disable_setgroups         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_uts         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_namespace_vfs         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_new         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_new_session_keyring         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_no_new_privs         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_parse_seccomp_filters         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_parse_seccomp_filters_from_fd         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_preserve_fd         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_remount_mode         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_remount_proc_readonly         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_reset_signal_handlers         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_reset_signal_mask         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_rlimit         0.0         0.0       133.2       1
+Function 4: extract_return_metadata: minijail_run         0.0         0.0       133.4       1
+Function 4: extract_return_metadata: minijail_run_as_init         0.0         0.0       133.4       1
+Function 4: extract_return_metadata: minijail_run_env         0.0         0.0       133.5       1
+Function 4: extract_return_metadata: minijail_run_env_pid_pipes         0.0         0.0       133.6       1
+Function 4: extract_return_metadata: minijail_run_env_pid_pipes_no_preload         0.0         0.0       133.8       1
+Function 4: extract_return_metadata: minijail_run_fd_env_pid_pipes         0.0         0.0       133.9       1
+Function 4: extract_return_metadata: minijail_run_no_preload         0.0         0.0       134.0       1
+Function 4: extract_return_metadata: minijail_run_pid         0.0         0.0       134.1       1
+Function 4: extract_return_metadata: minijail_run_pid_pipes         0.0         0.0       134.2       1
+Function 4: extract_return_metadata: minijail_run_pid_pipes_no_preload         0.0         0.0       134.3       1
+Function 4: extract_return_metadata: minijail_run_pipe         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_ambient_caps         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_enable_default_runtime         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_enable_new_sessions         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_enable_profile_fs_restrictions         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_preload_path         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_seccomp_filter_allow_speculation         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_seccomp_filter_tsync         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_seccomp_filters         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_supplementary_gids         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_set_using_minimalistic_mountns         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_skip_remount_private         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_skip_setting_securebits         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_syscall_name         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_uidmap         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_use_alt_syscall         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_use_caps         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_use_seccomp         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_use_seccomp_filter         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_wait         0.0         0.0       134.4       1
+Function 4: extract_return_metadata: minijail_write_pid_file         0.0         0.0       134.4       1
+GlobalStruct: Build Slot Map                     0.0         0.0       107.9       1
+GlobalStruct: Globals Processing                 0.3         0.3       107.9       1
+GlobalStruct: Resolve Indirect Calls             0.0         0.0       107.9       1
+GlobalStruct: Unresolved Calls                   0.0         0.0       107.9       1
+GlobalStruct: base PTA analyze                  25.2        25.2       107.6       1
+GlobalStruct::analyze Total Time                25.9        25.9       108.3       1
+Process Function: minijail_add_fs_restriction_access_rights         0.0         0.0       130.9       1
+Process Function: minijail_add_fs_restriction_advanced_rw         0.0         0.0       130.9       1
+Process Function: minijail_add_fs_restriction_edit         0.0         0.0       130.9       1
+Process Function: minijail_add_fs_restriction_ro         0.0         0.0       130.9       1
+Process Function: minijail_add_fs_restriction_rw         0.0         0.0       130.9       1
+Process Function: minijail_add_fs_restriction_rx         0.0         0.0       130.9       1
+Process Function: minijail_add_hook              0.0         0.0       130.9       1
+Process Function: minijail_add_minimalistic_mountns_fs_rules         0.0         0.0       130.9       1
+Process Function: minijail_add_remount           0.0         0.0       130.9       1
+Process Function: minijail_add_to_cgroup         0.0         0.0       130.9       1
+Process Function: minijail_bind                  0.0         0.0       130.9       1
+Process Function: minijail_capbset_drop          0.0         0.0       130.9       1
+Process Function: minijail_change_gid            0.0         0.0       130.9       1
+Process Function: minijail_change_group          0.0         0.0       130.9       1
+Process Function: minijail_change_uid            0.0         0.0       130.9       1
+Process Function: minijail_change_user           0.0         0.0       130.9       1
+Process Function: minijail_close_open_fds         0.0         0.0       130.9       1
+Process Function: minijail_copy_jail             0.8         0.8       131.7       1
+Process Function: minijail_create_session         0.0         0.0       131.7       1
+Process Function: minijail_destroy               1.2         1.2       132.9       1
+Process Function: minijail_disable_fs_restrictions         0.0         0.0       132.9       1
+Process Function: minijail_enable_default_fs_restrictions         0.0         0.0       132.9       1
+Process Function: minijail_enter                 0.0         0.0       132.9       1
+Process Function: minijail_enter_chroot          0.0         0.0       132.9       1
+Process Function: minijail_enter_pivot_root         0.0         0.0       132.9       1
+Process Function: minijail_fork                  0.3         0.3       133.2       1
+Process Function: minijail_forward_signals         0.0         0.0       133.2       1
+Process Function: minijail_get_enable_default_runtime         0.0         0.0       133.2       1
+Process Function: minijail_get_original_path         0.0         0.0       133.2       1
+Process Function: minijail_gidmap                0.0         0.0       133.2       1
+Process Function: minijail_inherit_usergroups         0.0         0.0       133.2       1
+Process Function: minijail_is_fs_restriction_available         0.0         0.0       133.2       1
+Process Function: minijail_is_fs_restriction_ruleset_initialized         0.0         0.0       133.2       1
+Process Function: minijail_keep_supplementary_gids         0.0         0.0       133.2       1
+Process Function: minijail_kill                  0.0         0.0       133.2       1
+Process Function: minijail_log_seccomp_filter_failures         0.0         0.0       133.2       1
+Process Function: minijail_log_to_fd             0.0         0.0       133.2       1
+Process Function: minijail_mount                 0.0         0.0       133.2       1
+Process Function: minijail_mount_dev             0.0         0.0       133.2       1
+Process Function: minijail_mount_tmp             0.0         0.0       133.2       1
+Process Function: minijail_mount_tmp_size         0.0         0.0       133.2       1
+Process Function: minijail_mount_with_data         0.0         0.0       133.2       1
+Process Function: minijail_namespace_cgroups         0.0         0.0       133.2       1
+Process Function: minijail_namespace_enter_net         0.0         0.0       133.2       1
+Process Function: minijail_namespace_enter_vfs         0.0         0.0       133.2       1
+Process Function: minijail_namespace_ipc         0.0         0.0       133.2       1
+Process Function: minijail_namespace_net         0.0         0.0       133.2       1
+Process Function: minijail_namespace_net_loopback         0.0         0.0       133.2       1
+Process Function: minijail_namespace_pids         0.0         0.0       133.2       1
+Process Function: minijail_namespace_pids_rw_proc         0.0         0.0       133.2       1
+Process Function: minijail_namespace_set_hostname         0.0         0.0       133.2       1
+Process Function: minijail_namespace_user         0.0         0.0       133.2       1
+Process Function: minijail_namespace_user_disable_setgroups         0.0         0.0       133.2       1
+Process Function: minijail_namespace_uts         0.0         0.0       133.2       1
+Process Function: minijail_namespace_vfs         0.0         0.0       133.2       1
+Process Function: minijail_new                   0.0         0.0       133.2       1
+Process Function: minijail_new_session_keyring         0.0         0.0       133.2       1
+Process Function: minijail_no_new_privs          0.0         0.0       133.2       1
+Process Function: minijail_parse_seccomp_filters         0.0         0.0       133.2       1
+Process Function: minijail_parse_seccomp_filters_from_fd         0.0         0.0       133.2       1
+Process Function: minijail_preserve_fd           0.0         0.0       133.2       1
+Process Function: minijail_remount_mode          0.0         0.0       133.2       1
+Process Function: minijail_remount_proc_readonly         0.0         0.0       133.2       1
+Process Function: minijail_reset_signal_handlers         0.0         0.0       133.2       1
+Process Function: minijail_reset_signal_mask         0.0         0.0       133.2       1
+Process Function: minijail_rlimit                0.0         0.0       133.2       1
+Process Function: minijail_run                   0.2         0.2       133.4       1
+Process Function: minijail_run_as_init           0.0         0.0       133.4       1
+Process Function: minijail_run_env               0.1         0.1       133.5       1
+Process Function: minijail_run_env_pid_pipes         0.1         0.1       133.6       1
+Process Function: minijail_run_env_pid_pipes_no_preload         0.1         0.1       133.8       1
+Process Function: minijail_run_fd_env_pid_pipes         0.1         0.1       133.9       1
+Process Function: minijail_run_no_preload         0.1         0.1       134.0       1
+Process Function: minijail_run_pid               0.1         0.1       134.1       1
+Process Function: minijail_run_pid_pipes         0.1         0.1       134.2       1
+Process Function: minijail_run_pid_pipes_no_preload         0.1         0.1       134.3       1
+Process Function: minijail_run_pipe              0.1         0.1       134.4       1
+Process Function: minijail_set_ambient_caps         0.0         0.0       134.4       1
+Process Function: minijail_set_enable_default_runtime         0.0         0.0       134.4       1
+Process Function: minijail_set_enable_new_sessions         0.0         0.0       134.4       1
+Process Function: minijail_set_enable_profile_fs_restrictions         0.0         0.0       134.4       1
+Process Function: minijail_set_preload_path         0.0         0.0       134.4       1
+Process Function: minijail_set_seccomp_filter_allow_speculation         0.0         0.0       134.4       1
+Process Function: minijail_set_seccomp_filter_tsync         0.0         0.0       134.4       1
+Process Function: minijail_set_seccomp_filters         0.0         0.0       134.4       1
+Process Function: minijail_set_supplementary_gids         0.0         0.0       134.4       1
+Process Function: minijail_set_using_minimalistic_mountns         0.0         0.0       134.4       1
+Process Function: minijail_skip_remount_private         0.0         0.0       134.4       1
+Process Function: minijail_skip_setting_securebits         0.0         0.0       134.4       1
+Process Function: minijail_syscall_name          0.0         0.0       134.4       1
+Process Function: minijail_uidmap                0.0         0.0       134.4       1
+Process Function: minijail_use_alt_syscall         0.0         0.0       134.4       1
+Process Function: minijail_use_caps              0.0         0.0       134.4       1
+Process Function: minijail_use_seccomp           0.0         0.0       134.4       1
+Process Function: minijail_use_seccomp_filter         0.0         0.0       134.4       1
+Process Function: minijail_wait                  0.0         0.0       134.4       1
+Process Function: minijail_write_pid_file         0.0         0.0       134.4       1
+Process Parameters: minijail_add_fs_restriction_access_rights         0.0         0.0       130.9       1
+Process Parameters: minijail_add_fs_restriction_advanced_rw         0.0         0.0       130.9       1
+Process Parameters: minijail_add_fs_restriction_edit         0.0         0.0       130.9       1
+Process Parameters: minijail_add_fs_restriction_ro         0.0         0.0       130.9       1
+Process Parameters: minijail_add_fs_restriction_rw         0.0         0.0       130.9       1
+Process Parameters: minijail_add_fs_restriction_rx         0.0         0.0       130.9       1
+Process Parameters: minijail_add_hook            0.0         0.0       130.9       1
+Process Parameters: minijail_add_minimalistic_mountns_fs_rules         0.0         0.0       130.9       1
+Process Parameters: minijail_add_remount         0.0         0.0       130.9       1
+Process Parameters: minijail_add_to_cgroup         0.0         0.0       130.9       1
+Process Parameters: minijail_bind                0.0         0.0       130.9       1
+Process Parameters: minijail_capbset_drop         0.0         0.0       130.9       1
+Process Parameters: minijail_change_gid          0.0         0.0       130.9       1
+Process Parameters: minijail_change_group         0.0         0.0       130.9       1
+Process Parameters: minijail_change_uid          0.0         0.0       130.9       1
+Process Parameters: minijail_change_user         0.0         0.0       130.9       1
+Process Parameters: minijail_close_open_fds         0.0         0.0       130.9       1
+Process Parameters: minijail_copy_jail           0.8         0.8       131.7       1
+Process Parameters: minijail_create_session         0.0         0.0       131.7       1
+Process Parameters: minijail_destroy             1.2         1.2       132.9       1
+Process Parameters: minijail_disable_fs_restrictions         0.0         0.0       132.9       1
+Process Parameters: minijail_enable_default_fs_restrictions         0.0         0.0       132.9       1
+Process Parameters: minijail_enter               0.0         0.0       132.9       1
+Process Parameters: minijail_enter_chroot         0.0         0.0       132.9       1
+Process Parameters: minijail_enter_pivot_root         0.0         0.0       132.9       1
+Process Parameters: minijail_fork                0.3         0.3       133.2       1
+Process Parameters: minijail_forward_signals         0.0         0.0       133.2       1
+Process Parameters: minijail_get_enable_default_runtime         0.0         0.0       133.2       1
+Process Parameters: minijail_get_original_path         0.0         0.0       133.2       1
+Process Parameters: minijail_gidmap              0.0         0.0       133.2       1
+Process Parameters: minijail_inherit_usergroups         0.0         0.0       133.2       1
+Process Parameters: minijail_is_fs_restriction_available         0.0         0.0       133.2       1
+Process Parameters: minijail_is_fs_restriction_ruleset_initialized         0.0         0.0       133.2       1
+Process Parameters: minijail_keep_supplementary_gids         0.0         0.0       133.2       1
+Process Parameters: minijail_kill                0.0         0.0       133.2       1
+Process Parameters: minijail_log_seccomp_filter_failures         0.0         0.0       133.2       1
+Process Parameters: minijail_log_to_fd           0.0         0.0       133.2       1
+Process Parameters: minijail_mount               0.0         0.0       133.2       1
+Process Parameters: minijail_mount_dev           0.0         0.0       133.2       1
+Process Parameters: minijail_mount_tmp           0.0         0.0       133.2       1
+Process Parameters: minijail_mount_tmp_size         0.0         0.0       133.2       1
+Process Parameters: minijail_mount_with_data         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_cgroups         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_enter_net         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_enter_vfs         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_ipc         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_net         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_net_loopback         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_pids         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_pids_rw_proc         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_set_hostname         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_user         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_user_disable_setgroups         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_uts         0.0         0.0       133.2       1
+Process Parameters: minijail_namespace_vfs         0.0         0.0       133.2       1
+Process Parameters: minijail_new                 0.0         0.0       133.2       1
+Process Parameters: minijail_new_session_keyring         0.0         0.0       133.2       1
+Process Parameters: minijail_no_new_privs         0.0         0.0       133.2       1
+Process Parameters: minijail_parse_seccomp_filters         0.0         0.0       133.2       1
+Process Parameters: minijail_parse_seccomp_filters_from_fd         0.0         0.0       133.2       1
+Process Parameters: minijail_preserve_fd         0.0         0.0       133.2       1
+Process Parameters: minijail_remount_mode         0.0         0.0       133.2       1
+Process Parameters: minijail_remount_proc_readonly         0.0         0.0       133.2       1
+Process Parameters: minijail_reset_signal_handlers         0.0         0.0       133.2       1
+Process Parameters: minijail_reset_signal_mask         0.0         0.0       133.2       1
+Process Parameters: minijail_rlimit              0.0         0.0       133.2       1
+Process Parameters: minijail_run                 0.2         0.2       133.4       1
+Process Parameters: minijail_run_as_init         0.0         0.0       133.4       1
+Process Parameters: minijail_run_env             0.1         0.1       133.5       1
+Process Parameters: minijail_run_env_pid_pipes         0.1         0.1       133.6       1
+Process Parameters: minijail_run_env_pid_pipes_no_pre[COMPOSE] attempts=459 di_match=361 di_reject=80 di_void=18 undecidable=0 absent=18 unnamed=0)
+[NODES] tota_dp_processed=8482 pops=11085 dedup=2603
+[IS_MALLOC_SIZE] 2
+[GEP_TYPE] void_recovered0 untyped_skip=1
+load         0.1         0.1       133.8       1
+Process Parameters: minijail_run_fd_env_pid_pipes         0.1         0.1       133.9       1
+Process Parameters: minijail_run_no_preload         0.1         0.1       134.0       1
+Process Parameters: minijail_run_pid             0.1         0.1       134.1       1
+Process Parameters: minijail_run_pid_pipes         0.1         0.1       134.2       1
+Process Parameters: minijail_run_pid_pipes_no_preload         0.1         0.1       134.3       1
+Process Parameters: minijail_run_pipe            0.1         0.1       134.4       1
+Process Parameters: minijail_set_ambient_caps         0.0         0.0       134.4       1
+Process Parameters: minijail_set_enable_default_runtime         0.0         0.0       134.4       1
+Process Parameters: minijail_set_enable_new_sessions         0.0         0.0       134.4       1
+Process Parameters: minijail_set_enable_profile_fs_restrictions         0.0         0.0       134.4       1
+Process Parameters: minijail_set_preload_path         0.0         0.0       134.4       1
+Process Parameters: minijail_set_seccomp_filter_allow_speculation         0.0         0.0       134.4       1
+Process Parameters: minijail_set_seccomp_filter_tsync         0.0         0.0       134.4       1
+Process Parameters: minijail_set_seccomp_filters         0.0         0.0       134.4       1
+Process Parameters: minijail_set_supplementary_gids         0.0         0.0       134.4       1
+Process Parameters: minijail_set_using_minimalistic_mountns         0.0         0.0       134.4       1
+Process Parameters: minijail_skip_remount_private         0.0         0.0       134.4       1
+Process Parameters: minijail_skip_setting_securebits         0.0         0.0       134.4       1
+Process Parameters: minijail_syscall_name         0.0         0.0       134.4       1
+Process Parameters: minijail_uidmap              0.0         0.0       134.4       1
+Process Parameters: minijail_use_alt_syscall         0.0         0.0       134.4       1
+Process Parameters: minijail_use_caps            0.0         0.0       134.4       1
+Process Parameters: minijail_use_seccomp         0.0         0.0       134.4       1
+Process Parameters: minijail_use_seccomp_filter         0.0         0.0       134.4       1
+Process Parameters: minijail_wait                0.0         0.0       134.4       1
+Process Parameters: minijail_write_pid_file         0.0         0.0       134.4       1
+Total Condition Extraction (all 4 functions total)         3.4         3.4       134.4       1
+
+Saved to /workspaces/libfuzz/analysis/minijail//work/apipass/conditions.json
+Analysis complete for minijail
++ echo 'Finished analysis'
+Finished analysis
++ ./analysis.sh minijail --run-only
++ echo 'Analysing minijail'
++ source setup_target.sh minijail
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z minijail ]]
+++ export TARGET_NAME=minijail
+++ TARGET_NAME=minijail
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/minijail
+++ TARGET_DIR=/workspaces/libfuzz/targets/minijail
+++ CONFIG_FILE=/workspaces/libfuzz/targets/minijail/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/minijail/
++ TARGET=/workspaces/libfuzz/analysis/minijail/
++ export WORK=/workspaces/libfuzz/analysis/minijail//work
++ WORK=/workspaces/libfuzz/analysis/minijail//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/minijail/config.sh
+++ REPO_URL=https://chromium.googlesource.com/chromiumos/platform/minijail
+++ REPO_COMMIT=b0b5dc6997956cdc027295ade5e425c416f30d33
+++ BC_FILE_NAME=libminijail.pie.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/minijail//work
+++ mkdir -p /workspaces/libfuzz/analysis/minijail//work/lib /workspaces/libfuzz/analysis/minijail//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/minijail//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/minijail//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/minijail//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/minijail//work/apipass
+++ touch /workspaces/libfuzz/analysis/minijail//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/minijail//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/minijail//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/minijail//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/minijail//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/minijail//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libminijail.pie.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/minijail//work/lib/libminijail.pie.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/minijail//work/lib/libminijail.pie.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/minijail//work/lib/libminijail.pie.a
+Writing output to /workspaces/libfuzz/analysis/minijail/work/lib/libminijail.pie.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/minijail/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/minijail/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/minijail//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/minijail//work/include -t minijail -p /workspaces/libfuzz/targets/minijail/public_headers.txt -e /workspaces/libfuzz/analysis/minijail//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/minijail//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/minijail//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/minijail//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/minijail//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/minijail//work/lib/libminijail.pie.a.bc -target minijail -interface /workspaces/libfuzz/analysis/minijail//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/minijail//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/minijail//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/minijail//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 1.09
+user 0.98
+sys 0.10
+maxrss_kb 143436
+++ echo 'Saved to /workspaces/libfuzz/analysis/minijail//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for minijail'
+
+real	0m2.011s
+user	0m1.415s
+sys	0m0.272s

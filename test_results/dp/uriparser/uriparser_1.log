@@ -1,0 +1,110 @@
++ ./analysis.sh uriparser --run-only
++ echo 'Analysing uriparser'
++ source setup_target.sh uriparser
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z uriparser ]]
+++ export TARGET_NAME=uriparser
+++ TARGET_NAME=uriparser
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/uriparser
+++ TARGET_DIR=/workspaces/libfuzz/targets/uriparser
+++ CONFIG_FILE=/workspaces/libfuzz/targets/uriparser/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/uriparser/
++ TARGET=/workspaces/libfuzz/analysis/uriparser/
++ export WORK=/workspaces/libfuzz/analysis/uriparser//work
++ WORK=/workspaces/libfuzz/analysis/uriparser//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/uriparser/config.sh
+++ REPO_URL=https://github.com/uriparser/uriparser.git
+++ REPO_COMMIT=9b2bed92f5deecf740819f9bf27724bee2fe9c12
+++ BC_FILE_NAME=liburiparser.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/uriparser//work
+++ mkdir -p /workspaces/libfuzz/analysis/uriparser//work/lib /workspaces/libfuzz/analysis/uriparser//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/uriparser//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/uriparser//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/uriparser//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/uriparser//work/apipass
+++ touch /workspaces/libfuzz/analysis/uriparser//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/uriparser//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/uriparser//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/uriparser//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/uriparser//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/uriparser//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z liburiparser.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/uriparser//work/lib/liburiparser.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/uriparser//work/lib/liburiparser.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/uriparser//work/lib/liburiparser.a
+Writing output to /workspaces/libfuzz/analysis/uriparser/work/lib/liburiparser.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/uriparser/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/uriparser/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/uriparser//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/uriparser//work/include -t uriparser -p /workspaces/libfuzz/targets/uriparser/public_headers.txt -e /workspaces/libfuzz/analysis/uriparser//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/uriparser//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/uriparser//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/uriparser//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/uriparser//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/uriparser//work/lib/liburiparser.a.bc -target uriparser -interface /workspaces/libfuzz/analysis/uriparser//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/uriparser//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/uriparser//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/uriparser//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 2.21
+user 2.03
+sys 0.16
+maxrss_kb 304500
+++ echo 'Saved to /workspaces/libfuzz/analysis/uriparser//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for uriparser'
+
+real	0m3.994s
+user	0m2.710s
+sys	0m0.454s

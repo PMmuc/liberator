@@ -1,0 +1,1461 @@
++ export TARGET_NAME=pthreadpool
++ TARGET_NAME=pthreadpool
++ TARGET_DIR=/workspaces/libfuzz/analysis/pthreadpool
++ WORK=/workspaces/libfuzz/analysis/pthreadpool/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool
+Start analysis
++ echo 'Start analysis'
+Analysing pthreadpool
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmphkcl87bd.cc
+['pthreadpool', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['pthreadpool', '*']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['__uint32_t']
+['__uint32_t']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['__uint32_t']
+['__uint32_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['__uint32_t']
+['__uint32_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['__uint32_t']
+['__uint32_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__uint32_t']
+['void']
+['pthreadpool', '*']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['void']
+['pthreadpool', '*']
+['void', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+[INFO] Analysing target: pthreadpool
+[INFO] Analyze functions in /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_clang.json
+[INFO] Loading library...
+[INFO] Done
+
+*********General Stats***************
+################ (program : libpthreadpool.a.bc)###############
+AddrsNum            2123
+BBWith2Succ         580
+BBWith3Succ         1
+CallsNum            129
+ConstArrayObj       0
+ConstStructObj      0
+ConstantObj         0
+CopysNum            510
+FIObjNum            159
+FSObjNum            1766
+FunctionObjs        158
+GepsNum             3218
+GlobalObjs          0
+HeapObjs            2
+IndCallSites        111
+LoadsNum            4968
+MaxStructSize       47
+NonPtrObj           1568
+ReturnsNum          760
+StackObjs           1765
+StoresNum           2890
+TotalCallSite       1358
+TotalFieldObjects   1257
+TotalObjects        3183
+TotalPTASVFStmts    7986
+TotalPointers       19032
+TotalSVFStmts       17612
+VarArrayObj         0
+VarStructObj        402
+----------------Time and memory stats--------------------
+LLVMIRTime          0.126
+SVFIRTime           0.22
+SymbolTableTime     0.016
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : libpthreadpool.a.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   0
+MaxNodeInCycle      0
+NodeInCycle         0
+TotalCycle          0
+TotalEdge           1271
+TotalNode           158
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libpthreadpool.a.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.212279
+AvgIn/OutCopyEdge   0.650435
+AvgIn/OutEdge       1.11199
+AvgIn/OutLoadEdge   0.164784
+AvgIn/OutStoreEdge  0.0844916
+AvgPtsSetSize       0.272879
+AvgTopLvlPtsSize    0.880335
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    25740
+MemoryUsageVmsize   25316
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           0.184
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       2123
+CopyProcessed       408
+DummyFieldPtrs      170
+FieldObjs           1257
+GepProcessed        1818
+IndCallSites        111
+IndEdgeSolved       23
+LoadProcessed       1735
+LocalVarInRecur     0
+MaxInAddrEdge       1
+MaxInCopyEdge       63
+MaxInLoadEdge       1
+MaxInStoreEdge      2
+MaxNodesInSCC       0
+MaxOutAddrEdge      199
+MaxOutCopyEdge      42
+MaxOutLoadEdge      18
+MaxOutStoreEdge     3
+MaxPtsSetSize       51
+MemObjects          3183
+NodesInCycles       0
+NullPointer         342
+NumOfAddrs          2123
+NumOfCGEdge         8998
+NumOfCGNode         10502
+NumOfCopys          3287
+NumOfFieldExpand    0
+NumOfGeps           3218
+NumOfLoads          1648
+NumOfSCCDetect      4
+NumOfSFRs           0
+NumOfStores         845
+NumOfValidNode      10001
+NumOfValidObjNode   2703
+Pointers            19032
+PointsToBlkPtr      0
+PointsToConstPtr    0
+SolveIterations     4
+StoreProcessed      820
+TotalCycleNum       0
+TotalObjects        3183
+TotalPWCCycleNum    0
+TotalPointers       19032
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libpthreadpool.a.bc)###############
+UniquePointsToSets       3282
+TotalUnions              4753
+PropertyUnions           4140
+UniqueUnions             202
+LookupUnions             7
+PreemptiveUnions         404
+TotalComplements         40735
+PropertyComplements      40728
+UniqueComplements        1
+LookupComplements        5
+PreemptiveComplements    1
+TotalIntersections       2601
+PropertyIntersections    2599
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  2
+#######################################################
+[INFO] Points-to analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libpthreadpool.a.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1.57297
+GenMUCHITime        0.018
+GenRegionTime       0.057
+InsertPHITime       0.002
+SSARenameTime       0.006
+TotalMSSATime       0.083
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        417
+CSChiNode           79
+CSHasChi            67
+CSHasMu             318
+CSMuNode            1052
+FunEntryChi         2572
+FunHasEntryChi      136
+FunHasRetMu         141
+FunRetMu            2572
+LoadHasMu           4968
+LoadMuNode          4538
+MSSAPhi             1866
+MaxRegSize          153
+MemRegions          2501
+StoreChiNode        2863
+StoreHasChi         2890
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : libpthreadpool.a.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0.017
+AvgWeight           1.36372
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.029
+OptTime             0
+TLNodeTime          0
+TotalTime           0.046
+----------------Numbers stats----------------------------
+ActualIn            1052
+ActualOut           79
+ActualParam         3306
+ActualRet           776
+Addr                2123
+AvgInDegree         1
+AvgIndInDeg         1
+AvgIndOutDeg        1
+AvgOutDegree        1
+Copy                510
+DirectCallEdge      1636
+DirectEdge          23402
+DirectRetEdge       760
+FormalIn            2572
+FormalOut           2572
+FormalParam         422
+FormalRet           46
+Gep                 3218
+IndCallEdge         1414
+IndRetEdge          247
+IndirectEdge        16422
+IndirectEdgeLabels  22395
+Load                4968
+MSSAPhi             1866
+MaxInDegree         306
+MaxIndInDeg         306
+MaxIndOutDeg        51
+MaxOutDegree        1636
+PHI                 55
+Store               2890
+TotalEdge           39824
+TotalNode           29414
+#######################################################
+------- CONFIG ---------
+	Trace Indirect Jumps: true
+	Output Metrics: true
+	Target: pthreadpool
+
+	Interface file: /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_clang.json----------------------
+[INFO] CallGraph: 158 functions in 158 SCCs
+[SCC] top 10 largest SCCs (biggest first):
+[SCC] scc=64 num functions=1 formals=12 num direct edges=0 num indirect edges=0
+[SCC] scc=76 num functions=1 formals=12 num direct edges=0 num indirect edges=0
+[SCC] scc=15 num functions=1 formals=11 num direct edges=0 num indirect edges=0
+[SCC] scc=70 num functions=1 formals=11 num direct edges=0 num indirect edges=0
+[SCC] scc=56 num functions=1 formals=11 num direct edges=0 num indirect edges=0
+[SCC] scc=74 num functions=1 formals=11 num direct edges=0 num indirect edges=0
+[SCC] scc=62 num functions=1 formals=10 num direct edges=0 num indirect edges=0
+[SCC] scc=68 num functions=1 formals=10 num direct edges=0 num indirect edges=0
+[SCC] scc=48 num functions=1 formals=10 num direct edges=0 num indirect edges=0
+[SCC] scc=72 num functions=1 formals=10 num direct edges=0 num indirect edges=0
+[SCC] direct edges only: largest=1 functions (0 formals), 0 cyclic components
+[SCC] signature-filtered:largest=1 functions (0 formals),0 cyclic components
+[IND] num of indirect callsites=2
+[IND] pthreadpool_parallelize(cs=11592) targets=21-> largest=1 functions (0 formals)
+[IND] pthreadpool_parallelize_1d(cs=1374) targets=2-> largest=1 functions (0 formals)
+[IND] removing top 2 indirect callsites. Remaining largest SCC=1 (with0 formals), with 0 cyclic components
+[INFO 1/158 funcs, 1/158 SCCs] callgraph: llvm.memset.p0.i64
+[INFO 2/158 funcs, 2/158 SCCs] callgraph: llvm.x86.sse.stmxcsr
+[INFO 3/158 funcs, 3/158 SCCs] callgraph: get_fpu_state
+[INFO 4/158 funcs, 4/158 SCCs] callgraph: llvm.memcpy.p0.p0.i64
+[INFO 5/158 funcs, 5/158 SCCs] callgraph: llvm.x86.sse.ldmxcsr
+[INFO 6/158 funcs, 6/158 SCCs] callgraph: disable_fpu_denormals
+[INFO 7/158 funcs, 7/158 SCCs] callgraph: set_fpu_state
+[INFO 8/158 funcs, 8/158 SCCs] callgraph: __assert_fail
+[INFO 9/158 funcs, 9/158 SCCs] callgraph: pthread_mutex_lock
+[INFO 10/158 funcs, 10/158 SCCs] callgraph: pthreadpool_store_relaxed_void_p
+[INFO 11/158 funcs, 11/158 SCCs] callgraph: pthreadpool_store_relaxed_uint32_t
+[INFO 12/158 funcs, 12/158 SCCs] callgraph: pthreadpool_store_relaxed_size_t
+[INFO 13/158 funcs, 13/158 SCCs] callgraph: pthreadpool_fence_release.36
+[INFO 14/158 funcs, 14/158 SCCs] callgraph: fxdiv_mulhi_uint64_t.40
+[INFO 15/158 funcs, 15/158 SCCs] callgraph: fxdiv_quotient_uint64_t.39
+[INFO 16/158 funcs, 16/158 SCCs] callgraph: fxdiv_quotient_size_t.38
+[INFO 17/158 funcs, 17/158 SCCs] callgraph: fxdiv_divide_size_t.37
+[INFO 18/158 funcs, 18/158 SCCs] callgraph: pthreadpool_load_relaxed_uint32_t
+[INFO 19/158 funcs, 19/158 SCCs] callgraph: pthreadpool_store_release_uint32_t
+[INFO 20/158 funcs, 20/158 SCCs] callgraph: syscall
+[INFO 21/158 funcs, 21/158 SCCs] callgraph: futex_wake_all
+[INFO 22/158 funcs, 22/158 SCCs] callgraph: get_fpu_state.25
+[INFO 23/158 funcs, 23/158 SCCs] callgraph: disable_fpu_denormals.26
+[INFO 24/158 funcs, 24/158 SCCs] callgraph: set_fpu_state.27
+[INFO 25/158 funcs, 25/158 SCCs] callgraph: pthreadpool_load_acquire_uint32_t
+[INFO 26/158 funcs, 26/158 SCCs] callgraph: llvm.x86.sse2.pause
+[INFO 27/158 funcs, 27/158 SCCs] callgraph: pthreadpool_yield
+[INFO 28/158 funcs, 28/158 SCCs] callgraph: futex_wait
+[INFO 29/158 funcs, 29/158 SCCs] callgraph: wait_worker_threads
+[ADDROF] OK callee=futex_wait prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_acquire_uint32_t prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_acquire_uint32_t prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_acquire_uint32_t prefix=.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 30/158 funcs, 30/158 SCCs] callgraph: pthreadpool_fence_acquire
+[INFO 31/158 funcs, 31/158 SCCs] callgraph: pthread_mutex_unlock
+[INFO 32/158 funcs, 32/158 SCCs] callgraph: pthreadpool_load_relaxed_void_p
+[INFO 33/158 funcs, 33/158 SCCs] callgraph: pthreadpool_load_relaxed_size_t
+[INFO 34/158 funcs, 34/158 SCCs] callgraph: pthreadpool_try_decrement_relaxed_size_t
+[INFO 35/158 funcs, 35/158 SCCs] callgraph: modulo_decrement
+[INFO 36/158 funcs, 36/158 SCCs] callgraph: pthreadpool_decrement_fetch_relaxed_size_t
+[INFO 37/158 funcs, 37/158 SCCs] callgraph: pthreadpool_fence_release
+[INFO 38/158 funcs, 38/158 SCCs] callgraph: thread_parallelize_1d
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.5(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.4(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_try_decrement_relaxed_size_t prefix=.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_size_t prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[BADAT] thread_parallelize_1d formal=18023 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 39/158 funcs, 39/158 SCCs] callgraph: thread_parallelize_1d_with_uarch
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.5(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.4(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_try_decrement_relaxed_size_t prefix=.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_size_t prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[BADAT] thread_parallelize_1d_with_uarch formal=17927 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 40/158 funcs, 40/158 SCCs] callgraph: min.7
+[INFO 41/158 funcs, 41/158 SCCs] callgraph: thread_parallelize_1d_tile_1d
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.5(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.4(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_try_decrement_relaxed_size_t prefix=.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_size_t prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[BADAT] thread_parallelize_1d_tile_1d formal=17829 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 42/158 funcs, 42/158 SCCs] callgraph: fxdiv_mulhi_uint64_t.15
+[INFO 43/158 funcs, 43/158 SCCs] callgraph: fxdiv_quotient_uint64_t.14
+[INFO 44/158 funcs, 44/158 SCCs] callgraph: fxdiv_quotient_size_t.13
+[INFO 45/158 funcs, 45/158 SCCs] callgraph: fxdiv_divide_size_t.12
+[INFO 46/158 funcs, 46/158 SCCs] callgraph: thread_parallelize_2d
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.5(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.4(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_try_decrement_relaxed_size_t prefix=.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_size_t prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[BADAT] thread_parallelize_2d formal=17977 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 47/158 funcs, 47/158 SCCs] callgraph: thread_parallelize_2d_tile_1d
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.5(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.4(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_try_decrement_relaxed_size_t prefix=.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=pthreadpool_load_relaxed_size_t prefix=.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[BADAT] thread_parallelize_2d_tile_1d formal=18164 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 48/158 funcs, 48/158 SCCs] callgraph: thread_parallelize_2d_tile_2d
+[ADDROF] OK callee=pthreadpool_load_relaxed_void_p prefix=.5(<unnamed di type>/1) suffix=(<unnamed di type>/2) suffix=. kind=read
+[BADAT] thread_parallelize_2d_tile_2d formal=17948 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 49/158 funcs, 49/158 SCCs] callgraph: thread_parallelize_2d_tile_2d_with_uarch
+[BADAT] thread_parallelize_2d_tile_2d_with_uarch formal=18200 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 50/158 funcs, 50/158 SCCs] callgraph: thread_parallelize_3d
+[BADAT] thread_parallelize_3d formal=18194 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 51/158 funcs, 51/158 SCCs] callgraph: thread_parallelize_3d_tile_1d
+[BADAT] thread_parallelize_3d_tile_1d formal=17946 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 52/158 funcs, 52/158 SCCs] callgraph: thread_parallelize_3d_tile_2d
+[BADAT] thread_parallelize_3d_tile_2d formal=17867 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 53/158 funcs, 53/158 SCCs] callgraph: thread_parallelize_3d_tile_2d_with_uarch
+[BADAT] thread_parallelize_3d_tile_2d_with_uarch formal=17951 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 54/158 funcs, 54/158 SCCs] callgraph: thread_parallelize_4d
+[BADAT] thread_parallelize_4d formal=18169 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 55/158 funcs, 55/158 SCCs] callgraph: thread_parallelize_4d_tile_1d
+[BADAT] thread_parallelize_4d_tile_1d formal=17915 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 56/158 funcs, 56/158 SCCs] callgraph: thread_parallelize_4d_tile_2d
+[BADAT] thread_parallelize_4d_tile_2d formal=18025 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 57/158 funcs, 57/158 SCCs] callgraph: thread_parallelize_4d_tile_2d_with_uarch
+[BADAT] thread_parallelize_4d_tile_2d_with_uarch formal=17911 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 58/158 funcs, 58/158 SCCs] callgraph: thread_parallelize_5d
+[BADAT] thread_parallelize_5d formal=18069 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 59/158 funcs, 59/158 SCCs] callgraph: thread_parallelize_5d_tile_1d
+[BADAT] thread_parallelize_5d_tile_1d formal=18082 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 60/158 funcs, 60/158 SCCs] callgraph: thread_parallelize_5d_tile_2d
+[BADAT] thread_parallelize_5d_tile_2d formal=18097 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 61/158 funcs, 61/158 SCCs] callgraph: thread_parallelize_6d
+[BADAT] thread_parallelize_6d formal=18202 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 62/158 funcs, 62/158 SCCs] callgraph: thread_parallelize_6d_tile_1d
+[BADAT] thread_parallelize_6d_tile_1d formal=17964 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 63/158 funcs, 63/158 SCCs] callgraph: thread_parallelize_6d_tile_2d
+[BADAT] thread_parallelize_6d_tile_2d formal=18123 path=.6.1 access=read want=pthreadpool_1d_tile_1d_params/0 got=pthreadpool_1d_with_uarch_params/0 (endpoint type disagrees with DWARF walk)
+[BADAT] thread_parallelize_6d_tile_2d formal=18123 path=.6.2 access=read want=pthreadpool_2d_params/0 got=pthreadpool_1d_with_uarch_params/0 (endpoint type disagrees with DWARF walk)
+[BADAT] thread_parallelize_6d_tile_2d formal=18123 path=.6.3 access=read want=pthreadpool_2d_tile_1d_params/0 got=pthreadpool_1d_with_uarch_params/0 (endpoint type disagrees with DWARF walk)
+[BADAT] thread_parallelize_6d_tile_2d formal=18123 path=.6.4 access=read want=pthreadpool_2d_tile_2d_params/0 got=pthreadpool_1d_with_uarch_params/0 (endpoint type disagrees with DWARF walk)
+[BADAT] thread_parallelize_6d_tile_2d formal=18123 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 64/158 funcs, 64/158 SCCs] callgraph: pthreadpool_parallelize
+[BADAT] pthreadpool_parallelize formal=17929 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 65/158 funcs, 65/158 SCCs] callgraph: fxdiv_mulhi_uint64_t
+[INFO 66/158 funcs, 66/158 SCCs] callgraph: fxdiv_quotient_uint64_t
+[INFO 67/158 funcs, 67/158 SCCs] callgraph: fxdiv_quotient_size_t
+[INFO 68/158 funcs, 68/158 SCCs] callgraph: fxdiv_divide_size_t
+[INFO 69/158 funcs, 69/158 SCCs] callgraph: min
+[INFO 70/158 funcs, 70/158 SCCs] callgraph: compute_3d_tiled
+[INFO 71/158 funcs, 71/158 SCCs] callgraph: compute_4d_tiled
+[INFO 72/158 funcs, 72/158 SCCs] callgraph: pthreadpool_parallelize_1d
+[BADAT] pthreadpool_parallelize_1d formal=18003 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 73/158 funcs, 73/158 SCCs] callgraph: pthreadpool_compute_1d
+[INFO 74/158 funcs, 74/158 SCCs] callgraph: divide_round_up.8
+[INFO 75/158 funcs, 75/158 SCCs] callgraph: pthreadpool_parallelize_1d_tile_1d
+[BADAT] pthreadpool_parallelize_1d_tile_1d formal=17953 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 76/158 funcs, 76/158 SCCs] callgraph: pthreadpool_compute_1d_tiled
+[INFO 77/158 funcs, 77/158 SCCs] callgraph: llvm.ctlz.i64
+[INFO 78/158 funcs, 78/158 SCCs] callgraph: fxdiv_mulext_uint32_t.17
+[INFO 79/158 funcs, 79/158 SCCs] callgraph: fxdiv_init_uint64_t.16
+[INFO 80/158 funcs, 80/158 SCCs] callgraph: fxdiv_init_size_t.11
+[INFO 81/158 funcs, 81/158 SCCs] callgraph: pthreadpool_parallelize_2d
+[BADAT] pthreadpool_parallelize_2d formal=17821 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 82/158 funcs, 82/158 SCCs] callgraph: pthreadpool_compute_2d
+[INFO 83/158 funcs, 83/158 SCCs] callgraph: pthreadpool_parallelize_2d_tile_2d
+[BADAT] pthreadpool_parallelize_2d_tile_2d formal=17919 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 84/158 funcs, 84/158 SCCs] callgraph: pthreadpool_compute_2d_tiled
+[INFO 85/158 funcs, 85/158 SCCs] callgraph: pthreadpool_get_threads_count
+[INFO 86/158 funcs, 86/158 SCCs] callgraph: divide_round_up
+[INFO 87/158 funcs, 87/158 SCCs] callgraph: fxdiv_mulext_uint32_t
+[INFO 88/158 funcs, 88/158 SCCs] callgraph: fxdiv_init_uint64_t
+[INFO 89/158 funcs, 89/158 SCCs] callgraph: fxdiv_init_size_t
+[INFO 90/158 funcs, 90/158 SCCs] callgraph: pthreadpool_compute_3d_tiled
+[INFO 91/158 funcs, 91/158 SCCs] callgraph: pthreadpool_compute_4d_tiled
+[INFO 92/158 funcs, 92/158 SCCs] callgraph: pthreadpool_parallelize_1d_with_uarch
+[BADAT] pthreadpool_parallelize_1d_with_uarch formal=18128 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 93/158 funcs, 93/158 SCCs] callgraph: pthreadpool_parallelize_2d_tile_1d
+[BADAT] pthreadpool_parallelize_2d_tile_1d formal=18050 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 94/158 funcs, 94/158 SCCs] callgraph: pthreadpool_parallelize_2d_tile_2d_with_uarch
+[BADAT] pthreadpool_parallelize_2d_tile_2d_with_uarch formal=17798 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 95/158 funcs, 95/158 SCCs] callgraph: pthreadpool_parallelize_3d
+[BADAT] pthreadpool_parallelize_3d formal=18150 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 96/158 funcs, 96/158 SCCs] callgraph: pthreadpool_parallelize_3d_tile_1d
+[BADAT] pthreadpool_parallelize_3d_tile_1d formal=18013 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 97/158 funcs, 97/158 SCCs] callgraph: pthreadpool_parallelize_3d_tile_2d
+[BADAT] pthreadpool_parallelize_3d_tile_2d formal=17848 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 98/158 funcs, 98/158 SCCs] callgraph: pthreadpool_parallelize_3d_tile_2d_with_uarch
+[BADAT] pthreadpool_parallelize_3d_tile_2d_with_uarch formal=18037 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 99/158 funcs, 99/158 SCCs] callgraph: pthreadpool_parallelize_4d
+[BADAT] pthreadpool_parallelize_4d formal=17812 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 100/158 funcs, 100/158 SCCs] callgraph: pthreadpool_parallelize_4d_tile_1d
+[BADAT] pthreadpool_parallelize_4d_tile_1d formal=17837 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 101/158 funcs, 101/158 SCCs] callgraph: pthreadpool_parallelize_4d_tile_2d
+[BADAT] pthreadpool_parallelize_4d_tile_2d formal=17869 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 102/158 funcs, 102/158 SCCs] callgraph: pthreadpool_parallelize_4d_tile_2d_with_uarch
+[BADAT] pthreadpool_parallelize_4d_tile_2d_with_uarch formal=18057 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 103/158 funcs, 103/158 SCCs] callgraph: pthreadpool_parallelize_5d
+[BADAT] pthreadpool_parallelize_5d formal=18027 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 104/158 funcs, 104/158 SCCs] callgraph: pthreadpool_parallelize_5d_tile_1d
+[BADAT] pthreadpool_parallelize_5d_tile_1d formal=18072 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 105/158 funcs, 105/158 SCCs] callgraph: pthreadpool_parallelize_5d_tile_2d
+[BADAT] pthreadpool_parallelize_5d_tile_2d formal=18086 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 106/158 funcs, 106/158 SCCs] callgraph: pthreadpool_parallelize_6d
+[BADAT] pthreadpool_parallelize_6d formal=17887 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 107/158 funcs, 107/158 SCCs] callgraph: pthreadpool_parallelize_6d_tile_1d
+[BADAT] pthreadpool_parallelize_6d_tile_1d formal=18100 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 108/158 funcs, 108/158 SCCs] callgraph: pthreadpool_parallelize_6d_tile_2d
+[BADAT] pthreadpool_parallelize_6d_tile_2d formal=18111 path=.11 access=read want=pthreadpool/1 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 109/158 funcs, 109/158 SCCs] callgraph: posix_memalign
+[INFO 110/158 funcs, 110/158 SCCs] callgraph: pthreadpool_allocate
+[INFO 111/158 funcs, 111/158 SCCs] callgraph: free
+[INFO 112/158 funcs, 112/158 SCCs] callgraph: pthreadpool_deallocate
+[INFO 113/158 funcs, 113/158 SCCs] callgraph: sysconf
+[INFO 114/158 funcs, 114/158 SCCs] callgraph: fxdiv_mulext_uint32_t.30
+[INFO 115/158 funcs, 115/158 SCCs] callgraph: fxdiv_init_uint64_t.29
+[INFO 116/158 funcs, 116/158 SCCs] callgraph: fxdiv_init_size_t.23
+[INFO 117/158 funcs, 117/158 SCCs] callgraph: pthread_mutex_init
+[INFO 118/158 funcs, 118/158 SCCs] callgraph: pthread_create
+[INFO 119/158 funcs, 119/158 SCCs] callgraph: pthreadpool_decrement_fetch_relaxed_size_t.28
+[INFO 120/158 funcs, 120/158 SCCs] callgraph: checkin_worker_thread
+[INFO 121/158 funcs, 121/158 SCCs] callgraph: wait_for_new_command
+[INFO 122/158 funcs, 122/158 SCCs] callgraph: pthreadpool_load_relaxed_void_p.24
+[INFO 123/158 funcs, 123/158 SCCs] callgraph: thread_main
+[INFO 124/158 funcs, 124/158 SCCs] callgraph: pthreadpool_create
+[INFO 125/158 funcs, 125/158 SCCs] callgraph: pthread_join
+[INFO 126/158 funcs, 126/158 SCCs] callgraph: pthread_mutex_destroy
+[INFO 127/158 funcs, 127/158 SCCs] callgraph: pthreadpool_destroy
+[INFO 0/30] processing return for pthreadpool_compute_1d
+[INFO 1/30] processing return for pthreadpool_compute_1d_tiled
+[INFO 2/30] processing return for pthreadpool_compute_2d
+[INFO 3/30] processing return for pthreadpool_compute_2d_tiled
+[INFO 4/30] processing return for pthreadpool_compute_3d_tiled
+[INFO 5/30] processing return for pthreadpool_compute_4d_tiled
+[INFO 6/30] processing return for pthreadpool_create
+[INFO 7/30] processing return for pthreadpool_destroy
+[INFO 8/30] processing return for pthreadpool_get_threads_count
+[INFO 9/30] processing return for pthreadpool_parallelize_1d
+[INFO 10/30] processing return for pthreadpool_parallelize_1d_tile_1d
+[INFO 11/30] processing return for pthreadpool_parallelize_1d_with_uarch
+[INFO 12/30] processing return for pthreadpool_parallelize_2d
+[INFO 13/30] processing return for pthreadpool_parallelize_2d_tile_1d
+[INFO 14/30] processing return for pthreadpool_parallelize_2d_tile_2d
+[INFO 15/30] processing return for pthreadpool_parallelize_2d_tile_2d_with_uarch
+[INFO 16/30] processing return for pthreadpool_parallelize_3d
+[INFO 17/30] processing return for pthreadpool_parallelize_3d_tile_1d
+[INFO 18/30] processing return for pthreadpool_parallelize_3d_tile_2d
+[INFO 19/30] processing return for pthreadpool_parallelize_3d_tile_2d_with_uarch
+[INFO 20/30] processing return for pthreadpool_parallelize_4d
+[INFO 21/30] processing return for pthreadpool_parallelize_4d_tile_1d
+[INFO 22/30] processing return for pthreadpool_parallelize_4d_tile_2d
+[INFO 23/30] processing return for pthreadpool_parallelize_4d_tile_2d_with_uarch
+[INFO 24/30] processing return for pthreadpool_parallelize_5d
+[INFO 25/30] processing return for pthreadpool_parallelize_5d_tile_1d
+[INFO 26/30] processing return for pthreadpool_parallelize_5d_tile_2d
+[INFO 27/30] processing return for pthreadpool_parallelize_6d
+[INFO 28/30] processing return for pthreadpool_parallelize_6d_tile_1d
+[INFO 29/30] processing return for pthreadpool_parallelize_6d_tile_2d
+[INFO] Summary pthreadpool_compute_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_compute_1d_tiled:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_compute_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_compute_2d_tiled:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_compute_3d_tiled:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_compute_4d_tiled:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+param_10: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_create:
+param_0: 1 access types
+return: 8 access types
+[INFO] Summary pthreadpool_destroy:
+param_0: 12 access types
+return: 0 access types
+[INFO] Summary pthreadpool_get_threads_count:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_1d_tile_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_1d_with_uarch:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_2d_tile_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_2d_tile_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_2d_tile_2d_with_uarch:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_3d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_3d_tile_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_3d_tile_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_3d_tile_2d_with_uarch:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+param_10: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_4d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_4d_tile_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_4d_tile_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_4d_tile_2d_with_uarch:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+param_10: 1 access types
+param_11: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_5d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_5d_tile_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_5d_tile_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+param_10: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_6d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_6d_tile_1d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+param_10: 1 access types
+return: 0 access types
+[INFO] Summary pthreadpool_parallelize_6d_tile_2d:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+param_8: 1 access types
+param_9: 1 access types
+param_10: 1 access types
+param_11: 1 access types
+return: 0 access types
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                        144.41         1    144.41
+2. PAG Builder                              223.37         1    223.37
+3. Points-to Analysis                       257.30         1    257.30
+4. Full SVFG Build                          207.52         1    207.52
+Function 1: extract_parameter_metadata       40.72       230      0.18
+Function 1: extract_parameter_metadata: pthreadpool_compute_1d     11.99         4      3.00
+Function 1: extract_parameter_metadata: pthreadpool_compute_1d_tiled      0.86         5      0.17
+Function 1: extract_parameter_metadata: pthreadpool_compute_2d      1.20         5      0.24
+Function 1: extract_parameter_metadata: pthreadpool_compute_2d_tiled      1.13         7      0.16
+Function 1: extract_parameter_metadata: pthreadpool_compute_3d_tiled      1.75         9      0.19
+Function 1: extract_parameter_metadata: pthreadpool_compute_4d_tiled      1.43        11      0.13
+Function 1: extract_parameter_metadata: pthreadpool_create     12.08         1     12.08
+Function 1: extract_parameter_metadata: pthreadpool_destroy      0.23         1      0.23
+Function 1: extract_parameter_metadata: pthreadpool_get_threads_count      0.06         1      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_1d      0.28         5      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_1d_tile_1d      0.32         6      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_1d_with_uarch      0.34         7      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d      0.34         6      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d_tile_1d      0.36         7      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d_tile_2d      0.41         8      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d_tile_2d_with_uarch      0.50        10      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d      0.38         7      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d_tile_1d      0.43         8      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d_tile_2d      0.50         9      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d_tile_2d_with_uarch      0.61        11      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d      0.41         8      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d_tile_1d      0.46         9      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d_tile_2d      0.55        10      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d_tile_2d_with_uarch      0.62        12      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_5d      0.48         9      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_5d_tile_1d      0.59        10      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_5d_tile_2d      0.58        11      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_6d      0.52        10      0.05
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_6d_tile_1d      0.61        11      0.06
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_6d_tile_2d      0.63        12      0.05
+Function 2: extractLenDependencyParameter      0.05         1      0.05
+Function 2: extractLenDependencyParameter: pthreadpool_destroy      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameters     15.47       230      0.07
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_1d      0.64         4      0.16
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_1d_tiled      0.50         5      0.10
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_2d      0.47         5      0.09
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_2d_tiled      0.53         7      0.08
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_3d_tiled      0.73         9      0.08
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_4d_tiled      0.81        11      0.07
+Function 3: my_extract_dependency_among_parameterspthreadpool_create      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_destroy      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspthreadpool_get_threads_count      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_1d      0.88         5      0.18
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_1d_tile_1d      0.43         6      0.07
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_1d_with_uarch      0.43         7      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d      0.39         6      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d_tile_1d      0.47         7      0.07
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d_tile_2d      0.50         8      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d_tile_2d_with_uarch      0.55        10      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d      0.42         7      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d_tile_1d      0.47         8      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d_tile_2d      0.53         9      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d_tile_2d_with_uarch      0.63        11      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d      0.51         8      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d_tile_1d      0.53         9      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d_tile_2d      0.56        10      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d_tile_2d_with_uarch      0.66        12      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_5d      0.52         9      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_5d_tile_1d      0.58        10      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_5d_tile_2d      0.65        11      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_6d      0.57        10      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_6d_tile_1d      0.61        11      0.06
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_6d_tile_2d      0.65        12      0.05
+Function 4: extract_return_metadata           1.42        30      0.05
+Function 4: extract_return_metadata: pthreadpool_compute_1d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_compute_1d_tiled      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_compute_2d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_compute_2d_tiled      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_compute_3d_tiled      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_compute_4d_tiled      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_create      0.06         1      0.06
+Function 4: extract_return_metadata: pthreadpool_destroy      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_get_threads_count      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_1d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_parallelize_1d_tile_1d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_1d_with_uarch      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d      0.06         1      0.06
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d_tile_1d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d_tile_2d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d_tile_2d_with_uarch      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d_tile_1d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d_tile_2d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d_tile_2d_with_uarch      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d_tile_1d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d_tile_2d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d_tile_2d_with_uarch      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_5d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_5d_tile_1d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_parallelize_5d_tile_2d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_6d      0.05         1      0.05
+Function 4: extract_return_metadata: pthreadpool_parallelize_6d_tile_1d      0.04         1      0.04
+Function 4: extract_return_metadata: pthreadpool_parallelize_6d_tile_2d      0.05         1      0.05
+GlobalStruct: Build Slot Map                  0.98         1      0.98
+GlobalStruct: Globals Processing              0.06         1      0.06
+GlobalStruct: Resolve Indirect Calls          4.35         1      4.35
+GlobalStruct: Unresolved Calls                0.11         1      0.11
+GlobalStruct::analyze Total Time            257.26         1    257.26
+Process Function: pthreadpool_compute_1d     12.83         1     12.83
+Process Function: pthreadpool_compute_1d_tiled      1.55         1      1.55
+Process Function: pthreadpool_compute_2d      1.86         1      1.86
+Process Function: pthreadpool_compute_2d_tiled      1.90         1      1.90
+Process Function: pthreadpool_compute_3d_tiled      2.80         1      2.80
+Process Function: pthreadpool_compute_4d_tiled      2.64         1      2.64
+Process Function: pthreadpool_create         12.31         1     12.31
+Process Function: pthreadpool_destroy         0.45         1      0.45
+Process Function: pthreadpool_get_threads_count      0.19         1      0.19
+Process Function: pthreadpool_parallelize_1d      1.34         1      1.34
+Process Function: pthreadpool_parallelize_1d_tile_1d      0.94         1      0.94
+Process Function: pthreadpool_parallelize_1d_with_uarch      0.95         1      0.95
+Process Function: pthreadpool_parallelize_2d      0.94         1      0.94
+Process Function: pthreadpool_parallelize_2d_tile_1d      1.09         1      1.09
+Process Function: pthreadpool_parallelize_2d_tile_2d      1.15         1      1.15
+Process Function: pthreadpool_parallelize_2d_tile_2d_with_uarch      1.32         1      1.32
+Process Function: pthreadpool_parallelize_3d      1.01         1      1.01
+Process Function: pthreadpool_parallelize_3d_tile_1d      1.15         1      1.15
+Process Function: pthreadpool_parallelize_3d_tile_2d      1.35         1      1.35
+Process Function: pthreadpool_parallelize_3d_tile_2d_with_uarch      1.54         1      1.54
+Process Function: pthreadpool_parallelize_4d      1.18         1      1.18
+Process Function: pthreadpool_parallelize_4d_tile_1d      1.28         1      1.28
+Process Function: pthreadpool_parallelize_4d_tile_2d      1.45         1      1.45
+Process Function: pthreadpool_parallelize_4d_tile_2d_with_uarch      1.59         1      1.59
+Process Function: pthreadpool_parallelize_5d      1.27         1      1.27
+Process Function: pthreadpool_parallelize_5d_tile_1d      1.47         1      1.47
+Process Function: pthreadpool_parallelize_5d_tile_2d      1.56         1      1.56
+Process Function: pthreadpool_parallelize_6d      1.40         1      1.40
+Process Function: pthreadpool_parallelize_6d_tile_1d      1.56         1      1.56
+Process Function: pthreadpool_parallelize_6d_tile_2d      1.64         1      1.64
+Process Parameters: pthreadpool_compute_1d     12.73         1     12.73
+Process Parameters: pthreadpool_compute_1d_tiled      1.45         1      1.45
+Process Parameters: pthreadpool_compute_2d      1.76         1      1.76
+Process Parameters: pthreadpool_compute_2d_tiled      1.78         1      1.78
+Process Parameters: pthreadpool_compute_3d_tiled      2.65         1      2.65
+Process Parameters: pthreadpool_compute_4d_tiled      2.44         1      2.44
+Process Parameters: pthreadpool_create       12.20         1     12.20
+Process Parameters: pthreadpool_destroy       0.37         1      0.37
+Process Parameters: pthreadpool_get_threads_count      0.13         1      0.13
+Process Parameters: pthreadpool_parallelize_1d      1.24         1      1.24
+Process Parameters: pthreadpool_parallelize_1d_tile_1d      0.85         1      0.85
+Process Parameters: pthreadpool_parallelize_1d_with_uarch      0.85         1      0.85
+Process Parameters: pthreadpool_parallelize_2d      0.82         1      0.82
+Process Parameters: pthreadpool_parallelize_2d_tile_1d      0.96         1      0.96
+Process Parameters: pthreadpool_parallelize_2d_tile_2d      1.03         1      1.03
+Process Parameters: pthreadpool_parallelize_2d_tile_2d_with_uarch      1.19         1      1.19
+Process Parameters: pthreadpool_parallelize_3d      0.91         1      0.91
+Process Parameters: pthreadpool_parallelize_3d_tile_1d      1.02         1      1.02
+Process Parameters: pthreadpool_parallelize_3d_tile_2d      1.21         1      1.21
+Process Parameters: pthreadpool_parallelize_3d_tile_2d_with_uarch      1.39         1      1.39
+Process Parameters: pthreadpool_parallelize_4d      1.06         1      1.06
+Process Parameters: pthreadpool_parallelize_4d_tile_1d      1.15         1      1.15
+Process Parameters: pthreadpool_parallelize_4d_tile_2d      1.30         1      1.30
+Process Parameters: pthreadpool_parallelize_4d_tile_2d_with_uarch      1.44         1      1.44
+Process Parameters: pthreadpool_parallelize_5d      1.15         1      1.15
+Process Parameters: pthreadpool_parallelize_5d_tile_1d      1.33         1      1.33
+Process Parameters: pthreadpool_parallelize_5d_tile_2d      1.40         1      1.40
+Process Parameters: pthreadpool_parallelize_6d      1.25         1      1.25
+Process Parameters: pthreadpool_parallelize_6d_tile_1d      1.41         1      1.41
+Process Parameters: pthreadpool_parallelize_6d_tile_2d      1.47         1      1.47
+Total Condition Extraction (all 4 functions total)     63.88         1     63.88
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                            10.5        10.5        40.8       1
+2. PAG Builder                                  43.2        43.2        84.1       1
+3. Points-to Analysis                           26.2        26.2       110.3       1
+4. Full SVFG Build                              31.0        31.0       141.3       1
+Function 1: extract_parameter_metadata           0.0         1.1       144.0     230
+Function 1: extract_parameter_metadata: pthreadpool_compute_1d         0.0         0.0       141.3       4
+Function 1: extract_parameter_metadata: pthreadpool_compute_1d_tiled         0.0         0.0       141.3       5
+Function 1: extract_parameter_metadata: pthreadpool_compute_2d         0.0         0.0       141.3       5
+Function 1: extract_parameter_metadata: pthreadpool_compute_2d_tiled         0.0         0.0       141.4       7
+Function 1: extract_parameter_metadata: pthreadpool_compute_3d_tiled         0.0         0.1       141.5       9
+Function 1: extract_parameter_metadata: pthreadpool_compute_4d_tiled         0.0         0.0       141.7      11
+Function 1: extract_parameter_metadata: pthreadpool_create         1.1         1.1       142.9       1
+Function 1: extract_parameter_metadata: pthreadpool_destroy         0.0         0.0       142.9       1
+Function 1: extract_parameter_metadata: pthreadpool_get_threads_count         0.0         0.0       142.9       1
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_1d         0.0         0.0       142.9       5
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_1d_tile_1d         0.0         0.0       142.9       6
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_1d_with_uarch         0.0         0.0       142.9       7
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d         0.0         0.0       143.0       6
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d_tile_1d         0.0         0.0       143.0       7
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d_tile_2d         0.0         0.0       143.0       8
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_2d_tile_2d_with_uarch         0.0         0.0       143.1      10
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d         0.0         0.0       143.2       7
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d_tile_1d         0.0         0.0       143.2       8
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d_tile_2d         0.0         0.0       143.3       9
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_3d_tile_2d_with_uarch         0.0         0.0       143.3      11
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d         0.0         0.0       143.4       8
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d_tile_1d         0.0         0.0       143.4       9
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d_tile_2d         0.0         0.0       143.5      10
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_4d_tile_2d_with_uarch         0.0         0.0       143.6      12
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_5d         0.0         0.0       143.6       9
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_5d_tile_1d         0.0         0.0       143.7      10
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_5d_tile_2d         0.0         0.0       143.8      11
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_6d         0.0         0.0       143.9      10
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_6d_tile_1d         0.0         0.0       143.9      11
+Function 1: extract_parameter_metadata: pthreadpool_parallelize_6d_tile_2d         0.0         0.0       144.0      12
+Function 2: extractLenDependencyParameter         0.0         0.0       142.9       1
+Function 2: extractLenDependencyParameter: pthreadpool_destroy         0.0         0.0       142.9       1
+Function 3: my_extract_dependency_among_parameters         0.0         0.0       144.0     230
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_1d         0.0         0.0       141.3       4
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_1d_tiled         0.0         0.0       141.3       5
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_2d         0.0         0.0       141.3       5
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_2d_tiled         0.0         0.0       141.4       7
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_3d_tiled         0.0         0.0       141.5       9
+Function 3: my_extract_dependency_among_parameterspthreadpool_compute_4d_tiled         0.0         0.0       141.7      11
+Function 3: my_extract_dependency_among_parameterspthreadpool_create         0.0         0.0       142.9       1
+Function 3: my_extract_dependency_among_parameterspthreadpool_destroy         0.0         0.0       142.9       1
+Function 3: my_extract_dependency_among_parameterspthreadpool_get_threads_count         0.0         0.0       142.9       1
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_1d         0.0         0.0       142.9       5
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_1d_tile_1d         0.0         0.0       142.9       6
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_1d_with_uarch         0.0         0.0       142.9       7
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d         0.0         0.0       143.0       6
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d_tile_1d         0.0         0.0       143.0       7
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d_tile_2d         0.0         0.0       143.0       8
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_2d_tile_2d_with_uarch         0.0         0.0       143.1      10
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d         0.0         0.0       143.2       7
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d_tile_1d         0.0         0.0       143.2       8
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d_tile_2d         0.0         0.0       143.3       9
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_3d_tile_2d_with_uarch         0.0         0.0       143.3      11
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d         0.0         0.0       143.4       8
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d_tile_1d         0.0         0.0       143.4       9
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d_tile_2d         0.0         0.0       143.5      10
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_4d_tile_2d_with_uarch         0.0         0.0       143.6      12
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_5d         0.0         0.0       143.6       9
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_5d_tile_1d         0.0         0.0       143.7      10
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_5d_tile_2d         0.0         0.0       143.8      11
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_6d         0.0         0.0       143.9      10
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_6d_tile_1d         0.0         0.0       143.9      11
+Function 3: my_extract_dependency_among_parameterspthreadpool_parallelize_6d_tile_2d         0.0         0.0       144.0      12
+Function 4: extract_return_metadata              0.0         0.0       144.0      30
+Function 4: extract_return_metadata: pthreadpool_compute_1d         0.0         0.0       141.3       1
+Function 4: extract_return_metadata: pthreadpool_compute_1d_tiled         0.0         0.0       141.3       1
+Function 4: extract_return_metadata: pthreadpool_compute_2d         0.0         0.0       141.3       1
+Function 4: extract_return_metadata: pthreadpool_compute_2d_tiled         0.0         0.0       141.4       1
+Function 4: extract_return_metadata: pthreadpool_compute_3d_tiled         0.0         0.0       141.5       1
+Function 4: extract_return_metadata: pthreadpool_compute_4d_tiled         0.0         0.0       141.7       1
+Function 4: extract_return_metadata: pthreadpool_create         0.0         0.0       142.9       1
+Function 4: extract_return_metadata: pthreadpool_destroy         0.0         0.0       142.9       1
+Function 4: extract_return_metadata: pthreadpool_get_threads_count         0.0         0.0       142.9       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_1d         0.0         0.0       142.9       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_1d_tile_1d         0.0         0.0       142.9       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_1d_with_uarch         0.0         0.0       142.9       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d         0.0         0.0       143.0       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d_tile_1d         0.0         0.0       143.0       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d_tile_2d         0.0         0.0       143.0       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_2d_tile_2d_with_uarch         0.0         0.0       143.1       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d         0.0         0.0       143.2       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d_tile_1d         0.0         0.0       143.2       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d_tile_2d         0.0         0.0       143.3       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_3d_tile_2d_with_uarch         0.0         0.0       143.3       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d         0.0         0.0       143.4       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d_tile_1d         0.0         0.0       143.4       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d_tile_2d         0.0         0.0       143.5       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_4d_tile_2d_with_uarch         0.0         0.0       143.6       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_5d         0.0         0.0       143.7       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_5d_tile_1d         0.0         0.0       143.7       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_5d_tile_2d         0.0         0.0       143.8       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_6d         0.0         0.0       143.9       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_6d_tile_1d         0.0         0.0       143.9       1
+Function 4: extract_return_metadata: pthreadpool_parallelize_6d_tile_2d         0.0         0.0       144.0       1
+GlobalStruct: Build Slot Map                     0.0         0.0       109.8       1
+GlobalStruct: Globals Processing                 0.0         0.0       109.8       1
+GlobalStruct: Resolve Indirect Calls             0.5         0.5       110.2       1
+GlobalStruct: Unresolved Calls                   0.0         0.0       109.8       1
+GlobalStruct: base PTA analyze                  25.6        25.6       109.8       1
+GlobalStruct::analyze Total Time                26.2        26.2       110.3       1
+Process Function: pthreadpool_compute_1d         0.0         0.0       141.3       1
+Process Function: pthreadpool_compute_1d_tiled         0.0         0.0       141.3       1
+Process Function: pthreadpool_compute_2d         0.0         0.0       141.3       1
+Process Function: pthreadpool_compute_2d_tiled         0.0         0.0       141.4       1
+Process Function: pthreadpool_compute_3d_tiled         0.2         0.2       141.6       1
+Process Function: pthreadpool_compute_4d_tiled         0.2         0.2       141.7       1
+Process Function: pthreadpool_create             1.1         1.1       142.9       1
+Process Function: pthreadpool_destroy            0.0         0.0       142.9       1
+Process Function: pthreadpool_get_threads_count         0.0         0.0       142.9       1
+Process Function: pthreadpool_parallelize_1d         0.0         0.0       142.9       1
+Process Function: pthreadpool_parallelize_1d_tile_1d         0.0         0.0       142.9       1
+Process Function: pthreadpool_parallelize_1d_with_uarch         0.0         0.0       142.9       1
+Process Function: pthreadpool_parallelize_2d         0.0         0.0       143.0       1
+Process Function: pthreadpool_parallelize_2d_tile_1d         0.0         0.0       143.0       1
+Process Function: pthreadpool_parallelize_2d_tile_2d         0.1         0.1       143.1       1
+Process Function: pthreadpool_parallelize_2d_tile_2d_with_uarch         0.1         0.1       143.1       1
+Process Function: pthreadpool_parallelize_3d         0.0         0.0       143.2       1
+Process Function: pthreadpool_parallelize_3d_tile_1d         0.1         0.1       143.2       1
+Process Function: pthreadpool_parallelize_3d_tile_2d         0.1         0.1       143.3       1
+Process Function: pthreadpool_parallelize_3d_tile_2d_with_uarch         0.1         0.1       143.4       1
+Process Function: pthreadpool_parallelize_4d         0.0         0.0       143.4       1
+Process Function: pthreadpool_parallelize_4d_tile_1d         0.1         0.1       143.5       1
+Process Function: pthreadpool_parallelize_4d_tile_2d         0.1         0.1       143.6       1
+Process Function: pthreadpool_parallelize_4d_tile_2d_with_uarch         0.1         0.1       143.6       1
+Process Function: pthreadpool_parallelize_5d         0.0         0.0       143.7       1
+Process Function: pthreadpool_parallelize_5d_tile_1d         0.1         0.1       143.8       1
+Process Function: pthreadpool_parallelize_5d_tile_2d         0.1         0.1       143.9       1
+Process Function: pthreadpool_parallelize_6d         0.1         0.1       143.9       1
+Process Function: pthreadpool_parallelize_6d_tile_1d         0.1         0.1       144.0       1
+Process Function: pthreadpool_parallelize_6d_tile_2d         0.1         0.1       144.1       1
+Process Parameters: pthreadpool_compute_1d         0.0         0.0       141.3       1
+Process Parameters: pthreadpool_compute_1d_tiled         0.0         0.0       141.3       1
+Process Parameters: pthreadpool_compute_2d         0.0         0.0       141.3       1
+Process Parameters: pthreadpool_compute_2d_tiled         0.0         0.0       141.4       1
+Process Parameters: pthreadpool_compute_3d_tiled         0.1         0.1       141.5       1
+Process Parameters: pthreadpool_compute_4d_tiled         0.1         0.1       141.7       1
+Process Parameters: pthreadpool_create           1.1         1.1       142.9       1
+Process Parameters: pthreadpool_destroy          0.0         0.0       142.9       1
+Process Parameters: pthreadpool_get_threads_count         0.0         0.0       142.9       1
+Process Parameters: pthreadpool_parallelize[COMPOSE] attempts=1730 di_match=1518 di_reject=28 di_void=163 undecidable=21 absent=0 unnamed=21)
+[NODES] tota_dp_processed=8629 pops=9360 dedup=731
+[IS_MALLOC_SIZE] 0
+[GEP_TYPE] void_recovered1 untyped_skip=283
+_1d         0.0         0.0       142.9       1
+Process Parameters: pthreadpool_parallelize_1d_tile_1d         0.0         0.0       142.9       1
+Process Parameters: pthreadpool_parallelize_1d_with_uarch         0.0         0.0       142.9       1
+Process Parameters: pthreadpool_parallelize_2d         0.0         0.0       143.0       1
+Process Parameters: pthreadpool_parallelize_2d_tile_1d         0.0         0.0       143.0       1
+Process Parameters: pthreadpool_parallelize_2d_tile_2d         0.0         0.0       143.0       1
+Process Parameters: pthreadpool_parallelize_2d_tile_2d_with_uarch         0.0         0.0       143.1       1
+Process Parameters: pthreadpool_parallelize_3d         0.0         0.0       143.2       1
+Process Parameters: pthreadpool_parallelize_3d_tile_1d         0.0         0.0       143.2       1
+Process Parameters: pthreadpool_parallelize_3d_tile_2d         0.0         0.0       143.3       1
+Process Parameters: pthreadpool_parallelize_3d_tile_2d_with_uarch         0.0         0.0       143.3       1
+Process Parameters: pthreadpool_parallelize_4d         0.0         0.0       143.4       1
+Process Parameters: pthreadpool_parallelize_4d_tile_1d         0.0         0.0       143.4       1
+Process Parameters: pthreadpool_parallelize_4d_tile_2d         0.0         0.0       143.5       1
+Process Parameters: pthreadpool_parallelize_4d_tile_2d_with_uarch         0.0         0.0       143.6       1
+Process Parameters: pthreadpool_parallelize_5d         0.0         0.0       143.7       1
+Process Parameters: pthreadpool_parallelize_5d_tile_1d         0.0         0.0       143.7       1
+Process Parameters: pthreadpool_parallelize_5d_tile_2d         0.0         0.0       143.8       1
+Process Parameters: pthreadpool_parallelize_6d         0.0         0.0       143.9       1
+Process Parameters: pthreadpool_parallelize_6d_tile_1d         0.0         0.0       143.9       1
+Process Parameters: pthreadpool_parallelize_6d_tile_2d         0.0         0.0       144.0       1
+Total Condition Extraction (all 4 functions total)         2.8         2.8       144.1       1
+
+Saved to /workspaces/libfuzz/analysis/pthreadpool//work/apipass/conditions.json
+Analysis complete for pthreadpool
+Finished analysis
++ echo 'Finished analysis'
++ ./analysis.sh pthreadpool --run-only
++ echo 'Analysing pthreadpool'
++ source setup_target.sh pthreadpool
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z pthreadpool ]]
+++ export TARGET_NAME=pthreadpool
+++ TARGET_NAME=pthreadpool
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/pthreadpool
+++ TARGET_DIR=/workspaces/libfuzz/targets/pthreadpool
+++ CONFIG_FILE=/workspaces/libfuzz/targets/pthreadpool/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/pthreadpool/
++ TARGET=/workspaces/libfuzz/analysis/pthreadpool/
++ export WORK=/workspaces/libfuzz/analysis/pthreadpool//work
++ WORK=/workspaces/libfuzz/analysis/pthreadpool//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/pthreadpool/config.sh
+++ REPO_URL=https://android.googlesource.com/platform/external/pthreadpool
+++ REPO_COMMIT=3278138cd43f4d81aed2a406680f2dc328492d2e
+++ BC_FILE_NAME=libpthreadpool.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool//work
+++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool//work/lib /workspaces/libfuzz/analysis/pthreadpool//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/pthreadpool//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/pthreadpool//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/pthreadpool//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool//work/apipass
+++ touch /workspaces/libfuzz/analysis/pthreadpool//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/pthreadpool//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/pthreadpool//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/pthreadpool//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libpthreadpool.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/pthreadpool//work/lib/libpthreadpool.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/pthreadpool//work/lib/libpthreadpool.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/pthreadpool//work/lib/libpthreadpool.a
+Writing output to /workspaces/libfuzz/analysis/pthreadpool/work/lib/libpthreadpool.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/pthreadpool/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/pthreadpool/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/pthreadpool//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/pthreadpool//work/include -t pthreadpool -p /workspaces/libfuzz/targets/pthreadpool/public_headers.txt -e /workspaces/libfuzz/analysis/pthreadpool//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/pthreadpool//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/pthreadpool//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/pthreadpool//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/pthreadpool//work/lib/libpthreadpool.a.bc -target pthreadpool -interface /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/pthreadpool//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/pthreadpool//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/pthreadpool//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 1.14
+user 1.03
+sys 0.11
+maxrss_kb 153420
+++ echo 'Saved to /workspaces/libfuzz/analysis/pthreadpool//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for pthreadpool'
+
+real	0m1.851s
+user	0m1.440s
+sys	0m0.243s

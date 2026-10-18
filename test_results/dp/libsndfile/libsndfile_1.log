@@ -1,0 +1,2549 @@
++ export TARGET_NAME=libsndfile
++ TARGET_NAME=libsndfile
++ TARGET_DIR=/workspaces/libfuzz/analysis/libsndfile
++ WORK=/workspaces/libfuzz/analysis/libsndfile/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/libsndfile
+Start analysis
++ echo 'Start analysis'
+Analysing libsndfile
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmpho31j___.cc
+['SNDFILE', '*']
+['const', 'char', '*']
+['int']
+['SF_INFO', '*']
+['SNDFILE', '*']
+['int']
+['int']
+['SF_INFO', '*']
+['int']
+['SNDFILE', '*']
+['SF_VIRTUAL_IO', '*']
+['int']
+['SF_INFO', '*']
+['void', '*']
+['int']
+['SNDFILE', '*']
+['const', 'char', '*']
+['SNDFILE', '*']
+['const', 'char', '*']
+['int']
+['int']
+['SNDFILE', '*']
+['int']
+['SNDFILE', '*']
+['char', '*']
+['unsigned', 'long']
+['int']
+['SNDFILE', '*']
+['int']
+['void', '*']
+['int']
+['int']
+['const', 'SF_INFO', '*']
+['int64_t']
+['SNDFILE', '*']
+['int64_t']
+['int']
+['int']
+['SNDFILE', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['SNDFILE', '*']
+['int']
+['const', 'char', '*']
+['int']
+['SNDFILE', '*']
+['int64_t']
+['SNDFILE', '*']
+['void', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'void', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['double', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'double', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['double', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'double', '*']
+['int64_t']
+['int']
+['SNDFILE', '*']
+['void']
+['SNDFILE', '*']
+['int']
+['SNDFILE', '*']
+['const', 'SF_CHUNK_INFO', '*']
+['SF_CHUNK_ITERATOR', '*']
+['SNDFILE', '*']
+['const', 'SF_CHUNK_INFO', '*']
+['SF_CHUNK_ITERATOR', '*']
+['SF_CHUNK_ITERATOR', '*']
+['int']
+['const', 'SF_CHUNK_ITERATOR', '*']
+['SF_CHUNK_INFO', '*']
+['int']
+['const', 'SF_CHUNK_ITERATOR', '*']
+['SF_CHUNK_INFO', '*']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+[INFO] Analysing target: libsndfile
+[INFO] Analyze functions in /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_clang.json
+[INFO] Loading library...
+[INFO] Done
+
+*********General Stats***************
+################ (program : libsndfile.a.bc)###############
+AddrsNum            13357
+BBWith2Succ         6008
+BBWith3Succ         182
+CallsNum            1708
+ConstArrayObj       20
+ConstStructObj      1
+ConstantObj         0
+CopysNum            9912
+FIObjNum            1716
+FSObjNum            8070
+FunctionObjs        1442
+GepsNum             20358
+GlobalObjs          91
+HeapObjs            80
+IndCallSites        156
+LoadsNum            46254
+MaxStructSize       116
+NonPtrObj           7103
+ReturnsNum          2513
+StackObjs           8173
+StoresNum           22203
+TotalCallSite       5070
+TotalFieldObjects   796
+TotalObjects        10583
+TotalPTASVFStmts    59340
+TotalPointers       159385
+TotalSVFStmts       150485
+VarArrayObj         154
+VarStructObj        320
+----------------Time and memory stats--------------------
+LLVMIRTime          0.525
+SVFIRTime           1.572
+SymbolTableTime     0.201
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : libsndfile.a.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   13
+MaxNodeInCycle      3
+NodeInCycle         3
+TotalCycle          1
+TotalEdge           5509
+TotalNode           1442
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libsndfile.a.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.207064
+AvgIn/OutCopyEdge   0.768793
+AvgIn/OutEdge       1.34489
+AvgIn/OutLoadEdge   0.294144
+AvgIn/OutStoreEdge  0.0748921
+AvgPtsSetSize       1.72016
+AvgTopLvlPtsSize    5.1244
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    179976
+MemoryUsageVmsize   179592
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           1.899
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       13357
+CopyProcessed       27036
+DummyFieldPtrs      219
+FieldObjs           796
+GepProcessed        18693
+IndCallSites        156
+IndEdgeSolved       584
+LoadProcessed       29314
+LocalVarInRecur     39
+MaxInAddrEdge       1
+MaxInCopyEdge       930
+MaxInLoadEdge       17
+MaxInStoreEdge      186
+MaxNodesInSCC       197
+MaxOutAddrEdge      3572
+MaxOutCopyEdge      329
+MaxOutLoadEdge      238
+MaxOutStoreEdge     86
+MaxPtsSetSize       125
+MemObjects          10583
+NodesInCycles       1115
+NullPointer         2391
+NumOfAddrs          13285
+NumOfCGEdge         73002
+NumOfCGNode         65148
+NumOfCopys          29412
+NumOfFieldExpand    0
+NumOfGeps           19913
+NumOfLoads          18872
+NumOfSCCDetect      8
+NumOfSFRs           0
+NumOfStores         4805
+NumOfValidNode      64159
+NumOfValidObjNode   9970
+Pointers            159385
+PointsToBlkPtr      0
+PointsToConstPtr    1155
+SolveIterations     8
+StoreProcessed      6004
+TotalCycleNum       120
+TotalObjects        10583
+TotalPWCCycleNum    26
+TotalPointers       159385
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libsndfile.a.bc)###############
+UniquePointsToSets       13022
+TotalUnions              70672
+PropertyUnions           55391
+UniqueUnions             1604
+LookupUnions             10638
+PreemptiveUnions         3039
+TotalComplements         529636
+PropertyComplements      516565
+UniqueComplements        1128
+LookupComplements        10815
+PreemptiveComplements    1128
+TotalIntersections       32267
+PropertyIntersections    29834
+UniqueIntersections      11
+LookupIntersections      159
+PreemptiveIntersections  2263
+#######################################################
+[INFO] Points-to analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libsndfile.a.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1.84792
+GenMUCHITime        0.169
+GenRegionTime       0.739
+InsertPHITime       0.014
+SSARenameTime       0.043
+TotalMSSATime       0.969
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        3535
+CSChiNode           10702
+CSHasChi            3100
+CSHasMu             3598
+CSMuNode            19363
+FunEntryChi         14443
+FunHasEntryChi      1232
+FunHasRetMu         1238
+FunRetMu            14443
+LoadHasMu           46254
+LoadMuNode          44930
+MSSAPhi             18662
+MaxRegSize          223
+MemRegions          9357
+StoreChiNode        20792
+StoreHasChi         21089
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : libsndfile.a.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0.133
+AvgWeight           2.18343
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.406
+OptTime             0
+TLNodeTime          0
+TotalTime           0.539
+----------------Numbers stats----------------------------
+ActualIn            19363
+ActualOut           10702
+ActualParam         14246
+ActualRet           3149
+Addr                13357
+AvgInDegree         1
+AvgIndInDeg         1
+AvgIndOutDeg        2
+AvgOutDegree        1
+Copy                9912
+DirectCallEdge      12860
+DirectEdge          187951
+DirectRetEdge       3015
+FormalIn            14443
+FormalOut           14443
+FormalParam         3143
+FormalRet           921
+Gep                 20358
+IndCallEdge         28960
+IndRetEdge          15538
+IndirectEdge        189006
+IndirectEdgeLabels  412681
+Load                46254
+MSSAPhi             18662
+MaxInDegree         1050
+MaxIndInDeg         1016
+MaxIndOutDeg        882
+MaxOutDegree        10371
+PHI                 1567
+Store               22203
+TotalEdge           376957
+TotalNode           245337
+#######################################################
+------- CONFIG ---------
+	Trace Indirect Jumps: true
+	Output Metrics: true
+	Target: libsndfile
+
+	Interface file: /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_clang.json----------------------
+[INFO] CallGraph: 1442 functions in 1440 SCCs
+[SCC] top 10 largest SCCs (biggest first):
+[SCC] scc=1199 num functions=1 formals=9 num direct edges=0 num indirect edges=0
+[SCC] scc=90 num functions=3 formals=9 num direct edges=13 num indirect edges=0
+[SCC] scc=535 num functions=1 formals=9 num direct edges=0 num indirect edges=0
+[SCC] scc=1200 num functions=1 formals=9 num direct edges=0 num indirect edges=0
+[SCC] scc=1208 num functions=1 formals=9 num direct edges=0 num indirect edges=0
+[SCC] scc=1209 num functions=1 formals=9 num direct edges=0 num indirect edges=0
+[SCC] scc=735 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=1089 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=1087 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] scc=1189 num functions=1 formals=8 num direct edges=0 num indirect edges=0
+[SCC] direct edges only: largest=3 functions (9 formals), 1 cyclic components
+[SCC] signature-filtered:largest=3 functions (9 formals),1 cyclic components
+[IND] num of indirect callsites=63
+[IND] psf_decode_frame_count(cs=7759) targets=30-> largest=3 functions (9 formals)
+[IND] alac_close(cs=41443) targets=24-> largest=3 functions (9 formals)
+[IND] dwvw_close(cs=36085) targets=24-> largest=3 functions (9 formals)
+[IND] wav_open(cs=91919) targets=24-> largest=3 functions (9 formals)
+[IND] wav_close(cs=94100) targets=24-> largest=3 functions (9 formals)
+[IND] g72x_close(cs=70754) targets=24-> largest=3 functions (9 formals)
+[IND] nms_adpcm_close(cs=111070) targets=24-> largest=3 functions (9 formals)
+[IND] psf_close(cs=47037) targets=23-> largest=3 functions (9 formals)
+[IND] g72x_decode_block(cs=71358) targets=22-> largest=3 functions (9 formals)
+[IND] ima_reader_init(cs=27291) targets=22-> largest=3 functions (9 formals)
+[IND] removing top 10 indirect callsites. Remaining largest SCC=3 (with9 formals), with 1 cyclic components
+[INFO 1/1442 funcs, 1/1440 SCCs] callgraph: calloc
+[INFO 2/1442 funcs, 2/1440 SCCs] callgraph: free
+[INFO 3/1442 funcs, 3/1440 SCCs] callgraph: psf_allocate
+[INFO 4/1442 funcs, 4/1440 SCCs] callgraph: llvm.va_start.p0
+[INFO 5/1442 funcs, 5/1440 SCCs] callgraph: log_putchar
+[INFO 6/1442 funcs, 6/1440 SCCs] callgraph: __ctype_b_loc
+[INFO 7/1442 funcs, 7/1440 SCCs] callgraph: llvm.va_end.p0
+[INFO 8/1442 funcs, 8/1440 SCCs] callgraph: strnlen
+[INFO 9/1442 funcs, 9/1440 SCCs] callgraph: strlen
+[INFO 10/1442 funcs, 10/1440 SCCs] callgraph: psf_isprint
+[INFO 11/1442 funcs, 11/1440 SCCs] callgraph: psf_log_printf
+[INFO 12/1442 funcs, 12/1440 SCCs] callgraph: vsnprintf
+[INFO 13/1442 funcs, 13/1440 SCCs] callgraph: psf_asciiheader_printf
+[INFO 14/1442 funcs, 14/1440 SCCs] callgraph: lseek
+[INFO 15/1442 funcs, 15/1440 SCCs] callgraph: __errno_location
+[INFO 16/1442 funcs, 16/1440 SCCs] callgraph: strerror
+[INFO 17/1442 funcs, 17/1440 SCCs] callgraph: snprintf
+[INFO 18/1442 funcs, 18/1440 SCCs] callgraph: psf_log_syserr
+[INFO 19/1442 funcs, 19/1440 SCCs] callgraph: psf_ftell
+[INFO 20/1442 funcs, 20/1440 SCCs] callgraph: realloc
+[INFO 21/1442 funcs, 21/1440 SCCs] callgraph: llvm.memset.p0.i64
+[INFO 22/1442 funcs, 22/1440 SCCs] callgraph: psf_bump_header_allocation
+[INFO 23/1442 funcs, 23/1440 SCCs] callgraph: header_put_marker
+[INFO 24/1442 funcs, 24/1440 SCCs] callgraph: header_put_byte
+[INFO 25/1442 funcs, 25/1440 SCCs] callgraph: header_put_be_short
+[INFO 26/1442 funcs, 26/1440 SCCs] callgraph: header_put_le_short
+[INFO 27/1442 funcs, 27/1440 SCCs] callgraph: header_put_be_3byte
+[INFO 28/1442 funcs, 28/1440 SCCs] callgraph: header_put_le_3byte
+[INFO 29/1442 funcs, 29/1440 SCCs] callgraph: header_put_be_int
+[INFO 30/1442 funcs, 30/1440 SCCs] callgraph: header_put_le_int
+[INFO 31/1442 funcs, 31/1440 SCCs] callgraph: header_put_be_8byte
+[INFO 32/1442 funcs, 32/1440 SCCs] callgraph: header_put_le_8byte
+[INFO 33/1442 funcs, 33/1440 SCCs] callgraph: llvm.fabs.f64
+[INFO 34/1442 funcs, 34/1440 SCCs] callgraph: frexp
+[INFO 35/1442 funcs, 35/1440 SCCs] callgraph: float32_be_write
+[INFO 36/1442 funcs, 36/1440 SCCs] callgraph: float32_le_write
+[INFO 37/1442 funcs, 37/1440 SCCs] callgraph: llvm.floor.f64
+[INFO 38/1442 funcs, 38/1440 SCCs] callgraph: llvm.x86.sse2.cvtsd2si
+[INFO 39/1442 funcs, 39/1440 SCCs] callgraph: psf_lrint.227
+[INFO 40/1442 funcs, 40/1440 SCCs] callgraph: fmod
+[INFO 41/1442 funcs, 41/1440 SCCs] callgraph: double64_be_write
+[INFO 42/1442 funcs, 42/1440 SCCs] callgraph: double64_le_write
+[INFO 43/1442 funcs, 43/1440 SCCs] callgraph: llvm.memcpy.p0.p0.i64
+[INFO 44/1442 funcs, 44/1440 SCCs] callgraph: psf_binheader_writef
+[ADDROF] REJ callee=double64_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=double64_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=double64_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=delete
+[ADDROF] REJ callee=double64_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=double64_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=write
+[ADDROF] REJ callee=double64_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=double64_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=double64_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=delete
+[ADDROF] REJ callee=double64_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=double64_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=write
+[ADDROF] REJ callee=float32_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=float32_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=float32_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=delete
+[ADDROF] REJ callee=float32_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=float32_le_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=write
+[ADDROF] REJ callee=float32_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=float32_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=write
+[ADDROF] REJ callee=float32_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=delete
+[ADDROF] REJ callee=float32_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=read
+[ADDROF] REJ callee=float32_be_write prefix=.4.1(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=.* kind=write
+[INFO 45/1442 funcs, 45/1440 SCCs] callgraph: read
+[INFO 46/1442 funcs, 46/1440 SCCs] callgraph: psf_fread
+[INFO 47/1442 funcs, 47/1440 SCCs] callgraph: header_read
+[ADDROF] OK callee=psf_fread prefix=.4.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 48/1442 funcs, 48/1440 SCCs] callgraph: psf_get_be32
+[INFO 49/1442 funcs, 49/1440 SCCs] callgraph: psf_get_le32
+[INFO 50/1442 funcs, 50/1440 SCCs] callgraph: psf_get_be64
+[INFO 51/1442 funcs, 51/1440 SCCs] callgraph: psf_get_le64
+[INFO 52/1442 funcs, 52/1440 SCCs] callgraph: pow
+[INFO 53/1442 funcs, 53/1440 SCCs] callgraph: llvm.abs.i32
+[INFO 54/1442 funcs, 54/1440 SCCs] callgraph: float32_be_read
+[INFO 55/1442 funcs, 55/1440 SCCs] callgraph: float32_le_read
+[INFO 56/1442 funcs, 56/1440 SCCs] callgraph: double64_be_read
+[INFO 57/1442 funcs, 57/1440 SCCs] callgraph: double64_le_read
+[INFO 58/1442 funcs, 58/1440 SCCs] callgraph: header_gets
+[ADDROF] OK callee=psf_fread prefix=.4.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 59/1442 funcs, 59/1440 SCCs] callgraph: psf_fseek
+[INFO 60/1442 funcs, 60/1440 SCCs] callgraph: header_seek
+[ADDROF] OK callee=psf_fread prefix=.4.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=psf_fread prefix=.4.2(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 61/1442 funcs, 61/1440 SCCs] callgraph: psf_binheader_readf
+[INFO 62/1442 funcs, 62/1440 SCCs] callgraph: psf_default_seek
+[INFO 63/1442 funcs, 63/1440 SCCs] callgraph: puts
+[INFO 64/1442 funcs, 64/1440 SCCs] callgraph: printf
+[INFO 65/1442 funcs, 65/1440 SCCs] callgraph: psf_hexdump
+[INFO 66/1442 funcs, 66/1440 SCCs] callgraph: psf_log_SF_INFO
+[INFO 67/1442 funcs, 67/1440 SCCs] callgraph: strncat
+[INFO 68/1442 funcs, 68/1440 SCCs] callgraph: psf_strlcat
+[INFO 69/1442 funcs, 69/1440 SCCs] callgraph: strncpy
+[INFO 70/1442 funcs, 70/1440 SCCs] callgraph: psf_strlcpy
+[INFO 71/1442 funcs, 71/1440 SCCs] callgraph: psf_memdup
+[INFO 72/1442 funcs, 72/1440 SCCs] callgraph: psf_memset
+[INFO 73/1442 funcs, 73/1440 SCCs] callgraph: psf_cues_alloc
+[INFO 74/1442 funcs, 74/1440 SCCs] callgraph: psf_cues_dup
+[INFO 75/1442 funcs, 75/1440 SCCs] callgraph: psf_get_cues
+[INFO 76/1442 funcs, 76/1440 SCCs] callgraph: psf_instrument_alloc
+[INFO 77/1442 funcs, 77/1440 SCCs] callgraph: psf_sanitize_string
+[INFO 78/1442 funcs, 78/1440 SCCs] callgraph: time
+[INFO 79/1442 funcs, 79/1440 SCCs] callgraph: gmtime_r
+[INFO 80/1442 funcs, 80/1440 SCCs] callgraph: psf_get_date_str
+[INFO 81/1442 funcs, 81/1440 SCCs] callgraph: subformat_to_bytewidth
+[INFO 82/1442 funcs, 82/1440 SCCs] callgraph: s_bitwidth_to_subformat
+[INFO 83/1442 funcs, 83/1440 SCCs] callgraph: u_bitwidth_to_subformat
+[INFO 84/1442 funcs, 84/1440 SCCs] callgraph: gettimeofday
+[INFO 85/1442 funcs, 85/1440 SCCs] callgraph: psf_rand_int32
+[INFO 86/1442 funcs, 86/1440 SCCs] callgraph: append_snprintf
+[INFO 87/1442 funcs, 87/1440 SCCs] callgraph: psf_strlcpy_crlf
+[INFO 88/1442 funcs, 88/1440 SCCs] callgraph: fstat
+[INFO 89/1442 funcs, 89/1440 SCCs] callgraph: psf_is_pipe
+[INFO 90/1442 funcs, 90/1440 SCCs] callgraph: sc2i_array
+[INFO 91/1442 funcs, 91/1440 SCCs] callgraph: pcm_read_sc2i
+[ADDROF] REJ callee=sc2i_array prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 92/1442 funcs, 92/1440 SCCs] callgraph: uc2i_array
+[INFO 93/1442 funcs, 93/1440 SCCs] callgraph: pcm_read_uc2i
+[INFO 94/1442 funcs, 94/1440 SCCs] callgraph: __bswap_16
+[INFO 95/1442 funcs, 95/1440 SCCs] callgraph: bes2i_array
+[INFO 96/1442 funcs, 96/1440 SCCs] callgraph: pcm_read_bes2i
+[INFO 97/1442 funcs, 97/1440 SCCs] callgraph: psf_get_be24
+[INFO 98/1442 funcs, 98/1440 SCCs] callgraph: bet2i_array
+[INFO 99/1442 funcs, 99/1440 SCCs] callgraph: pcm_read_bet2i
+[INFO 100/1442 funcs, 100/1440 SCCs] callgraph: __bswap_32
+[INFO 101/1442 funcs, 101/1440 SCCs] callgraph: endswap_int_array
+[INFO 102/1442 funcs, 102/1440 SCCs] callgraph: pcm_read_bei2i
+[INFO 103/1442 funcs, 103/1440 SCCs] callgraph: les2i_array
+[INFO 104/1442 funcs, 104/1440 SCCs] callgraph: pcm_read_les2i
+[INFO 105/1442 funcs, 105/1440 SCCs] callgraph: psf_get_le24
+[INFO 106/1442 funcs, 106/1440 SCCs] callgraph: let2i_array
+[INFO 107/1442 funcs, 107/1440 SCCs] callgraph: pcm_read_let2i
+[INFO 108/1442 funcs, 108/1440 SCCs] callgraph: pcm_read_lei2i
+[INFO 109/1442 funcs, 109/1440 SCCs] callgraph: ulaw2i_array
+[INFO 110/1442 funcs, 110/1440 SCCs] callgraph: ulaw_read_ulaw2i
+[INFO 111/1442 funcs, 111/1440 SCCs] callgraph: alaw2i_array
+[INFO 112/1442 funcs, 112/1440 SCCs] callgraph: alaw_read_alaw2i
+[INFO 113/1442 funcs, 113/1440 SCCs] callgraph: __bswap_32.212
+[INFO 114/1442 funcs, 114/1440 SCCs] callgraph: endswap_int_array.211
+[INFO 115/1442 funcs, 115/1440 SCCs] callgraph: llvm.x86.sse.cvtss2si
+[INFO 116/1442 funcs, 116/1440 SCCs] callgraph: psf_lrintf.218
+[INFO 117/1442 funcs, 117/1440 SCCs] callgraph: f2i_clip_array
+[INFO 118/1442 funcs, 118/1440 SCCs] callgraph: f2i_array
+[INFO 119/1442 funcs, 119/1440 SCCs] callgraph: host_read_f2i
+[INFO 120/1442 funcs, 120/1440 SCCs] callgraph: bf2f_array
+[INFO 121/1442 funcs, 121/1440 SCCs] callgraph: replace_read_f2i
+[INFO 122/1442 funcs, 122/1440 SCCs] callgraph: __bswap_64
+[INFO 123/1442 funcs, 123/1440 SCCs] callgraph: endswap_int64_t_array
+[INFO 124/1442 funcs, 124/1440 SCCs] callgraph: endswap_double_array
+[INFO 125/1442 funcs, 125/1440 SCCs] callgraph: d2i_clip_array
+[INFO 126/1442 funcs, 126/1440 SCCs] callgraph: d2i_array
+[INFO 127/1442 funcs, 127/1440 SCCs] callgraph: host_read_d2i
+[INFO 128/1442 funcs, 128/1440 SCCs] callgraph: d2bd_read
+[INFO 129/1442 funcs, 129/1440 SCCs] callgraph: replace_read_d2i
+[INFO 130/1442 funcs, 130/1440 SCCs] callgraph: clamp_ima_step_index
+[INFO 131/1442 funcs, 131/1440 SCCs] callgraph: wavlike_ima_decode_block
+[INFO 132/1442 funcs, 132/1440 SCCs] callgraph: aiff_ima_decode_block
+[INFO 133/1442 funcs, 133/1440 SCCs] callgraph: write
+[INFO 134/1442 funcs, 134/1440 SCCs] callgraph: psf_fwrite
+[INFO 135/1442 funcs, 135/1440 SCCs] callgraph: wavlike_ima_encode_block
+[INFO 136/1442 funcs, 136/1440 SCCs] callgraph: aiff_ima_encode_block
+[INFO 137/1442 funcs, 137/1440 SCCs] callgraph: SASR_W.2013
+[INFO 138/1442 funcs, 138/1440 SCCs] callgraph: __assert_fail
+[INFO 139/1442 funcs, 139/1440 SCCs] callgraph: SASR_L.2018
+[INFO 140/1442 funcs, 140/1440 SCCs] callgraph: GSM_MULT_R.2019
+[INFO 141/1442 funcs, 141/1440 SCCs] callgraph: GSM_L_ADD
+[INFO 142/1442 funcs, 142/1440 SCCs] callgraph: GSM_ADD.2020
+[INFO 143/1442 funcs, 143/1440 SCCs] callgraph: Gsm_Preprocess
+[INFO 144/1442 funcs, 144/1440 SCCs] callgraph: llvm.fmuladd.f32
+[INFO 145/1442 funcs, 145/1440 SCCs] callgraph: Fast_Autocorrelation
+[INFO 146/1442 funcs, 146/1440 SCCs] callgraph: GSM_ABS.1998
+[INFO 147/1442 funcs, 147/1440 SCCs] callgraph: gsm_norm
+[INFO 148/1442 funcs, 148/1440 SCCs] callgraph: GSM_MULT_R.2008
+[INFO 149/1442 funcs, 149/1440 SCCs] callgraph: SASL_L
+[INFO 150/1442 funcs, 150/1440 SCCs] callgraph: SASL_W
+[INFO 151/1442 funcs, 151/1440 SCCs] callgraph: Autocorrelation
+[INFO 152/1442 funcs, 152/1440 SCCs] callgraph: SASR_L.2006
+[INFO 153/1442 funcs, 153/1440 SCCs] callgraph: gsm_div
+[INFO 154/1442 funcs, 154/1440 SCCs] callgraph: GSM_ADD.1996
+[INFO 155/1442 funcs, 155/1440 SCCs] callgraph: Reflection_coefficients
+[INFO 156/1442 funcs, 156/1440 SCCs] callgraph: Transformation_to_Log_Area_Ratios
+[INFO 157/1442 funcs, 157/1440 SCCs] callgraph: GSM_MULT
+[INFO 158/1442 funcs, 158/1440 SCCs] callgraph: SASR_W.1997
+[INFO 159/1442 funcs, 159/1440 SCCs] callgraph: Quantization_and_coding
+[INFO 160/1442 funcs, 160/1440 SCCs] callgraph: Gsm_LPC_Analysis
+[INFO 161/1442 funcs, 161/1440 SCCs] callgraph: GSM_ADD.2045
+[INFO 162/1442 funcs, 162/1440 SCCs] callgraph: GSM_SUB.2047
+[INFO 163/1442 funcs, 163/1440 SCCs] callgraph: GSM_MULT_R.2046
+[INFO 164/1442 funcs, 164/1440 SCCs] callgraph: Decoding_of_the_coded_Log_Area_Ratios
+[INFO 165/1442 funcs, 165/1440 SCCs] callgraph: SASR_W.2044
+[INFO 166/1442 funcs, 166/1440 SCCs] callgraph: Coefficients_0_12
+[INFO 167/1442 funcs, 167/1440 SCCs] callgraph: LARp_to_rp
+[INFO 168/1442 funcs, 168/1440 SCCs] callgraph: Coefficients_13_26
+[INFO 169/1442 funcs, 169/1440 SCCs] callgraph: Coefficients_27_39
+[INFO 170/1442 funcs, 170/1440 SCCs] callgraph: Coefficients_40_159
+[INFO 171/1442 funcs, 171/1440 SCCs] callgraph: Fast_Short_term_analysis_filtering
+[INFO 172/1442 funcs, 172/1440 SCCs] callgraph: Short_term_analysis_filtering
+[INFO 173/1442 funcs, 173/1440 SCCs] callgraph: Gsm_Short_Term_Analysis_Filter
+[INFO 174/1442 funcs, 174/1440 SCCs] callgraph: Fast_Calculation_of_the_LTP_parameters
+[INFO 175/1442 funcs, 175/1440 SCCs] callgraph: GSM_ABS
+[INFO 176/1442 funcs, 176/1440 SCCs] callgraph: SASR_W.1985
+[INFO 177/1442 funcs, 177/1440 SCCs] callgraph: SASR_L.1988
+[INFO 178/1442 funcs, 178/1440 SCCs] callgraph: SASR_L
+[INFO 179/1442 funcs, 179/1440 SCCs] callgraph: gsm_mult
+[INFO 180/1442 funcs, 180/1440 SCCs] callgraph: Calculation_of_the_LTP_parameters
+[INFO 181/1442 funcs, 181/1440 SCCs] callgraph: GSM_MULT_R.1982
+[INFO 182/1442 funcs, 182/1440 SCCs] callgraph: GSM_SUB
+[INFO 183/1442 funcs, 183/1440 SCCs] callgraph: Long_term_analysis_filtering
+[INFO 184/1442 funcs, 184/1440 SCCs] callgraph: Gsm_Long_Term_Predictor
+[INFO 185/1442 funcs, 185/1440 SCCs] callgraph: SASR_L.2039
+[INFO 186/1442 funcs, 186/1440 SCCs] callgraph: Weighting_filter
+[INFO 187/1442 funcs, 187/1440 SCCs] callgraph: SASR_W.2031
+[INFO 188/1442 funcs, 188/1440 SCCs] callgraph: RPE_grid_selection
+[INFO 189/1442 funcs, 189/1440 SCCs] callgraph: GSM_ABS.2030
+[INFO 190/1442 funcs, 190/1440 SCCs] callgraph: gsm_add
+[INFO 191/1442 funcs, 191/1440 SCCs] callgraph: APCM_quantization_xmaxc_to_exp_mant
+[INFO 192/1442 funcs, 192/1440 SCCs] callgraph: GSM_MULT.2037
+[INFO 193/1442 funcs, 193/1440 SCCs] callgraph: APCM_quantization
+[INFO 194/1442 funcs, 194/1440 SCCs] callgraph: gsm_sub
+[INFO 195/1442 funcs, 195/1440 SCCs] callgraph: SASR_W
+[INFO 196/1442 funcs, 196/1440 SCCs] callgraph: gsm_asr
+[INFO 197/1442 funcs, 197/1440 SCCs] callgraph: gsm_asl
+[INFO 198/1442 funcs, 198/1440 SCCs] callgraph: GSM_MULT_R.2028
+[INFO 199/1442 funcs, 199/1440 SCCs] callgraph: GSM_ADD.2029
+[INFO 200/1442 funcs, 200/1440 SCCs] callgraph: APCM_inverse_quantization
+[INFO 201/1442 funcs, 201/1440 SCCs] callgraph: RPE_grid_positioning
+[INFO 202/1442 funcs, 202/1440 SCCs] callgraph: Gsm_RPE_Encoding
+[INFO 203/1442 funcs, 203/1440 SCCs] callgraph: GSM_ADD
+[INFO 204/1442 funcs, 204/1440 SCCs] callgraph: Gsm_Coder
+[INFO 205/1442 funcs, 205/1440 SCCs] callgraph: gsm_encode
+[INFO 206/1442 funcs, 206/1440 SCCs] callgraph: gsm610_wav_encode_block
+[INFO 207/1442 funcs, 207/1440 SCCs] callgraph: Gsm_RPE_Decoding
+[INFO 208/1442 funcs, 208/1440 SCCs] callgraph: GSM_ADD.1993
+[INFO 209/1442 funcs, 209/1440 SCCs] callgraph: Gsm_Long_Term_Synthesis_Filtering
+[INFO 210/1442 funcs, 210/1440 SCCs] callgraph: Fast_Short_term_synthesis_filtering
+[INFO 211/1442 funcs, 211/1440 SCCs] callgraph: Short_term_synthesis_filtering
+[INFO 212/1442 funcs, 212/1440 SCCs] callgraph: Gsm_Short_Term_Synthesis_Filter
+[INFO 213/1442 funcs, 213/1440 SCCs] callgraph: GSM_MULT_R
+[INFO 214/1442 funcs, 214/1440 SCCs] callgraph: GSM_ADD.1960
+[INFO 215/1442 funcs, 215/1440 SCCs] callgraph: Postprocessing
+[INFO 216/1442 funcs, 216/1440 SCCs] callgraph: Gsm_Decoder
+[INFO 217/1442 funcs, 217/1440 SCCs] callgraph: gsm_decode
+[INFO 218/1442 funcs, 218/1440 SCCs] callgraph: gsm610_wav_decode_block
+[INFO 219/1442 funcs, 219/1440 SCCs] callgraph: gsm610_encode_block
+[INFO 220/1442 funcs, 220/1440 SCCs] callgraph: gsm610_decode_block
+[INFO 221/1442 funcs, 221/1440 SCCs] callgraph: sds_2byte_read
+[INFO 222/1442 funcs, 222/1440 SCCs] callgraph: sds_2byte_write
+[INFO 223/1442 funcs, 223/1440 SCCs] callgraph: sds_3byte_read
+[INFO 224/1442 funcs, 224/1440 SCCs] callgraph: sds_3byte_write
+[INFO 225/1442 funcs, 225/1440 SCCs] callgraph: sds_4byte_read
+[INFO 226/1442 funcs, 226/1440 SCCs] callgraph: sds_4byte_write
+[INFO 227/1442 funcs, 227/1440 SCCs] callgraph: quan
+[INFO 228/1442 funcs, 228/1440 SCCs] callgraph: fmult
+[INFO 229/1442 funcs, 229/1440 SCCs] callgraph: predictor_zero
+[INFO 230/1442 funcs, 230/1440 SCCs] callgraph: predictor_pole
+[INFO 231/1442 funcs, 231/1440 SCCs] callgraph: step_size
+[INFO 232/1442 funcs, 232/1440 SCCs] callgraph: reconstruct
+[INFO 233/1442 funcs, 233/1440 SCCs] callgraph: update
+[INFO 234/1442 funcs, 234/1440 SCCs] callgraph: g723_16_decoder
+[INFO 235/1442 funcs, 235/1440 SCCs] callgraph: g723_24_decoder
+[INFO 236/1442 funcs, 236/1440 SCCs] callgraph: g721_decoder
+[INFO 237/1442 funcs, 237/1440 SCCs] callgraph: g723_40_decoder
+[INFO 238/1442 funcs, 238/1440 SCCs] callgraph: quantize
+[INFO 239/1442 funcs, 239/1440 SCCs] callgraph: g723_16_encoder
+[INFO 240/1442 funcs, 240/1440 SCCs] callgraph: g723_24_encoder
+[INFO 241/1442 funcs, 241/1440 SCCs] callgraph: g721_encoder
+[INFO 242/1442 funcs, 242/1440 SCCs] callgraph: g723_40_encoder
+[INFO 243/1442 funcs, 243/1440 SCCs] callgraph: ima_read_block
+[INFO 244/1442 funcs, 244/1440 SCCs] callgraph: ima_read_i
+[INFO 245/1442 funcs, 245/1440 SCCs] callgraph: msadpcm_get_bpred
+[INFO 246/1442 funcs, 246/1440 SCCs] callgraph: msadpcm_decode_block
+[INFO 247/1442 funcs, 247/1440 SCCs] callgraph: msadpcm_read_block
+[INFO 248/1442 funcs, 248/1440 SCCs] callgraph: msadpcm_read_i
+[INFO 249/1442 funcs, 249/1440 SCCs] callgraph: gsm610_read_block
+[INFO 250/1442 funcs, 250/1440 SCCs] callgraph: gsm610_read_i
+[INFO 251/1442 funcs, 251/1440 SCCs] callgraph: dwvw_decode_load_bits
+[INFO 252/1442 funcs, 252/1440 SCCs] callgraph: dwvw_decode_data
+[INFO 253/1442 funcs, 253/1440 SCCs] callgraph: dwvw_read_i
+[INFO 254/1442 funcs, 254/1440 SCCs] callgraph: adpcm_decode
+[INFO 255/1442 funcs, 255/1440 SCCs] callgraph: ima_oki_adpcm_decode_block
+[INFO 256/1442 funcs, 256/1440 SCCs] callgraph: vox_read_block
+[INFO 257/1442 funcs, 257/1440 SCCs] callgraph: vox_read_i
+[INFO 258/1442 funcs, 258/1440 SCCs] callgraph: alac_reader_next_packet_size
+[INFO 259/1442 funcs, 259/1440 SCCs] callgraph: BitBufferInit
+[INFO 260/1442 funcs, 260/1440 SCCs] callgraph: BitBufferReadSmall
+[INFO 261/1442 funcs, 261/1440 SCCs] callgraph: BitBufferRead
+[INFO 262/1442 funcs, 262/1440 SCCs] callgraph: BitBufferAdvance
+[INFO 263/1442 funcs, 263/1440 SCCs] callgraph: set_ag_params
+[INFO 264/1442 funcs, 264/1440 SCCs] callgraph: lead
+[INFO 265/1442 funcs, 265/1440 SCCs] callgraph: dyn_get_32bit
+[INFO 266/1442 funcs, 266/1440 SCCs] callgraph: dyn_get
+[INFO 267/1442 funcs, 267/1440 SCCs] callgraph: dyn_decomp
+[INFO 268/1442 funcs, 268/1440 SCCs] callgraph: unpc_block
+[INFO 269/1442 funcs, 269/1440 SCCs] callgraph: copyPredictorTo20
+[INFO 270/1442 funcs, 270/1440 SCCs] callgraph: copyPredictorTo24Shift
+[INFO 271/1442 funcs, 271/1440 SCCs] callgraph: copyPredictorTo24
+[INFO 272/1442 funcs, 272/1440 SCCs] callgraph: copyPredictorTo32Shift
+[INFO 273/1442 funcs, 273/1440 SCCs] callgraph: copyPredictorTo32
+[INFO 274/1442 funcs, 274/1440 SCCs] callgraph: unmix16
+[INFO 275/1442 funcs, 275/1440 SCCs] callgraph: unmix20
+[INFO 276/1442 funcs, 276/1440 SCCs] callgraph: unmix24
+[INFO 277/1442 funcs, 277/1440 SCCs] callgraph: unmix32
+[INFO 278/1442 funcs, 278/1440 SCCs] callgraph: BitBufferReadOne
+[INFO 279/1442 funcs, 279/1440 SCCs] callgraph: BitBufferWrite
+[INFO 280/1442 funcs, 280/1440 SCCs] callgraph: BitBufferByteAlign
+[INFO 281/1442 funcs, 281/1440 SCCs] callgraph: alac_data_stream_element
+[INFO 282/1442 funcs, 282/1440 SCCs] callgraph: alac_fill_element
+[INFO 283/1442 funcs, 283/1440 SCCs] callgraph: Zero32
+[INFO 284/1442 funcs, 284/1440 SCCs] callgraph: alac_decode
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[INFO 285/1442 funcs, 285/1440 SCCs] callgraph: alac_decode_block
+[BADAT] alac_decode_block formal=130211 path=.9.0.* access=read want=alac_decoder_s/0 got=ALACSpecificConfig/0 (endpoint type disagrees with DWARF walk)
+[BADAT] alac_decode_block formal=130211 path=.9.0.7 access=read want=alac_decoder_s/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_decode_block formal=130211 path=.9.2.* access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_decode_block formal=130211 path=.9.2.0 access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_decode_block formal=130211 path=.9.2.0 access=write want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 286/1442 funcs, 286/1440 SCCs] callgraph: alac_read_i
+[INFO 287/1442 funcs, 287/1440 SCCs] callgraph: FLAC__stream_decoder_get_state
+[INFO 288/1442 funcs, 288/1440 SCCs] callgraph: flac_buffer_copy
+[INFO 289/1442 funcs, 289/1440 SCCs] callgraph: FLAC__stream_decoder_process_single
+[INFO 290/1442 funcs, 290/1440 SCCs] callgraph: flac_read_loop
+[INFO 291/1442 funcs, 291/1440 SCCs] callgraph: flac_read_flac2i
+[INFO 292/1442 funcs, 292/1440 SCCs] callgraph: unpack_bytes
+[INFO 293/1442 funcs, 293/1440 SCCs] callgraph: g72x_decode_block
+[INFO 294/1442 funcs, 294/1440 SCCs] callgraph: psf_g72x_decode_block
+[INFO 295/1442 funcs, 295/1440 SCCs] callgraph: g72x_read_block
+[INFO 296/1442 funcs, 296/1440 SCCs] callgraph: g72x_read_i
+[INFO 297/1442 funcs, 297/1440 SCCs] callgraph: __bswap_32.1009
+[INFO 298/1442 funcs, 298/1440 SCCs] callgraph: endswap_int_array.1007
+[INFO 299/1442 funcs, 299/1440 SCCs] callgraph: paf24_read_block
+[INFO 300/1442 funcs, 300/1440 SCCs] callgraph: paf24_read
+[INFO 301/1442 funcs, 301/1440 SCCs] callgraph: paf24_read_i
+[INFO 302/1442 funcs, 302/1440 SCCs] callgraph: sds_read
+[INFO 303/1442 funcs, 303/1440 SCCs] callgraph: sds_read_i
+[INFO 304/1442 funcs, 304/1440 SCCs] callgraph: dsc2i_array
+[INFO 305/1442 funcs, 305/1440 SCCs] callgraph: dpcm_read_dsc2i
+[INFO 306/1442 funcs, 306/1440 SCCs] callgraph: dles2i_array
+[INFO 307/1442 funcs, 307/1440 SCCs] callgraph: dpcm_read_dles2i
+[INFO 308/1442 funcs, 308/1440 SCCs] callgraph: vorbis_synthesis_pcmout
+[INFO 309/1442 funcs, 309/1440 SCCs] callgraph: vorbis_synthesis_read
+[INFO 310/1442 funcs, 310/1440 SCCs] callgraph: ogg_stream_packetout
+[INFO 311/1442 funcs, 311/1440 SCCs] callgraph: ogg_sync_pageseek
+[INFO 312/1442 funcs, 312/1440 SCCs] callgraph: ogg_sync_buffer
+[INFO 313/1442 funcs, 313/1440 SCCs] callgraph: ogg_sync_wrote
+[INFO 314/1442 funcs, 314/1440 SCCs] callgraph: ogg_sync_next_page
+[INFO 315/1442 funcs, 315/1440 SCCs] callgraph: ogg_page_serialno
+[INFO 316/1442 funcs, 316/1440 SCCs] callgraph: ogg_page_eos
+[INFO 317/1442 funcs, 317/1440 SCCs] callgraph: ogg_stream_pagein
+[INFO 318/1442 funcs, 318/1440 SCCs] callgraph: ogg_stream_next_page
+[INFO 319/1442 funcs, 319/1440 SCCs] callgraph: ogg_sync_ftell
+[INFO 320/1442 funcs, 320/1440 SCCs] callgraph: ogg_stream_packetpeek
+[INFO 321/1442 funcs, 321/1440 SCCs] callgraph: ogg_stream_unpack_page
+[INFO 322/1442 funcs, 322/1440 SCCs] callgraph: vorbis_synthesis_restart
+[INFO 323/1442 funcs, 323/1440 SCCs] callgraph: vorbis_packet_blocksize
+[INFO 324/1442 funcs, 324/1440 SCCs] callgraph: vorbis_calculate_granulepos
+[INFO 325/1442 funcs, 325/1440 SCCs] callgraph: vorbis_synthesis
+[INFO 326/1442 funcs, 326/1440 SCCs] callgraph: vorbis_synthesis_blockin
+[INFO 327/1442 funcs, 327/1440 SCCs] callgraph: psf_lrintf.1739
+[INFO 328/1442 funcs, 328/1440 SCCs] callgraph: vorbis_rshort
+[INFO 329/1442 funcs, 329/1440 SCCs] callgraph: vorbis_rint
+[INFO 330/1442 funcs, 330/1440 SCCs] callgraph: vorbis_rfloat
+[INFO 331/1442 funcs, 331/1440 SCCs] callgraph: vorbis_rdouble
+[INFO 332/1442 funcs, 332/1440 SCCs] callgraph: vorbis_rnull
+[INFO 333/1442 funcs, 333/1440 SCCs] callgraph: vorbis_read_sample
+[INFO 334/1442 funcs, 334/1440 SCCs] callgraph: vorbis_read_i
+[INFO 335/1442 funcs, 335/1440 SCCs] callgraph: opus_packet_get_nb_samples
+[INFO 336/1442 funcs, 336/1440 SCCs] callgraph: ogg_opus_calculate_page_duration
+[INFO 337/1442 funcs, 337/1440 SCCs] callgraph: ogg_opus_unpack_next_page
+[INFO 338/1442 funcs, 338/1440 SCCs] callgraph: opus_multistream_decode_float
+[INFO 339/1442 funcs, 339/1440 SCCs] callgraph: malloc
+[INFO 340/1442 funcs, 340/1440 SCCs] callgraph: opus_strerror
+[INFO 341/1442 funcs, 341/1440 SCCs] callgraph: ogg_opus_read_refill
+[INFO 342/1442 funcs, 342/1440 SCCs] callgraph: psf_lrintf.1810
+[INFO 343/1442 funcs, 343/1440 SCCs] callgraph: ogg_opus_read_i
+[INFO 344/1442 funcs, 344/1440 SCCs] callgraph: nms_adpcm_block_unpack_16
+[INFO 345/1442 funcs, 345/1440 SCCs] callgraph: nms_adpcm_block_unpack_24
+[INFO 346/1442 funcs, 346/1440 SCCs] callgraph: nms_adpcm_block_unpack_32
+[INFO 347/1442 funcs, 347/1440 SCCs] callgraph: nms_adpcm_antilog
+[INFO 348/1442 funcs, 348/1440 SCCs] callgraph: nms_adpcm_update
+[INFO 349/1442 funcs, 349/1440 SCCs] callgraph: nms_adpcm_reconstruct_sample
+[INFO 350/1442 funcs, 350/1440 SCCs] callgraph: nms_adpcm_decode_sample
+[INFO 351/1442 funcs, 351/1440 SCCs] callgraph: nms_adpcm_decode_block
+[BADAT] nms_adpcm_decode_block formal=130687 path=.0.* access=read want=nms_adpcm_state/0 got=nms_adpcm_state/1 (endpoint type disagrees with DWARF walk)
+[INFO 352/1442 funcs, 352/1440 SCCs] callgraph: psf_nms_adpcm_decode_block
+[BADAT] psf_nms_adpcm_decode_block formal=132463 path=.0.* access=read want=nms_adpcm_state/0 got=nms_adpcm_state/1 (endpoint type disagrees with DWARF walk)
+[INFO 353/1442 funcs, 353/1440 SCCs] callgraph: nms_adpcm_read_block
+[BADAT] nms_adpcm_read_block formal=132459 path=.0.* access=read want=nms_adpcm_state/0 got=nms_adpcm_state/1 (endpoint type disagrees with DWARF walk)
+[INFO 354/1442 funcs, 354/1440 SCCs] callgraph: nms_adpcm_read_i
+[INFO 355/1442 funcs, 355/1440 SCCs] callgraph: mpg123_read
+[INFO 356/1442 funcs, 356/1440 SCCs] callgraph: mpeg_dec_decode
+[INFO 357/1442 funcs, 357/1440 SCCs] callgraph: psf_lrintf
+[INFO 358/1442 funcs, 358/1440 SCCs] callgraph: psf_f2i_array
+[INFO 359/1442 funcs, 359/1440 SCCs] callgraph: psf_f2i_clip_array
+[INFO 360/1442 funcs, 360/1440 SCCs] callgraph: mpeg_dec_read_i
+[INFO 361/1442 funcs, 361/1440 SCCs] callgraph: psf_decode_frame_count
+[INFO 362/1442 funcs, 362/1440 SCCs] callgraph: str_of_major_format
+[INFO 363/1442 funcs, 363/1440 SCCs] callgraph: str_of_minor_format
+[INFO 364/1442 funcs, 364/1440 SCCs] callgraph: str_of_open_mode
+[INFO 365/1442 funcs, 365/1440 SCCs] callgraph: str_of_endianness
+[INFO 366/1442 funcs, 366/1440 SCCs] callgraph: psf_f2s_array
+[INFO 367/1442 funcs, 367/1440 SCCs] callgraph: psf_f2s_clip_array
+[INFO 368/1442 funcs, 368/1440 SCCs] callgraph: psf_lrint
+[INFO 369/1442 funcs, 369/1440 SCCs] callgraph: psf_d2s_array
+[INFO 370/1442 funcs, 370/1440 SCCs] callgraph: psf_d2s_clip_array
+[INFO 371/1442 funcs, 371/1440 SCCs] callgraph: psf_d2i_array
+[INFO 372/1442 funcs, 372/1440 SCCs] callgraph: psf_d2i_clip_array
+[INFO 373/1442 funcs, 373/1440 SCCs] callgraph: getenv
+[INFO 374/1442 funcs, 374/1440 SCCs] callgraph: access
+[INFO 375/1442 funcs, 375/1440 SCCs] callgraph: fopen
+[INFO 376/1442 funcs, 376/1440 SCCs] callgraph: psf_open_tmpfile
+[INFO 377/1442 funcs, 377/1440 SCCs] callgraph: strrchr
+[INFO 378/1442 funcs, 378/1440 SCCs] callgraph: psf_copy_filename
+[INFO 379/1442 funcs, 379/1440 SCCs] callgraph: open
+[INFO 380/1442 funcs, 380/1440 SCCs] callgraph: psf_open_fd
+[INFO 381/1442 funcs, 381/1440 SCCs] callgraph: psf_fopen
+[INFO 382/1442 funcs, 382/1440 SCCs] callgraph: close
+[INFO 383/1442 funcs, 383/1440 SCCs] callgraph: psf_close_fd
+[INFO 384/1442 funcs, 384/1440 SCCs] callgraph: psf_fclose
+[INFO 385/1442 funcs, 385/1440 SCCs] callgraph: psf_get_filelen_fd
+[INFO 386/1442 funcs, 386/1440 SCCs] callgraph: psf_open_rsrc
+[INFO 387/1442 funcs, 387/1440 SCCs] callgraph: psf_get_filelen
+[INFO 388/1442 funcs, 388/1440 SCCs] callgraph: psf_close_rsrc
+[INFO 389/1442 funcs, 389/1440 SCCs] callgraph: psf_set_stdio
+[INFO 390/1442 funcs, 390/1440 SCCs] callgraph: psf_set_file
+[INFO 391/1442 funcs, 391/1440 SCCs] callgraph: psf_file_valid
+[INFO 392/1442 funcs, 392/1440 SCCs] callgraph: psf_fgets
+[INFO 393/1442 funcs, 393/1440 SCCs] callgraph: ftruncate
+[INFO 394/1442 funcs, 394/1440 SCCs] callgraph: psf_ftruncate
+[INFO 395/1442 funcs, 395/1440 SCCs] callgraph: psf_init_files
+[INFO 396/1442 funcs, 396/1440 SCCs] callgraph: psf_use_rsrc
+[INFO 397/1442 funcs, 397/1440 SCCs] callgraph: fsync
+[INFO 398/1442 funcs, 398/1440 SCCs] callgraph: psf_fsync
+[INFO 399/1442 funcs, 399/1440 SCCs] callgraph: psf_get_format_simple_count
+[INFO 400/1442 funcs, 400/1440 SCCs] callgraph: psf_get_format_simple
+[INFO 401/1442 funcs, 401/1440 SCCs] callgraph: psf_get_format_major_count
+[INFO 402/1442 funcs, 402/1440 SCCs] callgraph: psf_get_format_major
+[INFO 403/1442 funcs, 403/1440 SCCs] callgraph: psf_get_format_subtype_count
+[INFO 404/1442 funcs, 404/1440 SCCs] callgraph: psf_get_format_subtype
+[INFO 405/1442 funcs, 405/1440 SCCs] callgraph: psf_get_format_info
+[INFO 406/1442 funcs, 406/1440 SCCs] callgraph: sf_version_string
+[INFO 407/1442 funcs, 407/1440 SCCs] callgraph: peak_info_calloc
+[INFO 408/1442 funcs, 408/1440 SCCs] callgraph: sf_seek
+[INFO 409/1442 funcs, 409/1440 SCCs] callgraph: sf_read_double
+[INFO 410/1442 funcs, 410/1440 SCCs] callgraph: psf_get_signal_max
+[INFO 411/1442 funcs, 411/1440 SCCs] callgraph: psf_get_max_all_channels
+[INFO 412/1442 funcs, 412/1440 SCCs] callgraph: dither_init
+[INFO 413/1442 funcs, 413/1440 SCCs] callgraph: float32_get_capability
+[INFO 414/1442 funcs, 414/1440 SCCs] callgraph: float32_init
+[INFO 415/1442 funcs, 415/1440 SCCs] callgraph: double64_get_capability
+[INFO 416/1442 funcs, 416/1440 SCCs] callgraph: double64_init
+[INFO 417/1442 funcs, 417/1440 SCCs] callgraph: bc_min_size
+[INFO 418/1442 funcs, 418/1440 SCCs] callgraph: broadcast_var_alloc
+[INFO 419/1442 funcs, 419/1440 SCCs] callgraph: gen_coding_history
+[INFO 420/1442 funcs, 420/1440 SCCs] callgraph: broadcast_var_set
+[BADAT] broadcast_var_set formal=130596 path=.18.* access=read want=SF_INFO/0 got=SF_INFO/1 (endpoint type disagrees with DWARF walk)
+[INFO 421/1442 funcs, 421/1440 SCCs] callgraph: broadcast_var_get
+[INFO 422/1442 funcs, 422/1440 SCCs] callgraph: cart_min_size
+[INFO 423/1442 funcs, 423/1440 SCCs] callgraph: cart_var_alloc
+[INFO 424/1442 funcs, 424/1440 SCCs] callgraph: cart_var_set
+[INFO 425/1442 funcs, 425/1440 SCCs] callgraph: cart_var_get
+[INFO 428/1442 funcs, 426/1440 SCCs] callgraph: psf_calc_signal_max (SCC of 3)
+psf_calc_signal_max
+psf_calc_max_all_channels
+sf_command
+[FIXPOINT] scc=90 iter=1 formals=9 total_ats=197 exits=8 max_field_depth=4
+[DICHAIN] ok=2900 fresh_break=15 poisoned=0 | formal_with_di=944 | formal_no_di=7 compose_null_di=4 | gep_bu(ok/null)=5019/0
+[FIXPOINT] scc=90 iter=2 formals=9 total_ats=420 exits=8 max_field_depth=4
+[DICHAIN] ok=3089 fresh_break=15 poisoned=0 | formal_with_di=953 | formal_no_di=7 compose_null_di=4 | gep_bu(ok/null)=5234/0
+[FIXPOINT] scc=90 iter=3 formals=9 total_ats=420 exits=8 max_field_depth=4
+[DICHAIN] ok=3278 fresh_break=15 poisoned=0 | formal_with_di=962 | formal_no_di=7 compose_null_di=4 | gep_bu(ok/null)=5449/0
+[process_scc] Evaluated Function: psf_calc_signal_max(Formal Param ID: 130452)
+Effects: ATS 135
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: psf_calc_signal_max(Formal Param ID: 130453)
+Effects: ATS 1
+array 0, malloc 1, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: psf_calc_max_all_channels(Formal Param ID: 130443)
+Effects: ATS 135
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: psf_calc_max_all_channels(Formal Param ID: 130444)
+Effects: ATS 5
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: psf_calc_max_all_channels(Formal Param ID: 130445)
+Effects: ATS 1
+array 0, malloc 1, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: sf_command(Formal Param ID: 131863)
+Effects: ATS 135
+array 0, malloc 0, path 0, depends ''
+Exit Count: 7
+
+[process_scc] Evaluated Function: sf_command(Formal Param ID: 131864)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: sf_command(Formal Param ID: 131865)
+Effects: ATS 6
+array 1, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: sf_command(Formal Param ID: 131866)
+Effects: ATS 1
+array 0, malloc 1, path 0, depends ''
+Exit Count: 1
+
+[INFO 429/1442 funcs, 427/1440 SCCs] callgraph: pcm_init
+[INFO 430/1442 funcs, 428/1440 SCCs] callgraph: sc2s_array
+[INFO 431/1442 funcs, 429/1440 SCCs] callgraph: pcm_read_sc2s
+[INFO 432/1442 funcs, 430/1440 SCCs] callgraph: sc2f_array
+[INFO 433/1442 funcs, 431/1440 SCCs] callgraph: pcm_read_sc2f
+[INFO 434/1442 funcs, 432/1440 SCCs] callgraph: sc2d_array
+[INFO 435/1442 funcs, 433/1440 SCCs] callgraph: pcm_read_sc2d
+[INFO 436/1442 funcs, 434/1440 SCCs] callgraph: uc2s_array
+[INFO 437/1442 funcs, 435/1440 SCCs] callgraph: pcm_read_uc2s
+[INFO 438/1442 funcs, 436/1440 SCCs] callgraph: uc2f_array
+[INFO 439/1442 funcs, 437/1440 SCCs] callgraph: pcm_read_uc2f
+[INFO 440/1442 funcs, 438/1440 SCCs] callgraph: uc2d_array
+[INFO 441/1442 funcs, 439/1440 SCCs] callgraph: pcm_read_uc2d
+[INFO 442/1442 funcs, 440/1440 SCCs] callgraph: endswap_short_array
+[INFO 443/1442 funcs, 441/1440 SCCs] callgraph: pcm_read_bes2s
+[INFO 444/1442 funcs, 442/1440 SCCs] callgraph: bes2f_array
+[INFO 445/1442 funcs, 443/1440 SCCs] callgraph: pcm_read_bes2f
+[INFO 446/1442 funcs, 444/1440 SCCs] callgraph: bes2d_array
+[INFO 447/1442 funcs, 445/1440 SCCs] callgraph: pcm_read_bes2d
+[INFO 448/1442 funcs, 446/1440 SCCs] callgraph: bet2s_array
+[INFO 449/1442 funcs, 447/1440 SCCs] callgraph: pcm_read_bet2s
+[INFO 450/1442 funcs, 448/1440 SCCs] callgraph: bet2f_array
+[INFO 451/1442 funcs, 449/1440 SCCs] callgraph: pcm_read_bet2f
+[INFO 452/1442 funcs, 450/1440 SCCs] callgraph: bet2d_array
+[INFO 453/1442 funcs, 451/1440 SCCs] callgraph: pcm_read_bet2d
+[INFO 454/1442 funcs, 452/1440 SCCs] callgraph: bei2s_array
+[INFO 455/1442 funcs, 453/1440 SCCs] callgraph: pcm_read_bei2s
+[INFO 456/1442 funcs, 454/1440 SCCs] callgraph: bei2f_array
+[INFO 457/1442 funcs, 455/1440 SCCs] callgraph: pcm_read_bei2f
+[INFO 458/1442 funcs, 456/1440 SCCs] callgraph: bei2d_array
+[INFO 459/1442 funcs, 457/1440 SCCs] callgraph: pcm_read_bei2d
+[INFO 460/1442 funcs, 458/1440 SCCs] callgraph: pcm_read_les2s
+[INFO 461/1442 funcs, 459/1440 SCCs] callgraph: les2f_array
+[INFO 462/1442 funcs, 460/1440 SCCs] callgraph: pcm_read_les2f
+[INFO 463/1442 funcs, 461/1440 SCCs] callgraph: les2d_array
+[INFO 464/1442 funcs, 462/1440 SCCs] callgraph: pcm_read_les2d
+[INFO 465/1442 funcs, 463/1440 SCCs] callgraph: let2s_array
+[INFO 466/1442 funcs, 464/1440 SCCs] callgraph: pcm_read_let2s
+[INFO 467/1442 funcs, 465/1440 SCCs] callgraph: let2f_array
+[INFO 468/1442 funcs, 466/1440 SCCs] callgraph: pcm_read_let2f
+[INFO 469/1442 funcs, 467/1440 SCCs] callgraph: let2d_array
+[INFO 470/1442 funcs, 468/1440 SCCs] callgraph: pcm_read_let2d
+[INFO 471/1442 funcs, 469/1440 SCCs] callgraph: lei2s_array
+[INFO 472/1442 funcs, 470/1440 SCCs] callgraph: pcm_read_lei2s
+[INFO 473/1442 funcs, 471/1440 SCCs] callgraph: lei2f_array
+[INFO 474/1442 funcs, 472/1440 SCCs] callgraph: pcm_read_lei2f
+[INFO 475/1442 funcs, 473/1440 SCCs] callgraph: lei2d_array
+[INFO 476/1442 funcs, 474/1440 SCCs] callgraph: pcm_read_lei2d
+[INFO 477/1442 funcs, 475/1440 SCCs] callgraph: s2sc_array
+[INFO 478/1442 funcs, 476/1440 SCCs] callgraph: pcm_write_s2sc
+[INFO 479/1442 funcs, 477/1440 SCCs] callgraph: i2sc_array
+[INFO 480/1442 funcs, 478/1440 SCCs] callgraph: pcm_write_i2sc
+[INFO 481/1442 funcs, 479/1440 SCCs] callgraph: psf_lrintf.205
+[INFO 482/1442 funcs, 480/1440 SCCs] callgraph: f2sc_clip_array
+[INFO 483/1442 funcs, 481/1440 SCCs] callgraph: f2sc_array
+[INFO 484/1442 funcs, 482/1440 SCCs] callgraph: pcm_write_f2sc
+[INFO 485/1442 funcs, 483/1440 SCCs] callgraph: d2sc_clip_array
+[INFO 486/1442 funcs, 484/1440 SCCs] callgraph: psf_lrint.204
+[INFO 487/1442 funcs, 485/1440 SCCs] callgraph: d2sc_array
+[INFO 488/1442 funcs, 486/1440 SCCs] callgraph: pcm_write_d2sc
+[INFO 489/1442 funcs, 487/1440 SCCs] callgraph: s2uc_array
+[INFO 490/1442 funcs, 488/1440 SCCs] callgraph: pcm_write_s2uc
+[INFO 491/1442 funcs, 489/1440 SCCs] callgraph: i2uc_array
+[INFO 492/1442 funcs, 490/1440 SCCs] callgraph: pcm_write_i2uc
+[INFO 493/1442 funcs, 491/1440 SCCs] callgraph: f2uc_clip_array
+[INFO 494/1442 funcs, 492/1440 SCCs] callgraph: f2uc_array
+[INFO 495/1442 funcs, 493/1440 SCCs] callgraph: pcm_write_f2uc
+[INFO 496/1442 funcs, 494/1440 SCCs] callgraph: d2uc_clip_array
+[INFO 497/1442 funcs, 495/1440 SCCs] callgraph: d2uc_array
+[INFO 498/1442 funcs, 496/1440 SCCs] callgraph: pcm_write_d2uc
+[INFO 499/1442 funcs, 497/1440 SCCs] callgraph: endswap_short_copy
+[INFO 500/1442 funcs, 498/1440 SCCs] callgraph: pcm_write_s2bes
+[MEM SUMMARIES] num summaries=1153 num ret summaries=20 num ats=5897(max/summary=135) num icfg=171626 num vis=6027 num exits=302 fun_params=812 MiB: maps=0.0 ats=1.4 total ats=8.3 bytes exists=0.1 bytes indexes=0.0 bytes fun_params=0.3 TOTAL=10.1 rss=968MiB
+[DICHAIN periodic] ok=3428 fresh_break=15 poisoned=0 | formal_with_di=1192 | formal_no_di=7 compose_null_di=4 | gep_bu(ok/null)=5742/0
+[INFO 501/1442 funcs, 499/1440 SCCs] callgraph: i2bes_array
+[INFO 502/1442 funcs, 500/1440 SCCs] callgraph: pcm_write_i2bes
+[INFO 503/1442 funcs, 501/1440 SCCs] callgraph: f2bes_clip_array
+[INFO 504/1442 funcs, 502/1440 SCCs] callgraph: f2bes_array
+[INFO 505/1442 funcs, 503/1440 SCCs] callgraph: pcm_write_f2bes
+[INFO 506/1442 funcs, 504/1440 SCCs] callgraph: d2bes_clip_array
+[INFO 507/1442 funcs, 505/1440 SCCs] callgraph: d2bes_array
+[INFO 508/1442 funcs, 506/1440 SCCs] callgraph: pcm_write_d2bes
+[INFO 509/1442 funcs, 507/1440 SCCs] callgraph: s2bet_array
+[INFO 510/1442 funcs, 508/1440 SCCs] callgraph: pcm_write_s2bet
+[INFO 511/1442 funcs, 509/1440 SCCs] callgraph: i2bet_array
+[INFO 512/1442 funcs, 510/1440 SCCs] callgraph: pcm_write_i2bet
+[INFO 513/1442 funcs, 511/1440 SCCs] callgraph: f2bet_clip_array
+[INFO 514/1442 funcs, 512/1440 SCCs] callgraph: f2bet_array
+[INFO 515/1442 funcs, 513/1440 SCCs] callgraph: pcm_write_f2bet
+[INFO 516/1442 funcs, 514/1440 SCCs] callgraph: d2bet_clip_array
+[INFO 517/1442 funcs, 515/1440 SCCs] callgraph: d2bet_array
+[INFO 518/1442 funcs, 516/1440 SCCs] callgraph: pcm_write_d2bet
+[INFO 519/1442 funcs, 517/1440 SCCs] callgraph: s2bei_array
+[INFO 520/1442 funcs, 518/1440 SCCs] callgraph: pcm_write_s2bei
+[INFO 521/1442 funcs, 519/1440 SCCs] callgraph: endswap_int_copy
+[INFO 522/1442 funcs, 520/1440 SCCs] callgraph: pcm_write_i2bei
+[INFO 523/1442 funcs, 521/1440 SCCs] callgraph: f2bei_clip_array
+[INFO 524/1442 funcs, 522/1440 SCCs] callgraph: f2bei_array
+[INFO 525/1442 funcs, 523/1440 SCCs] callgraph: pcm_write_f2bei
+[INFO 526/1442 funcs, 524/1440 SCCs] callgraph: d2bei_clip_array
+[INFO 527/1442 funcs, 525/1440 SCCs] callgraph: d2bei_array
+[INFO 528/1442 funcs, 526/1440 SCCs] callgraph: pcm_write_d2bei
+[INFO 529/1442 funcs, 527/1440 SCCs] callgraph: pcm_write_s2les
+[INFO 530/1442 funcs, 528/1440 SCCs] callgraph: i2les_array
+[INFO 531/1442 funcs, 529/1440 SCCs] callgraph: pcm_write_i2les
+[INFO 532/1442 funcs, 530/1440 SCCs] callgraph: f2les_clip_array
+[INFO 533/1442 funcs, 531/1440 SCCs] callgraph: f2les_array
+[INFO 534/1442 funcs, 532/1440 SCCs] callgraph: pcm_write_f2les
+[INFO 535/1442 funcs, 533/1440 SCCs] callgraph: d2les_clip_array
+[INFO 536/1442 funcs, 534/1440 SCCs] callgraph: d2les_array
+[INFO 537/1442 funcs, 535/1440 SCCs] callgraph: pcm_write_d2les
+[INFO 538/1442 funcs, 536/1440 SCCs] callgraph: s2let_array
+[INFO 539/1442 funcs, 537/1440 SCCs] callgraph: pcm_write_s2let
+[INFO 540/1442 funcs, 538/1440 SCCs] callgraph: i2let_array
+[INFO 541/1442 funcs, 539/1440 SCCs] callgraph: pcm_write_i2let
+[INFO 542/1442 funcs, 540/1440 SCCs] callgraph: f2let_clip_array
+[INFO 543/1442 funcs, 541/1440 SCCs] callgraph: f2let_array
+[INFO 544/1442 funcs, 542/1440 SCCs] callgraph: pcm_write_f2let
+[INFO 545/1442 funcs, 543/1440 SCCs] callgraph: d2let_clip_array
+[INFO 546/1442 funcs, 544/1440 SCCs] callgraph: d2let_array
+[INFO 547/1442 funcs, 545/1440 SCCs] callgraph: pcm_write_d2let
+[INFO 548/1442 funcs, 546/1440 SCCs] callgraph: s2lei_array
+[INFO 549/1442 funcs, 547/1440 SCCs] callgraph: pcm_write_s2lei
+[INFO 550/1442 funcs, 548/1440 SCCs] callgraph: pcm_write_i2lei
+[INFO 551/1442 funcs, 549/1440 SCCs] callgraph: f2lei_clip_array
+[INFO 552/1442 funcs, 550/1440 SCCs] callgraph: f2lei_array
+[INFO 553/1442 funcs, 551/1440 SCCs] callgraph: pcm_write_f2lei
+[INFO 554/1442 funcs, 552/1440 SCCs] callgraph: d2lei_clip_array
+[INFO 555/1442 funcs, 553/1440 SCCs] callgraph: d2lei_array
+[INFO 556/1442 funcs, 554/1440 SCCs] callgraph: pcm_write_d2lei
+[INFO 557/1442 funcs, 555/1440 SCCs] callgraph: ulaw_init
+[INFO 558/1442 funcs, 556/1440 SCCs] callgraph: ulaw2s_array
+[INFO 559/1442 funcs, 557/1440 SCCs] callgraph: ulaw_read_ulaw2s
+[INFO 560/1442 funcs, 558/1440 SCCs] callgraph: ulaw2f_array
+[INFO 561/1442 funcs, 559/1440 SCCs] callgraph: ulaw_read_ulaw2f
+[INFO 562/1442 funcs, 560/1440 SCCs] callgraph: ulaw2d_array
+[INFO 563/1442 funcs, 561/1440 SCCs] callgraph: ulaw_read_ulaw2d
+[INFO 564/1442 funcs, 562/1440 SCCs] callgraph: s2ulaw_array
+[INFO 565/1442 funcs, 563/1440 SCCs] callgraph: ulaw_write_s2ulaw
+[INFO 566/1442 funcs, 564/1440 SCCs] callgraph: i2ulaw_array
+[INFO 567/1442 funcs, 565/1440 SCCs] callgraph: ulaw_write_i2ulaw
+[INFO 568/1442 funcs, 566/1440 SCCs] callgraph: psf_lrintf.207
+[INFO 569/1442 funcs, 567/1440 SCCs] callgraph: f2ulaw_array
+[INFO 570/1442 funcs, 568/1440 SCCs] callgraph: ulaw_write_f2ulaw
+[INFO 571/1442 funcs, 569/1440 SCCs] callgraph: llvm.is.fpclass.f64
+[INFO 572/1442 funcs, 570/1440 SCCs] callgraph: psf_lrint.206
+[INFO 573/1442 funcs, 571/1440 SCCs] callgraph: d2ulaw_array
+[INFO 574/1442 funcs, 572/1440 SCCs] callgraph: ulaw_write_d2ulaw
+[INFO 575/1442 funcs, 573/1440 SCCs] callgraph: alaw_init
+[INFO 576/1442 funcs, 574/1440 SCCs] callgraph: alaw2s_array
+[INFO 577/1442 funcs, 575/1440 SCCs] callgraph: alaw_read_alaw2s
+[INFO 578/1442 funcs, 576/1440 SCCs] callgraph: alaw2f_array
+[INFO 579/1442 funcs, 577/1440 SCCs] callgraph: alaw_read_alaw2f
+[INFO 580/1442 funcs, 578/1440 SCCs] callgraph: alaw2d_array
+[INFO 581/1442 funcs, 579/1440 SCCs] callgraph: alaw_read_alaw2d
+[INFO 582/1442 funcs, 580/1440 SCCs] callgraph: s2alaw_array
+[INFO 583/1442 funcs, 581/1440 SCCs] callgraph: alaw_write_s2alaw
+[INFO 584/1442 funcs, 582/1440 SCCs] callgraph: i2alaw_array
+[INFO 585/1442 funcs, 583/1440 SCCs] callgraph: alaw_write_i2alaw
+[INFO 586/1442 funcs, 584/1440 SCCs] callgraph: psf_lrintf.209
+[INFO 587/1442 funcs, 585/1440 SCCs] callgraph: f2alaw_array
+[INFO 588/1442 funcs, 586/1440 SCCs] callgraph: alaw_write_f2alaw
+[INFO 589/1442 funcs, 587/1440 SCCs] callgraph: psf_lrint.208
+[INFO 590/1442 funcs, 588/1440 SCCs] callgraph: d2alaw_array
+[INFO 591/1442 funcs, 589/1440 SCCs] callgraph: alaw_write_d2alaw
+[INFO 592/1442 funcs, 590/1440 SCCs] callgraph: f2s_clip_array
+[INFO 593/1442 funcs, 591/1440 SCCs] callgraph: f2s_array
+[INFO 594/1442 funcs, 592/1440 SCCs] callgraph: host_read_f2s
+[INFO 595/1442 funcs, 593/1440 SCCs] callgraph: endswap_int_copy.215
+[INFO 596/1442 funcs, 594/1440 SCCs] callgraph: host_read_f
+[INFO 597/1442 funcs, 595/1440 SCCs] callgraph: f2d_array
+[INFO 598/1442 funcs, 596/1440 SCCs] callgraph: host_read_f2d
+[INFO 599/1442 funcs, 597/1440 SCCs] callgraph: replace_read_f2s
+[INFO 600/1442 funcs, 598/1440 SCCs] callgraph: replace_read_f
+[INFO 601/1442 funcs, 599/1440 SCCs] callgraph: replace_read_f2d
+[INFO 602/1442 funcs, 600/1440 SCCs] callgraph: s2f_array
+[INFO 603/1442 funcs, 601/1440 SCCs] callgraph: float32_peak_update
+[INFO 604/1442 funcs, 602/1440 SCCs] callgraph: host_write_s2f
+[INFO 605/1442 funcs, 603/1440 SCCs] callgraph: i2f_array
+[INFO 606/1442 funcs, 604/1440 SCCs] callgraph: host_write_i2f
+[INFO 607/1442 funcs, 605/1440 SCCs] callgraph: host_write_f
+[INFO 608/1442 funcs, 606/1440 SCCs] callgraph: d2f_array
+[INFO 609/1442 funcs, 607/1440 SCCs] callgraph: host_write_d2f
+[INFO 610/1442 funcs, 608/1440 SCCs] callgraph: f2bf_array
+[INFO 611/1442 funcs, 609/1440 SCCs] callgraph: replace_write_s2f
+[INFO 612/1442 funcs, 610/1440 SCCs] callgraph: replace_write_i2f
+[INFO 613/1442 funcs, 611/1440 SCCs] callgraph: replace_write_f
+[INFO 614/1442 funcs, 612/1440 SCCs] callgraph: replace_write_d2f
+[INFO 615/1442 funcs, 613/1440 SCCs] callgraph: d2s_clip_array
+[INFO 616/1442 funcs, 614/1440 SCCs] callgraph: d2s_array
+[INFO 617/1442 funcs, 615/1440 SCCs] callgraph: host_read_d2s
+[INFO 618/1442 funcs, 616/1440 SCCs] callgraph: d2f_array.231
+[INFO 619/1442 funcs, 617/1440 SCCs] callgraph: host_read_d2f
+[INFO 620/1442 funcs, 618/1440 SCCs] callgraph: host_read_d
+[INFO 621/1442 funcs, 619/1440 SCCs] callgraph: replace_read_d2s
+[INFO 622/1442 funcs, 620/1440 SCCs] callgraph: replace_read_d2f
+[INFO 623/1442 funcs, 621/1440 SCCs] callgraph: replace_read_d
+[INFO 624/1442 funcs, 622/1440 SCCs] callgraph: s2d_array
+[INFO 625/1442 funcs, 623/1440 SCCs] callgraph: double64_peak_update
+[INFO 626/1442 funcs, 624/1440 SCCs] callgraph: host_write_s2d
+[INFO 627/1442 funcs, 625/1440 SCCs] callgraph: i2d_array
+[INFO 628/1442 funcs, 626/1440 SCCs] callgraph: host_write_i2d
+[INFO 629/1442 funcs, 627/1440 SCCs] callgraph: f2d_array.228
+[INFO 630/1442 funcs, 628/1440 SCCs] callgraph: host_write_f2d
+[INFO 631/1442 funcs, 629/1440 SCCs] callgraph: endswap_int64_t_copy
+[INFO 632/1442 funcs, 630/1440 SCCs] callgraph: endswap_double_copy
+[INFO 633/1442 funcs, 631/1440 SCCs] callgraph: host_write_d
+[INFO 634/1442 funcs, 632/1440 SCCs] callgraph: bd2d_write
+[INFO 635/1442 funcs, 633/1440 SCCs] callgraph: replace_write_s2d
+[INFO 636/1442 funcs, 634/1440 SCCs] callgraph: replace_write_i2d
+[INFO 637/1442 funcs, 635/1440 SCCs] callgraph: replace_write_f2d
+[INFO 638/1442 funcs, 636/1440 SCCs] callgraph: replace_write_d
+[INFO 639/1442 funcs, 637/1440 SCCs] callgraph: ima_reader_init
+[INFO 640/1442 funcs, 638/1440 SCCs] callgraph: ima_writer_init
+[INFO 641/1442 funcs, 639/1440 SCCs] callgraph: wavlike_ima_init
+[INFO 642/1442 funcs, 640/1440 SCCs] callgraph: ima_close
+[INFO 643/1442 funcs, 641/1440 SCCs] callgraph: wavlike_ima_seek
+[INFO 644/1442 funcs, 642/1440 SCCs] callgraph: ima_write_block
+[INFO 645/1442 funcs, 643/1440 SCCs] callgraph: ima_write_s
+[INFO 646/1442 funcs, 644/1440 SCCs] callgraph: ima_write_i
+[INFO 647/1442 funcs, 645/1440 SCCs] callgraph: psf_lrintf.240
+[INFO 648/1442 funcs, 646/1440 SCCs] callgraph: ima_write_f
+[INFO 649/1442 funcs, 647/1440 SCCs] callgraph: psf_lrint.239
+[INFO 650/1442 funcs, 648/1440 SCCs] callgraph: ima_write_d
+[INFO 651/1442 funcs, 649/1440 SCCs] callgraph: ima_read_s
+[INFO 652/1442 funcs, 650/1440 SCCs] callgraph: ima_read_f
+[INFO 653/1442 funcs, 651/1440 SCCs] callgraph: ima_read_d
+[INFO 654/1442 funcs, 652/1440 SCCs] callgraph: aiff_ima_init
+[INFO 655/1442 funcs, 653/1440 SCCs] callgraph: aiff_ima_seek
+[INFO 656/1442 funcs, 654/1440 SCCs] callgraph: wavlike_msadpcm_init
+[INFO 657/1442 funcs, 655/1440 SCCs] callgraph: msadpcm_read_s
+[INFO 658/1442 funcs, 656/1440 SCCs] callgraph: msadpcm_read_f
+[INFO 659/1442 funcs, 657/1440 SCCs] callgraph: msadpcm_read_d
+[INFO 660/1442 funcs, 658/1440 SCCs] callgraph: choose_predictor
+[INFO 661/1442 funcs, 659/1440 SCCs] callgraph: msadpcm_encode_block
+[INFO 662/1442 funcs, 660/1440 SCCs] callgraph: msadpcm_write_block
+[INFO 663/1442 funcs, 661/1440 SCCs] callgraph: msadpcm_write_s
+[INFO 664/1442 funcs, 662/1440 SCCs] callgraph: msadpcm_write_i
+[INFO 665/1442 funcs, 663/1440 SCCs] callgraph: psf_lrintf.255
+[INFO 666/1442 funcs, 664/1440 SCCs] callgraph: msadpcm_write_f
+[INFO 667/1442 funcs, 665/1440 SCCs] callgraph: psf_lrint.254
+[INFO 668/1442 funcs, 666/1440 SCCs] callgraph: msadpcm_write_d
+[INFO 669/1442 funcs, 667/1440 SCCs] callgraph: msadpcm_close
+[INFO 670/1442 funcs, 668/1440 SCCs] callgraph: msadpcm_seek
+[INFO 671/1442 funcs, 669/1440 SCCs] callgraph: wavlike_msadpcm_write_adapt_coeffs
+[INFO 672/1442 funcs, 670/1440 SCCs] callgraph: gsm_create
+[INFO 673/1442 funcs, 671/1440 SCCs] callgraph: gsm_option
+[INFO 674/1442 funcs, 672/1440 SCCs] callgraph: gsm610_init
+[INFO 675/1442 funcs, 673/1440 SCCs] callgraph: gsm610_read_s
+[INFO 676/1442 funcs, 674/1440 SCCs] callgraph: gsm610_read_f
+[INFO 677/1442 funcs, 675/1440 SCCs] callgraph: gsm610_read_d
+[INFO 678/1442 funcs, 676/1440 SCCs] callgraph: gsm610_write_block
+[INFO 679/1442 funcs, 677/1440 SCCs] callgraph: gsm610_write_s
+[INFO 680/1442 funcs, 678/1440 SCCs] callgraph: gsm610_write_i
+[INFO 681/1442 funcs, 679/1440 SCCs] callgraph: psf_lrintf.262
+[INFO 682/1442 funcs, 680/1440 SCCs] callgraph: gsm610_write_f
+[INFO 683/1442 funcs, 681/1440 SCCs] callgraph: psf_lrint.261
+[INFO 684/1442 funcs, 682/1440 SCCs] callgraph: gsm610_write_d
+[INFO 685/1442 funcs, 683/1440 SCCs] callgraph: gsm_destroy
+[INFO 686/1442 funcs, 684/1440 SCCs] callgraph: gsm610_close
+[INFO 687/1442 funcs, 685/1440 SCCs] callgraph: gsm_init
+[INFO 688/1442 funcs, 686/1440 SCCs] callgraph: gsm610_seek
+[INFO 689/1442 funcs, 687/1440 SCCs] callgraph: dwvw_read_reset
+[INFO 690/1442 funcs, 688/1440 SCCs] callgraph: dwvw_init
+[INFO 691/1442 funcs, 689/1440 SCCs] callgraph: dwvw_read_s
+[INFO 692/1442 funcs, 690/1440 SCCs] callgraph: dwvw_read_f
+[INFO 693/1442 funcs, 691/1440 SCCs] callgraph: dwvw_read_d
+[INFO 694/1442 funcs, 692/1440 SCCs] callgraph: dwvw_encode_store_bits
+[INFO 695/1442 funcs, 693/1440 SCCs] callgraph: dwvw_encode_data
+[INFO 696/1442 funcs, 694/1440 SCCs] callgraph: dwvw_write_s
+[INFO 697/1442 funcs, 695/1440 SCCs] callgraph: dwvw_write_i
+[INFO 698/1442 funcs, 696/1440 SCCs] callgraph: psf_lrintf.270
+[INFO 699/1442 funcs, 697/1440 SCCs] callgraph: dwvw_write_f
+[INFO 700/1442 funcs, 698/1440 SCCs] callgraph: psf_lrint.269
+[INFO 701/1442 funcs, 699/1440 SCCs] callgraph: dwvw_write_d
+[INFO 702/1442 funcs, 700/1440 SCCs] callgraph: psf_find_read_chunk_m32
+[INFO 703/1442 funcs, 701/1440 SCCs] callgraph: aiff_rewrite_header
+[INFO 704/1442 funcs, 702/1440 SCCs] callgraph: uint2tenbytefloat
+[INFO 705/1442 funcs, 703/1440 SCCs] callgraph: aiff_write_strings
+[INFO 706/1442 funcs, 704/1440 SCCs] callgraph: aiff_write_header
+[INFO 707/1442 funcs, 705/1440 SCCs] callgraph: au_format_to_encoding
+[INFO 708/1442 funcs, 706/1440 SCCs] callgraph: au_write_header
+[INFO 709/1442 funcs, 707/1440 SCCs] callgraph: avr_write_header
+[INFO 710/1442 funcs, 708/1440 SCCs] callgraph: alac_get_desc_chunk_items
+[INFO 711/1442 funcs, 709/1440 SCCs] callgraph: psf_get_string
+[INFO 712/1442 funcs, 710/1440 SCCs] callgraph: put_key_value
+[INFO 713/1442 funcs, 711/1440 SCCs] callgraph: caf_write_strings
+[INFO 714/1442 funcs, 712/1440 SCCs] callgraph: caf_write_header
+[INFO 715/1442 funcs, 713/1440 SCCs] callgraph: FLAC__metadata_object_new
+[INFO 716/1442 funcs, 714/1440 SCCs] callgraph: FLAC__metadata_object_vorbiscomment_entry_from_name_value_pair
+[INFO 717/1442 funcs, 715/1440 SCCs] callgraph: FLAC__metadata_object_vorbiscomment_append_comment
+[INFO 718/1442 funcs, 716/1440 SCCs] callgraph: FLAC__stream_encoder_set_metadata
+[INFO 719/1442 funcs, 717/1440 SCCs] callgraph: flac_write_strings
+[INFO 720/1442 funcs, 718/1440 SCCs] callgraph: FLAC__stream_encoder_init_stream
+[INFO 721/1442 funcs, 719/1440 SCCs] callgraph: flac_write_header
+[INFO 722/1442 funcs, 720/1440 SCCs] callgraph: htk_write_header
+[INFO 723/1442 funcs, 721/1440 SCCs] callgraph: get_encoding
+[INFO 724/1442 funcs, 722/1440 SCCs] callgraph: ircam_write_header
+[INFO 725/1442 funcs, 723/1440 SCCs] callgraph: mat4_format_to_encoding
+[INFO 726/1442 funcs, 724/1440 SCCs] callgraph: mat4_write_header
+[INFO 727/1442 funcs, 725/1440 SCCs] callgraph: mat5_write_header
+[INFO 728/1442 funcs, 726/1440 SCCs] callgraph: nist_write_header
+[INFO 729/1442 funcs, 727/1440 SCCs] callgraph: paf_write_header
+[INFO 730/1442 funcs, 728/1440 SCCs] callgraph: pvf_write_header
+[INFO 731/1442 funcs, 729/1440 SCCs] callgraph: sds_write_header
+[INFO 732/1442 funcs, 730/1440 SCCs] callgraph: svx_write_header
+[INFO 733/1442 funcs, 731/1440 SCCs] callgraph: voc_write_header
+[INFO 734/1442 funcs, 732/1440 SCCs] callgraph: wve_write_header
+[INFO 735/1442 funcs, 733/1440 SCCs] callgraph: wavlike_srate2blocksize
+[INFO 736/1442 funcs, 734/1440 SCCs] callgraph: w64_write_header
+[INFO 737/1442 funcs, 735/1440 SCCs] callgraph: dwvw_byterate
+[INFO 738/1442 funcs, 736/1440 SCCs] callgraph: alac_byterate
+[INFO 739/1442 funcs, 737/1440 SCCs] callgraph: flac_byterate
+[INFO 740/1442 funcs, 738/1440 SCCs] callgraph: sds_byterate
+[INFO 741/1442 funcs, 739/1440 SCCs] callgraph: vorbis_byterate
+[INFO 742/1442 funcs, 740/1440 SCCs] callgraph: ogg_opus_byterate
+[INFO 743/1442 funcs, 741/1440 SCCs] callgraph: mpg123_info2
+[INFO 744/1442 funcs, 742/1440 SCCs] callgraph: mpeg_dec_byterate
+[INFO 745/1442 funcs, 743/1440 SCCs] callgraph: lame_get_VBR
+[INFO 746/1442 funcs, 744/1440 SCCs] callgraph: mpeg_l3_encoder_get_bitrate_mode
+[INFO 747/1442 funcs, 745/1440 SCCs] callgraph: lame_get_brate
+[INFO 748/1442 funcs, 746/1440 SCCs] callgraph: mpeg_l3_encoder_byterate
+[INFO 749/1442 funcs, 747/1440 SCCs] callgraph: wav_write_fmt_chunk
+[INFO 750/1442 funcs, 748/1440 SCCs] callgraph: wavlike_write_guid
+[INFO 751/1442 funcs, 749/1440 SCCs] callgraph: wavex_write_fmt_chunk
+[INFO 752/1442 funcs, 750/1440 SCCs] callgraph: psf_location_string_count
+[INFO 753/1442 funcs, 751/1440 SCCs] callgraph: wavlike_write_strings
+[INFO 754/1442 funcs, 752/1440 SCCs] callgraph: wavlike_write_peak_chunk
+[INFO 755/1442 funcs, 753/1440 SCCs] callgraph: wavlike_write_bext_chunk
+[INFO 756/1442 funcs, 754/1440 SCCs] callgraph: wavlike_write_cart_chunk
+[INFO 757/1442 funcs, 755/1440 SCCs] callgraph: llvm.fmuladd.f64
+[INFO 758/1442 funcs, 756/1440 SCCs] callgraph: wavlike_write_custom_chunks
+[INFO 759/1442 funcs, 757/1440 SCCs] callgraph: wav_write_header
+[INFO 760/1442 funcs, 758/1440 SCCs] callgraph: xi_write_header
+[INFO 761/1442 funcs, 759/1440 SCCs] callgraph: mpc2k_write_header
+[INFO 762/1442 funcs, 760/1440 SCCs] callgraph: rf64_write_fmt_chunk
+[INFO 763/1442 funcs, 761/1440 SCCs] callgraph: rf64_write_header
+[INFO 764/1442 funcs, 762/1440 SCCs] callgraph: vorbis_info_init
+[INFO 765/1442 funcs, 763/1440 SCCs] callgraph: vorbis_encode_init_vbr
+[INFO 766/1442 funcs, 764/1440 SCCs] callgraph: vorbis_comment_init
+[INFO 767/1442 funcs, 765/1440 SCCs] callgraph: vorbis_comment_add_tag
+[INFO 768/1442 funcs, 766/1440 SCCs] callgraph: vorbis_analysis_init
+[INFO 769/1442 funcs, 767/1440 SCCs] callgraph: vorbis_block_init
+[INFO 770/1442 funcs, 768/1440 SCCs] callgraph: ogg_stream_init
+[INFO 771/1442 funcs, 769/1440 SCCs] callgraph: vorbis_analysis_headerout
+[INFO 772/1442 funcs, 770/1440 SCCs] callgraph: ogg_stream_packetin
+[INFO 773/1442 funcs, 771/1440 SCCs] callgraph: ogg_stream_flush
+[INFO 774/1442 funcs, 772/1440 SCCs] callgraph: ogg_write_page
+[INFO 775/1442 funcs, 773/1440 SCCs] callgraph: vorbis_write_header
+[INFO 776/1442 funcs, 774/1440 SCCs] callgraph: ogg_stream_reset_serialno
+[INFO 777/1442 funcs, 775/1440 SCCs] callgraph: opus_print_header
+[INFO 778/1442 funcs, 776/1440 SCCs] callgraph: opus_get_version_string
+[INFO 779/1442 funcs, 777/1440 SCCs] callgraph: vorbiscomment_lookup_name
+[INFO 780/1442 funcs, 778/1440 SCCs] callgraph: vorbiscomment_write_tags
+[INFO 781/1442 funcs, 779/1440 SCCs] callgraph: ogg_opus_write_header
+[INFO 782/1442 funcs, 780/1440 SCCs] callgraph: lame_init_params
+[INFO 783/1442 funcs, 781/1440 SCCs] callgraph: lame_get_version
+[INFO 784/1442 funcs, 782/1440 SCCs] callgraph: lame_get_mode
+[INFO 785/1442 funcs, 783/1440 SCCs] callgraph: lame_get_framesize
+[INFO 786/1442 funcs, 784/1440 SCCs] callgraph: lame_get_out_samplerate
+[INFO 787/1442 funcs, 785/1440 SCCs] callgraph: lame_get_VBR_mean_bitrate_kbps
+[INFO 788/1442 funcs, 786/1440 SCCs] callgraph: lame_get_VBR_q
+[INFO 789/1442 funcs, 787/1440 SCCs] callgraph: lame_get_encoder_delay
+[INFO 790/1442 funcs, 788/1440 SCCs] callgraph: lame_get_bWriteVbrTag
+[INFO 791/1442 funcs, 789/1440 SCCs] callgraph: mpeg_l3_encoder_log_config
+[INFO 792/1442 funcs, 790/1440 SCCs] callgraph: mpeg_l3_encoder_construct
+[INFO 793/1442 funcs, 791/1440 SCCs] callgraph: id3tag_init
+[INFO 794/1442 funcs, 792/1440 SCCs] callgraph: id3tag_set_title
+[INFO 795/1442 funcs, 793/1440 SCCs] callgraph: id3tag_set_artist
+[INFO 796/1442 funcs, 794/1440 SCCs] callgraph: id3tag_set_album
+[INFO 797/1442 funcs, 795/1440 SCCs] callgraph: id3tag_set_year
+[INFO 798/1442 funcs, 796/1440 SCCs] callgraph: id3tag_set_comment
+[INFO 799/1442 funcs, 797/1440 SCCs] callgraph: id3tag_set_genre
+[INFO 800/1442 funcs, 798/1440 SCCs] callgraph: id3tag_set_track
+[INFO 801/1442 funcs, 799/1440 SCCs] callgraph: lame_get_id3v2_tag
+[INFO 802/1442 funcs, 800/1440 SCCs] callgraph: mpeg_l3_encoder_write_id3tag
+[INFO 803/1442 funcs, 801/1440 SCCs] callgraph: mpeg_write_header
+[INFO 804/1442 funcs, 802/1440 SCCs] callgraph: dwvw_close
+[INFO 805/1442 funcs, 803/1440 SCCs] callgraph: dwvw_seek
+[INFO 806/1442 funcs, 804/1440 SCCs] callgraph: ima_oki_adpcm_init
+[INFO 807/1442 funcs, 805/1440 SCCs] callgraph: vox_adpcm_init
+[INFO 808/1442 funcs, 806/1440 SCCs] callgraph: adpcm_encode
+[INFO 809/1442 funcs, 807/1440 SCCs] callgraph: ima_oki_adpcm_encode_block
+[INFO 810/1442 funcs, 808/1440 SCCs] callgraph: vox_write_block
+[INFO 811/1442 funcs, 809/1440 SCCs] callgraph: vox_write_s
+[INFO 812/1442 funcs, 810/1440 SCCs] callgraph: vox_write_i
+[INFO 813/1442 funcs, 811/1440 SCCs] callgraph: psf_lrintf.277
+[INFO 814/1442 funcs, 812/1440 SCCs] callgraph: vox_write_f
+[INFO 815/1442 funcs, 813/1440 SCCs] callgraph: psf_lrint.275
+[INFO 816/1442 funcs, 814/1440 SCCs] callgraph: vox_write_d
+[INFO 817/1442 funcs, 815/1440 SCCs] callgraph: vox_read_s
+[INFO 818/1442 funcs, 816/1440 SCCs] callgraph: vox_read_f
+[INFO 819/1442 funcs, 817/1440 SCCs] callgraph: vox_read_d
+[INFO 820/1442 funcs, 818/1440 SCCs] callgraph: codec_close
+[INFO 821/1442 funcs, 819/1440 SCCs] callgraph: interleave_init
+[INFO 822/1442 funcs, 820/1440 SCCs] callgraph: interleave_read_short
+[INFO 823/1442 funcs, 821/1440 SCCs] callgraph: interleave_read_int
+[INFO 824/1442 funcs, 822/1440 SCCs] callgraph: interleave_read_float
+[INFO 825/1442 funcs, 823/1440 SCCs] callgraph: interleave_read_double
+[INFO 826/1442 funcs, 824/1440 SCCs] callgraph: interleave_seek
+[INFO 827/1442 funcs, 825/1440 SCCs] callgraph: strstr
+[INFO 828/1442 funcs, 826/1440 SCCs] callgraph: psf_store_string
+[INFO 829/1442 funcs, 827/1440 SCCs] callgraph: psf_set_string
+[INFO 830/1442 funcs, 828/1440 SCCs] callgraph: dither_read_int
+[INFO 831/1442 funcs, 829/1440 SCCs] callgraph: dither_read_short
+[INFO 832/1442 funcs, 830/1440 SCCs] callgraph: dither_int
+[INFO 833/1442 funcs, 831/1440 SCCs] callgraph: dither_write_int
+[INFO 834/1442 funcs, 832/1440 SCCs] callgraph: dither_short
+[INFO 835/1442 funcs, 833/1440 SCCs] callgraph: dither_write_short
+[INFO 836/1442 funcs, 834/1440 SCCs] callgraph: dither_float
+[INFO 837/1442 funcs, 835/1440 SCCs] callgraph: dither_write_float
+[INFO 838/1442 funcs, 836/1440 SCCs] callgraph: dither_double
+[INFO 839/1442 funcs, 837/1440 SCCs] callgraph: dither_write_double
+[INFO 840/1442 funcs, 838/1440 SCCs] callgraph: vote_for_format
+[INFO 841/1442 funcs, 839/1440 SCCs] callgraph: audio_detect
+[INFO 842/1442 funcs, 840/1440 SCCs] callgraph: hash_of_str
+[INFO 843/1442 funcs, 841/1440 SCCs] callgraph: psf_find_read_chunk_str
+[INFO 844/1442 funcs, 842/1440 SCCs] callgraph: psf_get_chunk_iterator
+[INFO 845/1442 funcs, 843/1440 SCCs] callgraph: alac_pakt_alloc
+[INFO 846/1442 funcs, 844/1440 SCCs] callgraph: alac_pakt_append
+[INFO 847/1442 funcs, 845/1440 SCCs] callgraph: psf_find_read_chunk_iterator
+[INFO 848/1442 funcs, 846/1440 SCCs] callgraph: aiff_get_chunk_size
+[INFO 849/1442 funcs, 847/1440 SCCs] callgraph: caf_get_chunk_size
+[INFO 850/1442 funcs, 848/1440 SCCs] callgraph: wav_get_chunk_size
+[INFO 851/1442 funcs, 849/1440 SCCs] callgraph: rf64_get_chunk_size
+[INFO 852/1442 funcs, 850/1440 SCCs] callgraph: aiff_get_chunk_data
+[INFO 853/1442 funcs, 851/1440 SCCs] callgraph: caf_get_chunk_data
+[INFO 854/1442 funcs, 852/1440 SCCs] callgraph: wav_get_chunk_data
+[INFO 855/1442 funcs, 853/1440 SCCs] callgraph: rf64_get_chunk_data
+[INFO 856/1442 funcs, 854/1440 SCCs] callgraph: psf_next_chunk_iterator
+[INFO 857/1442 funcs, 855/1440 SCCs] callgraph: aiff_next_chunk_iterator
+[INFO 858/1442 funcs, 856/1440 SCCs] callgraph: caf_next_chunk_iterator
+[INFO 859/1442 funcs, 857/1440 SCCs] callgraph: wav_next_chunk_iterator
+[INFO 860/1442 funcs, 858/1440 SCCs] callgraph: rf64_next_chunk_iterator
+[INFO 861/1442 funcs, 859/1440 SCCs] callgraph: alac_pakt_read_decode
+[INFO 862/1442 funcs, 860/1440 SCCs] callgraph: __bswap_64.326
+[INFO 863/1442 funcs, 861/1440 SCCs] callgraph: alac_kuki_read
+[INFO 864/1442 funcs, 862/1440 SCCs] callgraph: psf_get_be32.2090
+[INFO 865/1442 funcs, 863/1440 SCCs] callgraph: psf_get_be16
+[INFO 866/1442 funcs, 864/1440 SCCs] callgraph: alac_decoder_init
+[DIBREAK] on='' di_tag=23 idx=0 llvm_container=null/array n_elems=0
+[INFO 867/1442 funcs, 865/1440 SCCs] callgraph: alac_error_string
+[INFO 868/1442 funcs, 866/1440 SCCs] callgraph: alac_pakt_block_offset
+[INFO 869/1442 funcs, 867/1440 SCCs] callgraph: alac_seek
+[INFO 870/1442 funcs, 868/1440 SCCs] callgraph: alac_reader_calc_frames
+[BADAT] alac_reader_calc_frames formal=130296 path=.9.0.* access=read want=alac_decoder_s/0 got=ALACSpecificConfig/0 (endpoint type disagrees with DWARF walk)
+[BADAT] alac_reader_calc_frames formal=130296 path=.9.0.7 access=read want=alac_decoder_s/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_reader_calc_frames formal=130296 path=.9.2.* access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_reader_calc_frames formal=130296 path=.9.2.0 access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_reader_calc_frames formal=130296 path=.9.2.0 access=write want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 871/1442 funcs, 869/1440 SCCs] callgraph: alac_reader_init
+[INFO 872/1442 funcs, 870/1440 SCCs] callgraph: alac_get_magic_cookie_size
+[INFO 873/1442 funcs, 871/1440 SCCs] callgraph: init_coefs
+[INFO 874/1442 funcs, 872/1440 SCCs] callgraph: alac_encoder_init
+[INFO 875/1442 funcs, 873/1440 SCCs] callgraph: alac_writer_init
+[INFO 876/1442 funcs, 874/1440 SCCs] callgraph: alac_init
+[INFO 877/1442 funcs, 875/1440 SCCs] callgraph: mix16
+[INFO 878/1442 funcs, 876/1440 SCCs] callgraph: mix20
+[INFO 879/1442 funcs, 877/1440 SCCs] callgraph: mix24
+[INFO 880/1442 funcs, 878/1440 SCCs] callgraph: mix32
+[INFO 881/1442 funcs, 879/1440 SCCs] callgraph: pc_block
+[INFO 882/1442 funcs, 880/1440 SCCs] callgraph: lead.2085
+[INFO 883/1442 funcs, 881/1440 SCCs] callgraph: dyn_code_32bit
+[INFO 884/1442 funcs, 882/1440 SCCs] callgraph: psf_get_be32.2086
+[INFO 885/1442 funcs, 883/1440 SCCs] callgraph: psf_put_be32.2087
+[INFO 886/1442 funcs, 884/1440 SCCs] callgraph: dyn_code
+[INFO 887/1442 funcs, 885/1440 SCCs] callgraph: dyn_comp
+[INFO 888/1442 funcs, 886/1440 SCCs] callgraph: BitBufferGetPosition
+[INFO 889/1442 funcs, 887/1440 SCCs] callgraph: EncodeStereoEscape
+[INFO 890/1442 funcs, 888/1440 SCCs] callgraph: EncodeStereo
+[INFO 891/1442 funcs, 889/1440 SCCs] callgraph: EncodeStereoFast
+[INFO 892/1442 funcs, 890/1440 SCCs] callgraph: set_standard_ag_params
+[INFO 893/1442 funcs, 891/1440 SCCs] callgraph: EncodeMono
+[INFO 894/1442 funcs, 892/1440 SCCs] callgraph: alac_encode
+[INFO 895/1442 funcs, 893/1440 SCCs] callgraph: fwrite
+[INFO 896/1442 funcs, 894/1440 SCCs] callgraph: alac_encode_block
+[BADAT] alac_encode_block formal=131125 path=.9.2 access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_encode_block formal=131125 path=.9.3.* access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_encode_block formal=131125 path=.9.3.0 access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_encode_block formal=131125 path=.9.3.0 access=write want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] alac_encode_block formal=131125 path=.9.3.0.* access=read want=<unnamed>/0 got=<unnamed>/1 (field index does not exists on this record)
+[INFO 897/1442 funcs, 895/1440 SCCs] callgraph: __bswap_32.2102
+[INFO 898/1442 funcs, 896/1440 SCCs] callgraph: __bswap_16.2103
+[INFO 899/1442 funcs, 897/1440 SCCs] callgraph: GetConfig
+[INFO 900/1442 funcs, 898/1440 SCCs] callgraph: alac_get_magic_cookie
+[INFO 901/1442 funcs, 899/1440 SCCs] callgraph: psf_save_write_chunk
+[INFO 902/1442 funcs, 900/1440 SCCs] callgraph: psf_put_be64
+[INFO 903/1442 funcs, 901/1440 SCCs] callgraph: psf_put_be32
+[INFO 904/1442 funcs, 902/1440 SCCs] callgraph: alac_pakt_encode
+[INFO 905/1442 funcs, 903/1440 SCCs] callgraph: fseek
+[INFO 906/1442 funcs, 904/1440 SCCs] callgraph: fread
+[INFO 907/1442 funcs, 905/1440 SCCs] callgraph: fclose
+[INFO 908/1442 funcs, 906/1440 SCCs] callgraph: remove
+[INFO 909/1442 funcs, 907/1440 SCCs] callgraph: alac_close
+[INFO 910/1442 funcs, 908/1440 SCCs] callgraph: alac_write_s
+[INFO 911/1442 funcs, 909/1440 SCCs] callgraph: alac_write_i
+[INFO 912/1442 funcs, 910/1440 SCCs] callgraph: alac_write_f
+[INFO 913/1442 funcs, 911/1440 SCCs] callgraph: alac_write_d
+[INFO 914/1442 funcs, 912/1440 SCCs] callgraph: alac_read_s
+[INFO 915/1442 funcs, 913/1440 SCCs] callgraph: alac_read_f
+[INFO 916/1442 funcs, 914/1440 SCCs] callgraph: alac_read_d
+[INFO 917/1442 funcs, 915/1440 SCCs] callgraph: psf_store_read_chunk
+[INFO 918/1442 funcs, 916/1440 SCCs] callgraph: psf_store_read_chunk_u32
+[INFO 919/1442 funcs, 917/1440 SCCs] callgraph: psf_store_read_chunk_str
+[INFO 920/1442 funcs, 918/1440 SCCs] callgraph: ogg_sync_reset
+[INFO 921/1442 funcs, 919/1440 SCCs] callgraph: ogg_sync_fseek
+[INFO 922/1442 funcs, 920/1440 SCCs] callgraph: ogg_page_bos
+[INFO 923/1442 funcs, 921/1440 SCCs] callgraph: ogg_read_first_page
+[INFO 924/1442 funcs, 922/1440 SCCs] callgraph: ogg_page_granulepos
+[INFO 925/1442 funcs, 923/1440 SCCs] callgraph: ogg_sync_last_page_before
+[INFO 926/1442 funcs, 924/1440 SCCs] callgraph: ogg_page_search_do_rescale
+[INFO 927/1442 funcs, 925/1440 SCCs] callgraph: ogg_stream_reset
+[INFO 928/1442 funcs, 926/1440 SCCs] callgraph: ogg_page_packets
+[INFO 929/1442 funcs, 927/1440 SCCs] callgraph: ogg_page_continues
+[INFO 930/1442 funcs, 928/1440 SCCs] callgraph: ogg_page_search_continued_data
+[INFO 931/1442 funcs, 929/1440 SCCs] callgraph: ogg_stream_seek_page_search
+[INFO 932/1442 funcs, 930/1440 SCCs] callgraph: ogg_sync_init
+[INFO 933/1442 funcs, 931/1440 SCCs] callgraph: memcmp
+[INFO 934/1442 funcs, 932/1440 SCCs] callgraph: ogg_page_classify
+[INFO 935/1442 funcs, 933/1440 SCCs] callgraph: ogg_stream_classify
+[INFO 936/1442 funcs, 934/1440 SCCs] callgraph: vorbis_version_string
+[INFO 937/1442 funcs, 935/1440 SCCs] callgraph: vorbis_synthesis_headerin
+[INFO 938/1442 funcs, 936/1440 SCCs] callgraph: vorbis_comment_query
+[INFO 939/1442 funcs, 937/1440 SCCs] callgraph: vorbis_synthesis_init
+[INFO 940/1442 funcs, 938/1440 SCCs] callgraph: vorbis_read_header
+[INFO 941/1442 funcs, 939/1440 SCCs] callgraph: ogg_vorbis_open
+[INFO 942/1442 funcs, 940/1440 SCCs] callgraph: ogg_sync_clear
+[INFO 943/1442 funcs, 941/1440 SCCs] callgraph: ogg_stream_clear
+[INFO 944/1442 funcs, 942/1440 SCCs] callgraph: FLAC__stream_decoder_delete
+[INFO 945/1442 funcs, 943/1440 SCCs] callgraph: FLAC__stream_decoder_new
+[INFO 946/1442 funcs, 944/1440 SCCs] callgraph: FLAC__stream_decoder_set_metadata_respond_all
+[INFO 947/1442 funcs, 945/1440 SCCs] callgraph: FLAC__stream_decoder_init_stream
+[INFO 948/1442 funcs, 946/1440 SCCs] callgraph: FLAC__stream_decoder_process_until_end_of_metadata
+[INFO 949/1442 funcs, 947/1440 SCCs] callgraph: FLAC__stream_decoder_get_decode_position
+[INFO 950/1442 funcs, 948/1440 SCCs] callgraph: flac_read_header
+[INFO 951/1442 funcs, 949/1440 SCCs] callgraph: FLAC__stream_encoder_delete
+[INFO 952/1442 funcs, 950/1440 SCCs] callgraph: FLAC__stream_encoder_new
+[INFO 953/1442 funcs, 951/1440 SCCs] callgraph: FLAC__stream_encoder_set_channels
+[INFO 954/1442 funcs, 952/1440 SCCs] callgraph: FLAC__stream_encoder_set_sample_rate
+[INFO 955/1442 funcs, 953/1440 SCCs] callgraph: FLAC__stream_encoder_set_bits_per_sample
+[INFO 956/1442 funcs, 954/1440 SCCs] callgraph: FLAC__stream_encoder_set_compression_level
+[INFO 957/1442 funcs, 955/1440 SCCs] callgraph: flac_enc_init
+[INFO 958/1442 funcs, 956/1440 SCCs] callgraph: flac_init
+[INFO 959/1442 funcs, 957/1440 SCCs] callgraph: flac_open
+[INFO 960/1442 funcs, 958/1440 SCCs] callgraph: opus_read_header_packet
+[INFO 961/1442 funcs, 959/1440 SCCs] callgraph: read_32bit_size_t
+[INFO 962/1442 funcs, 960/1440 SCCs] callgraph: toupper
+[INFO 963/1442 funcs, 961/1440 SCCs] callgraph: strcmp
+[INFO 964/1442 funcs, 962/1440 SCCs] callgraph: vorbiscomment_lookup_id
+[INFO 965/1442 funcs, 963/1440 SCCs] callgraph: vorbiscomment_read_tags
+[INFO 966/1442 funcs, 964/1440 SCCs] callgraph: opus_multistream_decoder_create
+[INFO 967/1442 funcs, 965/1440 SCCs] callgraph: opus_multistream_decoder_destroy
+[INFO 968/1442 funcs, 966/1440 SCCs] callgraph: opus_multistream_decoder_ctl
+[INFO 969/1442 funcs, 967/1440 SCCs] callgraph: ogg_opus_setup_decoder
+[INFO 970/1442 funcs, 968/1440 SCCs] callgraph: ogg_opus_read_header
+[INFO 971/1442 funcs, 969/1440 SCCs] callgraph: ogg_opus_analyze_file
+[INFO 972/1442 funcs, 970/1440 SCCs] callgraph: opus_multistream_encoder_create
+[INFO 973/1442 funcs, 971/1440 SCCs] callgraph: opus_multistream_surround_encoder_create
+[INFO 974/1442 funcs, 972/1440 SCCs] callgraph: opus_multistream_encoder_ctl
+[INFO 975/1442 funcs, 973/1440 SCCs] callgraph: ogg_packet_clear
+[INFO 976/1442 funcs, 974/1440 SCCs] callgraph: ogg_opus_setup_encoder
+[BADAT] ogg_opus_setup_encoder formal=132361 path=.9.2 access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] ogg_opus_setup_encoder formal=132361 path=.9.3 access=read want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] ogg_opus_setup_encoder formal=132361 path=.9.3 access=write want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[BADAT] ogg_opus_setup_encoder formal=132361 path=.9.3 access=create want=<unnamed>/0 got=<unnamed>/0 (field index does not exists on this record)
+[INFO 977/1442 funcs, 975/1440 SCCs] callgraph: ogg_opus_open
+[INFO 978/1442 funcs, 976/1440 SCCs] callgraph: ogg_open
+[INFO 979/1442 funcs, 977/1440 SCCs] callgraph: ogg_close
+[INFO 980/1442 funcs, 978/1440 SCCs] callgraph: aiff_caf_find_channel_layout_tag
+[INFO 981/1442 funcs, 979/1440 SCCs] callgraph: aiff_caf_of_channel_layout_tag
+[INFO 982/1442 funcs, 980/1440 SCCs] callgraph: id3tag_genre_list
+[INFO 983/1442 funcs, 981/1440 SCCs] callgraph: id3_lookup_v1_genre
+[INFO 984/1442 funcs, 982/1440 SCCs] callgraph: id3v1_genre_handler
+[INFO 985/1442 funcs, 983/1440 SCCs] callgraph: id3_skip
+[INFO 986/1442 funcs, 984/1440 SCCs] callgraph: id3_process_v2_genre
+[INFO 987/1442 funcs, 985/1440 SCCs] callgraph: aiff_write_tailer
+[INFO 988/1442 funcs, 986/1440 SCCs] callgraph: aiff_close
+[INFO 989/1442 funcs, 987/1440 SCCs] callgraph: au_close
+[INFO 990/1442 funcs, 988/1440 SCCs] callgraph: avr_close
+[INFO 991/1442 funcs, 989/1440 SCCs] callgraph: caf_write_tailer
+[INFO 992/1442 funcs, 990/1440 SCCs] callgraph: caf_close
+[INFO 993/1442 funcs, 991/1440 SCCs] callgraph: FLAC__metadata_object_delete
+[INFO 994/1442 funcs, 992/1440 SCCs] callgraph: FLAC__stream_encoder_finish
+[INFO 995/1442 funcs, 993/1440 SCCs] callgraph: FLAC__stream_decoder_finish
+[INFO 996/1442 funcs, 994/1440 SCCs] callgraph: flac_close
+[INFO 997/1442 funcs, 995/1440 SCCs] callgraph: htk_close
+[INFO 998/1442 funcs, 996/1440 SCCs] callgraph: ircam_close
+[INFO 999/1442 funcs, 997/1440 SCCs] callgraph: mat4_close
+[INFO 1000/1442 funcs, 998/1440 SCCs] callgraph: mat5_close
+[MEM SUMMARIES] num summaries=2260 num ret summaries=38 num ats=15125(max/summary=163) num icfg=466993 num vis=17940 num exits=424 fun_params=1775 MiB: maps=0.0 ats=3.7 total ats=22.6 bytes exists=0.1 bytes indexes=0.0 bytes fun_params=0.6 TOTAL=27.0 rss=986MiB
+[DICHAIN periodic] ok=7850 fresh_break=16 poisoned=0 | formal_with_di=2344 | formal_no_di=10 compose_null_di=24 | gep_bu(ok/null)=11923/0
+[INFO 1001/1442 funcs, 999/1440 SCCs] callgraph: nist_close
+[INFO 1002/1442 funcs, 1000/1440 SCCs] callgraph: paf24_write_block
+[INFO 1003/1442 funcs, 1001/1440 SCCs] callgraph: paf24_close
+[INFO 1004/1442 funcs, 1002/1440 SCCs] callgraph: pvf_close
+[INFO 1005/1442 funcs, 1003/1440 SCCs] callgraph: sd2_close
+[INFO 1006/1442 funcs, 1004/1440 SCCs] callgraph: sds_close
+[INFO 1007/1442 funcs, 1005/1440 SCCs] callgraph: svx_close
+[INFO 1008/1442 funcs, 1006/1440 SCCs] callgraph: voc_close
+[INFO 1009/1442 funcs, 1007/1440 SCCs] callgraph: wve_close
+[INFO 1010/1442 funcs, 1008/1440 SCCs] callgraph: w64_close
+[INFO 1011/1442 funcs, 1009/1440 SCCs] callgraph: wav_write_tailer
+[INFO 1012/1442 funcs, 1010/1440 SCCs] callgraph: wav_close
+[INFO 1013/1442 funcs, 1011/1440 SCCs] callgraph: xi_close
+[INFO 1014/1442 funcs, 1012/1440 SCCs] callgraph: mpc2k_close
+[INFO 1015/1442 funcs, 1013/1440 SCCs] callgraph: rf64_write_tailer
+[INFO 1016/1442 funcs, 1014/1440 SCCs] callgraph: rf64_close
+[INFO 1017/1442 funcs, 1015/1440 SCCs] callgraph: pack_bytes
+[INFO 1018/1442 funcs, 1016/1440 SCCs] callgraph: g72x_encode_block
+[INFO 1019/1442 funcs, 1017/1440 SCCs] callgraph: psf_g72x_encode_block
+[INFO 1020/1442 funcs, 1018/1440 SCCs] callgraph: g72x_close
+[INFO 1021/1442 funcs, 1019/1440 SCCs] callgraph: vorbis_analysis_wrote
+[INFO 1022/1442 funcs, 1020/1440 SCCs] callgraph: vorbis_analysis_blockout
+[INFO 1023/1442 funcs, 1021/1440 SCCs] callgraph: vorbis_analysis
+[INFO 1024/1442 funcs, 1022/1440 SCCs] callgraph: vorbis_bitrate_addblock
+[INFO 1025/1442 funcs, 1023/1440 SCCs] callgraph: vorbis_bitrate_flushpacket
+[INFO 1026/1442 funcs, 1024/1440 SCCs] callgraph: ogg_stream_pageout
+[INFO 1027/1442 funcs, 1025/1440 SCCs] callgraph: vorbis_write_samples
+[INFO 1028/1442 funcs, 1026/1440 SCCs] callgraph: vorbis_block_clear
+[INFO 1029/1442 funcs, 1027/1440 SCCs] callgraph: vorbis_dsp_clear
+[INFO 1030/1442 funcs, 1028/1440 SCCs] callgraph: vorbis_comment_clear
+[INFO 1031/1442 funcs, 1029/1440 SCCs] callgraph: vorbis_info_clear
+[INFO 1032/1442 funcs, 1030/1440 SCCs] callgraph: vorbis_close
+[INFO 1033/1442 funcs, 1031/1440 SCCs] callgraph: opus_multistream_encode_float
+[INFO 1034/1442 funcs, 1032/1440 SCCs] callgraph: ogg_opus_flush
+[INFO 1035/1442 funcs, 1033/1440 SCCs] callgraph: opus_multistream_encoder_destroy
+[INFO 1036/1442 funcs, 1034/1440 SCCs] callgraph: ogg_opus_close
+[INFO 1037/1442 funcs, 1035/1440 SCCs] callgraph: nms_adpcm_encode_sample
+[INFO 1038/1442 funcs, 1036/1440 SCCs] callgraph: nms_adpcm_block_pack_16
+[INFO 1039/1442 funcs, 1037/1440 SCCs] callgraph: nms_adpcm_block_pack_24
+[INFO 1040/1442 funcs, 1038/1440 SCCs] callgraph: nms_adpcm_block_pack_32
+[INFO 1041/1442 funcs, 1039/1440 SCCs] callgraph: nms_adpcm_encode_block
+[BADAT] nms_adpcm_encode_block formal=131493 path=.0.* access=read want=nms_adpcm_state/0 got=nms_adpcm_state/1 (endpoint type disagrees with DWARF walk)
+[INFO 1042/1442 funcs, 1040/1440 SCCs] callgraph: psf_nms_adpcm_encode_block
+[BADAT] psf_nms_adpcm_encode_block formal=131861 path=.0.* access=read want=nms_adpcm_state/0 got=nms_adpcm_state/1 (endpoint type disagrees with DWARF walk)
+[INFO 1043/1442 funcs, 1041/1440 SCCs] callgraph: nms_adpcm_close
+[INFO 1044/1442 funcs, 1042/1440 SCCs] callgraph: mpg123_close
+[INFO 1045/1442 funcs, 1043/1440 SCCs] callgraph: mpg123_delete
+[INFO 1046/1442 funcs, 1044/1440 SCCs] callgraph: mpeg_dec_close
+[INFO 1047/1442 funcs, 1045/1440 SCCs] callgraph: lame_encode_flush
+[INFO 1048/1442 funcs, 1046/1440 SCCs] callgraph: lame_get_id3v1_tag
+[INFO 1049/1442 funcs, 1047/1440 SCCs] callgraph: lame_get_lametag_frame
+[INFO 1050/1442 funcs, 1048/1440 SCCs] callgraph: lame_close
+[INFO 1051/1442 funcs, 1049/1440 SCCs] callgraph: mpeg_l3_encoder_close
+[INFO 1052/1442 funcs, 1050/1440 SCCs] callgraph: psf_close
+[INFO 1053/1442 funcs, 1051/1440 SCCs] callgraph: sf_format_check
+[INFO 1054/1442 funcs, 1052/1440 SCCs] callgraph: __bswap_32.515
+[INFO 1055/1442 funcs, 1053/1440 SCCs] callgraph: identify_mpeg
+[INFO 1056/1442 funcs, 1054/1440 SCCs] callgraph: try_resource_fork
+[INFO 1057/1442 funcs, 1055/1440 SCCs] callgraph: guess_file_type
+[INFO 1058/1442 funcs, 1056/1440 SCCs] callgraph: tolower
+[INFO 1059/1442 funcs, 1057/1440 SCCs] callgraph: format_from_extension
+[INFO 1060/1442 funcs, 1058/1440 SCCs] callgraph: wavlike_format_str
+[INFO 1061/1442 funcs, 1059/1440 SCCs] callgraph: wavex_guid_equal
+[INFO 1062/1442 funcs, 1060/1440 SCCs] callgraph: wavlike_read_fmt_chunk
+[INFO 1063/1442 funcs, 1061/1440 SCCs] callgraph: peak_info_calloc.1480
+[INFO 1064/1442 funcs, 1062/1440 SCCs] callgraph: wavlike_read_peak_chunk
+[INFO 1065/1442 funcs, 1063/1440 SCCs] callgraph: wav_read_smpl_chunk
+[INFO 1066/1442 funcs, 1064/1440 SCCs] callgraph: wav_read_acid_chunk
+[INFO 1067/1442 funcs, 1065/1440 SCCs] callgraph: exif_fill_and_sink
+[INFO 1068/1442 funcs, 1066/1440 SCCs] callgraph: exif_subchunk_parse
+[INFO 1069/1442 funcs, 1067/1440 SCCs] callgraph: wavlike_subchunk_parse
+[INFO 1070/1442 funcs, 1068/1440 SCCs] callgraph: wavlike_read_bext_chunk
+[INFO 1071/1442 funcs, 1069/1440 SCCs] callgraph: make_size_t.1458
+[INFO 1072/1442 funcs, 1070/1440 SCCs] callgraph: wavlike_read_cart_chunk
+[INFO 1073/1442 funcs, 1071/1440 SCCs] callgraph: wavlike_analyze
+[INFO 1074/1442 funcs, 1072/1440 SCCs] callgraph: wav_read_header
+[INFO 1075/1442 funcs, 1073/1440 SCCs] callgraph: peak_info_calloc.1492
+[INFO 1076/1442 funcs, 1074/1440 SCCs] callgraph: g72x_state_new
+[INFO 1077/1442 funcs, 1075/1440 SCCs] callgraph: private_init_state
+[INFO 1078/1442 funcs, 1076/1440 SCCs] callgraph: g72x_reader_init
+[INFO 1079/1442 funcs, 1077/1440 SCCs] callgraph: g72x_writer_init
+[INFO 1080/1442 funcs, 1078/1440 SCCs] callgraph: g72x_init
+[INFO 1081/1442 funcs, 1079/1440 SCCs] callgraph: nms_adpcm_codec_init
+[INFO 1082/1442 funcs, 1080/1440 SCCs] callgraph: nms_adpcm_init
+[INFO 1083/1442 funcs, 1081/1440 SCCs] callgraph: lame_init
+[INFO 1084/1442 funcs, 1082/1440 SCCs] callgraph: lame_set_in_samplerate
+[INFO 1085/1442 funcs, 1083/1440 SCCs] callgraph: lame_set_num_channels
+[INFO 1086/1442 funcs, 1084/1440 SCCs] callgraph: lame_set_out_samplerate
+[INFO 1087/1442 funcs, 1085/1440 SCCs] callgraph: lame_set_write_id3tag_automatic
+[INFO 1088/1442 funcs, 1086/1440 SCCs] callgraph: lame_set_bWriteVbrTag
+[INFO 1089/1442 funcs, 1087/1440 SCCs] callgraph: mpeg_l3_encoder_init
+[INFO 1090/1442 funcs, 1088/1440 SCCs] callgraph: lame_set_VBR
+[INFO 1091/1442 funcs, 1089/1440 SCCs] callgraph: lame_set_VBR_quality
+[INFO 1092/1442 funcs, 1090/1440 SCCs] callgraph: lame_set_VBR_mean_bitrate_kbps
+[INFO 1093/1442 funcs, 1091/1440 SCCs] callgraph: lame_set_brate
+[INFO 1094/1442 funcs, 1092/1440 SCCs] callgraph: mpeg_l3_encoder_set_quality
+[INFO 1095/1442 funcs, 1093/1440 SCCs] callgraph: mpeg_l3_encoder_set_bitrate_mode
+[INFO 1096/1442 funcs, 1094/1440 SCCs] callgraph: mpg123_init
+[INFO 1097/1442 funcs, 1095/1440 SCCs] callgraph: mpg123_new
+[INFO 1098/1442 funcs, 1096/1440 SCCs] callgraph: mpg123_plain_strerror
+[INFO 1099/1442 funcs, 1097/1440 SCCs] callgraph: mpg123_replace_reader_handle
+[INFO 1100/1442 funcs, 1098/1440 SCCs] callgraph: mpg123_param2
+[INFO 1101/1442 funcs, 1099/1440 SCCs] callgraph: mpg123_open_handle
+[INFO 1102/1442 funcs, 1100/1440 SCCs] callgraph: mpg123_getformat
+[INFO 1103/1442 funcs, 1101/1440 SCCs] callgraph: mpg123_length
+[INFO 1104/1442 funcs, 1102/1440 SCCs] callgraph: mpg123_scan
+[INFO 1105/1442 funcs, 1103/1440 SCCs] callgraph: mpg123_format
+[INFO 1106/1442 funcs, 1104/1440 SCCs] callgraph: mpeg_dec_fill_sfinfo
+[INFO 1107/1442 funcs, 1105/1440 SCCs] callgraph: mpeg_dec_print_frameinfo
+[INFO 1108/1442 funcs, 1106/1440 SCCs] callgraph: mpg123_id3
+[INFO 1109/1442 funcs, 1107/1440 SCCs] callgraph: memccpy
+[INFO 1110/1442 funcs, 1108/1440 SCCs] callgraph: strcpy_inbounded
+[INFO 1111/1442 funcs, 1109/1440 SCCs] callgraph: mpeg_decoder_read_strings_id3v1
+[INFO 1112/1442 funcs, 1110/1440 SCCs] callgraph: mpeg_decoder_read_strings_id3v2
+[INFO 1113/1442 funcs, 1111/1440 SCCs] callgraph: mpeg_decoder_read_strings
+[INFO 1114/1442 funcs, 1112/1440 SCCs] callgraph: mpeg_decoder_init
+[INFO 1115/1442 funcs, 1113/1440 SCCs] callgraph: mpeg_init
+[INFO 1116/1442 funcs, 1114/1440 SCCs] callgraph: wav_open
+[INFO 1117/1442 funcs, 1115/1440 SCCs] callgraph: __bswap_32.632
+[INFO 1118/1442 funcs, 1116/1440 SCCs] callgraph: make_size_t
+[INFO 1119/1442 funcs, 1117/1440 SCCs] callgraph: tenbytefloat2int
+[INFO 1120/1442 funcs, 1118/1440 SCCs] callgraph: aiff_read_comm_chunk
+[INFO 1121/1442 funcs, 1119/1440 SCCs] callgraph: peak_info_calloc.533
+[INFO 1122/1442 funcs, 1120/1440 SCCs] callgraph: get_loop_mode_str
+[INFO 1123/1442 funcs, 1121/1440 SCCs] callgraph: get_loop_mode
+[INFO 1124/1442 funcs, 1122/1440 SCCs] callgraph: aiff_read_basc_chunk
+[INFO 1125/1442 funcs, 1123/1440 SCCs] callgraph: aiff_read_chanmap
+[INFO 1126/1442 funcs, 1124/1440 SCCs] callgraph: marker_to_position
+[INFO 1127/1442 funcs, 1125/1440 SCCs] callgraph: aiff_read_header
+[INFO 1128/1442 funcs, 1126/1440 SCCs] callgraph: aiff_open
+[INFO 1129/1442 funcs, 1127/1440 SCCs] callgraph: au_read_header
+[INFO 1130/1442 funcs, 1128/1440 SCCs] callgraph: au_open
+[INFO 1131/1442 funcs, 1129/1440 SCCs] callgraph: raw_open
+[INFO 1132/1442 funcs, 1130/1440 SCCs] callgraph: w64_read_header
+[INFO 1133/1442 funcs, 1131/1440 SCCs] callgraph: w64_open
+[INFO 1134/1442 funcs, 1132/1440 SCCs] callgraph: rf64_read_header
+[INFO 1135/1442 funcs, 1133/1440 SCCs] callgraph: rf64_open
+[INFO 1136/1442 funcs, 1134/1440 SCCs] callgraph: paf_read_header
+[INFO 1137/1442 funcs, 1135/1440 SCCs] callgraph: paf24_init
+[INFO 1138/1442 funcs, 1136/1440 SCCs] callgraph: paf_open
+[INFO 1139/1442 funcs, 1137/1440 SCCs] callgraph: svx_read_header
+[INFO 1140/1442 funcs, 1138/1440 SCCs] callgraph: svx_open
+[INFO 1141/1442 funcs, 1139/1440 SCCs] callgraph: __isoc99_sscanf
+[INFO 1142/1442 funcs, 1140/1440 SCCs] callgraph: nist_read_header
+[INFO 1143/1442 funcs, 1141/1440 SCCs] callgraph: nist_open
+[INFO 1144/1442 funcs, 1142/1440 SCCs] callgraph: get_encoding_str
+[INFO 1145/1442 funcs, 1143/1440 SCCs] callgraph: ircam_read_header
+[INFO 1146/1442 funcs, 1144/1440 SCCs] callgraph: ircam_open
+[INFO 1147/1442 funcs, 1145/1440 SCCs] callgraph: voc_encoding2str
+[INFO 1148/1442 funcs, 1146/1440 SCCs] callgraph: voc_read_header
+[INFO 1149/1442 funcs, 1147/1440 SCCs] callgraph: voc_open
+[INFO 1150/1442 funcs, 1148/1440 SCCs] callgraph: sds_read_header
+[INFO 1151/1442 funcs, 1149/1440 SCCs] callgraph: sds_init
+[INFO 1152/1442 funcs, 1150/1440 SCCs] callgraph: sds_open
+[INFO 1153/1442 funcs, 1151/1440 SCCs] callgraph: txw_open
+[INFO 1154/1442 funcs, 1152/1440 SCCs] callgraph: wve_read_header
+[INFO 1155/1442 funcs, 1153/1440 SCCs] callgraph: wve_open
+[INFO 1156/1442 funcs, 1154/1440 SCCs] callgraph: dwd_open
+[INFO 1157/1442 funcs, 1155/1440 SCCs] callgraph: psf_lrint.890
+[INFO 1158/1442 funcs, 1156/1440 SCCs] callgraph: mat4_marker_to_str
+[INFO 1159/1442 funcs, 1157/1440 SCCs] callgraph: mat4_read_header
+[INFO 1160/1442 funcs, 1158/1440 SCCs] callgraph: mat4_open
+[INFO 1161/1442 funcs, 1159/1440 SCCs] callgraph: __bswap_16.925
+[INFO 1162/1442 funcs, 1160/1440 SCCs] callgraph: psf_lrint.942
+[INFO 1163/1442 funcs, 1161/1440 SCCs] callgraph: mat5_read_header
+[INFO 1164/1442 funcs, 1162/1440 SCCs] callgraph: mat5_open
+[INFO 1165/1442 funcs, 1163/1440 SCCs] callgraph: pvf_read_header
+[INFO 1166/1442 funcs, 1164/1440 SCCs] callgraph: pvf_open
+[INFO 1167/1442 funcs, 1165/1440 SCCs] callgraph: xi_read_header
+[INFO 1168/1442 funcs, 1166/1440 SCCs] callgraph: dpcm_init
+[INFO 1169/1442 funcs, 1167/1440 SCCs] callgraph: xi_open
+[INFO 1170/1442 funcs, 1168/1440 SCCs] callgraph: htk_read_header
+[INFO 1171/1442 funcs, 1169/1440 SCCs] callgraph: htk_open
+[INFO 1172/1442 funcs, 1170/1440 SCCs] callgraph: read_rsrc_int
+[INFO 1173/1442 funcs, 1171/1440 SCCs] callgraph: read_rsrc_short
+[INFO 1174/1442 funcs, 1172/1440 SCCs] callgraph: read_rsrc_marker
+[INFO 1175/1442 funcs, 1173/1440 SCCs] callgraph: read_rsrc_char
+[INFO 1176/1442 funcs, 1174/1440 SCCs] callgraph: read_rsrc_str
+[INFO 1177/1442 funcs, 1175/1440 SCCs] callgraph: strtol
+[INFO 1178/1442 funcs, 1176/1440 SCCs] callgraph: parse_str_rsrc
+[INFO 1179/1442 funcs, 1177/1440 SCCs] callgraph: sd2_parse_rsrc_fork
+[INFO 1180/1442 funcs, 1178/1440 SCCs] callgraph: sd2_write_rsrc_fork
+[INFO 1181/1442 funcs, 1179/1440 SCCs] callgraph: sd2_open
+[INFO 1182/1442 funcs, 1180/1440 SCCs] callgraph: rx2_open
+[INFO 1183/1442 funcs, 1181/1440 SCCs] callgraph: avr_read_header
+[INFO 1184/1442 funcs, 1182/1440 SCCs] callgraph: avr_open
+[INFO 1185/1442 funcs, 1183/1440 SCCs] callgraph: psf_lrint.733
+[INFO 1186/1442 funcs, 1184/1440 SCCs] callgraph: peak_info_calloc.704
+[INFO 1187/1442 funcs, 1185/1440 SCCs] callgraph: caf_read_chanmap
+[INFO 1188/1442 funcs, 1186/1440 SCCs] callgraph: string_hash32
+[INFO 1189/1442 funcs, 1187/1440 SCCs] callgraph: caf_read_strings
+[INFO 1190/1442 funcs, 1188/1440 SCCs] callgraph: decode_desc_chunk
+[INFO 1191/1442 funcs, 1189/1440 SCCs] callgraph: caf_read_header
+[INFO 1192/1442 funcs, 1190/1440 SCCs] callgraph: caf_open
+[INFO 1193/1442 funcs, 1191/1440 SCCs] callgraph: make_size_t.1654
+[INFO 1194/1442 funcs, 1192/1440 SCCs] callgraph: mpc2k_read_header
+[INFO 1195/1442 funcs, 1193/1440 SCCs] callgraph: mpc2k_open
+[INFO 1196/1442 funcs, 1194/1440 SCCs] callgraph: mpeg_open
+[INFO 1197/1442 funcs, 1195/1440 SCCs] callgraph: validate_sfinfo
+[INFO 1198/1442 funcs, 1196/1440 SCCs] callgraph: save_header_info
+[INFO 1199/1442 funcs, 1197/1440 SCCs] callgraph: validate_psf
+[INFO 1200/1442 funcs, 1198/1440 SCCs] callgraph: sf_error_number
+[INFO 1201/1442 funcs, 1199/1440 SCCs] callgraph: psf_open_file
+[INFO 1202/1442 funcs, 1200/1440 SCCs] callgraph: sf_open
+[INFO 1203/1442 funcs, 1201/1440 SCCs] callgraph: sf_open_fd
+[INFO 1204/1442 funcs, 1202/1440 SCCs] callgraph: sf_open_virtual
+[INFO 1205/1442 funcs, 1203/1440 SCCs] callgraph: sf_close
+[INFO 1206/1442 funcs, 1204/1440 SCCs] callgraph: sf_write_sync
+[INFO 1207/1442 funcs, 1205/1440 SCCs] callgraph: sf_strerror
+[INFO 1208/1442 funcs, 1206/1440 SCCs] callgraph: sf_error
+[INFO 1209/1442 funcs, 1207/1440 SCCs] callgraph: fprintf
+[INFO 1210/1442 funcs, 1208/1440 SCCs] callgraph: sf_perror
+[INFO 1211/1442 funcs, 1209/1440 SCCs] callgraph: sf_error_str
+[INFO 1212/1442 funcs, 1210/1440 SCCs] callgraph: sf_get_string
+[INFO 1213/1442 funcs, 1211/1440 SCCs] callgraph: sf_set_string
+[INFO 1214/1442 funcs, 1212/1440 SCCs] callgraph: sf_current_byterate
+[INFO 1215/1442 funcs, 1213/1440 SCCs] callgraph: sf_read_raw
+[INFO 1216/1442 funcs, 1214/1440 SCCs] callgraph: sf_read_short
+[INFO 1217/1442 funcs, 1215/1440 SCCs] callgraph: sf_readf_short
+[INFO 1218/1442 funcs, 1216/1440 SCCs] callgraph: sf_read_int
+[INFO 1219/1442 funcs, 1217/1440 SCCs] callgraph: sf_readf_int
+[INFO 1220/1442 funcs, 1218/1440 SCCs] callgraph: sf_read_float
+[INFO 1221/1442 funcs, 1219/1440 SCCs] callgraph: sf_readf_float
+[INFO 1222/1442 funcs, 1220/1440 SCCs] callgraph: sf_readf_double
+[INFO 1223/1442 funcs, 1221/1440 SCCs] callgraph: sf_write_raw
+[INFO 1224/1442 funcs, 1222/1440 SCCs] callgraph: sf_write_short
+[INFO 1225/1442 funcs, 1223/1440 SCCs] callgraph: sf_writef_short
+[INFO 1226/1442 funcs, 1224/1440 SCCs] callgraph: sf_write_int
+[INFO 1227/1442 funcs, 1225/1440 SCCs] callgraph: sf_writef_int
+[INFO 1228/1442 funcs, 1226/1440 SCCs] callgraph: sf_write_float
+[INFO 1229/1442 funcs, 1227/1440 SCCs] callgraph: sf_writef_float
+[INFO 1230/1442 funcs, 1228/1440 SCCs] callgraph: sf_write_double
+[INFO 1231/1442 funcs, 1229/1440 SCCs] callgraph: sf_writef_double
+[INFO 1232/1442 funcs, 1230/1440 SCCs] callgraph: sf_set_chunk
+[INFO 1233/1442 funcs, 1231/1440 SCCs] callgraph: sf_get_chunk_iterator
+[INFO 1234/1442 funcs, 1232/1440 SCCs] callgraph: sf_next_chunk_iterator
+[INFO 1235/1442 funcs, 1233/1440 SCCs] callgraph: sf_get_chunk_size
+[INFO 1236/1442 funcs, 1234/1440 SCCs] callgraph: sf_get_chunk_data
+[INFO 0/40] processing return for sf_close
+[INFO 1/40] processing return for sf_command
+[INFO 2/40] processing return for sf_current_byterate
+[INFO 3/40] processing return for sf_error
+[INFO 4/40] processing return for sf_error_number
+[INFO 5/40] processing return for sf_error_str
+[INFO 6/40] processing return for sf_format_check
+[INFO 7/40] processing return for sf_get_chunk_data
+[INFO 8/40] processing return for sf_get_chunk_iterator
+[INFO 9/40] processing return for sf_get_chunk_size
+[INFO 10/40] processing return for sf_get_string
+[INFO 11/40] processing return for sf_next_chunk_iterator
+[INFO 12/40] processing return for sf_open
+[INFO 13/40] processing return for sf_open_fd
+[INFO 14/40] processing return for sf_open_virtual
+[INFO 15/40] processing return for sf_perror
+[INFO 16/40] processing return for sf_read_double
+[INFO 17/40] processing return for sf_read_float
+[INFO 18/40] processing return for sf_read_int
+[INFO 19/40] processing return for sf_read_raw
+[INFO 20/40] processing return for sf_read_short
+[INFO 21/40] processing return for sf_readf_double
+[INFO 22/40] processing return for sf_readf_float
+[INFO 23/40] processing return for sf_readf_int
+[INFO 24/40] processing return for sf_readf_short
+[INFO 25/40] processing return for sf_seek
+[INFO 26/40] processing return for sf_set_chunk
+[INFO 27/40] processing return for sf_set_string
+[INFO 28/40] processing return for sf_strerror
+[INFO 29/40] processing return for sf_version_string
+[INFO 30/40] processing return for sf_write_double
+[INFO 31/40] processing return for sf_write_float
+[INFO 32/40] processing return for sf_write_int
+[INFO 33/40] processing return for sf_write_raw
+[INFO 34/40] processing return for sf_write_short
+[INFO 35/40] processing return for sf_write_sync
+[INFO 36/40] processing return for sf_writef_double
+[INFO 37/40] processing return for sf_writef_float
+[INFO 38/40] processing return for sf_writef_int
+[INFO 39/40] processing return for sf_writef_short
+[INFO] Summary sf_close:
+param_0: 40 access types
+return: 0 access types
+[INFO] Summary sf_command:
+param_0: 135 access types
+param_1: 1 access types
+param_2: 6 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary sf_current_byterate:
+param_0: 9 access types
+return: 0 access types
+[INFO] Summary sf_error:
+param_0: 8 access types
+return: 0 access types
+[INFO] Summary sf_error_number:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary sf_error_str:
+param_0: 8 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_format_check:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary sf_get_chunk_data:
+param_0: 10 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary sf_get_chunk_iterator:
+param_0: 19 access types
+param_1: 5 access types
+return: 22 access types
+[INFO] Summary sf_get_chunk_size:
+param_0: 10 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary sf_get_string:
+param_0: 5 access types
+param_1: 1 access types
+return: 5 access types
+[INFO] Summary sf_next_chunk_iterator:
+param_0: 10 access types
+return: 2 access types
+[INFO] Summary sf_open:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 10 access types
+return: 415 access types
+[INFO] Summary sf_open_fd:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 10 access types
+param_3: 1 access types
+return: 415 access types
+[INFO] Summary sf_open_virtual:
+param_0: 7 access types
+param_1: 1 access types
+param_2: 11 access types
+param_3: 1 access types
+return: 415 access types
+[INFO] Summary sf_perror:
+param_0: 8 access types
+return: 0 access types
+[INFO] Summary sf_read_double:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_float:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_int:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_raw:
+param_0: 29 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_short:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_double:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_float:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_int:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_short:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_seek:
+param_0: 18 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_set_chunk:
+param_0: 8 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary sf_set_string:
+param_0: 21 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_strerror:
+param_0: 6 access types
+return: 7 access types
+[INFO] Summary sf_version_string:
+return: 0 access types
+[INFO] Summary sf_write_double:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_float:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_int:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_raw:
+param_0: 32 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_short:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_sync:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary sf_writef_double:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_writef_float:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_writef_int:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_writef_short:
+param_0: 23 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                        728.39         1    728.39
+2. PAG Builder                             1594.01         1   1594.01
+3. Points-to Analysis                      2521.99         1   2521.99
+4. Full SVFG Build                         2133.97         1   2133.97
+Function 1: extract_parameter_metadata      783.30        97      8.08
+Function 1: extract_parameter_metadata: sf_close    767.58         1    767.58
+Function 1: extract_parameter_metadata: sf_command      0.44         4      0.11
+Function 1: extract_parameter_metadata: sf_current_byterate      1.32         1      1.32
+Function 1: extract_parameter_metadata: sf_error      0.06         1      0.06
+Function 1: extract_parameter_metadata: sf_error_number      0.05         1      0.05
+Function 1: extract_parameter_metadata: sf_error_str      0.13         3      0.04
+Function 1: extract_parameter_metadata: sf_format_check      0.10         1      0.10
+Function 1: extract_parameter_metadata: sf_get_chunk_data      8.45         2      4.23
+Function 1: extract_parameter_metadata: sf_get_chunk_iterator      0.15         2      0.07
+Function 1: extract_parameter_metadata: sf_get_chunk_size      0.11         2      0.05
+Function 1: extract_parameter_metadata: sf_get_string      0.10         2      0.05
+Function 1: extract_parameter_metadata: sf_next_chunk_iterator      0.07         1      0.07
+Function 1: extract_parameter_metadata: sf_open      0.17         3      0.06
+Function 1: extract_parameter_metadata: sf_open_fd      0.25         4      0.06
+Function 1: extract_parameter_metadata: sf_open_virtual      0.24         4      0.06
+Function 1: extract_parameter_metadata: sf_perror      0.07         1      0.07
+Function 1: extract_parameter_metadata: sf_read_double      0.20         3      0.07
+Function 1: extract_parameter_metadata: sf_read_float      0.18         3      0.06
+Function 1: extract_parameter_metadata: sf_read_int      0.26         3      0.09
+Function 1: extract_parameter_metadata: sf_read_raw      0.29         3      0.10
+Function 1: extract_parameter_metadata: sf_read_short      0.21         3      0.07
+Function 1: extract_parameter_metadata: sf_readf_double      0.19         3      0.06
+Function 1: extract_parameter_metadata: sf_readf_float      0.20         3      0.07
+Function 1: extract_parameter_metadata: sf_readf_int      0.18         3      0.06
+Function 1: extract_parameter_metadata: sf_readf_short      0.19         3      0.06
+Function 1: extract_parameter_metadata: sf_seek      0.18         3      0.06
+Function 1: extract_parameter_metadata: sf_set_chunk      0.10         2      0.05
+Function 1: extract_parameter_metadata: sf_set_string      0.20         3      0.07
+Function 1: extract_parameter_metadata: sf_strerror      0.06         1      0.06
+Function 1: extract_parameter_metadata: sf_write_double      0.17         3      0.06
+Function 1: extract_parameter_metadata: sf_write_float      0.16         3      0.05
+Function 1: extract_parameter_metadata: sf_write_int      0.16         3      0.05
+Function 1: extract_parameter_metadata: sf_write_raw      0.21         3      0.07
+Function 1: extract_parameter_metadata: sf_write_short      0.16         3      0.05
+Function 1: extract_parameter_metadata: sf_write_sync      0.05         1      0.05
+Function 1: extract_parameter_metadata: sf_writef_double      0.15         3      0.05
+Function 1: extract_parameter_metadata: sf_writef_float      0.15         3      0.05
+Function 1: extract_parameter_metadata: sf_writef_int      0.15         3      0.05
+Function 1: extract_parameter_metadata: sf_writef_short      0.15         3      0.05
+Function 2: extractLenDependencyParameter   2320.12        22    105.46
+Function 2: extractLenDependencyParameter: sf_command      0.61         1      0.61
+Function 2: extractLenDependencyParameter: sf_open      0.07         1      0.07
+Function 2: extractLenDependencyParameter: sf_read_double    169.50         2     84.75
+Function 2: extractLenDependencyParameter: sf_read_float    168.15         2     84.08
+Function 2: extractLenDependencyParameter: sf_read_int    184.51         2     92.25
+Function 2: extractLenDependencyParameter: sf_read_raw    620.26         2    310.13
+Function 2: extractLenDependencyParameter: sf_read_short    168.37         2     84.18
+Function 2: extractLenDependencyParameter: sf_readf_double    169.22         2     84.61
+Function 2: extractLenDependencyParameter: sf_readf_float    168.47         2     84.24
+Function 2: extractLenDependencyParameter: sf_readf_int    164.40         2     82.20
+Function 2: extractLenDependencyParameter: sf_readf_short    166.20         2     83.10
+Function 2: extractLenDependencyParameter: sf_set_string      0.06         1      0.06
+Function 2: extractLenDependencyParameter: sf_write_raw    340.24         1    340.24
+Function 3: my_extract_dependency_among_parameters    261.19        97      2.69
+Function 3: my_extract_dependency_among_parameterssf_close      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterssf_command     58.97         4     14.74
+Function 3: my_extract_dependency_among_parameterssf_current_byterate      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterssf_error      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterssf_error_number      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterssf_error_str      0.14         3      0.05
+Function 3: my_extract_dependency_among_parameterssf_format_check      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterssf_get_chunk_data      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterssf_get_chunk_iterator     42.74         2     21.37
+Function 3: my_extract_dependency_among_parameterssf_get_chunk_size      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterssf_get_string      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterssf_next_chunk_iterator      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterssf_open      0.14         3      0.05
+Function 3: my_extract_dependency_among_parameterssf_open_fd      0.20         4      0.05
+Function 3: my_extract_dependency_among_parameterssf_open_virtual      0.19         4      0.05
+Function 3: my_extract_dependency_among_parameterssf_perror      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterssf_read_double      0.33         3      0.11
+Function 3: my_extract_dependency_among_parameterssf_read_float      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameterssf_read_int      0.29         3      0.10
+Function 3: my_extract_dependency_among_parameterssf_read_raw     62.44         3     20.81
+Function 3: my_extract_dependency_among_parameterssf_read_short      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameterssf_readf_double      0.20         3      0.07
+Function 3: my_extract_dependency_among_parameterssf_readf_float      0.23         3      0.08
+Function 3: my_extract_dependency_among_parameterssf_readf_int      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameterssf_readf_short      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameterssf_seek      0.30         3      0.10
+Function 3: my_extract_dependency_among_parameterssf_set_chunk      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterssf_set_string     37.23         3     12.41
+Function 3: my_extract_dependency_among_parameterssf_strerror      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterssf_write_double      0.19         3      0.06
+Function 3: my_extract_dependency_among_parameterssf_write_float      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameterssf_write_int      0.18         3      0.06
+Function 3: my_extract_dependency_among_parameterssf_write_raw     54.62         3     18.21
+Function 3: my_extract_dependency_among_parameterssf_write_short      0.20         3      0.07
+Function 3: my_extract_dependency_among_parameterssf_write_sync      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterssf_writef_double      0.18         3      0.06
+Function 3: my_extract_dependency_among_parameterssf_writef_float      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameterssf_writef_int      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameterssf_writef_short      0.18         3      0.06
+Function 4: extract_return_metadata          20.33        40      0.51
+Function 4: extract_return_metadata: sf_close      0.17         1      0.17
+Function 4: extract_return_metadata: sf_command      0.21         1      0.21
+Function 4: extract_return_metadata: sf_current_byterate      0.15         1      0.15
+Function 4: extract_return_metadata: sf_error      0.05         1      0.05
+Function 4: extract_return_metadata: sf_error_number      0.05         1      0.05
+Function 4: extract_return_metadata: sf_error_str      0.05         1      0.05
+Function 4: extract_return_metadata: sf_format_check      0.06         1      0.06
+Function 4: extract_return_metadata: sf_get_chunk_data      0.16         1      0.16
+Function 4: extract_return_metadata: sf_get_chunk_iterator      0.22         1      0.22
+Function 4: extract_return_metadata: sf_get_chunk_size      0.07         1      0.07
+Function 4: extract_return_metadata: sf_get_string      0.06         1      0.06
+Function 4: extract_return_metadata: sf_next_chunk_iterator      0.07         1      0.07
+Function 4: extract_return_metadata: sf_open      5.18         1      5.18
+Function 4: extract_return_metadata: sf_open_fd      5.49         1      5.49
+Function 4: extract_return_metadata: sf_open_virtual      5.27         1      5.27
+Function 4: extract_return_metadata: sf_perror      0.16         1      0.16
+Function 4: extract_return_metadata: sf_read_double      0.19         1      0.19
+Function 4: extract_return_metadata: sf_read_float      0.17         1      0.17
+Function 4: extract_return_metadata: sf_read_int      0.21         1      0.21
+Function 4: extract_return_metadata: sf_read_raw      0.17         1      0.17
+Function 4: extract_return_metadata: sf_read_short      0.19         1      0.19
+Function 4: extract_return_metadata: sf_readf_double      0.19         1      0.19
+Function 4: extract_return_metadata: sf_readf_float      0.17         1      0.17
+Function 4: extract_return_metadata: sf_readf_int      0.17         1      0.17
+Function 4: extract_return_metadata: sf_readf_short      0.20         1      0.20
+Function 4: extract_return_metadata: sf_seek      0.09         1      0.09
+Function 4: extract_return_metadata: sf_set_chunk      0.06         1      0.06
+Function 4: extract_return_metadata: sf_set_string      0.17         1      0.17
+Function 4: extract_return_metadata: sf_strerror      0.08         1      0.08
+Function 4: extract_return_metadata: sf_version_string      0.05         1      0.05
+Function 4: extract_return_metadata: sf_write_double      0.06         1      0.06
+Function 4: extract_return_metadata: sf_write_float      0.05         1      0.05
+Function 4: extract_return_metadata: sf_write_int      0.06         1      0.06
+Function 4: extract_return_metadata: sf_write_raw      0.18         1      0.18
+Function 4: extract_return_metadata: sf_write_short      0.07         1      0.07
+Function 4: extract_return_metadata: sf_write_sync      0.05         1      0.05
+Function 4: extract_return_metadata: sf_writef_double      0.06         1      0.06
+Function 4: extract_return_metadata: sf_writef_float      0.05         1      0.05
+Function 4: extract_return_metadata: sf_writef_int      0.06         1      0.06
+Function 4: extract_return_metadata: sf_writef_short      0.06         1      0.06
+GlobalStruct: Build Slot Map                  5.39         1      5.39
+GlobalStruct: Globals Processing              0.62         1      0.62
+GlobalStruct: Resolve Indirect Calls        219.71         1    219.71
+GlobalStruct: Unresolved Calls                0.19         1      0.19
+GlobalStruct::analyze Total Time           2521.95         1   2521.95
+Process Function: sf_close                  768.29         1    768.29
+Process Function: sf_command                 60.91         1     60.91
+Process Function: sf_current_byterate         1.64         1      1.64
+Process Function: sf_error                    0.25         1      0.25
+Process Function: sf_error_number             0.20         1      0.20
+Process Function: sf_error_str                0.39         1      0.39
+Process Function: sf_format_check             0.32         1      0.32
+Process Function: sf_get_chunk_data           8.82         1      8.82
+Process Function: sf_get_chunk_iterator      43.30         1     43.30
+Process Function: sf_get_chunk_size           0.39         1      0.39
+Process Function: sf_get_string               0.31         1      0.31
+Process Function: sf_next_chunk_iterator      0.26         1      0.26
+Process Function: sf_open                     7.41         1      7.41
+Process Function: sf_open_fd                  7.97         1      7.97
+Process Function: sf_open_virtual             7.73         1      7.73
+Process Function: sf_perror                   0.42         1      0.42
+Process Function: sf_read_double            170.38         1    170.38
+Process Function: sf_read_float             168.92         1    168.92
+Process Function: sf_read_int               185.50         1    185.50
+Process Function: sf_read_raw               683.45         1    683.45
+Process Function: sf_read_short             169.19         1    169.19
+Process Function: sf_readf_double           169.99         1    169.99
+Process Function: sf_readf_float            169.28         1    169.28
+Process Function: sf_readf_int              165.17         1    165.17
+Process Function: sf_readf_short            167.00         1    167.00
+Process Function: sf_seek                     0.73         1      0.73
+Process Function: sf_set_chunk                0.34         1      0.34
+Process Function: sf_set_string              37.82         1     37.82
+Process Function: sf_strerror                 0.30         1      0.30
+Process Function: sf_version_string           0.11         1      0.11
+Process Function: sf_write_double             0.53         1      0.53
+Process Function: sf_write_float              0.46         1      0.46
+Process Function: sf_write_int                0.49         1      0.49
+Process Function: sf_write_raw              395.46         1    395.46
+Process Function: sf_write_short              0.57         1      0.57
+Process Function: sf_write_sync               0.21         1      0.21
+Process Function: sf_writef_double            0.48         1      0.48
+Process Function: sf_writef_float             0.46         1      0.46
+Process Function: sf_writef_int               0.46         1      0.46
+Process Function: sf_writef_short             0.47         1      0.47
+Process Parameters: sf_close                767.98         1    767.98
+Process Parameters: sf_command               60.49         1     60.49
+Process Parameters: sf_current_byterate       1.46         1      1.46
+Process Parameters: sf_error                  0.17         1      0.17
+Process Parameters: sf_error_number           0.12         1      0.12
+Process Parameters: sf_error_str              0.31         1      0.31
+Process Parameters: sf_format_check           0.21         1      0.21
+Process Parameters: sf_get_chunk_data         8.62         1      8.62
+Process Parameters: sf_get_chunk_iterator     43.02         1     43.02
+Process Parameters: sf_get_chunk_size         0.29         1      0.29
+Process Parameters: sf_get_string             0.22         1      0.22
+Process Parameters: sf_next_chunk_iterator      0.17         1      0.17
+Process Parameters: sf_open                   0.46         1      0.46
+Process Parameters: sf_open_fd                0.58         1      0.58
+Process Parameters: sf_open_virtual           0.58         1      0.58
+Process Parameters: sf_perror                 0.21         1      0.21
+Process Parameters: sf_read_double          170.13         1    170.13
+Process Parameters: sf_read_float           168.69         1    168.69
+Process Parameters: sf_read_int             185.20         1    185.20
+Process Parameters: sf_read_raw             683.18         1    683.18
+Process Parameters: sf_read_short           168.94         1    168.94
+Process Parameters: sf_readf_double         169.75         1    169.75
+Process Parameters: sf_readf_float          169.05         1    169.05
+Process Parameters: sf_readf_int            164.93         1    164.93
+Process Parameters: sf_readf_short          166.73         1    166.73
+Process Parameters: sf_seek                   0.60         1      0.60
+Process Parameters: sf_set_chunk              0.25         1      0.25
+Process Parameters: sf_set_string            37.60         1     37.60
+Process Parameters: sf_strerror               0.19         1      0.19
+Process Parameters: sf_version_string         0.03         1      0.03
+Process Parameters: sf_write_double           0.44         1      0.44
+Process Parameters: sf_write_float            0.37         1      0.37
+Process Parameters: sf_write_int              0.40         1      0.40
+Process Parameters: sf_write_raw            395.21         1    395.21
+Process Parameters: sf_write_short            0.46         1      0.46
+Process Parameters: sf_write_sync             0.13         1      0.13
+Process Parameters: sf_writef_double          0.39         1      0.39
+Process Parameters: sf_writef_float           0.37         1      0.37
+Process Parameters: sf_writef_int             0.36         1      0.36
+Process Parameters: sf_writef_short           0.38         1      0.38
+Total Condition Extraction (all 4 functions total)   3397.63         1   3397.63
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                            92.3        92.3       130.1       1
+2. PAG Builder                                 357.9       357.9       481.3       1
+3. Points-to Analysis                          177.0       177.0       658.4       1
+4. Full SVFG Build                             305.1       305.1       963.5       1
+Function 1: extract_parameter_metadata           0.5        45.7      1026.0      97
+Function 1: extract_parameter_metadata: sf_close        45.7        45.7      1009.2       1
+Function 1: extract_parameter_metadata: sf_command         0.0         0.0      1014.2       4
+Function 1: extract_parameter_metadata: sf_current_byterate         0.0         0.0      1014.2       1
+Function 1: extract_parameter_metadata: sf_error         0.0         0.0      1014.2       1
+Function 1: extract_parameter_metadata: sf_error_number         0.0         0.0      1014.2       1
+Function 1: extract_parameter_metadata: sf_error_str         0.0         0.0      1014.2       3
+Function 1: extract_parameter_metadata: sf_format_check         0.0         0.0      1014.2       1
+Function 1: extract_parameter_metadata: sf_get_chunk_data         0.0         0.0      1014.2       2
+Function 1: extract_parameter_metadata: sf_get_chunk_iterator         0.0         0.0      1014.7       2
+Function 1: extract_parameter_metadata: sf_get_chunk_size         0.0         0.0      1014.7       2
+Function 1: extract_parameter_metadata: sf_get_string         0.0         0.0      1014.7       2
+Function 1: extract_parameter_metadata: sf_next_chunk_iterator         0.0         0.0      1014.7       1
+Function 1: extract_parameter_metadata: sf_open         0.0         0.0      1014.7       3
+Function 1: extract_parameter_metadata: sf_open_fd         0.0         0.0      1016.5       4
+Function 1: extract_parameter_metadata: sf_open_virtual         0.0         0.0      1018.6       4
+Function 1: extract_parameter_metadata: sf_perror         0.0         0.0      1020.8       1
+Function 1: extract_parameter_metadata: sf_read_double         0.0         0.0      1023.3       3
+Function 1: extract_parameter_metadata: sf_read_float         0.0         0.0      1023.3       3
+Function 1: extract_parameter_metadata: sf_read_int         0.0         0.0      1023.4       3
+Function 1: extract_parameter_metadata: sf_read_raw         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_read_short         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_readf_double         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_readf_float         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_readf_int         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_readf_short         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_seek         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_set_chunk         0.0         0.0      1026.0       2
+Function 1: extract_parameter_metadata: sf_set_string         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_strerror         0.0         0.0      1026.0       1
+Function 1: extract_parameter_metadata: sf_write_double         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_write_float         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_write_int         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_write_raw         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_write_short         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_write_sync         0.0         0.0      1026.0       1
+Function 1: extract_parameter_metadata: sf_writef_double         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_writef_float         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_writef_int         0.0         0.0      1026.0       3
+Function 1: extract_parameter_metadata: sf_writef_short         0.0         0.0      1026.0       3
+Function 2: extractLenDependencyParameter         0.2         2.6      1026.0      22
+Function 2: extractLenDependencyParameter: sf_command         0.0         0.0      1014.2       1
+Function 2: extractLenDependencyParameter: sf_open         0.0         0.0      1014.7       1
+Function 2: extractLenDependencyParameter: sf_read_double         1.3         2.6      1023.3       2
+Function 2: extractLenDependencyParameter: sf_read_float         0.0         0.0      1023.3       2
+Function 2: extractLenDependencyParameter: sf_read_int         0.0         0.0      1023.4       2
+Function 2: extractLenDependencyParameter: sf_read_raw         0.7         1.4      1026.0       2
+Function 2: extractLenDependencyParameter: sf_read_short         0.0         0.0      1026.0       2
+Function 2: extractLenDependencyParameter: sf_readf_double         0.0         0.0      1026.0       2
+Function 2: extractLenDependencyParameter: sf_readf_float         0.0         0.0      1026.0       2
+Function 2: extractLenDependencyParameter: sf_readf_int         0.0         0.0      1026.0       2
+Function 2: extractLenDependencyParameter: sf_readf_short         0.0         0.0      1026.0       2
+Function 2: extractLenDependencyParameter: sf_set_string         0.0         0.0      1026.0       1
+Function 2: extractLenDependencyParameter: sf_write_raw         0.0         0.0      1026.0       1
+Function 3: my_extract_dependency_among_parameters         0.1         4.7      1026.0      97
+Function 3: my_extract_dependency_among_parameterssf_close         0.0         0.0      1009.2       1
+Function 3: my_extract_dependency_among_parameterssf_command         1.2         4.7      1014.2       4
+Function 3: my_extract_dependency_among_parameterssf_current_byterate         0.0         0.0      1014.2       1
+Function 3: my_extract_dependency_among_parameterssf_error         0.0         0.0      1014.2       1
+Function 3: my_extract_dependency_among_parameterssf_error_number         0.0         0.0      1014.2       1
+Function 3: my_extract_dependency_among_parameterssf_error_str         0.0         0.0      1014.2       3
+Function 3: my_extract_dependency_among_parameterssf_format_check         0.0         0.0      1014.2       1
+Function 3: my_extract_dependency_among_parameterssf_get_chunk_data         0.0         0.0      1014.2       2
+Function 3: my_extract_dependency_among_parameterssf_get_chunk_iterator         0.3         0.5      1014.7       2
+Function 3: my_extract_dependency_among_parameterssf_get_chunk_size         0.0         0.0      1014.7       2
+Function 3: my_extract_dependency_among_parameterssf_get_string         0.0         0.0      1014.7       2
+Function 3: my_extract_dependency_among_parameterssf_next_chunk_iterator         0.0         0.0      1014.7       1
+Function 3: my_extract_dependency_among_parameterssf_open         0.0         0.0      1014.7       3
+Function 3: my_extract_dependency_among_parameterssf_open_fd         0.0         0.0      1016.5       4
+Function 3: my_extract_dependency_among_parameterssf_open_virtual         0.0         0.0      1018.6       4
+Function 3: my_extract_dependency_among_parameterssf_perror         0.0         0.0      1020.8       1
+Function 3: my_extract_dependency_among_parameterssf_read_double         0.0         0.0      1023.3       3
+Function 3: my_extract_dependency_among_parameterssf_read_float         0.0         0.0      1023.3       3
+Function 3: my_extract_dependency_among_parameterssf_read_int         0.0         0.0      1023.4       3
+Function 3: my_extract_dependency_among_parameterssf_read_raw         0.4         1.1      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_read_short         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_readf_double         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_readf_float         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_readf_int         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_readf_short         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_seek         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_set_chunk         0.0         0.0      1026.0       2
+Function 3: my_extract_dependency_among_parameterssf_set_string         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_strerror         0.0         0.0      1026.0       1
+Function 3: my_extract_dependency_among_parameterssf_write_double         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_write_float         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_write_int         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_write_raw         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_write_short         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_write_sync         0.0         0.0      1026.0       1
+Function 3: my_extract_dependency_among_parameterssf_writef_double         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_writef_float         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_writef_int         0.0         0.0      1026.0       3
+Function 3: my_extract_dependency_among_parameterssf_writef_short         0.0         0.0      1026.0       3
+Function 4: extract_return_metadata              0.2         2.1      1026.0      40
+Function 4: extract_return_metadata: sf_close         0.0         0.0      1009.4       1
+Function 4: extract_return_metadata: sf_command         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_current_byterate         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_error         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_error_number         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_error_str         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_format_check         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_get_chunk_data         0.0         0.0      1014.2       1
+Function 4: extract_return_metadata: sf_get_chunk_iterator         0.0         0.0      1014.7       1
+Function 4: extract_return_metadata: sf_get_chunk_size         0.0         0.0      1014.7       1
+Function 4: extract_return_metadata: sf_get_string         0.0         0.0      1014.7       1
+Function 4: extract_return_metadata: sf_next_chunk_iterator         0.0         0.0      1014.7       1
+Function 4: extract_return_metadata: sf_open         1.8         1.8      1016.5       1
+Function 4: extract_return_metadata: sf_open_fd         2.1         2.1      1018.6       1
+Function 4: extract_return_metadata: sf_open_virtual         2.1         2.1      1020.8       1
+Function 4: extract_return_metadata: sf_perror         0.0         0.0      1020.8       1
+Function 4: extract_return_metadata: sf_read_double         0.0         0.0      1023.3       1
+Function 4: extract_return_metadata: sf_read_float         0.0         0.0      1023.3       1
+Function 4: extract_return_metadata: sf_read_int         0.0         0.0      1023.4       1
+Function 4: extract_return_metadata: sf_read_raw         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_read_short         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_readf_double         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_readf_float         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_readf_int         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_readf_short         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_seek         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_set_chunk         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_set_string         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_strerror         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_version_string         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_write_double         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_write_float         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_write_int         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_write_raw         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_write_short         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_write_sync         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_writef_double         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_writef_float         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_writef_int         0.0         0.0      1026.0       1
+Function 4: extract_return_metadata: sf_writef_short         0.0         0.0      1026.0       1
+GlobalStruct: Build Slot Map                     0.0         0.0       658.3       1
+GlobalStruct: Globals Processing                 0.0         0.0       658.3       1
+GlobalStruct: Resolve Indirect Calls             0.0         0.0       658.3       1
+GlobalStruct: Unresolved Calls                   0.0         0.0       658.3       1
+GlobalStruct: base PTA analyze                 176.9       176.9       658.3       1
+GlobalStruct::analyze Total Time               177.0       177.0       658.4       1
+Process Function: sf_close                      46.0        46.0      1009.4       1
+Process Function: sf_command                     4.7         4.7      1014.2       1
+Process Function: sf_current_byterate            0.0         0.0      1014.2       1
+Process Function: sf_error                       0.0         0.0      1014.2       1
+Process Function: sf_error_number                0.0         0.0      1014.2       1
+Process Function: sf_error_str                   0.0         0.0      1014.2       1
+Process Function: sf_format_check                0.0         0.0      1014.2       1
+Process Function: sf_get_chunk_data              0.0         0.0      1014.2       1
+Process Function: sf_get_chunk_iterator          0.5         0.5      1014.7       1
+Process Function: sf_get_chunk_size              0.0         0.0      1014.7       1
+Process Function: sf_get_string                  0.0         0.0      1014.7       1
+Process Function: sf_next_chunk_iterator         0.0         0.0      1014.7       1
+Process Function: sf_open                        1.8         1.8      1016.5       1
+Process Function: sf_open_fd                     2.1         2.1      1018.6       1
+Process Function: sf_open_virtual                2.1         2.1      1020.8       1
+Process Function: sf_perror                      0.0         0.0      1020.8       1
+Process Function: sf_read_double                 2.6         2.6      1023.3       1
+Process Function: sf_read_float                  0.0         0.0      1023.3       1
+Process Function: sf_read_int                    0.0         0.0      1023.4       1
+Process Function: sf_read_raw                    2.6         2.6      1026.0       1
+Process Function: sf_read_short                  0.0         0.0      1026.0       1
+Process Function: sf_readf_double                0.0         0.0      1026.0       1
+Process Function: sf_readf_float                 0.0         0.0      1026.0       1
+Process Function: sf_readf_int                   0.0         0.0      1026.0       1
+Process Function: sf_readf_short                 0.0         0.0      1026.0       1
+Process Function: sf_seek                        0.0         0.0      1026.0       1
+Process Function: sf_set_chunk                   0.0         0.0      1026.0       1
+Process Function: sf_set_string                  0.0         0.0      1026.0       1
+Process Function: sf_strerror                    0.0         0.0      1026.0       1
+Process Function: sf_version_string              0.0         0.0      1026.0       1
+Process Function: sf_write_double                0.0         0.0      1026.0       1
+Process Function: sf_write_float                 0.0         0.0      1026.0       1
+Process Function: sf_write_int                   0.0         0.0      1026.0       1
+Process Function: sf_write_raw                   0.0         0.0      1026.0       1
+Process Function: sf_write_short                 0.0         0.0      1026.0       1
+Process Function: sf_write_sync                  0.0         0.0      1026.0       1
+Process Function: sf_writef_double               0.0         0.0      1026.0       1
+Process Function: sf_writef_float                0.0         0.0      1026.0       1
+Process Function: sf_writef_int                  0.0         0.0      1026.0       1
+Process Function: sf_writef_short                0.0         0.0      1026.0       1
+Process Parameters: sf_close                    46.0        46.0      1009.4       1
+Process Parameters: sf_command                   4.7         4.7      1014.2       1
+Process Parameters: sf_current_byterate          0.0         0.0      1014.2       1
+Process Parameters: sf_error                     0.0         0.0      1014.2       1
+Process Parameters: sf_error_number              0.0         0.0      1014.2       1
+Process Parameters: sf_error_str                 0.0         0.0      1014.2       1
+Process Parameters: sf_format_check              0.0         0.0      1014.2       1
+Process Parameters: sf_get_chunk_data            0.0         0.0      1014.2       1
+Process Parameters: sf_get_chunk_iterator         0.5         0.5      1014.7       1
+Process Parameters: sf_get_chunk_size            0.0         0.0      1014.7       1
+Process Parameters: sf_get_string                0.0         0.0      1014.7       1
+Process Parameters: sf_next_chunk_iterator         0.0         0.0      1014.7       1
+Process Parameters: sf_open                      0.0         0.0      1014.7       1
+Process Parameters: sf_open_fd                   0.0         0.0      1016.5       1
+Process Parameters: sf_open_virtual              0.0         0.0      1018.6       1
+Process Parameters: sf_perror                    0.0         0.0      1020.8       1
+Process Parameters: sf_read_double               2.6         2.6      1023.3       1
+Process Parameters: sf_read_float                0.0         0.0      1023.3       1
+Process Parameters: sf_read_int                  0.0         0.0      1023.4       1
+Process Parameters: sf_read_raw                  2.6         2.6      1026.0       1
+Process Parameters: sf_read_short                0.0         0.0      1026.0       1
+Process Parameters: sf_readf_double              0.0         0.0      1026.0       1
+Process Parameters: sf_readf_float               0.0         0.0      1026.0       1
+Process Parameters: sf_readf_int                 0.0         0.0      1026.0       1
+Process Parameters: sf_readf_short               0.0         0.0      1026.0       1
+Process Parameters: sf_seek                      0.0         0.0      1026.0       1
+Process Parameters: sf_set_chunk                 0.0         0.0      1026.0       1
+Process Parameters: sf_set_string                0.0         0.0      1026.0       1
+Process Parameters: sf_strerror                  0.0         0.0     [COMPOSE] attempts=69214 di_match=66820 di_reject=1869 di_void=458 undecidable=67 absent=45 unnamed=67)
+[NODES] tota_dp_processed=224915 pops=293924 dedup=69009
+[IS_MALLOC_SIZE] 0
+[GEP_TYPE] void_recovered792 untyped_skip=324
+ 1026.0       1
+Process Parameters: sf_version_string            0.0         0.0      1026.0       1
+Process Parameters: sf_write_double              0.0         0.0      1026.0       1
+Process Parameters: sf_write_float               0.0         0.0      1026.0       1
+Process Parameters: sf_write_int                 0.0         0.0      1026.0       1
+Process Parameters: sf_write_raw                 0.0         0.0      1026.0       1
+Process Parameters: sf_write_short               0.0         0.0      1026.0       1
+Process Parameters: sf_write_sync                0.0         0.0      1026.0       1
+Process Parameters: sf_writef_double             0.0         0.0      1026.0       1
+Process Parameters: sf_writef_float              0.0         0.0      1026.0       1
+Process Parameters: sf_writef_int                0.0         0.0      1026.0       1
+Process Parameters: sf_writef_short              0.0         0.0      1026.0       1
+Total Condition Extraction (all 4 functions total)        62.5        62.5      1026.0       1
+
+Saved to /workspaces/libfuzz/analysis/libsndfile//work/apipass/conditions.json
+Analysis complete for libsndfile
+Finished analysis
++ echo 'Finished analysis'
++ ./analysis.sh libsndfile --run-only
++ echo 'Analysing libsndfile'
++ source setup_target.sh libsndfile
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z libsndfile ]]
+++ export TARGET_NAME=libsndfile
+++ TARGET_NAME=libsndfile
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/libsndfile
+++ TARGET_DIR=/workspaces/libfuzz/targets/libsndfile
+++ CONFIG_FILE=/workspaces/libfuzz/targets/libsndfile/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/libsndfile/
++ TARGET=/workspaces/libfuzz/analysis/libsndfile/
++ export WORK=/workspaces/libfuzz/analysis/libsndfile//work
++ WORK=/workspaces/libfuzz/analysis/libsndfile//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/libsndfile/config.sh
+++ REPO_URL=https://github.com/libsndfile/libsndfile.git
+++ REPO_COMMIT=0d3f80b7394368623df558d8ba3fee6348584d4d
+++ BC_FILE_NAME=libsndfile.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/libsndfile//work
+++ mkdir -p /workspaces/libfuzz/analysis/libsndfile//work/lib /workspaces/libfuzz/analysis/libsndfile//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libsndfile//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libsndfile//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/libsndfile//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/libsndfile//work/apipass
+++ touch /workspaces/libfuzz/analysis/libsndfile//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/libsndfile//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/libsndfile//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/libsndfile//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libsndfile.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/libsndfile//work/lib/libsndfile.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/libsndfile//work/lib/libsndfile.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/libsndfile//work/lib/libsndfile.a
+Writing output to /workspaces/libfuzz/analysis/libsndfile/work/lib/libsndfile.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/libsndfile/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/libsndfile/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/libsndfile//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/libsndfile//work/include -t libsndfile -p /workspaces/libfuzz/targets/libsndfile/public_headers.txt -e /workspaces/libfuzz/analysis/libsndfile//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/libsndfile//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/libsndfile//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/libsndfile//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/libsndfile//work/lib/libsndfile.a.bc -target libsndfile -interface /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/libsndfile//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/libsndfile//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/libsndfile//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 11.73
+user 11.18
+sys 0.54
+maxrss_kb 1050492
+++ echo 'Saved to /workspaces/libfuzz/analysis/libsndfile//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for libsndfile'
+
+real	0m14.891s
+user	0m12.327s
+sys	0m0.847s

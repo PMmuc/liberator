@@ -13,7 +13,7 @@ for project in "${PROJECTS[@]}"; do
   DOCKER_BUILDKIT=1 docker build \
     --build-arg USER_UID=$(id -u) --build-arg GROUP_UID=$(id -g) \
     --build-arg target_name="$project" \
-    -t "$IMG_NAME-$project_new" --target libfuzzpp_fuzzing_new \
+    -t "$IMG_NAME-$project" --target libfuzzpp_fuzzing_new \
     -f "../Dockerfile" "../"
   set +x
 done

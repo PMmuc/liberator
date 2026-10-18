@@ -1,0 +1,679 @@
++ export TARGET_NAME=cpu_features
++ TARGET_NAME=cpu_features
++ TARGET_DIR=/workspaces/libfuzz/analysis/cpu_features
++ WORK=/workspaces/libfuzz/analysis/cpu_features/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features
++ echo 'Start analysis'
+Start analysis
+Analysing cpu_features
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmpjl0auxqq.cc
+['cpu_features::X86Info']
+['cpu_features::CacheInfo']
+['cpu_features::X86Microarchitecture']
+['const', 'cpu_features::X86Info', '*']
+['void']
+['char', '*']
+['int']
+['const', 'cpu_features::X86Features', '*']
+['cpu_features::X86FeaturesEnum']
+['const', 'char', '*']
+['cpu_features::X86FeaturesEnum']
+['const', 'char', '*']
+['cpu_features::X86Microarchitecture']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+[INFO] Analysing target: cpu_features
+[INFO] Analyze functions in /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_clang.json
+[INFO] Loading library...
+[INFO] Done
+
+*********General Stats***************
+################ (program : libcpu_features.a.bc)###############
+AddrsNum            947
+BBWith2Succ         141
+BBWith3Succ         8
+CallsNum            139
+ConstArrayObj       3
+ConstStructObj      0
+ConstantObj         0
+CopysNum            523
+FIObjNum            160
+FSObjNum            348
+FunctionObjs        154
+GepsNum             1764
+GlobalObjs          6
+HeapObjs            1
+IndCallSites        3
+LoadsNum            1238
+MaxStructSize       46
+NonPtrObj           381
+ReturnsNum          202
+StackObjs           347
+StoresNum           1772
+TotalCallSite       289
+TotalFieldObjects   327
+TotalObjects        836
+TotalPTASVFStmts    3928
+TotalPointers       8181
+TotalSVFStmts       8056
+VarArrayObj         6
+VarStructObj        87
+----------------Time and memory stats--------------------
+LLVMIRTime          0.043
+SVFIRTime           0.054
+SymbolTableTime     0.003
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : libcpu_features.a.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   0
+MaxNodeInCycle      0
+NodeInCycle         0
+TotalCycle          0
+TotalEdge           286
+TotalNode           154
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libcpu_features.a.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.225691
+AvgIn/OutCopyEdge   0.710439
+AvgIn/OutEdge       1.20043
+AvgIn/OutLoadEdge   0.132745
+AvgIn/OutStoreEdge  0.131554
+AvgPtsSetSize       0.329711
+AvgTopLvlPtsSize    0.856664
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    10544
+MemoryUsageVmsize   10024
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           0.043
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       947
+CopyProcessed       490
+DummyFieldPtrs      48
+FieldObjs           327
+GepProcessed        1661
+IndCallSites        3
+IndEdgeSolved       0
+LoadProcessed       518
+LocalVarInRecur     0
+MaxInAddrEdge       1
+MaxInCopyEdge       74
+MaxInLoadEdge       1
+MaxInStoreEdge      74
+MaxNodesInSCC       0
+MaxOutAddrEdge      440
+MaxOutCopyEdge      749
+MaxOutLoadEdge      73
+MaxOutStoreEdge     1
+MaxPtsSetSize       74
+MemObjects          836
+NodesInCycles       0
+NullPointer         214
+NumOfAddrs          947
+NumOfCGEdge         4090
+NumOfCGNode         4310
+NumOfCopys          1217
+NumOfFieldExpand    0
+NumOfGeps           1764
+NumOfLoads          557
+NumOfSCCDetect      4
+NumOfSFRs           0
+NumOfStores         552
+NumOfValidNode      4196
+NumOfValidObjNode   738
+Pointers            8181
+PointsToBlkPtr      0
+PointsToConstPtr    43
+SolveIterations     4
+StoreProcessed      558
+TotalCycleNum       0
+TotalObjects        836
+TotalPWCCycleNum    0
+TotalPointers       8181
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libcpu_features.a.bc)###############
+UniquePointsToSets       912
+TotalUnions              3358
+PropertyUnions           3103
+UniqueUnions             82
+LookupUnions             11
+PreemptiveUnions         162
+TotalComplements         17012
+PropertyComplements      16904
+UniqueComplements        22
+LookupComplements        64
+PreemptiveComplements    22
+TotalIntersections       1111
+PropertyIntersections    1067
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  44
+#######################################################
+[INFO] Points-to analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libcpu_features.a.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1.24832
+GenMUCHITime        0.004
+GenRegionTime       0.011
+InsertPHITime       0
+SSARenameTime       0.001
+TotalMSSATime       0.017
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        64
+CSChiNode           51
+CSHasChi            19
+CSHasMu             89
+CSMuNode            148
+FunEntryChi         667
+FunHasEntryChi      145
+FunHasRetMu         147
+FunRetMu            667
+LoadHasMu           1238
+LoadMuNode          1041
+MSSAPhi             258
+MaxRegSize          22
+MemRegions          596
+StoreChiNode        1438
+StoreHasChi         1569
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : libcpu_features.a.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0.003
+AvgWeight           1.08255
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.006
+OptTime             0
+TLNodeTime          0
+TotalTime           0.009
+----------------Numbers stats----------------------------
+ActualIn            148
+ActualOut           51
+ActualParam         752
+ActualRet           210
+Addr                947
+AvgInDegree         1
+AvgIndInDeg         1
+AvgIndOutDeg        1
+AvgOutDegree        1
+Copy                523
+DirectCallEdge      606
+DirectEdge          9309
+DirectRetEdge       276
+FormalIn            667
+FormalOut           667
+FormalParam         227
+FormalRet           123
+Gep                 1764
+IndCallEdge         266
+IndRetEdge          125
+IndirectEdge        5027
+IndirectEdgeLabels  5442
+Load                1238
+MSSAPhi             258
+MaxInDegree         107
+MaxIndInDeg         107
+MaxIndOutDeg        107
+MaxOutDegree        750
+PHI                 138
+Store               1772
+TotalEdge           14336
+TotalNode           10819
+#######################################################
+------- CONFIG ---------
+	Trace Indirect Jumps: true
+	Output Metrics: true
+	Target: cpu_features
+
+	Interface file: /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_clang.json----------------------
+[INFO] CallGraph: 154 functions in 154 SCCs
+[SCC] top 10 largest SCCs (biggest first):
+[SCC] scc=121 num functions=1 formals=5 num direct edges=0 num indirect edges=0
+[SCC] scc=126 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=128 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=131 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=141 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=143 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=144 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=125 num functions=1 formals=3 num direct edges=0 num indirect edges=0
+[SCC] scc=28 num functions=1 formals=3 num direct edges=0 num indirect edges=0
+[SCC] scc=12 num functions=1 formals=3 num direct edges=0 num indirect edges=0
+[SCC] direct edges only: largest=1 functions (2 formals), 0 cyclic components
+[SCC] signature-filtered:largest=1 functions (2 formals),0 cyclic components
+[IND] num of indirect callsites=1
+[IND] GetX86FeaturesEnumValue(cs=4987) targets=74-> largest=1 functions (2 formals)
+[IND] removing top 1 indirect callsites. Remaining largest SCC=1 (with2 formals), with 0 cyclic components
+[INFO 1/154 funcs, 1/154 SCCs] callgraph: GetCpuidLeaf
+[INFO 2/154 funcs, 2/154 SCCs] callgraph: GetXCR0Eax
+[INFO 3/154 funcs, 3/154 SCCs] callgraph: llvm.memcpy.p0.p0.i64
+[INFO 4/154 funcs, 4/154 SCCs] callgraph: SafeCpuIdEx
+[INFO 5/154 funcs, 5/154 SCCs] callgraph: ReadLeaves
+[INFO 6/154 funcs, 6/154 SCCs] callgraph: copy
+[INFO 7/154 funcs, 7/154 SCCs] callgraph: FillX86BrandString
+[INFO 8/154 funcs, 8/154 SCCs] callgraph: IsVendor
+[INFO 9/154 funcs, 9/154 SCCs] callgraph: SetVendor
+[INFO 10/154 funcs, 10/154 SCCs] callgraph: IsBitSet
+[INFO 11/154 funcs, 11/154 SCCs] callgraph: __assert_fail
+[INFO 12/154 funcs, 12/154 SCCs] callgraph: ExtractBitRange
+[INFO 13/154 funcs, 13/154 SCCs] callgraph: HasMask
+[INFO 14/154 funcs, 14/154 SCCs] callgraph: HasXmmOsXSave
+[INFO 15/154 funcs, 15/154 SCCs] callgraph: HasYmmOsXSave
+[INFO 16/154 funcs, 16/154 SCCs] callgraph: HasZmmOsXSave
+[INFO 17/154 funcs, 17/154 SCCs] callgraph: HasTmmOsXSave
+[INFO 18/154 funcs, 18/154 SCCs] callgraph: OverrideOsPreserves
+[INFO 19/154 funcs, 19/154 SCCs] callgraph: HasSecondFMA
+[INFO 20/154 funcs, 20/154 SCCs] callgraph: open
+[INFO 21/154 funcs, 21/154 SCCs] callgraph: __errno_location
+[INFO 22/154 funcs, 22/154 SCCs] callgraph: CpuFeatures_OpenFile
+[INFO 23/154 funcs, 23/154 SCCs] callgraph: StackLineReader_Initialize
+[INFO 24/154 funcs, 24/154 SCCs] callgraph: read
+[INFO 25/154 funcs, 25/154 SCCs] callgraph: CpuFeatures_ReadFile
+[INFO 26/154 funcs, 26/154 SCCs] callgraph: LoadFullBuffer
+[ADDROF] OK callee=CpuFeatures_ReadFile prefix=.0.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 27/154 funcs, 27/154 SCCs] callgraph: CpuFeatures_memchr
+[INFO 28/154 funcs, 28/154 SCCs] callgraph: CpuFeatures_StringView_IndexOfChar
+[INFO 29/154 funcs, 29/154 SCCs] callgraph: IndexOfEol
+[INFO 30/154 funcs, 30/154 SCCs] callgraph: view.149
+[INFO 31/154 funcs, 31/154 SCCs] callgraph: CpuFeatures_StringView_PopFront
+[ADDROF] REJ callee=view.149 prefix=.(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=view.149 prefix=.(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 32/154 funcs, 32/154 SCCs] callgraph: SkipToNextLine
+[INFO 33/154 funcs, 33/154 SCCs] callgraph: llvm.memmove.p0.p0.i64
+[INFO 34/154 funcs, 34/154 SCCs] callgraph: LoadMore
+[INFO 35/154 funcs, 35/154 SCCs] callgraph: BringToFrontAndLoadMore
+[INFO 36/154 funcs, 36/154 SCCs] callgraph: CreateLineResult
+[INFO 37/154 funcs, 37/154 SCCs] callgraph: CreateEOFLineResult
+[INFO 38/154 funcs, 38/154 SCCs] callgraph: CreateTruncatedLineResult
+[INFO 39/154 funcs, 39/154 SCCs] callgraph: CpuFeatures_StringView_KeepFront
+[INFO 40/154 funcs, 40/154 SCCs] callgraph: CreateValidLineResult
+[INFO 41/154 funcs, 41/154 SCCs] callgraph: StackLineReader_NextLine
+[INFO 42/154 funcs, 42/154 SCCs] callgraph: strlen
+[INFO 43/154 funcs, 43/154 SCCs] callgraph: str.158
+[INFO 44/154 funcs, 44/154 SCCs] callgraph: equals.148
+[INFO 45/154 funcs, 45/154 SCCs] callgraph: CpuFeatures_StringView_StartsWith
+[INFO 46/154 funcs, 46/154 SCCs] callgraph: CpuFeatures_StringView_IndexOf
+[INFO 47/154 funcs, 47/154 SCCs] callgraph: __ctype_b_loc
+[INFO 48/154 funcs, 48/154 SCCs] callgraph: CpuFeatures_StringView_Front
+[INFO 49/154 funcs, 49/154 SCCs] callgraph: CpuFeatures_StringView_Back
+[INFO 50/154 funcs, 50/154 SCCs] callgraph: CpuFeatures_StringView_PopBack
+[INFO 51/154 funcs, 51/154 SCCs] callgraph: CpuFeatures_StringView_TrimWhitespace
+[INFO 52/154 funcs, 52/154 SCCs] callgraph: CpuFeatures_StringView_GetAttributeKeyValue
+[INFO 53/154 funcs, 53/154 SCCs] callgraph: view
+[INFO 54/154 funcs, 54/154 SCCs] callgraph: str
+[INFO 55/154 funcs, 55/154 SCCs] callgraph: CpuFeatures_StringView_IsEquals
+[INFO 56/154 funcs, 56/154 SCCs] callgraph: CpuFeatures_StringView_HasWord
+[INFO 57/154 funcs, 57/154 SCCs] callgraph: close
+[INFO 58/154 funcs, 58/154 SCCs] callgraph: CpuFeatures_CloseFile
+[INFO 59/154 funcs, 59/154 SCCs] callgraph: DetectFeaturesFromOs
+[INFO 60/154 funcs, 60/154 SCCs] callgraph: ParseCpuId
+[ADDROF] OK callee=copy prefix=.5.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] OK callee=copy prefix=.5.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=write
+[INFO 61/154 funcs, 61/154 SCCs] callgraph: ParseExtraAMDCpuId
+[INFO 62/154 funcs, 62/154 SCCs] callgraph: GetX86Info
+[INFO 63/154 funcs, 63/154 SCCs] callgraph: equals
+[INFO 64/154 funcs, 64/154 SCCs] callgraph: IsVendorByX86Info
+[ADDROF] OK callee=equals prefix=.4.0(<unnamed di type>/0) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 65/154 funcs, 65/154 SCCs] callgraph: GetX86Microarchitecture
+[INFO 66/154 funcs, 66/154 SCCs] callgraph: GetCacheLevelInfo
+[INFO 67/154 funcs, 67/154 SCCs] callgraph: ParseLeaf2
+[INFO 68/154 funcs, 68/154 SCCs] callgraph: ParseCacheInfo
+[INFO 69/154 funcs, 69/154 SCCs] callgraph: GetCacheSizeLegacyAMD
+[INFO 70/154 funcs, 70/154 SCCs] callgraph: GetWaysLegacyAMD
+[INFO 71/154 funcs, 71/154 SCCs] callgraph: ParseCacheInfoLegacyAMD
+[INFO 72/154 funcs, 72/154 SCCs] callgraph: GetX86CacheInfo
+[INFO 73/154 funcs, 73/154 SCCs] callgraph: get_X86_AVX512CD
+[INFO 74/154 funcs, 74/154 SCCs] callgraph: get_X86_AVX512ER
+[INFO 75/154 funcs, 75/154 SCCs] callgraph: get_X86_AVX512PF
+[INFO 76/154 funcs, 76/154 SCCs] callgraph: get_X86_AVX512BW
+[INFO 77/154 funcs, 77/154 SCCs] callgraph: get_X86_AVX512DQ
+[INFO 78/154 funcs, 78/154 SCCs] callgraph: get_X86_AVX512VL
+[INFO 79/154 funcs, 79/154 SCCs] callgraph: get_X86_AMX_FP16
+[INFO 80/154 funcs, 80/154 SCCs] callgraph: get_X86_PCLMULQDQ
+[INFO 81/154 funcs, 81/154 SCCs] callgraph: get_X86_SMX
+[INFO 82/154 funcs, 82/154 SCCs] callgraph: get_X86_SGX
+[INFO 83/154 funcs, 83/154 SCCs] callgraph: get_X86_CX16
+[INFO 84/154 funcs, 84/154 SCCs] callgraph: get_X86_SHA
+[INFO 85/154 funcs, 85/154 SCCs] callgraph: get_X86_POPCNT
+[INFO 86/154 funcs, 86/154 SCCs] callgraph: get_X86_MOVBE
+[INFO 87/154 funcs, 87/154 SCCs] callgraph: get_X86_RDRND
+[INFO 88/154 funcs, 88/154 SCCs] callgraph: get_X86_DCA
+[INFO 89/154 funcs, 89/154 SCCs] callgraph: get_X86_SS
+[INFO 90/154 funcs, 90/154 SCCs] callgraph: get_X86_ADX
+[INFO 91/154 funcs, 91/154 SCCs] callgraph: get_X86_LZCNT
+[INFO 92/154 funcs, 92/154 SCCs] callgraph: get_X86_GFNI
+[INFO 93/154 funcs, 93/154 SCCs] callgraph: get_X86_MOVDIRI
+[INFO 94/154 funcs, 94/154 SCCs] callgraph: get_X86_MOVDIR64B
+[INFO 95/154 funcs, 95/154 SCCs] callgraph: get_X86_AVX512_SECOND_FMA
+[INFO 96/154 funcs, 96/154 SCCs] callgraph: get_X86_AVX512_4FMAPS
+[INFO 97/154 funcs, 97/154 SCCs] callgraph: get_X86_AVX512_BF16
+[INFO 98/154 funcs, 98/154 SCCs] callgraph: get_X86_AVX512_VP2INTERSECT
+[INFO 99/154 funcs, 99/154 SCCs] callgraph: get_X86_AVX512_FP16
+[INFO 100/154 funcs, 100/154 SCCs] callgraph: get_X86_AMX_BF16
+[INFO 101/154 funcs, 101/154 SCCs] callgraph: get_X86_AMX_TILE
+[INFO 102/154 funcs, 102/154 SCCs] callgraph: get_X86_AMX_INT8
+[INFO 103/154 funcs, 103/154 SCCs] callgraph: get_X86_F16C
+[INFO 104/154 funcs, 104/154 SCCs] callgraph: get_X86_FMA4
+[INFO 105/154 funcs, 105/154 SCCs] callgraph: get_X86_FMA3
+[INFO 106/154 funcs, 106/154 SCCs] callgraph: get_X86_VAES
+[INFO 107/154 funcs, 107/154 SCCs] callgraph: get_X86_VPCLMULQDQ
+[INFO 108/154 funcs, 108/154 SCCs] callgraph: get_X86_BMI1
+[INFO 109/154 funcs, 109/154 SCCs] callgraph: get_X86_FPU
+[INFO 110/154 funcs, 110/154 SCCs] callgraph: get_X86_TSC
+[INFO 111/154 funcs, 111/154 SCCs] callgraph: get_X86_CX8
+[INFO 112/154 funcs, 112/154 SCCs] callgraph: get_X86_CLFSH
+[INFO 113/154 funcs, 113/154 SCCs] callgraph: get_X86_MMX
+[INFO 114/154 funcs, 114/154 SCCs] callgraph: get_X86_AES
+[INFO 115/154 funcs, 115/154 SCCs] callgraph: get_X86_ERMS
+[INFO 116/154 funcs, 116/154 SCCs] callgraph: get_X86_CLWB
+[INFO 117/154 funcs, 117/154 SCCs] callgraph: get_X86_SSE
+[INFO 118/154 funcs, 118/154 SCCs] callgraph: get_X86_SSE2
+[INFO 119/154 funcs, 119/154 SCCs] callgraph: get_X86_SSE3
+[INFO 120/154 funcs, 120/154 SCCs] callgraph: get_X86_SSSE3
+[INFO 121/154 funcs, 121/154 SCCs] callgraph: get_X86_SSE4_1
+[INFO 122/154 funcs, 122/154 SCCs] callgraph: get_X86_HLE
+[INFO 123/154 funcs, 123/154 SCCs] callgraph: get_X86_BMI2
+[INFO 124/154 funcs, 124/154 SCCs] callgraph: get_X86_RTM
+[INFO 125/154 funcs, 125/154 SCCs] callgraph: get_X86_RDSEED
+[INFO 126/154 funcs, 126/154 SCCs] callgraph: get_X86_CLFLUSHOPT
+[INFO 127/154 funcs, 127/154 SCCs] callgraph: get_X86_SSE4_2
+[INFO 128/154 funcs, 128/154 SCCs] callgraph: get_X86_SSE4A
+[INFO 129/154 funcs, 129/154 SCCs] callgraph: get_X86_AVX
+[INFO 130/154 funcs, 130/154 SCCs] callgraph: get_X86_AVX_VNNI
+[INFO 131/154 funcs, 131/154 SCCs] callgraph: get_X86_AVX2
+[INFO 132/154 funcs, 132/154 SCCs] callgraph: get_X86_AVX512F
+[INFO 133/154 funcs, 133/154 SCCs] callgraph: get_X86_AVX512IFMA
+[INFO 134/154 funcs, 134/154 SCCs] callgraph: get_X86_AVX512VBMI
+[INFO 135/154 funcs, 135/154 SCCs] callgraph: get_X86_AVX512VBMI2
+[INFO 136/154 funcs, 136/154 SCCs] callgraph: get_X86_AVX512VNNI
+[INFO 137/154 funcs, 137/154 SCCs] callgraph: get_X86_AVX512BITALG
+[INFO 138/154 funcs, 138/154 SCCs] callgraph: get_X86_AVX512VPOPCNTDQ
+[INFO 139/154 funcs, 139/154 SCCs] callgraph: get_X86_AVX512_4VNNIW
+[INFO 140/154 funcs, 140/154 SCCs] callgraph: get_X86_AVX512_4VBMI2
+[INFO 141/154 funcs, 141/154 SCCs] callgraph: get_X86_FS_REP_MOV
+[INFO 142/154 funcs, 142/154 SCCs] callgraph: get_X86_FZ_REP_MOVSB
+[INFO 143/154 funcs, 143/154 SCCs] callgraph: get_X86_FS_REP_STOSB
+[INFO 144/154 funcs, 144/154 SCCs] callgraph: get_X86_FS_REP_CMPSB_SCASB
+[INFO 145/154 funcs, 145/154 SCCs] callgraph: get_X86_LAM
+[INFO 146/154 funcs, 146/154 SCCs] callgraph: get_X86_UAI
+[INFO 147/154 funcs, 147/154 SCCs] callgraph: GetX86FeaturesEnumValue
+[INFO 148/154 funcs, 148/154 SCCs] callgraph: GetX86FeaturesEnumName
+[INFO 149/154 funcs, 149/154 SCCs] callgraph: GetX86MicroarchitectureName
+[INFO 0/7] processing return for FillX86BrandString
+[INFO 1/7] processing return for GetX86CacheInfo
+[INFO 2/7] processing return for GetX86FeaturesEnumName
+[INFO 3/7] processing return for GetX86FeaturesEnumValue
+[INFO 4/7] processing return for GetX86Info
+[INFO 5/7] processing return for GetX86Microarchitecture
+[INFO 6/7] processing return for GetX86MicroarchitectureName
+[INFO] Summary FillX86BrandString:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary GetX86CacheInfo:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary GetX86FeaturesEnumName:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary GetX86FeaturesEnumValue:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary GetX86Info:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary GetX86Microarchitecture:
+param_0: 7 access types
+return: 0 access types
+[INFO] Summary GetX86MicroarchitectureName:
+param_0: 1 access types
+return: 2 access types
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                         48.36         1     48.36
+2. PAG Builder                               55.61         1     55.61
+3. Points-to Analysis                       101.64         1    101.64
+4. Full SVFG Build                           44.63         1     44.63
+Function 1: extract_parameter_metadata        9.95         8      1.24
+Function 1: extract_parameter_metadata: FillX86BrandString      0.73         1      0.73
+Function 1: extract_parameter_metadata: GetX86CacheInfo      6.53         1      6.53
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumName      2.38         1      2.38
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumValue      0.10         2      0.05
+Function 1: extract_parameter_metadata: GetX86Info      0.05         1      0.05
+Function 1: extract_parameter_metadata: GetX86Microarchitecture      0.05         1      0.05
+Function 1: extract_parameter_metadata: GetX86MicroarchitectureName      0.09         1      0.09
+Function 2: extractLenDependencyParameter      0.15         3      0.05
+Function 2: extractLenDependencyParameter: FillX86BrandString      0.05         1      0.05
+Function 2: extractLenDependencyParameter: GetX86CacheInfo      0.05         1      0.05
+Function 2: extractLenDependencyParameter: GetX86Info      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameters      0.36         8      0.05
+Function 3: my_extract_dependency_among_parametersFillX86BrandString      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersGetX86CacheInfo      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersGetX86FeaturesEnumName      0.06         1      0.06
+Function 3: my_extract_dependency_among_parametersGetX86FeaturesEnumValue      0.09         2      0.04
+Function 3: my_extract_dependency_among_parametersGetX86Info      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersGetX86Microarchitecture      0.04         1      0.04
+Function 3: my_extract_dependency_among_parametersGetX86MicroarchitectureName      0.04         1      0.04
+Function 4: extract_return_metadata           0.34         7      0.05
+Function 4: extract_return_metadata: FillX86BrandString      0.04         1      0.04
+Function 4: extract_return_metadata: GetX86CacheInfo      0.05         1      0.05
+Function 4: extract_return_metadata: GetX86FeaturesEnumName      0.05         1      0.05
+Function 4: extract_return_metadata: GetX86FeaturesEnumValue      0.04         1      0.04
+Function 4: extract_return_metadata: GetX86Info      0.04         1      0.04
+Function 4: extract_return_metadata: GetX86Microarchitecture      0.04         1      0.04
+Function 4: extract_return_metadata: GetX86MicroarchitectureName      0.07         1      0.07
+GlobalStruct: Build Slot Map                  0.33         1      0.33
+GlobalStruct: Globals Processing             43.63         1     43.63
+GlobalStruct: Resolve Indirect Calls          0.79         1      0.79
+GlobalStruct: Unresolved Calls                0.04         1      0.04
+GlobalStruct::analyze Total Time            101.60         1    101.60
+Process Function: FillX86BrandString          0.93         1      0.93
+Process Function: GetX86CacheInfo             6.73         1      6.73
+Process Function: GetX86FeaturesEnumName      2.56         1      2.56
+Process Function: GetX86FeaturesEnumValue      0.34         1      0.34
+Process Function: GetX86Info                  0.24         1      0.24
+Process Function: GetX86Microarchitecture      0.20         1      0.20
+Process Function: GetX86MicroarchitectureName      0.26         1      0.26
+Process Parameters: FillX86BrandString        0.86         1      0.86
+Process Parameters: GetX86CacheInfo           6.66         1      6.66
+Process Parameters: GetX86FeaturesEnumName      2.48         1      2.48
+Process Parameters: GetX86FeaturesEnumValue      0.25         1      0.25
+Process Parameters: GetX86Info                0.16         1      0.16
+Process Parameters: GetX86Microarchitecture      0.13         1      0.13
+Process Parameters: GetX86MicroarchitectureName      0.17         1      0.17
+Total Condition Extraction (all 4 functions total)     11.35         1     11.35
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                             7.0         7.0        37.3       1
+2. PAG Builder                                  18.0        18.0        55.4       1
+3. Points-to Analysis                           10.8        10.8        66.2       1
+4. Full SVFG Build                              11.1        11.1        77.3       1
+Function 1: extract_parameter_metadata           0.1         0.4        78.1       8
+Function 1: extract_parameter_metadata: FillX86BrandString         0.0         0.0        77.4       1
+Function 1: extract_parameter_metadata: GetX86CacheInfo         0.4         0.4        78.1       1
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumName         0.0         0.0        77.8       1
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumValue         0.0         0.0        77.8       2
+Function 1: extract_parameter_metadata: GetX86Info         0.0         0.0        77.8       1
+Function 1: extract_parameter_metadata: GetX86Microarchitecture         0.0         0.0        77.8       1
+Function 1: extract_parameter_metadata: GetX86MicroarchitectureName         0.0         0.0        77.8       1
+Function 2: extractLenDependencyParameter         0.0         0.0        77.8       3
+Function 2: extractLenDependencyParameter: FillX86BrandString         0.0         0.0        77.4       1
+Function 2: extractLenDependencyParameter: GetX86CacheInfo         0.0         0.0        77.8       1
+Function 2: extractLenDependencyParameter: GetX86Info         0.0         0.0        77.8       1
+Function 3: my_extract_dependency_among_parameters         0.0         0.0        77.8       8
+Function 3: my_extract_dependency_among_parametersFillX86BrandString         0.0         0.0        77.4       1
+Function 3: my_extract_dependency_among_parametersGetX86CacheInfo         0.0         0.0        77.8       1
+Function 3: my_extract_dependency_among_parametersGetX86FeaturesEnumName         0.0         0.0        77.8       1
+Function 3: my_extract_dependency_among_parametersGetX86FeaturesEnumValue         0.0         0.0        77.8       2
+Function 3: my_extract_dependency_among_parametersGetX86Info         0.0         0.0        77.8       1
+Function 3: my_extract_dependency_among_parametersGetX86Microarchitecture         0.0         0.0        77.8       1
+Function 3: my_extract_dependency_among_parametersGetX86MicroarchitectureName         0.0         0.0        77.8       1
+Function 4: extract_return_metadata              0.0         0.0        77.8       7
+Function 4: extract_return_metadata: FillX86BrandString         0.0         0.0        7[COMPOSE] attempts=397 di_match=311 di_reject=41 di_void=45 undecidable=0 absent=43 unnamed=0)
+[NODES] tota_dp_processed=3727 pops=3944 dedup=217
+[IS_MALLOC_SIZE] 0
+[GEP_TYPE] void_recovered0 untyped_skip=745
+7.4       1
+Function 4: extract_return_metadata: GetX86CacheInfo         0.0         0.0        77.8       1
+Function 4: extract_return_metadata: GetX86FeaturesEnumName         0.0         0.0        77.8       1
+Function 4: extract_return_metadata: GetX86FeaturesEnumValue         0.0         0.0        77.8       1
+Function 4: extract_return_metadata: GetX86Info         0.0         0.0        77.8       1
+Function 4: extract_return_metadata: GetX86Microarchitecture         0.0         0.0        77.8       1
+Function 4: extract_return_metadata: GetX86MicroarchitectureName         0.0         0.0        77.8       1
+GlobalStruct: Build Slot Map                     0.0         0.0        66.2       1
+GlobalStruct: Globals Processing                 0.3         0.3        66.2       1
+GlobalStruct: Resolve Indirect Calls             0.0         0.0        66.2       1
+GlobalStruct: Unresolved Calls                   0.0         0.0        66.2       1
+GlobalStruct: base PTA analyze                  10.4        10.4        65.8       1
+GlobalStruct::analyze Total Time                10.8        10.8        66.2       1
+Process Function: FillX86BrandString             0.0         0.0        77.4       1
+Process Function: GetX86CacheInfo                0.4         0.4        78.1       1
+Process Function: GetX86FeaturesEnumName         0.0         0.0        77.8       1
+Process Function: GetX86FeaturesEnumValue         0.0         0.0        77.8       1
+Process Function: GetX86Info                     0.0         0.0        77.8       1
+Process Function: GetX86Microarchitecture         0.0         0.0        77.8       1
+Process Function: GetX86MicroarchitectureName         0.0         0.0        77.8       1
+Process Parameters: FillX86BrandString           0.0         0.0        77.4       1
+Process Parameters: GetX86CacheInfo              0.4         0.4        78.1       1
+Process Parameters: GetX86FeaturesEnumName         0.0         0.0        77.8       1
+Process Parameters: GetX86FeaturesEnumValue         0.0         0.0        77.8       1
+Process Parameters: GetX86Info                   0.0         0.0        77.8       1
+Process Parameters: GetX86Microarchitecture         0.0         0.0        77.8       1
+Process Parameters: GetX86MicroarchitectureName         0.0         0.0        77.8       1
+Total Condition Extraction (all 4 functions total)         0.5         0.5        78.1       1
+
+Saved to /workspaces/libfuzz/analysis/cpu_features//work/apipass/conditions.json
+Analysis complete for cpu_features
+Finished analysis
++ echo 'Finished analysis'
++ ./analysis.sh cpu_features --run-only
++ echo 'Analysing cpu_features'
++ source setup_target.sh cpu_features
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z cpu_features ]]
+++ export TARGET_NAME=cpu_features
+++ TARGET_NAME=cpu_features
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/cpu_features
+++ TARGET_DIR=/workspaces/libfuzz/targets/cpu_features
+++ CONFIG_FILE=/workspaces/libfuzz/targets/cpu_features/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/cpu_features/
++ TARGET=/workspaces/libfuzz/analysis/cpu_features/
++ export WORK=/workspaces/libfuzz/analysis/cpu_features//work
++ WORK=/workspaces/libfuzz/analysis/cpu_features//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/cpu_features/config.sh
+++ REPO_URL=https://android.googlesource.com/platform/external/cpu_features
+++ REPO_COMMIT=eca53ba6d2e951e174b64682eaf56a36b8204c89
+++ BC_FILE_NAME=libcpu_features.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/cpu_features//work
+++ mkdir -p /workspaces/libfuzz/analysis/cpu_features//work/lib /workspaces/libfuzz/analysis/cpu_features//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cpu_features//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cpu_features//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/cpu_features//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/cpu_features//work/apipass
+++ touch /workspaces/libfuzz/analysis/cpu_features//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/cpu_features//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/cpu_features//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/cpu_features//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libcpu_features.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/cpu_features//work/lib/libcpu_features.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/cpu_features//work/lib/libcpu_features.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/cpu_features//work/lib/libcpu_features.a
+Writing output to /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/cpu_features/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/cpu_features/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/cpu_features//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/cpu_features//work/include -t cpu_features -p /workspaces/libfuzz/targets/cpu_features/public_headers.txt -e /workspaces/libfuzz/analysis/cpu_features//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/cpu_features//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/cpu_features//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:117: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/cpu_features//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/cpu_features//work/lib/libcpu_features.a.bc -target cpu_features -interface /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/cpu_features//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/cpu_features//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/cpu_features//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 0.32
+user 0.28
+sys 0.04
+maxrss_kb 84488
+++ echo 'Saved to /workspaces/libfuzz/analysis/cpu_features//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for cpu_features'
+
+real	0m0.784s
+user	0m0.588s
+sys	0m0.163s

@@ -1,0 +1,55 @@
+docker: Error response from daemon: Conflict. The container name "/libpp-analysis-new-1" is already in use by container "9c6f5bde818310a862a3bd3bd35521dcf82844a915f1aecfce503a45bb575db7". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
++ ./analysis.sh 1 --run-only
++ echo 'Analysing 1'
++ source setup_target.sh 1
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z 1 ]]
+++ export TARGET_NAME=1
+++ TARGET_NAME=1
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/1
+++ TARGET_DIR=/workspaces/libfuzz/targets/1
+++ CONFIG_FILE=/workspaces/libfuzz/targets/1/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/1/
++ TARGET=/workspaces/libfuzz/analysis/1/
++ export WORK=/workspaces/libfuzz/analysis/1//work
++ WORK=/workspaces/libfuzz/analysis/1//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/1/config.sh
+./analysis.sh: line 66: /workspaces/libfuzz/targets/1/config.sh: No such file or directory
+
+real	0m0.015s
+user	0m0.008s
+sys	0m0.008s

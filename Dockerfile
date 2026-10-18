@@ -18,7 +18,7 @@
 # ==============================================================================
 
 # Global build arg: must precede the first FROM so it can be used in FROM lines.
-ARG LLVM_SOURCE=llvm_source_download
+ARG LLVM_SOURCE=llvm_source_local
 
 # --- Source 1: build LLVM 21 from source ---
 FROM ubuntu:26.04 AS llvm_builder

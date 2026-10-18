@@ -1,0 +1,173 @@
+docker: Error response from daemon: Conflict. The container name "/libpp-analysis-new-littlecms" is already in use by container "afc4646fe6cb7ab3b576229e72a9646ec05075689834b75cee8835252cb963cd". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
++ ./analysis.sh littlecms
++ echo 'Analysing littlecms'
++ source setup_target.sh littlecms
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z littlecms ]]
+++ export TARGET_NAME=littlecms
+++ TARGET_NAME=littlecms
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/littlecms
+++ TARGET_DIR=/workspaces/libfuzz/targets/littlecms
+++ CONFIG_FILE=/workspaces/libfuzz/targets/littlecms/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/littlecms/
++ TARGET=/workspaces/libfuzz/analysis/littlecms/
++ export WORK=/workspaces/libfuzz/analysis/littlecms//work
++ WORK=/workspaces/libfuzz/analysis/littlecms//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/littlecms/config.sh
+++ REPO_URL=https://github.com/mm2/Little-CMS.git
+++ REPO_COMMIT=21c582a594fe5279f90c0b93437c398f93bf62b0
+++ BC_FILE_NAME=liblcms2.a
++ '[' false = false ']'
++ '[' false = false ']'
++ rm -rf /workspaces/libfuzz/analysis/littlecms//work
++ mkdir -p /workspaces/libfuzz/analysis/littlecms//work
++ '[' '!' -d /workspaces/libfuzz/analysis/littlecms//repo ']'
++ git -C /workspaces/libfuzz/analysis/littlecms//repo checkout 21c582a594fe5279f90c0b93437c398f93bf62b0
+HEAD is now at 21c582a update configure
++ '[' false = true ']'
++ command -v wllvm
++ '[' false = false ']'
++ '[' false = false ']'
++ cd /workspaces/libfuzz/analysis/littlecms//repo
++ is_docker
++ '[' -f /.dockerenv ']'
++ type target_preinstall_docker
++ echo '[INFO] Detected Docker environment. Running docker preinstall steps...'
++ target_preinstall_docker
++ :
++ type target_preinstall
++ echo '[INFO] Running preinstall steps...'
++ target_preinstall
++ :
++ target_configure
++ ./autogen.sh
+configure.ac:33: installing './compile'
+configure.ac:29: installing './missing'
+plugins/fast_float/src/Makefile.am: installing './depcomp'
+configure.ac:53: warning: The macro 'AC_LIBTOOL_WIN32_DLL' is obsolete.
+configure.ac:53: You should run autoupdate.
+m4/ltoptions.m4:148: AC_LIBTOOL_WIN32_DLL is expanded from...
+configure.ac:53: the top level
+configure.ac:53: warning: AC_LIBTOOL_WIN32_DLL: Remove this warning and the call to _LT_SET_OPTION when you
+configure.ac:53: put the 'win32-dll' option into LT_INIT's first parameter.
+./lib/autoconf/general.m4:2434: AC_DIAGNOSE is expanded from...
+m4/ltoptions.m4:148: AC_LIBTOOL_WIN32_DLL is expanded from...
+configure.ac:53: the top level
+configure.ac:55: warning: The macro 'AC_PROG_LIBTOOL' is obsolete.
+configure.ac:55: You should run autoupdate.
+m4/libtool.m4:100: AC_PROG_LIBTOOL is expanded from...
+configure.ac:55: the top level
+configure.ac:271: warning: The macro 'AC_TRY_COMPILE' is obsolete.
+configure.ac:271: You should run autoupdate.
+./lib/autoconf/general.m4:2845: AC_TRY_COMPILE is expanded from...
+lib/m4sugar/m4sh.m4:690: _AS_IF_ELSE is expanded from...
+lib/m4sugar/m4sh.m4:697: AS_IF is expanded from...
+./lib/autoconf/general.m4:2249: AC_CACHE_VAL is expanded from...
+./lib/autoconf/general.m4:2270: AC_CACHE_CHECK is expanded from...
+configure.ac:271: the top level
+configure.ac:439: warning: AC_C_BIGENDIAN should be used with AC_CONFIG_HEADERS
+rmdir: failed to remove 'out': Directory not empty
+WARNING:Did not recognize the compiler flag "-print-search-dirs"
+rmdir: failed to remove 'out': Directory not empty
++ ./configure --disable-shared --prefix=/workspaces/libfuzz/analysis/littlecms//work CC=wllvm CXX=wllvm++ 'CXXFLAGS=-g -O0' 'CFLAGS=-g -O0'
+rmdir: failed to remove 'out': Directory not empty
+WARNING:Did not recognize the compiler flag "-print-search-dirs"
+rmdir: failed to remove 'out': Directory not empty
++ '[' -f Makefile ']'
++ make clean
++ type target_build
++ target_build
+++ nproc
++ make -j8 clean
+++ nproc
++ make -j8
++ type target_install
++ target_install
++ make install
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/littlecms//work
+++ mkdir -p /workspaces/libfuzz/analysis/littlecms//work/lib /workspaces/libfuzz/analysis/littlecms//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/littlecms//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/littlecms//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/littlecms//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/littlecms//work/apipass
+++ touch /workspaces/libfuzz/analysis/littlecms//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/littlecms//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/littlecms//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/littlecms//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/littlecms//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/littlecms//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z liblcms2.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/littlecms//work/lib/liblcms2.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/littlecms//work/lib/liblcms2.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/littlecms//work/lib/liblcms2.a
+Writing output to /workspaces/libfuzz/analysis/littlecms/work/lib/liblcms2.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/littlecms/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/littlecms/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/littlecms//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/littlecms//work/include -t littlecms -p /workspaces/libfuzz/targets/littlecms/public_headers.txt -e /workspaces/libfuzz/analysis/littlecms//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/littlecms//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/littlecms//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/littlecms//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/littlecms//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/littlecms//work/lib/liblcms2.a.bc -target littlecms -interface /workspaces/libfuzz/analysis/littlecms//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/littlecms//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/littlecms//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/littlecms//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+vcall gep idx not constantint
+real 70.77
+user 69.54
+sys 1.18
+maxrss_kb 1456152
+++ echo 'Saved to /workspaces/libfuzz/analysis/littlecms//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for littlecms'
+
+real	3m23.769s
+user	2m10.083s
+sys	0m21.485s

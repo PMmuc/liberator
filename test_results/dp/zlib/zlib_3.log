@@ -1,0 +1,117 @@
+docker: Error response from daemon: Conflict. The container name "/libpp-analysis-new-zlib" is already in use by container "958f9b779231f89c6d5aac8703f87478f2468c05a093228e3061c6a557a29f26". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
++ ./analysis.sh zlib --run-only
++ echo 'Analysing zlib'
++ source setup_target.sh zlib
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z zlib ]]
+++ export TARGET_NAME=zlib
+++ TARGET_NAME=zlib
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/zlib
+++ TARGET_DIR=/workspaces/libfuzz/targets/zlib
+++ CONFIG_FILE=/workspaces/libfuzz/targets/zlib/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/zlib/
++ TARGET=/workspaces/libfuzz/analysis/zlib/
++ export WORK=/workspaces/libfuzz/analysis/zlib//work
++ WORK=/workspaces/libfuzz/analysis/zlib//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/zlib/config.sh
+++ REPO_URL=https://github.com/madler/zlib
+++ REPO_COMMIT=da607da739fa6047df13e66a2af6b8bec7c2a498
+++ BC_FILE_NAME=libz.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/zlib//work
+++ mkdir -p /workspaces/libfuzz/analysis/zlib//work/lib /workspaces/libfuzz/analysis/zlib//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/zlib//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/zlib//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/zlib//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/zlib//work/apipass
+++ touch /workspaces/libfuzz/analysis/zlib//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/zlib//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/zlib//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/zlib//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/zlib//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/zlib//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libz.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/zlib//work/lib/libz.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/zlib//work/lib/libz.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/zlib//work/lib/libz.a
+Writing output to /workspaces/libfuzz/analysis/zlib/work/lib/libz.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/zlib/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/zlib/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/zlib//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/zlib//work/include -t zlib -p /workspaces/libfuzz/targets/zlib/public_headers.txt -e /workspaces/libfuzz/analysis/zlib//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/zlib//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/zlib//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/zlib//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/zlib//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/zlib//work/lib/libz.a.bc -target zlib -interface /workspaces/libfuzz/analysis/zlib//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/zlib//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/zlib//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/zlib//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 8.18
+user 7.78
+sys 0.39
+maxrss_kb 308628
+++ echo 'Saved to /workspaces/libfuzz/analysis/zlib//work/apipass/conditions.json'
+++ type target_post_analysis
+++ target_post_analysis
+++ APIS='adler32_z adler32 crc32 crc32_z gzwrite gzread'
+++ for a in ${APIS}
+++ /home/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f adler32_z -c /workspaces/libfuzz/analysis/zlib//work/apipass/conditions.json
+/workspaces/libfuzz/targets/zlib/config.sh: line 27: /home/libfuzz/tool/misc/edit_constraints_2.py: No such file or directory
+
+real	0m8.826s
+user	0m8.128s
+sys	0m0.534s

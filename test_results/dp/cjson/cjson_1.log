@@ -1,0 +1,2089 @@
++ export TARGET_NAME=cjson
++ TARGET_NAME=cjson
++ TARGET_DIR=/workspaces/libfuzz/analysis/cjson
++ WORK=/workspaces/libfuzz/analysis/cjson/work
++ cd /workspaces/libfuzz
++ mkdir -p /workspaces/libfuzz/analysis/cjson
++ echo 'Start analysis'
+Start analysis
+Analysing cjson
+[INFO] WLLVM is installed.
+[INFO] Syncing condition_extractor...
+/tmp/tmpervz3itq.cc
+['const', 'char', '*']
+['void']
+['cJSON_Hooks', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['unsigned', 'long']
+['cJSON', '*']
+['const', 'char', '*']
+['const', 'char', '*', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*']
+['unsigned', 'long']
+['const', 'char', '*', '*']
+['int']
+['char', '*']
+['const', 'cJSON', '*']
+['char', '*']
+['const', 'cJSON', '*']
+['char', '*']
+['const', 'cJSON', '*']
+['int']
+['int']
+['int']
+['cJSON', '*']
+['char', '*']
+['const', 'int']
+['int']
+['void']
+['cJSON', '*']
+['int']
+['const', 'cJSON', '*']
+['cJSON', '*']
+['const', 'cJSON', '*']
+['int']
+['cJSON', '*']
+['const', 'cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['const', 'cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['int']
+['const', 'cJSON', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['char', '*']
+['const', 'cJSON', '*', 'const']
+['double']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['int']
+['const', 'cJSON', '*', 'const']
+['cJSON', '*']
+['cJSON', '*']
+['cJSON', '*']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['double']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['cJSON', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['const', 'cJSON', '*']
+['cJSON', '*']
+['const', 'cJSON', '*']
+['cJSON', '*']
+['const', 'int', '*']
+['int']
+['cJSON', '*']
+['const', 'float', '*']
+['int']
+['cJSON', '*']
+['const', 'double', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*', 'const', '*']
+['int']
+['int']
+['cJSON', '*']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['cJSON', '*']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['cJSON', '*']
+['cJSON', '*']
+['int']
+['void']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['void']
+['cJSON', '*']
+['const', 'char', '*']
+['void']
+['cJSON', '*']
+['const', 'char', '*']
+['int']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['int']
+['cJSON', '*', 'const']
+['cJSON', '*', 'const']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['int']
+['cJSON', '*']
+['const', 'char', '*']
+['cJSON', '*']
+['cJSON', '*']
+['const', 'cJSON', '*']
+['int']
+['int']
+['const', 'cJSON', '*', 'const']
+['const', 'cJSON', '*', 'const']
+['int']
+['void']
+['char', '*']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['int']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['const', 'double']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['cJSON', '*']
+['cJSON', '*', 'const']
+['const', 'char', '*', 'const']
+['double']
+['cJSON', '*']
+['double']
+['char', '*']
+['cJSON', '*']
+['const', 'char', '*']
+['void', '*']
+['unsigned', 'long']
+['void']
+['void', '*']
+[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor
+[INFO] Analysing target: cjson
+[INFO] Analyze functions in /workspaces/libfuzz/analysis/cjson//work/apipass/apis_clang.json
+[INFO] Loading library...
+[INFO] Done
+
+*********General Stats***************
+################ (program : libcjson.a.bc)###############
+AddrsNum            657
+BBWith2Succ         446
+BBWith3Succ         6
+CallsNum            104
+ConstArrayObj       0
+ConstStructObj      1
+ConstantObj         0
+CopysNum            153
+FIObjNum            137
+FSObjNum            408
+FunctionObjs        128
+GepsNum             840
+GlobalObjs          4
+HeapObjs            12
+IndCallSites        26
+LoadsNum            1962
+MaxStructSize       24
+NonPtrObj           250
+ReturnsNum          152
+StackObjs           401
+StoresNum           1045
+TotalCallSite       267
+TotalFieldObjects   51
+TotalObjects        597
+TotalPTASVFStmts    3779
+TotalPointers       7279
+TotalSVFStmts       6681
+VarArrayObj         4
+VarStructObj        6
+----------------Time and memory stats--------------------
+LLVMIRTime          0.055
+SVFIRTime           0.096
+SymbolTableTime     0.006
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : libcjson.a.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   13
+MaxNodeInCycle      3
+NodeInCycle         9
+TotalCycle          5
+TotalEdge           267
+TotalNode           128
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libcjson.a.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.173762
+AvgIn/OutCopyEdge   0.799197
+AvgIn/OutEdge       1.49505
+AvgIn/OutLoadEdge   0.37751
+AvgIn/OutStoreEdge  0.144578
+AvgPtsSetSize       0.404012
+AvgTopLvlPtsSize    0.927267
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    9464
+MemoryUsageVmsize   9000
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           0.086
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       657
+CopyProcessed       1330
+DummyFieldPtrs      24
+FieldObjs           51
+GepProcessed        554
+IndCallSites        26
+IndEdgeSolved       26
+LoadProcessed       1375
+LocalVarInRecur     52
+MaxInAddrEdge       1
+MaxInCopyEdge       24
+MaxInLoadEdge       11
+MaxInStoreEdge      7
+MaxNodesInSCC       27
+MaxOutAddrEdge      124
+MaxOutCopyEdge      140
+MaxOutLoadEdge      47
+MaxOutStoreEdge     98
+MaxPtsSetSize       4
+MemObjects          597
+NodesInCycles       148
+NullPointer         187
+NumOfAddrs          649
+NumOfCGEdge         4935
+NumOfCGNode         3786
+NumOfCopys          2194
+NumOfFieldExpand    0
+NumOfGeps           791
+NumOfLoads          1410
+NumOfSCCDetect      6
+NumOfSFRs           0
+NumOfStores         540
+NumOfValidNode      3735
+NumOfValidObjNode   560
+Pointers            7279
+PointsToBlkPtr      0
+PointsToConstPtr    4
+SolveIterations     6
+StoreProcessed      569
+TotalCycleNum       14
+TotalObjects        597
+TotalPWCCycleNum    2
+TotalPointers       7279
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libcjson.a.bc)###############
+UniquePointsToSets       620
+TotalUnions              2716
+PropertyUnions           2536
+UniqueUnions             13
+LookupUnions             142
+PreemptiveUnions         25
+TotalComplements         22756
+PropertyComplements      22634
+UniqueComplements        7
+LookupComplements        108
+PreemptiveComplements    7
+TotalIntersections       2084
+PropertyIntersections    2070
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  14
+#######################################################
+[INFO] Points-to analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libcjson.a.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1.21561
+GenMUCHITime        0.008
+GenRegionTime       0.014
+InsertPHITime       0
+SSARenameTime       0.002
+TotalMSSATime       0.024
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        210
+CSChiNode           337
+CSHasChi            141
+CSHasMu             155
+CSMuNode            649
+FunEntryChi         820
+FunHasEntryChi      113
+FunHasRetMu         115
+FunRetMu            820
+LoadHasMu           1962
+LoadMuNode          1759
+MSSAPhi             777
+MaxRegSize          15
+MemRegions          487
+StoreChiNode        1045
+StoreHasChi         1042
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : libcjson.a.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0.007
+AvgWeight           1.30985
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.012
+OptTime             0
+TLNodeTime          0
+TotalTime           0.019
+----------------Numbers stats----------------------------
+ActualIn            649
+ActualOut           337
+ActualParam         503
+ActualRet           191
+Addr                657
+AvgInDegree         1
+AvgIndInDeg         1
+AvgIndOutDeg        1
+AvgOutDegree        1
+Copy                153
+DirectCallEdge      340
+DirectEdge          7953
+DirectRetEdge       152
+FormalIn            820
+FormalOut           820
+FormalParam         204
+FormalRet           103
+Gep                 840
+IndCallEdge         797
+IndRetEdge          410
+IndirectEdge        7394
+IndirectEdgeLabels  9685
+Load                1962
+MSSAPhi             777
+MaxInDegree         24
+MaxIndInDeg         24
+MaxIndOutDeg        49
+MaxOutDegree        902
+PHI                 129
+Store               1045
+TotalEdge           15347
+TotalNode           10830
+#######################################################
+------- CONFIG ---------
+	Trace Indirect Jumps: true
+	Output Metrics: true
+	Target: cjson
+
+	Interface file: /workspaces/libfuzz/analysis/cjson//work/apipass/apis_clang.json----------------------
+[INFO] CallGraph: 128 functions in 124 SCCs
+[SCC] top 10 largest SCCs (biggest first):
+[SCC] scc=17 num functions=3 formals=6 num direct edges=4 num indirect edges=0
+[SCC] scc=29 num functions=3 formals=6 num direct edges=4 num indirect edges=0
+[SCC] scc=53 num functions=1 formals=5 num direct edges=0 num indirect edges=0
+[SCC] scc=13 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=88 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=40 num functions=1 formals=4 num direct edges=0 num indirect edges=0
+[SCC] scc=111 num functions=1 formals=3 num direct edges=3 num indirect edges=0
+[SCC] scc=65 num functions=1 formals=3 num direct edges=0 num indirect edges=0
+[SCC] scc=67 num functions=1 formals=3 num direct edges=0 num indirect edges=0
+[SCC] scc=98 num functions=1 formals=3 num direct edges=1 num indirect edges=0
+[SCC] direct edges only: largest=3 functions (6 formals), 2 cyclic components
+[SCC] signature-filtered:largest=3 functions (6 formals),2 cyclic components
+[IND] num of indirect callsites=26
+[IND] cJSON_PrintBuffered(cs=3933) targets=1-> largest=3 functions (6 formals)
+[IND] print(cs=2673) targets=1-> largest=3 functions (6 formals)
+[IND] print(cs=2667) targets=1-> largest=3 functions (6 formals)
+[IND] cJSON_Delete(cs=420) targets=1-> largest=3 functions (6 formals)
+[IND] parse_number(cs=1696) targets=1-> largest=3 functions (6 formals)
+[IND] cJSON_PrintBuffered(cs=3970) targets=1-> largest=3 functions (6 formals)
+[IND] parse_string(cs=1284) targets=1-> largest=3 functions (6 formals)
+[IND] cJSON_Delete(cs=414) targets=1-> largest=3 functions (6 formals)
+[IND] parse_number(cs=1566) targets=1-> largest=3 functions (6 formals)
+[IND] print(cs=2582) targets=1-> largest=3 functions (6 formals)
+[IND] removing top 10 indirect callsites. Remaining largest SCC=3 (with6 formals), with 2 cyclic components
+[INFO 1/128 funcs, 1/124 SCCs] callgraph: cJSON_GetErrorPtr
+[INFO 2/128 funcs, 2/124 SCCs] callgraph: cJSON_IsString
+[INFO 3/128 funcs, 3/124 SCCs] callgraph: cJSON_GetStringValue
+[INFO 4/128 funcs, 4/124 SCCs] callgraph: cJSON_IsNumber
+[INFO 5/128 funcs, 5/124 SCCs] callgraph: cJSON_GetNumberValue
+[INFO 6/128 funcs, 6/124 SCCs] callgraph: sprintf
+[INFO 7/128 funcs, 7/124 SCCs] callgraph: cJSON_Version
+[INFO 8/128 funcs, 8/124 SCCs] callgraph: cJSON_InitHooks
+[INFO 9/128 funcs, 9/124 SCCs] callgraph: free
+[INFO 10/128 funcs, 10/124 SCCs] callgraph: cJSON_Delete
+cJSON_Delete
+[FIXPOINT] scc=7 iter=1 formals=1 total_ats=31 exits=0 max_field_depth=3
+[DICHAIN] ok=32 fresh_break=0 poisoned=0 | formal_with_di=8 | formal_no_di=0 compose_null_di=0 | gep_bu(ok/null)=33/0
+[FIXPOINT] scc=7 iter=2 formals=1 total_ats=38 exits=0 max_field_depth=3
+[DICHAIN] ok=56 fresh_break=0 poisoned=0 | formal_with_di=9 | formal_no_di=0 compose_null_di=0 | gep_bu(ok/null)=57/0
+[FIXPOINT] scc=7 iter=3 formals=1 total_ats=38 exits=0 max_field_depth=3
+[DICHAIN] ok=80 fresh_break=0 poisoned=0 | formal_with_di=10 | formal_no_di=0 compose_null_di=0 | gep_bu(ok/null)=81/0
+[process_scc] Evaluated Function: cJSON_Delete(Formal Param ID: 5454)
+Effects: ATS 38
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 11/128 funcs, 11/124 SCCs] callgraph: cJSON_SetNumberHelper
+[INFO 12/128 funcs, 12/124 SCCs] callgraph: strlen
+[INFO 13/128 funcs, 13/124 SCCs] callgraph: strcpy
+[INFO 14/128 funcs, 14/124 SCCs] callgraph: llvm.memcpy.p0.p0.i64
+[INFO 15/128 funcs, 15/124 SCCs] callgraph: malloc
+[INFO 16/128 funcs, 16/124 SCCs] callgraph: cJSON_strdup
+[INFO 17/128 funcs, 17/124 SCCs] callgraph: cJSON_free
+[INFO 18/128 funcs, 18/124 SCCs] callgraph: cJSON_SetValuestring
+[INFO 19/128 funcs, 19/124 SCCs] callgraph: llvm.memset.p0.i64
+[INFO 20/128 funcs, 20/124 SCCs] callgraph: cJSON_New_Item
+[INFO 21/128 funcs, 21/124 SCCs] callgraph: strncmp
+[INFO 22/128 funcs, 22/124 SCCs] callgraph: skip_utf8_bom
+[INFO 23/128 funcs, 23/124 SCCs] callgraph: buffer_skip_whitespace
+[INFO 24/128 funcs, 24/124 SCCs] callgraph: parse_hex4
+[INFO 25/128 funcs, 25/124 SCCs] callgraph: utf16_literal_to_utf8
+[ADDROF] REJ callee=parse_hex4 prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[ADDROF] REJ callee=parse_hex4 prefix=.(<unnamed di type>/1) suffix=(<unnamed di type>/1) suffix=. kind=read
+[INFO 26/128 funcs, 26/124 SCCs] callgraph: parse_string
+[INFO 27/128 funcs, 27/124 SCCs] callgraph: localeconv
+[INFO 28/128 funcs, 28/124 SCCs] callgraph: get_decimal_point
+[INFO 29/128 funcs, 29/124 SCCs] callgraph: strtod
+[INFO 30/128 funcs, 30/124 SCCs] callgraph: parse_number
+[INFO 33/128 funcs, 31/124 SCCs] callgraph: parse_value (SCC of 3)
+parse_value
+parse_array
+parse_object
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=. kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.* kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.0 kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=. kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.* kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.0 kind=read
+[FIXPOINT] scc=17 iter=1 formals=6 total_ats=47 exits=0 max_field_depth=2
+[DICHAIN] ok=280 fresh_break=0 poisoned=0 | formal_with_di=47 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=405/0
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=. kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.* kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.0 kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=. kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.* kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.0 kind=read
+[FIXPOINT] scc=17 iter=2 formals=6 total_ats=51 exits=0 max_field_depth=2
+[DICHAIN] ok=383 fresh_break=0 poisoned=0 | formal_with_di=53 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=559/0
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=. kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.* kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.0 kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=. kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.* kind=read
+[ADDROF] OK callee=cJSON_New_Item prefix=.4(internal_hooks/0) suffix=(internal_hooks/1) suffix=.0 kind=read
+[FIXPOINT] scc=17 iter=3 formals=6 total_ats=51 exits=0 max_field_depth=2
+[DICHAIN] ok=486 fresh_break=0 poisoned=0 | formal_with_di=59 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=713/0
+[process_scc] Evaluated Function: parse_value(Formal Param ID: 5476)
+Effects: ATS 7
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: parse_value(Formal Param ID: 5477)
+Effects: ATS 12
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: parse_array(Formal Param ID: 5532)
+Effects: ATS 4
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: parse_array(Formal Param ID: 5533)
+Effects: ATS 12
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: parse_object(Formal Param ID: 5447)
+Effects: ATS 4
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: parse_object(Formal Param ID: 5448)
+Effects: ATS 12
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 34/128 funcs, 32/124 SCCs] callgraph: cJSON_ParseWithLengthOpts
+[INFO 35/128 funcs, 33/124 SCCs] callgraph: cJSON_ParseWithOpts
+[INFO 36/128 funcs, 34/124 SCCs] callgraph: cJSON_Parse
+[INFO 37/128 funcs, 35/124 SCCs] callgraph: cJSON_ParseWithLength
+[INFO 38/128 funcs, 36/124 SCCs] callgraph: realloc
+[INFO 39/128 funcs, 37/124 SCCs] callgraph: ensure
+[INFO 40/128 funcs, 38/124 SCCs] callgraph: __isoc99_sscanf
+[INFO 41/128 funcs, 39/124 SCCs] callgraph: llvm.fabs.f64
+[INFO 42/128 funcs, 40/124 SCCs] callgraph: compare_double
+[INFO 43/128 funcs, 41/124 SCCs] callgraph: print_number
+[INFO 44/128 funcs, 42/124 SCCs] callgraph: print_string_ptr
+[INFO 45/128 funcs, 43/124 SCCs] callgraph: print_string
+[INFO 46/128 funcs, 44/124 SCCs] callgraph: update_offset
+[INFO 49/128 funcs, 45/124 SCCs] callgraph: print_value (SCC of 3)
+print_value
+print_array
+print_object
+[FIXPOINT] scc=29 iter=1 formals=6 total_ats=95 exits=0 max_field_depth=4
+[DICHAIN] ok=573 fresh_break=0 poisoned=0 | formal_with_di=98 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=884/0
+[FIXPOINT] scc=29 iter=2 formals=6 total_ats=120 exits=0 max_field_depth=4
+[DICHAIN] ok=617 fresh_break=0 poisoned=0 | formal_with_di=104 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=945/0
+[FIXPOINT] scc=29 iter=3 formals=6 total_ats=120 exits=0 max_field_depth=4
+[DICHAIN] ok=661 fresh_break=0 poisoned=0 | formal_with_di=110 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1006/0
+[process_scc] Evaluated Function: print_value(Formal Param ID: 5544)
+Effects: ATS 30
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: print_value(Formal Param ID: 5545)
+Effects: ATS 16
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: print_array(Formal Param ID: 5505)
+Effects: ATS 18
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: print_array(Formal Param ID: 5506)
+Effects: ATS 16
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: print_object(Formal Param ID: 5507)
+Effects: ATS 24
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: print_object(Formal Param ID: 5508)
+Effects: ATS 16
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 50/128 funcs, 46/124 SCCs] callgraph: print
+[INFO 51/128 funcs, 47/124 SCCs] callgraph: cJSON_Print
+[INFO 52/128 funcs, 48/124 SCCs] callgraph: cJSON_PrintUnformatted
+[INFO 53/128 funcs, 49/124 SCCs] callgraph: cJSON_PrintBuffered
+[INFO 54/128 funcs, 50/124 SCCs] callgraph: cJSON_PrintPreallocated
+[INFO 55/128 funcs, 51/124 SCCs] callgraph: cJSON_GetArraySize
+[INFO 56/128 funcs, 52/124 SCCs] callgraph: get_array_item
+[INFO 57/128 funcs, 53/124 SCCs] callgraph: cJSON_GetArrayItem
+[INFO 58/128 funcs, 54/124 SCCs] callgraph: strcmp
+[INFO 59/128 funcs, 55/124 SCCs] callgraph: tolower
+[INFO 60/128 funcs, 56/124 SCCs] callgraph: case_insensitive_strcmp
+[INFO 61/128 funcs, 57/124 SCCs] callgraph: get_object_item
+[INFO 62/128 funcs, 58/124 SCCs] callgraph: cJSON_GetObjectItem
+[INFO 63/128 funcs, 59/124 SCCs] callgraph: cJSON_GetObjectItemCaseSensitive
+[INFO 64/128 funcs, 60/124 SCCs] callgraph: cJSON_HasObjectItem
+[INFO 65/128 funcs, 61/124 SCCs] callgraph: suffix_object
+[INFO 66/128 funcs, 62/124 SCCs] callgraph: add_item_to_array
+[INFO 67/128 funcs, 63/124 SCCs] callgraph: cJSON_AddItemToArray
+[INFO 68/128 funcs, 64/124 SCCs] callgraph: cast_away_const
+[INFO 69/128 funcs, 65/124 SCCs] callgraph: add_item_to_object
+[INFO 70/128 funcs, 66/124 SCCs] callgraph: cJSON_AddItemToObject
+[INFO 71/128 funcs, 67/124 SCCs] callgraph: cJSON_AddItemToObjectCS
+[INFO 72/128 funcs, 68/124 SCCs] callgraph: create_reference
+[INFO 73/128 funcs, 69/124 SCCs] callgraph: cJSON_AddItemReferenceToArray
+[INFO 74/128 funcs, 70/124 SCCs] callgraph: cJSON_AddItemReferenceToObject
+[INFO 75/128 funcs, 71/124 SCCs] callgraph: cJSON_CreateNull
+[INFO 76/128 funcs, 72/124 SCCs] callgraph: cJSON_AddNullToObject
+[INFO 77/128 funcs, 73/124 SCCs] callgraph: cJSON_CreateTrue
+[INFO 78/128 funcs, 74/124 SCCs] callgraph: cJSON_AddTrueToObject
+[INFO 79/128 funcs, 75/124 SCCs] callgraph: cJSON_CreateFalse
+[INFO 80/128 funcs, 76/124 SCCs] callgraph: cJSON_AddFalseToObject
+[INFO 81/128 funcs, 77/124 SCCs] callgraph: cJSON_CreateBool
+[INFO 82/128 funcs, 78/124 SCCs] callgraph: cJSON_AddBoolToObject
+[INFO 83/128 funcs, 79/124 SCCs] callgraph: cJSON_CreateNumber
+[INFO 84/128 funcs, 80/124 SCCs] callgraph: cJSON_AddNumberToObject
+[INFO 85/128 funcs, 81/124 SCCs] callgraph: cJSON_CreateString
+[INFO 86/128 funcs, 82/124 SCCs] callgraph: cJSON_AddStringToObject
+[INFO 87/128 funcs, 83/124 SCCs] callgraph: cJSON_CreateRaw
+[INFO 88/128 funcs, 84/124 SCCs] callgraph: cJSON_AddRawToObject
+[INFO 89/128 funcs, 85/124 SCCs] callgraph: cJSON_CreateObject
+[INFO 90/128 funcs, 86/124 SCCs] callgraph: cJSON_AddObjectToObject
+[INFO 91/128 funcs, 87/124 SCCs] callgraph: cJSON_CreateArray
+[INFO 92/128 funcs, 88/124 SCCs] callgraph: cJSON_AddArrayToObject
+[INFO 93/128 funcs, 89/124 SCCs] callgraph: cJSON_DetachItemViaPointer
+[INFO 94/128 funcs, 90/124 SCCs] callgraph: cJSON_DetachItemFromArray
+[INFO 95/128 funcs, 91/124 SCCs] callgraph: cJSON_DeleteItemFromArray
+[INFO 96/128 funcs, 92/124 SCCs] callgraph: cJSON_DetachItemFromObject
+[INFO 97/128 funcs, 93/124 SCCs] callgraph: cJSON_DetachItemFromObjectCaseSensitive
+[INFO 98/128 funcs, 94/124 SCCs] callgraph: cJSON_DeleteItemFromObject
+[INFO 99/128 funcs, 95/124 SCCs] callgraph: cJSON_DeleteItemFromObjectCaseSensitive
+[INFO 100/128 funcs, 96/124 SCCs] callgraph: cJSON_InsertItemInArray
+[INFO 101/128 funcs, 97/124 SCCs] callgraph: cJSON_ReplaceItemViaPointer
+[INFO 102/128 funcs, 98/124 SCCs] callgraph: cJSON_ReplaceItemInArray
+[INFO 103/128 funcs, 99/124 SCCs] callgraph: replace_item_in_object
+[INFO 104/128 funcs, 100/124 SCCs] callgraph: cJSON_ReplaceItemInObject
+[INFO 105/128 funcs, 101/124 SCCs] callgraph: cJSON_ReplaceItemInObjectCaseSensitive
+[INFO 106/128 funcs, 102/124 SCCs] callgraph: cJSON_CreateStringReference
+[INFO 107/128 funcs, 103/124 SCCs] callgraph: cJSON_CreateObjectReference
+[INFO 108/128 funcs, 104/124 SCCs] callgraph: cJSON_CreateArrayReference
+[INFO 109/128 funcs, 105/124 SCCs] callgraph: cJSON_CreateIntArray
+[INFO 110/128 funcs, 106/124 SCCs] callgraph: cJSON_CreateFloatArray
+[INFO 111/128 funcs, 107/124 SCCs] callgraph: cJSON_CreateDoubleArray
+[INFO 112/128 funcs, 108/124 SCCs] callgraph: cJSON_CreateStringArray
+[INFO 113/128 funcs, 109/124 SCCs] callgraph: cJSON_Duplicate_rec
+cJSON_Duplicate_rec
+[FIXPOINT] scc=98 iter=1 formals=3 total_ats=15 exits=0 max_field_depth=3
+[DICHAIN] ok=928 fresh_break=0 poisoned=0 | formal_with_di=338 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1308/0
+[FIXPOINT] scc=98 iter=2 formals=3 total_ats=29 exits=0 max_field_depth=4
+[DICHAIN] ok=962 fresh_break=0 poisoned=0 | formal_with_di=344 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1342/0
+[FIXPOINT] scc=98 iter=3 formals=3 total_ats=29 exits=0 max_field_depth=4
+[DICHAIN] ok=996 fresh_break=0 poisoned=0 | formal_with_di=350 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1376/0
+[process_scc] Evaluated Function: cJSON_Duplicate_rec(Formal Param ID: 5431)
+Effects: ATS 27
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: cJSON_Duplicate_rec(Formal Param ID: 5432)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: cJSON_Duplicate_rec(Formal Param ID: 5433)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 114/128 funcs, 110/124 SCCs] callgraph: cJSON_Duplicate
+[INFO 115/128 funcs, 111/124 SCCs] callgraph: skip_oneline_comment
+[INFO 116/128 funcs, 112/124 SCCs] callgraph: skip_multiline_comment
+[INFO 117/128 funcs, 113/124 SCCs] callgraph: minify_string
+[INFO 118/128 funcs, 114/124 SCCs] callgraph: cJSON_Minify
+[INFO 119/128 funcs, 115/124 SCCs] callgraph: cJSON_IsInvalid
+[INFO 120/128 funcs, 116/124 SCCs] callgraph: cJSON_IsFalse
+[INFO 121/128 funcs, 117/124 SCCs] callgraph: cJSON_IsTrue
+[INFO 122/128 funcs, 118/124 SCCs] callgraph: cJSON_IsBool
+[INFO 123/128 funcs, 119/124 SCCs] callgraph: cJSON_IsNull
+[INFO 124/128 funcs, 120/124 SCCs] callgraph: cJSON_IsArray
+[INFO 125/128 funcs, 121/124 SCCs] callgraph: cJSON_IsObject
+[INFO 126/128 funcs, 122/124 SCCs] callgraph: cJSON_IsRaw
+[INFO 127/128 funcs, 123/124 SCCs] callgraph: cJSON_Compare
+cJSON_Compare
+[FIXPOINT] scc=111 iter=1 formals=3 total_ats=29 exits=0 max_field_depth=3
+[DICHAIN] ok=1030 fresh_break=0 poisoned=0 | formal_with_di=369 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1450/0
+[FIXPOINT] scc=111 iter=2 formals=3 total_ats=35 exits=0 max_field_depth=3
+[DICHAIN] ok=1056 fresh_break=0 poisoned=0 | formal_with_di=372 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1476/0
+[FIXPOINT] scc=111 iter=3 formals=3 total_ats=35 exits=0 max_field_depth=3
+[DICHAIN] ok=1082 fresh_break=0 poisoned=0 | formal_with_di=375 | formal_no_di=2 compose_null_di=0 | gep_bu(ok/null)=1502/0
+[process_scc] Evaluated Function: cJSON_Compare(Formal Param ID: 5426)
+Effects: ATS 17
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[process_scc] Evaluated Function: cJSON_Compare(Formal Param ID: 5427)
+Effects: ATS 17
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 0/78] processing return for cJSON_AddArrayToObject
+[INFO 1/78] processing return for cJSON_AddBoolToObject
+[INFO 2/78] processing return for cJSON_AddFalseToObject
+[INFO 3/78] processing return for cJSON_AddItemReferenceToArray
+[INFO 4/78] processing return for cJSON_AddItemReferenceToObject
+[INFO 5/78] processing return for cJSON_AddItemToArray
+[INFO 6/78] processing return for cJSON_AddItemToObject
+[INFO 7/78] processing return for cJSON_AddItemToObjectCS
+[INFO 8/78] processing return for cJSON_AddNullToObject
+[INFO 9/78] processing return for cJSON_AddNumberToObject
+[INFO 10/78] processing return for cJSON_AddObjectToObject
+[INFO 11/78] processing return for cJSON_AddRawToObject
+[INFO 12/78] processing return for cJSON_AddStringToObject
+[INFO 13/78] processing return for cJSON_AddTrueToObject
+[INFO 14/78] processing return for cJSON_Compare
+[INFO 15/78] processing return for cJSON_CreateArray
+[INFO 16/78] processing return for cJSON_CreateArrayReference
+[INFO 17/78] processing return for cJSON_CreateBool
+[INFO 18/78] processing return for cJSON_CreateDoubleArray
+[INFO 19/78] processing return for cJSON_CreateFalse
+[INFO 20/78] processing return for cJSON_CreateFloatArray
+[INFO 21/78] processing return for cJSON_CreateIntArray
+[INFO 22/78] processing return for cJSON_CreateNull
+[INFO 23/78] processing return for cJSON_CreateNumber
+[INFO 24/78] processing return for cJSON_CreateObject
+[INFO 25/78] processing return for cJSON_CreateObjectReference
+[INFO 26/78] processing return for cJSON_CreateRaw
+[INFO 27/78] processing return for cJSON_CreateString
+[INFO 28/78] processing return for cJSON_CreateStringArray
+[INFO 29/78] processing return for cJSON_CreateStringReference
+[INFO 30/78] processing return for cJSON_CreateTrue
+[INFO 31/78] processing return for cJSON_Delete
+[INFO 32/78] processing return for cJSON_DeleteItemFromArray
+[INFO 33/78] processing return for cJSON_DeleteItemFromObject
+[INFO 34/78] processing return for cJSON_DeleteItemFromObjectCaseSensitive
+[INFO 35/78] processing return for cJSON_DetachItemFromArray
+[INFO 36/78] processing return for cJSON_DetachItemFromObject
+[INFO 37/78] processing return for cJSON_DetachItemFromObjectCaseSensitive
+[INFO 38/78] processing return for cJSON_DetachItemViaPointer
+[INFO 39/78] processing return for cJSON_Duplicate
+[INFO 40/78] processing return for cJSON_GetArrayItem
+[INFO 41/78] processing return for cJSON_GetArraySize
+[INFO 42/78] processing return for cJSON_GetErrorPtr
+[INFO 43/78] processing return for cJSON_GetNumberValue
+[INFO 44/78] processing return for cJSON_GetObjectItem
+[INFO 45/78] processing return for cJSON_GetObjectItemCaseSensitive
+[INFO 46/78] processing return for cJSON_GetStringValue
+[INFO 47/78] processing return for cJSON_HasObjectItem
+[INFO 48/78] processing return for cJSON_InitHooks
+[INFO 49/78] processing return for cJSON_InsertItemInArray
+[INFO 50/78] processing return for cJSON_IsArray
+[INFO 51/78] processing return for cJSON_IsBool
+[INFO 52/78] processing return for cJSON_IsFalse
+[INFO 53/78] processing return for cJSON_IsInvalid
+[INFO 54/78] processing return for cJSON_IsNull
+[INFO 55/78] processing return for cJSON_IsNumber
+[INFO 56/78] processing return for cJSON_IsObject
+[INFO 57/78] processing return for cJSON_IsRaw
+[INFO 58/78] processing return for cJSON_IsString
+[INFO 59/78] processing return for cJSON_IsTrue
+[INFO 60/78] processing return for cJSON_Minify
+[INFO 61/78] processing return for cJSON_Parse
+[INFO 62/78] processing return for cJSON_ParseWithLength
+[INFO 63/78] processing return for cJSON_ParseWithLengthOpts
+[INFO 64/78] processing return for cJSON_ParseWithOpts
+[INFO 65/78] processing return for cJSON_Print
+[INFO 66/78] processing return for cJSON_PrintBuffered
+[INFO 67/78] processing return for cJSON_PrintPreallocated
+[INFO 68/78] processing return for cJSON_PrintUnformatted
+[INFO 69/78] processing return for cJSON_ReplaceItemInArray
+[INFO 70/78] processing return for cJSON_ReplaceItemInObject
+[INFO 71/78] processing return for cJSON_ReplaceItemInObjectCaseSensitive
+[INFO 72/78] processing return for cJSON_ReplaceI[process_scc] Evaluated Function: cJSON_Compare(Formal Param ID: 5428)
+Effects: ATS 1
+array 0, malloc 0, path 0, depends ''
+Exit Count: 0
+
+[INFO 128/128 funcs, 124/124 SCCs] callgraph: cJSON_malloc
+temViaPointer
+[INFO 73/78] processing return for cJSON_SetNumberHelper
+[INFO 74/78] processing return for cJSON_SetValuestring
+[INFO 75/78] processing return for cJSON_Version
+[INFO 76/78] processing return for cJSON_free
+[INFO 77/78] processing return for cJSON_malloc
+[INFO] Summary cJSON_AddArrayToObject:
+param_0: 9 access types
+param_1: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_AddBoolToObject:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 43 access types
+[INFO] Summary cJSON_AddFalseToObject:
+param_0: 9 access types
+param_1: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_AddItemReferenceToArray:
+param_0: 9 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary cJSON_AddItemReferenceToObject:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary cJSON_AddItemToArray:
+param_0: 9 access types
+param_1: 4 access types
+return: 0 access types
+[INFO] Summary cJSON_AddItemToObject:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 8 access types
+return: 0 access types
+[INFO] Summary cJSON_AddItemToObjectCS:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 8 access types
+return: 0 access types
+[INFO] Summary cJSON_AddNullToObject:
+param_0: 9 access types
+param_1: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_AddNumberToObject:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 45 access types
+[INFO] Summary cJSON_AddObjectToObject:
+param_0: 9 access types
+param_1: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_AddRawToObject:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_AddStringToObject:
+param_0: 9 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_AddTrueToObject:
+param_0: 9 access types
+param_1: 2 access types
+return: 43 access types
+[INFO] Summary cJSON_Compare:
+param_0: 17 access types
+param_1: 17 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_CreateArray:
+return: 6 access types
+[INFO] Summary cJSON_CreateArrayReference:
+param_0: 1 access types
+return: 7 access types
+[INFO] Summary cJSON_CreateBool:
+param_0: 1 access types
+return: 6 access types
+[INFO] Summary cJSON_CreateDoubleArray:
+param_0: 1 access types
+param_1: 1 access types
+return: 43 access types
+[INFO] Summary cJSON_CreateFalse:
+return: 6 access types
+[INFO] Summary cJSON_CreateFloatArray:
+param_0: 1 access types
+param_1: 1 access types
+return: 43 access types
+[INFO] Summary cJSON_CreateIntArray:
+param_0: 1 access types
+param_1: 1 access types
+return: 43 access types
+[INFO] Summary cJSON_CreateNull:
+return: 6 access types
+[INFO] Summary cJSON_CreateNumber:
+param_0: 1 access types
+return: 8 access types
+[INFO] Summary cJSON_CreateObject:
+return: 6 access types
+[INFO] Summary cJSON_CreateObjectReference:
+param_0: 1 access types
+return: 7 access types
+[INFO] Summary cJSON_CreateRaw:
+param_0: 2 access types
+return: 41 access types
+[INFO] Summary cJSON_CreateString:
+param_0: 2 access types
+return: 41 access types
+[INFO] Summary cJSON_CreateStringArray:
+param_0: 1 access types
+param_1: 1 access types
+return: 43 access types
+[INFO] Summary cJSON_CreateStringReference:
+param_0: 1 access types
+return: 7 access types
+[INFO] Summary cJSON_CreateTrue:
+return: 6 access types
+[INFO] Summary cJSON_Delete:
+param_0: 38 access types
+return: 0 access types
+[INFO] Summary cJSON_DeleteItemFromArray:
+param_0: 27 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_DeleteItemFromObject:
+param_0: 27 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_DeleteItemFromObjectCaseSensitive:
+param_0: 27 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_DetachItemFromArray:
+param_0: 15 access types
+param_1: 1 access types
+return: 11 access types
+[INFO] Summary cJSON_DetachItemFromObject:
+param_0: 17 access types
+param_1: 1 access types
+return: 11 access types
+[INFO] Summary cJSON_DetachItemFromObjectCaseSensitive:
+param_0: 17 access types
+param_1: 1 access types
+return: 11 access types
+[INFO] Summary cJSON_DetachItemViaPointer:
+param_0: 6 access types
+param_1: 10 access types
+return: 11 access types
+[INFO] Summary cJSON_Duplicate:
+param_0: 27 access types
+param_1: 1 access types
+return: 45 access types
+[INFO] Summary cJSON_GetArrayItem:
+param_0: 6 access types
+param_1: 1 access types
+return: 9 access types
+[INFO] Summary cJSON_GetArraySize:
+param_0: 6 access types
+return: 0 access types
+[INFO] Summary cJSON_GetErrorPtr:
+return: 0 access types
+[INFO] Summary cJSON_GetNumberValue:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary cJSON_GetObjectItem:
+param_0: 8 access types
+param_1: 1 access types
+return: 13 access types
+[INFO] Summary cJSON_GetObjectItemCaseSensitive:
+param_0: 8 access types
+param_1: 1 access types
+return: 13 access types
+[INFO] Summary cJSON_GetStringValue:
+param_0: 4 access types
+return: 5 access types
+[INFO] Summary cJSON_HasObjectItem:
+param_0: 8 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_InitHooks:
+param_0: 4 access types
+return: 0 access types
+[INFO] Summary cJSON_InsertItemInArray:
+param_0: 13 access types
+param_1: 1 access types
+param_2: 7 access types
+return: 0 access types
+[INFO] Summary cJSON_IsArray:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsBool:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsFalse:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsInvalid:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsNull:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsNumber:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsObject:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsRaw:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsString:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_IsTrue:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary cJSON_Minify:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary cJSON_Parse:
+param_0: 2 access types
+return: 44 access types
+[INFO] Summary cJSON_ParseWithLength:
+param_0: 1 access types
+param_1: 1 access types
+return: 44 access types
+[INFO] Summary cJSON_ParseWithLengthOpts:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 2 access types
+param_3: 1 access types
+return: 44 access types
+[INFO] Summary cJSON_ParseWithOpts:
+param_0: 2 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 44 access types
+[INFO] Summary cJSON_Print:
+param_0: 30 access types
+return: 4 access types
+[INFO] Summary cJSON_PrintBuffered:
+param_0: 30 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 4 access types
+[INFO] Summary cJSON_PrintPreallocated:
+param_0: 30 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_PrintUnformatted:
+param_0: 30 access types
+return: 4 access types
+[INFO] Summary cJSON_ReplaceItemInArray:
+param_0: 24 access types
+param_1: 1 access types
+param_2: 10 access types
+return: 0 access types
+[INFO] Summary cJSON_ReplaceItemInObject:
+param_0: 24 access types
+param_1: 2 access types
+param_2: 15 access types
+return: 0 access types
+[INFO] Summary cJSON_ReplaceItemInObjectCaseSensitive:
+param_0: 24 access types
+param_1: 2 access types
+param_2: 15 access types
+return: 0 access types
+[INFO] Summary cJSON_ReplaceItemViaPointer:
+param_0: 7 access types
+param_1: 41 access types
+param_2: 10 access types
+return: 0 access types
+[INFO] Summary cJSON_SetNumberHelper:
+param_0: 4 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary cJSON_SetValuestring:
+param_0: 6 access types
+param_1: 2 access types
+return: 8 access types
+[INFO] Summary cJSON_Version:
+return: 0 access types
+[INFO] Summary cJSON_free:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary cJSON_malloc:
+param_0: 1 access types
+return: 1 access types
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                         63.65         1     63.65
+2. PAG Builder                               97.52         1     97.52
+3. Points-to Analysis                       103.96         1    103.96
+4. Full SVFG Build                           69.54         1     69.54
+Function 1: extract_parameter_metadata       39.24       133      0.30
+Function 1: extract_parameter_metadata: cJSON_AddArrayToObject     23.46         2     11.73
+Function 1: extract_parameter_metadata: cJSON_AddBoolToObject      0.15         3      0.05
+Function 1: extract_parameter_metadata: cJSON_AddFalseToObject      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_AddItemReferenceToArray      0.11         2      0.05
+Function 1: extract_parameter_metadata: cJSON_AddItemReferenceToObject      0.14         3      0.05
+Function 1: extract_parameter_metadata: cJSON_AddItemToArray      0.11         2      0.06
+Function 1: extract_parameter_metadata: cJSON_AddItemToObject      0.15         3      0.05
+Function 1: extract_parameter_metadata: cJSON_AddItemToObjectCS      0.14         3      0.05
+Function 1: extract_parameter_metadata: cJSON_AddNullToObject      0.09         2      0.05
+Function 1: extract_parameter_metadata: cJSON_AddNumberToObject      0.17         3      0.06
+Function 1: extract_parameter_metadata: cJSON_AddObjectToObject      0.14         2      0.07
+Function 1: extract_parameter_metadata: cJSON_AddRawToObject      0.15         3      0.05
+Function 1: extract_parameter_metadata: cJSON_AddStringToObject      0.15         3      0.05
+Function 1: extract_parameter_metadata: cJSON_AddTrueToObject      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_Compare      8.30         3      2.77
+Function 1: extract_parameter_metadata: cJSON_CreateArrayReference      0.08         1      0.08
+Function 1: extract_parameter_metadata: cJSON_CreateBool      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateDoubleArray      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateFloatArray      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateIntArray      0.09         2      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateNumber      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateObjectReference      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateRaw      0.08         1      0.08
+Function 1: extract_parameter_metadata: cJSON_CreateString      0.06         1      0.06
+Function 1: extract_parameter_metadata: cJSON_CreateStringArray      0.09         2      0.05
+Function 1: extract_parameter_metadata: cJSON_CreateStringReference      0.06         1      0.06
+Function 1: extract_parameter_metadata: cJSON_Delete      0.11         1      0.11
+Function 1: extract_parameter_metadata: cJSON_DeleteItemFromArray      0.14         2      0.07
+Function 1: extract_parameter_metadata: cJSON_DeleteItemFromObject      0.13         2      0.07
+Function 1: extract_parameter_metadata: cJSON_DeleteItemFromObjectCaseSensitive      0.12         2      0.06
+Function 1: extract_parameter_metadata: cJSON_DetachItemFromArray      0.11         2      0.05
+Function 1: extract_parameter_metadata: cJSON_DetachItemFromObject      0.14         2      0.07
+Function 1: extract_parameter_metadata: cJSON_DetachItemFromObjectCaseSensitive      0.11         2      0.05
+Function 1: extract_parameter_metadata: cJSON_DetachItemViaPointer      0.12         2      0.06
+Function 1: extract_parameter_metadata: cJSON_Duplicate      0.14         2      0.07
+Function 1: extract_parameter_metadata: cJSON_GetArrayItem      0.14         2      0.07
+Function 1: extract_parameter_metadata: cJSON_GetArraySize      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_GetNumberValue      0.06         1      0.06
+Function 1: extract_parameter_metadata: cJSON_GetObjectItem      0.13         2      0.06
+Function 1: extract_parameter_metadata: cJSON_GetObjectItemCaseSensitive      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_GetStringValue      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_HasObjectItem      0.11         2      0.06
+Function 1: extract_parameter_metadata: cJSON_InitHooks      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_InsertItemInArray      0.17         3      0.06
+Function 1: extract_parameter_metadata: cJSON_IsArray      0.13         1      0.13
+Function 1: extract_parameter_metadata: cJSON_IsBool      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsFalse      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsInvalid      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsNull      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsNumber      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsObject      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsRaw      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsString      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_IsTrue      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_Minify      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_Parse      0.06         1      0.06
+Function 1: extract_parameter_metadata: cJSON_ParseWithLength      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_ParseWithLengthOpts      0.22         4      0.06
+Function 1: extract_parameter_metadata: cJSON_ParseWithOpts      0.15         3      0.05
+Function 1: extract_parameter_metadata: cJSON_Print      0.11         1      0.11
+Function 1: extract_parameter_metadata: cJSON_PrintBuffered      0.18         3      0.06
+Function 1: extract_parameter_metadata: cJSON_PrintPreallocated      0.23         4      0.06
+Function 1: extract_parameter_metadata: cJSON_PrintUnformatted      0.09         1      0.09
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemInArray      0.18         3      0.06
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemInObject      0.19         3      0.06
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemInObjectCaseSensitive      0.17         3      0.06
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemViaPointer      0.20         3      0.07
+Function 1: extract_parameter_metadata: cJSON_SetNumberHelper      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_SetValuestring      0.10         2      0.05
+Function 1: extract_parameter_metadata: cJSON_free      0.05         1      0.05
+Function 1: extract_parameter_metadata: cJSON_malloc      0.15         1      0.15
+Function 2: extractLenDependencyParameter      2.85        35      0.08
+Function 2: extractLenDependencyParameter: cJSON_AddArrayToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddBoolToObject      0.07         1      0.07
+Function 2: extractLenDependencyParameter: cJSON_AddFalseToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddItemReferenceToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddItemToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddItemToObjectCS      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddNullToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddNumberToObject      0.07         1      0.07
+Function 2: extractLenDependencyParameter: cJSON_AddObjectToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddRawToObject      0.09         2      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddStringToObject      0.08         2      0.04
+Function 2: extractLenDependencyParameter: cJSON_AddTrueToObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_CreateDoubleArray      0.11         1      0.11
+Function 2: extractLenDependencyParameter: cJSON_CreateFloatArray      0.08         1      0.08
+Function 2: extractLenDependencyParameter: cJSON_CreateIntArray      0.08         1      0.08
+Function 2: extractLenDependencyParameter: cJSON_CreateRaw      0.07         1      0.07
+Function 2: extractLenDependencyParameter: cJSON_CreateString      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_CreateStringArray      0.10         1      0.10
+Function 2: extractLenDependencyParameter: cJSON_DeleteItemFromObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_DeleteItemFromObjectCaseSensitive      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_DetachItemFromObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_DetachItemFromObjectCaseSensitive      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_GetObjectItem      0.05         1      0.05
+Function 2: extractLenDependencyParameter: cJSON_GetObjectItemCaseSensitive      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_HasObjectItem      0.05         1      0.05
+Function 2: extractLenDependencyParameter: cJSON_Minify      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_Parse      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_ParseWithLength      0.60         1      0.60
+Function 2: extractLenDependencyParameter: cJSON_ParseWithLengthOpts      0.29         1      0.29
+Function 2: extractLenDependencyParameter: cJSON_ParseWithOpts      0.27         1      0.27
+Function 2: extractLenDependencyParameter: cJSON_ReplaceItemInObject      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_ReplaceItemInObjectCaseSensitive      0.04         1      0.04
+Function 2: extractLenDependencyParameter: cJSON_SetValuestring      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameters      8.74       133      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_AddArrayToObject      0.23         2      0.11
+Function 3: my_extract_dependency_among_parameterscJSON_AddBoolToObject      0.17         3      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_AddFalseToObject      0.14         2      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemReferenceToArray      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemReferenceToObject      0.15         3      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemToArray      0.20         2      0.10
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemToObject      0.35         3      0.12
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemToObjectCS      0.23         3      0.08
+Function 3: my_extract_dependency_among_parameterscJSON_AddNullToObject      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_AddNumberToObject      0.17         3      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_AddObjectToObject      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_AddRawToObject      0.19         3      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_AddStringToObject      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_AddTrueToObject      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_Compare      0.30         3      0.10
+Function 3: my_extract_dependency_among_parameterscJSON_CreateArrayReference      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_CreateBool      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_CreateDoubleArray      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_CreateFloatArray      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_CreateIntArray      0.09         2      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_CreateNumber      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_CreateObjectReference      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_CreateRaw      0.08         1      0.08
+Function 3: my_extract_dependency_among_parameterscJSON_CreateString      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_CreateStringArray      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_CreateStringReference      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_Delete      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_DeleteItemFromArray      0.28         2      0.14
+Function 3: my_extract_dependency_among_parameterscJSON_DeleteItemFromObject      0.13         2      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_DeleteItemFromObjectCaseSensitive      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemFromArray      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemFromObject      0.13         2      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemFromObjectCaseSensitive      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemViaPointer      0.15         2      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_Duplicate      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_GetArrayItem      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_GetArraySize      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_GetNumberValue      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_GetObjectItem      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_GetObjectItemCaseSensitive      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_GetStringValue      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_HasObjectItem      0.10         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_InitHooks      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_InsertItemInArray      0.46         3      0.15
+Function 3: my_extract_dependency_among_parameterscJSON_IsArray      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_IsBool      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_IsFalse      0.09         1      0.09
+Function 3: my_extract_dependency_among_parameterscJSON_IsInvalid      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_IsNull      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_IsNumber      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_IsObject      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_IsRaw      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_IsString      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_IsTrue      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_Minify      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_Parse      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_ParseWithLength      0.09         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_ParseWithLengthOpts      0.33         4      0.08
+Function 3: my_extract_dependency_among_parameterscJSON_ParseWithOpts      0.20         3      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_Print      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_PrintBuffered      0.14         3      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_PrintPreallocated      0.18         4      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_PrintUnformatted      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemInArray      0.33         3      0.11
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemInObject      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemInObjectCaseSensitive      0.17         3      0.06
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemViaPointer      0.23         3      0.08
+Function 3: my_extract_dependency_among_parameterscJSON_SetNumberHelper      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_SetValuestring      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameterscJSON_free      0.04         1      0.04
+Function 3: my_extract_dependency_among_parameterscJSON_malloc      0.04         1      0.04
+Function 4: extract_return_metadata           6.13        78      0.08
+Function 4: extract_return_metadata: cJSON_AddArrayToObject      0.16         1      0.16
+Function 4: extract_return_metadata: cJSON_AddBoolToObject      0.15         1      0.15
+Function 4: extract_return_metadata: cJSON_AddFalseToObject      0.14         1      0.14
+Function 4: extract_return_metadata: cJSON_AddItemReferenceToArray      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_AddItemReferenceToObject      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_AddItemToArray      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_AddItemToObject      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_AddItemToObjectCS      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_AddNullToObject      0.17         1      0.17
+Function 4: extract_return_metadata: cJSON_AddNumberToObject      0.14         1      0.14
+Function 4: extract_return_metadata: cJSON_AddObjectToObject      0.16         1      0.16
+Function 4: extract_return_metadata: cJSON_AddRawToObject      0.16         1      0.16
+Function 4: extract_return_metadata: cJSON_AddStringToObject      0.13         1      0.13
+Function 4: extract_return_metadata: cJSON_AddTrueToObject      0.13         1      0.13
+Function 4: extract_return_metadata: cJSON_Compare      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateArray      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateArrayReference      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateBool      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateDoubleArray      0.20         1      0.20
+Function 4: extract_return_metadata: cJSON_CreateFalse      0.07         1      0.07
+Function 4: extract_return_metadata: cJSON_CreateFloatArray      0.15         1      0.15
+Function 4: extract_return_metadata: cJSON_CreateIntArray      0.16         1      0.16
+Function 4: extract_return_metadata: cJSON_CreateNull      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_CreateNumber      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateObject      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateObjectReference      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_CreateRaw      0.24         1      0.24
+Function 4: extract_return_metadata: cJSON_CreateString      0.13         1      0.13
+Function 4: extract_return_metadata: cJSON_CreateStringArray      0.13         1      0.13
+Function 4: extract_return_metadata: cJSON_CreateStringReference      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_CreateTrue      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_Delete      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_DeleteItemFromArray      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_DeleteItemFromObject      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_DeleteItemFromObjectCaseSensitive      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_DetachItemFromArray      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_DetachItemFromObject      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_DetachItemFromObjectCaseSensitive      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_DetachItemViaPointer      0.07         1      0.07
+Function 4: extract_return_metadata: cJSON_Duplicate      0.16         1      0.16
+Function 4: extract_return_metadata: cJSON_GetArrayItem      0.07         1      0.07
+Function 4: extract_return_metadata: cJSON_GetArraySize      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_GetErrorPtr      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_GetNumberValue      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_GetObjectItem      0.10         1      0.10
+Function 4: extract_return_metadata: cJSON_GetObjectItemCaseSensitive      0.09         1      0.09
+Function 4: extract_return_metadata: cJSON_GetStringValue      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_HasObjectItem      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_InitHooks      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_InsertItemInArray      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_IsArray      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_IsBool      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsFalse      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsInvalid      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsNull      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsNumber      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsObject      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsRaw      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsString      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_IsTrue      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_Minify      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_Parse      0.15         1      0.15
+Function 4: extract_return_metadata: cJSON_ParseWithLength      0.15         1      0.15
+Function 4: extract_return_metadata: cJSON_ParseWithLengthOpts      0.17         1      0.17
+Function 4: extract_return_metadata: cJSON_ParseWithOpts      0.15         1      0.15
+Function 4: extract_return_metadata: cJSON_Print      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_PrintBuffered      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_PrintPreallocated      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_PrintUnformatted      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_ReplaceItemInArray      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_ReplaceItemInObject      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_ReplaceItemInObjectCaseSensitive      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_ReplaceItemViaPointer      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_SetNumberHelper      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_SetValuestring      0.06         1      0.06
+Function 4: extract_return_metadata: cJSON_Version      0.05         1      0.05
+Function 4: extract_return_metadata: cJSON_free      0.04         1      0.04
+Function 4: extract_return_metadata: cJSON_malloc      0.04         1      0.04
+GlobalStruct: Build Slot Map                  0.38         1      0.38
+GlobalStruct: Globals Processing              0.05         1      0.05
+GlobalStruct: Resolve Indirect Calls          0.02         1      0.02
+GlobalStruct: Unresolved Calls                0.05         1      0.05
+GlobalStruct::analyze Total Time            103.91         1    103.91
+Process Function: cJSON_AddArrayToObject     24.03         1     24.03
+Process Function: cJSON_AddBoolToObject       0.67         1      0.67
+Process Function: cJSON_AddFalseToObject      0.51         1      0.51
+Process Function: cJSON_AddItemReferenceToArray      0.36         1      0.36
+Process Function: cJSON_AddItemReferenceToObject      0.45         1      0.45
+Process Function: cJSON_AddItemToArray        0.43         1      0.43
+Process Function: cJSON_AddItemToObject       0.66         1      0.66
+Process Function: cJSON_AddItemToObjectCS      0.53         1      0.53
+Process Function: cJSON_AddNullToObject       0.52         1      0.52
+Process Function: cJSON_AddNumberToObject      0.64         1      0.64
+Process Function: cJSON_AddObjectToObject      0.54         1      0.54
+Process Function: cJSON_AddRawToObject        0.69         1      0.69
+Process Function: cJSON_AddStringToObject      0.62         1      0.62
+Process Function: cJSON_AddTrueToObject       0.48         1      0.48
+Process Function: cJSON_Compare               8.89         1      8.89
+Process Function: cJSON_CreateArray           0.12         1      0.12
+Process Function: cJSON_CreateArrayReference      0.25         1      0.25
+Process Function: cJSON_CreateBool            0.20         1      0.20
+Process Function: cJSON_CreateDoubleArray      0.59         1      0.59
+Process Function: cJSON_CreateFalse           0.14         1      0.14
+Process Function: cJSON_CreateFloatArray      0.54         1      0.54
+Process Function: cJSON_CreateIntArray        0.50         1      0.50
+Process Function: cJSON_CreateNull            0.12         1      0.12
+Process Function: cJSON_CreateNumber          0.20         1      0.20
+Process Function: cJSON_CreateObject          0.09         1      0.09
+Process Function: cJSON_CreateObjectReference      0.19         1      0.19
+Process Function: cJSON_CreateRaw             0.57         1      0.57
+Process Function: cJSON_CreateString          0.35         1      0.35
+Process Function: cJSON_CreateStringArray      0.51         1      0.51
+Process Function: cJSON_CreateStringReference      0.23         1      0.23
+Process Function: cJSON_CreateTrue            0.11         1      0.11
+Process Function: cJSON_Delete                0.39         1      0.39
+Process Function: cJSON_DeleteItemFromArray      0.59         1      0.59
+Process Function: cJSON_DeleteItemFromObject      0.50         1      0.50
+Process Function: cJSON_DeleteItemFromObjectCaseSensitive      0.48         1      0.48
+Process Function: cJSON_DetachItemFromArray      0.39         1      0.39
+Process Function: cJSON_DetachItemFromObject      0.48         1      0.48
+Process Function: cJSON_DetachItemFromObjectCaseSensitive      0.44         1      0.44
+Process Function: cJSON_DetachItemViaPointer      0.42         1      0.42
+Process Function: cJSON_Duplicate             0.59         1      0.59
+Process Function: cJSON_GetArrayItem          0.39         1      0.39
+Process Function: cJSON_GetArraySize          0.20         1      0.20
+Process Function: cJSON_GetErrorPtr           0.09         1      0.09
+Process Function: cJSON_GetNumberValue        0.21         1      0.21
+Process Function: cJSON_GetObjectItem         0.49         1      0.49
+Process Function: cJSON_GetObjectItemCaseSensitive      0.42         1      0.42
+Process Function: cJSON_GetStringValue        0.21         1      0.21
+Process Function: cJSON_HasObjectItem         0.37         1      0.37
+Process Function: cJSON_InitHooks             0.19         1      0.19
+Process Function: cJSON_InsertItemInArray      0.78         1      0.78
+Process Function: cJSON_IsArray               0.30         1      0.30
+Process Function: cJSON_IsBool                0.19         1      0.19
+Process Function: cJSON_IsFalse               0.23         1      0.23
+Process Function: cJSON_IsInvalid             0.22         1      0.22
+Process Function: cJSON_IsNull                0.19         1      0.19
+Process Function: cJSON_IsNumber              0.19         1      0.19
+Process Function: cJSON_IsObject              0.19         1      0.19
+Process Function: cJSON_IsRaw                 0.18         1      0.18
+Process Function: cJSON_IsString              0.19         1      0.19
+Process Function: cJSON_IsTrue                0.19         1      0.19
+Process Function: cJSON_Minify                0.27         1      0.27
+Process Function: cJSON_Parse                 0.38         1      0.38
+Process Function: cJSON_ParseWithLength       1.04         1      1.04
+Process Function: cJSON_ParseWithLengthOpts      1.12         1      1.12
+Process Function: cJSON_ParseWithOpts         0.87         1      0.87
+Process Function: cJSON_Print                 0.43         1      0.43
+Process Function: cJSON_PrintBuffered         0.54         1      0.54
+Process Function: cJSON_PrintPreallocated      0.62         1      0.62
+Process Function: cJSON_PrintUnformatted      0.35         1      0.35
+Process Function: cJSON_ReplaceItemInArray      0.67         1      0.67
+Process Function: cJSON_ReplaceItemInObject      0.64         1      0.64
+Process Function: cJSON_ReplaceItemInObjectCaseSensitive      0.57         1      0.57
+Process Function: cJSON_ReplaceItemViaPointer      0.67         1      0.67
+Process Function: cJSON_SetNumberHelper       0.31         1      0.31
+Process Function: cJSON_SetValuestring        0.39         1      0.39
+Process Function: cJSON_Version               0.09         1      0.09
+Process Function: cJSON_free                  0.19         1      0.19
+Process Function: cJSON_malloc                0.29         1      0.29
+Process Parameters: cJSON_AddArrayToObject     23.80         1     23.80
+Process Parameters: cJSON_AddBoolToObject      0.46         1      0.46
+Process Parameters: cJSON_AddFalseToObject      0.32         1      0.32
+Process Parameters: cJSON_AddItemReferenceToArray      0.27         1      0.27
+Process Parameters: cJSON_AddItemReferenceToObject      0.38         1      0.38
+Process Parameters: cJSON_AddItemToArray      0.35         1      0.35
+Process Parameters: cJSON_AddItemToObject      0.59         1      0.59
+Process Parameters: cJSON_AddItemToObjectCS      0.46         1      0.46
+Process Parameters: cJSON_AddNullToObject      0.28         1      0.28
+Process Parameters: cJSON_AddNumberToObject      0.45         1      0.45
+Process Parameters: cJSON_AddObjectToObject      0.33         1      0.33
+Process Parameters: cJSON_AddRawToObject      0.48         1      0.48
+Process Parameters: cJSON_AddStringToObject      0.44         1      0.44
+Process Parameters: cJSON_AddTrueToObject      0.30         1      0.30
+Process Parameters: cJSON_Compare             8.76         1      8.76
+Process Parameters: cJSON_CreateArray         0.03         1      0.03
+Process Parameters: cJSON_CreateArrayReference      0.17         1      0.17
+Process Parameters: cJSON_CreateBool          0.12         1      0.12
+Process Parameters: cJSON_CreateDoubleArray      0.33         1      0.33
+Process Parameters: cJSON_CreateFalse         0.05         1      0.05
+Process Parameters: cJSON_CreateFloatArray      0.32         1      0.32
+Process Parameters: cJSON_CreateIntArray      0.29         1      0.29
+Process Parameters: cJSON_CreateNull          0.03         1      0.03
+Process Parameters: cJSON_CreateNumber        0.13         1      0.13
+Process Parameters: cJSON_CreateObject        0.02         1      0.02
+Process Parameters: cJSON_CreateObjectReference      0.12         1      0.12
+Process Parameters: cJSON_CreateRaw           0.27         1      0.27
+Process Parameters: cJSON_CreateString        0.18         1      0.18
+Process Parameters: cJSON_CreateStringArray      0.33         1      0.33
+Process Parameters: cJSON_CreateStringReference      0.14         1      0.14
+Process Parameters: cJSON_CreateTrue          0.02         1      0.02
+Process Parameters: cJSON_Delete              0.29         1      0.29
+Process Parameters: cJSON_DeleteItemFromArray      0.50         1      0.50
+Process Parameters: cJSON_DeleteItemFromObject      0.40         1      0.40
+Process Parameters: cJSON_DeleteItemFromObjectCaseSensitive      0.38         1      0.38
+Process Parameters: cJSON_DetachItemFromArray      0.28         1      0.28
+Process Parameters: cJSON_DetachItemFromObject      0.38         1      0.38
+Process Parameters: cJSON_DetachItemFromObjectCaseSensitive      0.33         1      0.33
+Process Parameters: cJSON_DetachItemViaPointer      0.31         1      0.31
+Process Parameters: cJSON_Duplicate           0.33         1      0.33
+Process Parameters: cJSON_GetArrayItem        0.28         1      0.28
+Process Parameters: cJSON_GetArraySize        0.13         1      0.13
+Process Parameters: cJSON_GetErrorPtr         0.02         1      0.02
+Process Parameters: cJSON_GetNumberValue      0.13         1      0.13
+Process Parameters: cJSON_GetObjectItem       0.35         1      0.35
+Process Parameters: cJSON_GetObjectItemCaseSensitive      0.30         1      0.30
+Process Parameters: cJSON_GetStringValue      0.13         1      0.13
+Process Parameters: cJSON_HasObjectItem       0.30         1      0.30
+Process Parameters: cJSON_InitHooks           0.12         1      0.12
+Process Parameters: cJSON_InsertItemInArray      0.69         1      0.69
+Process Parameters: cJSON_IsArray             0.22         1      0.22
+Process Parameters: cJSON_IsBool              0.12         1      0.12
+Process Parameters: cJSON_IsFalse             0.16         1      0.16
+Process Parameters: cJSON_IsInvalid           0.15         1      0.15
+Process Parameters: cJSON_IsNull              0.13         1      0.13
+Process Parameters: cJSON_IsNumber            0.12         1      0.12
+Process Parameters: cJSON_IsObject            0.12         1      0.12
+Process Parameters: cJSON_IsRaw               0.11         1      0.11
+Process Parameters: cJSON_IsString            0.12         1      0.12
+Process Parameters: cJSON_IsTrue              0.12         1      0.12
+Process Parameters: cJSON_Minify              0.20         1      0.20
+Process Parameters: cJSON_Parse               0.17         1      0.17
+Process Parameters: cJSON_ParseWithLength      0.83         1      0.83
+Process Parameters: cJSON_ParseWithLengthOpts      0.89         1      0.89
+Process Parameters: cJSON_ParseWithOpts       0.66         1      0.66
+Process Parameters: cJSON_Print               0.32         1      0.32
+Process Parameters: cJSON_PrintBuffered       0.44         1      0.44
+Process Parameters: cJSON_PrintPreallocated      0.52         1      0.52
+Process Parameters: cJSON_PrintUnformatted      0.25         1      0.25
+Process Parameters: cJSON_ReplaceItemInArray      0.58         1      0.58
+Process Parameters: cJSON_ReplaceItemInObject      0.54         1      0.54
+Process Parameters: cJSON_ReplaceItemInObjectCaseSensitive      0.48         1      0.48
+Process Parameters: cJSON_ReplaceItemViaPointer      0.55         1      0.55
+Process Parameters: cJSON_SetNumberHelper      0.24         1      0.24
+Process Parameters: cJSON_SetValuestring      0.29         1      0.29
+Process Parameters: cJSON_Version             0.02         1      0.02
+Process Parameters: cJSON_free                0.12         1      0.12
+Process Parameters: cJSON_malloc              0.23         1      0.23
+Total Condition Extraction (all 4 functions total)     64.08         1     64.08
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                             7.1         7.1        37.5       1
+2. PAG Builder                                  17.2        17.2        54.9       1
+3. Points-to Analysis                            9.4         9.4        64.3       1
+4. Full SVFG Build                              12.1        12.1        76.3       1
+Function 1: extract_parameter_metadata           0.0         1.4        80.1     133
+Function 1: extract_parameter_metadata: cJSON_AddArrayToObject         0.7         1.4        77.7       2
+Function 1: extract_parameter_metadata: cJSON_AddBoolToObject         0.0         0.0        77.8       3
+Function 1: extract_parameter_metadata: cJSON_AddFalseToObject         0.0         0.0        77.9       2
+Function 1: extract_parameter_metadata: cJSON_AddItemReferenceToArray         0.0         0.0        77.9       2
+Function 1: extract_parameter_metadata: cJSON_AddItemReferenceToObject         0.0         0.0        77.9       3
+Function 1: extract_parameter_metadata: cJSON_AddItemToArray         0.0         0.0        77.9       2
+Function 1: extract_parameter_metadata: cJSON_AddItemToObject         0.0         0.0        77.9       3
+Function 1: extract_parameter_metadata: cJSON_AddItemToObjectCS         0.0         0.0        77.9       3
+Function 1: extract_parameter_metadata: cJSON_AddNullToObject         0.0         0.0        77.9       2
+Function 1: extract_parameter_metadata: cJSON_AddNumberToObject         0.0         0.0        78.0       3
+Function 1: extract_parameter_metadata: cJSON_AddObjectToObject         0.0         0.0        78.1       2
+Function 1: extract_parameter_metadata: cJSON_AddRawToObject         0.0         0.0        78.1       3
+Function 1: extract_parameter_metadata: cJSON_AddStringToObject         0.0         0.0        78.1       3
+Function 1: extract_parameter_metadata: cJSON_AddTrueToObject         0.0         0.0        78.2       2
+Function 1: extract_parameter_metadata: cJSON_Compare         0.2         0.7        79.0       3
+Function 1: extract_parameter_metadata: cJSON_CreateArrayReference         0.0         0.0        79.0       1
+Function 1: extract_parameter_metadata: cJSON_CreateBool         0.0         0.0        79.0       1
+Function 1: extract_parameter_metadata: cJSON_CreateDoubleArray         0.0         0.0        79.0       2
+Function 1: extract_parameter_metadata: cJSON_CreateFloatArray         0.0         0.0        79.0       2
+Function 1: extract_parameter_metadata: cJSON_CreateIntArray         0.0         0.0        79.1       2
+Function 1: extract_parameter_metadata: cJSON_CreateNumber         0.0         0.0        79.1       1
+Function 1: extract_parameter_metadata: cJSON_CreateObjectReference         0.0         0.0        79.1       1
+Function 1: extract_parameter_metadata: cJSON_CreateRaw         0.0         0.0        79.1       1
+Function 1: extract_parameter_metadata: cJSON_CreateString         0.0         0.0        79.2       1
+Function 1: extract_parameter_metadata: cJSON_CreateStringArray         0.0         0.0        79.2       2
+Function 1: extract_parameter_metadata: cJSON_CreateStringReference         0.0         0.0        79.2       1
+Function 1: extract_parameter_metadata: cJSON_Delete         0.0         0.0        79.2       1
+Function 1: extract_parameter_metadata: cJSON_DeleteItemFromArray         0.0         0.0        79.3       2
+Function 1: extract_parameter_metadata: cJSON_DeleteItemFromObject         0.0         0.0        79.3       2
+Function 1: extract_parameter_metadata: cJSON_DeleteItemFromObjectCaseSensitive         0.0         0.0        79.4       2
+Function 1: extract_parameter_metadata: cJSON_DetachItemFromArray         0.0         0.0        79.4       2
+Function 1: extract_parameter_metadata: cJSON_DetachItemFromObject         0.0         0.0        79.4       2
+Function 1: extract_parameter_metadata: cJSON_DetachItemFromObjectCaseSensitive         0.0         0.0        79.4       2
+Function 1: extract_parameter_metadata: cJSON_DetachItemViaPointer         0.0         0.0        79.4       2
+Function 1: extract_parameter_metadata: cJSON_Duplicate         0.0         0.0        79.5       2
+Function 1: extract_parameter_metadata: cJSON_GetArrayItem         0.0         0.0        79.5       2
+Function 1: extract_parameter_metadata: cJSON_GetArraySize         0.0         0.0        79.5       1
+Function 1: extract_parameter_metadata: cJSON_GetNumberValue         0.0         0.0        79.5       1
+Function 1: extract_parameter_metadata: cJSON_GetObjectItem         0.0         0.0        79.5       2
+Function 1: extract_parameter_metadata: cJSON_GetObjectItemCaseSensitive         0.0         0.0        79.5       2
+Function 1: extract_parameter_metadata: cJSON_GetStringValue         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_HasObjectItem         0.0         0.0        79.6       2
+Function 1: extract_parameter_metadata: cJSON_InitHooks         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_InsertItemInArray         0.0         0.0        79.6       3
+Function 1: extract_parameter_metadata: cJSON_IsArray         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsBool         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsFalse         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsInvalid         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsNull         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsNumber         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsObject         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsRaw         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsString         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_IsTrue         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_Minify         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_Parse         0.0         0.0        79.6       1
+Function 1: extract_parameter_metadata: cJSON_ParseWithLength         0.0         0.0        79.7       2
+Function 1: extract_parameter_metadata: cJSON_ParseWithLengthOpts         0.0         0.0        79.8       4
+Function 1: extract_parameter_metadata: cJSON_ParseWithOpts         0.0         0.0        79.8       3
+Function 1: extract_parameter_metadata: cJSON_Print         0.0         0.0        79.8       1
+Function 1: extract_parameter_metadata: cJSON_PrintBuffered         0.0         0.0        79.9       3
+Function 1: extract_parameter_metadata: cJSON_PrintPreallocated         0.0         0.0        80.0       4
+Function 1: extract_parameter_metadata: cJSON_PrintUnformatted         0.0         0.0        80.0       1
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemInArray         0.0         0.0        80.0       3
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemInObject         0.0         0.0        80.1       3
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemInObjectCaseSensitive         0.0         0.0        80.1       3
+Function 1: extract_parameter_metadata: cJSON_ReplaceItemViaPointer         0.0         0.0        80.1       3
+Function 1: extract_parameter_metadata: cJSON_SetNumberHelper         0.0         0.0        80.1       2
+Function 1: extract_parameter_metadata: cJSON_SetValuestring         0.0         0.0        80.1       2
+Function 1: extract_parameter_metadata: cJSON_free         0.0         0.0        80.1       1
+Function 1: extract_parameter_metadata: cJSON_malloc         0.0         0.0        80.1       1
+Function 2: extractLenDependencyParameter         0.0         0.0        80.1      35
+Function 2: extractLenDependencyParameter: cJSON_AddArrayToObject         0.0         0.0        77.7       1
+Function 2: extractLenDependencyParameter: cJSON_AddBoolToObject         0.0         0.0        77.8       1
+Function 2: extractLenDependencyParameter: cJSON_AddFalseToObject         0.0         0.0        77.9       1
+Function 2: extractLenDependencyParameter: cJSON_AddItemReferenceToObject         0.0         0.0        77.9       1
+Function 2: extractLenDependencyParameter: cJSON_AddItemToObject         0.0         0.0        77.9       1
+Function 2: extractLenDependencyParameter: cJSON_AddItemToObjectCS         0.0         0.0        77.9       1
+Function 2: extractLenDependencyParameter: cJSON_AddNullToObject         0.0         0.0        77.9       1
+Function 2: extractLenDependencyParameter: cJSON_AddNumberToObject         0.0         0.0        78.0       1
+Function 2: extractLenDependencyParameter: cJSON_AddObjectToObject         0.0         0.0        78.1       1
+Function 2: extractLenDependencyParameter: cJSON_AddRawToObject         0.0         0.0        78.1       2
+Function 2: extractLenDependencyParameter: cJSON_AddStringToObject         0.0         0.0        78.1       2
+Function 2: extractLenDependencyParameter: cJSON_AddTrueToObject         0.0         0.0        78.2       1
+Function 2: extractLenDependencyParameter: cJSON_CreateDoubleArray         0.0         0.0        79.0       1
+Function 2: extractLenDependencyParameter: cJSON_CreateFloatArray         0.0         0.0        79.0       1
+Function 2: extractLenDependencyParameter: cJSON_CreateIntArray         0.0         0.0        79.1       1
+Function 2: extractLenDependencyParameter: cJSON_CreateRaw         0.0         0.0        79.1       1
+Function 2: extractLenDependencyParameter: cJSON_CreateString         0.0         0.0        79.2       1
+Function 2: extractLenDependencyParameter: cJSON_CreateStringArray         0.0         0.0        79.2       1
+Function 2: extractLenDependencyParameter: cJSON_DeleteItemFromObject         0.0         0.0        79.3       1
+Function 2: extractLenDependencyParameter: cJSON_DeleteItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Function 2: extractLenDependencyParameter: cJSON_DetachItemFromObject         0.0         0.0        79.4       1
+Function 2: extractLenDependencyParameter: cJSON_DetachItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Function 2: extractLenDependencyParameter: cJSON_GetObjectItem         0.0         0.0        79.5       1
+Function 2: extractLenDependencyParameter: cJSON_GetObjectItemCaseSensitive         0.0         0.0        79.5       1
+Function 2: extractLenDependencyParameter: cJSON_HasObjectItem         0.0         0.0        79.6       1
+Function 2: extractLenDependencyParameter: cJSON_Minify         0.0         0.0        79.6       1
+Function 2: extractLenDependencyParameter: cJSON_Parse         0.0         0.0        79.6       1
+Function 2: extractLenDependencyParameter: cJSON_ParseWithLength         0.0         0.0        79.7       1
+Function 2: extractLenDependencyParameter: cJSON_ParseWithLengthOpts         0.0         0.0        79.8       1
+Function 2: extractLenDependencyParameter: cJSON_ParseWithOpts         0.0         0.0        79.8       1
+Function 2: extractLenDependencyParameter: cJSON_ReplaceItemInObject         0.0         0.0        80.1       1
+Function 2: extractLenDependencyParameter: cJSON_ReplaceItemInObjectCaseSensitive         0.0         0.0        80.1       1
+Function 2: extractLenDependencyParameter: cJSON_SetValuestring         0.0         0.0        80.1       1
+Function 3: my_extract_dependency_among_parameters         0.0         0.0        80.1     133
+Function 3: my_extract_dependency_among_parameterscJSON_AddArrayToObject         0.0         0.0        77.7       2
+Function 3: my_extract_dependency_among_parameterscJSON_AddBoolToObject         0.0         0.0        77.8       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddFalseToObject         0.0         0.0        77.9       2
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemReferenceToArray         0.0         0.0        77.9       2
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemReferenceToObject         0.0         0.0        77.9       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemToArray         0.0         0.0        77.9       2
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemToObject         0.0         0.0        77.9       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddItemToObjectCS         0.0         0.0        77.9       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddNullToObject         0.0         0.0        77.9       2
+Function 3: my_extract_dependency_among_parameterscJSON_AddNumberToObject         0.0         0.0        78.0       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddObjectToObject         0.0         0.0        78.1       2
+Function 3: my_extract_dependency_among_parameterscJSON_AddRawToObject         0.0         0.0        78.1       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddStringToObject         0.0         0.0        78.1       3
+Function 3: my_extract_dependency_among_parameterscJSON_AddTrueToObject         0.0         0.0        78.2       2
+Function 3: my_extract_dependency_among_parameterscJSON_Compare         0.0         0.0        79.0       3
+Function 3: my_extract_dependency_among_parameterscJSON_CreateArrayReference         0.0         0.0        79.0       1
+Function 3: my_extract_dependency_among_parameterscJSON_CreateBool         0.0         0.0        79.0       1
+Function 3: my_extract_dependency_among_parameterscJSON_CreateDoubleArray         0.0         0.0        79.0       2
+Function 3: my_extract_dependency_among_parameterscJSON_CreateFloatArray         0.0         0.0        79.0       2
+Function 3: my_extract_dependency_among_parameterscJSON_CreateIntArray         0.0         0.0        79.1       2
+Function 3: my_extract_dependency_among_parameterscJSON_CreateNumber         0.0         0.0        79.1       1
+Function 3: my_extract_dependency_among_parameterscJSON_CreateObjectReference         0.0         0.0        79.1       1
+Function 3: my_extract_dependency_among_parameterscJSON_CreateRaw         0.0         0.0        79.1       1
+Function 3: my_extract_dependency_among_parameterscJSON_CreateString         0.0         0.0        79.2       1
+Function 3: my_extract_dependency_among_parameterscJSON_CreateStringArray         0.0         0.0        79.2       2
+Function 3: my_extract_dependency_among_parameterscJSON_CreateStringReference         0.0         0.0        79.2       1
+Function 3: my_extract_dependency_among_parameterscJSON_Delete         0.0         0.0        79.2       1
+Function 3: my_extract_dependency_among_parameterscJSON_DeleteItemFromArray         0.0         0.0        79.3       2
+Function 3: my_extract_dependency_among_parameterscJSON_DeleteItemFromObject         0.0         0.0        79.3       2
+Function 3: my_extract_dependency_among_parameterscJSON_DeleteItemFromObjectCaseSensitive         0.0         0.0        79.4       2
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemFromArray         0.0         0.0        79.4       2
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemFromObject         0.0         0.0        79.4       2
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemFromObjectCaseSensitive         0.0         0.0        79.4       2
+Function 3: my_extract_dependency_among_parameterscJSON_DetachItemViaPointer         0.0         0.0        79.4       2
+Function 3: my_extract_dependency_among_parameterscJSON_Duplicate         0.0         0.0        79.5       2
+Function 3: my_extract_dependency_among_parameterscJSON_GetArrayItem         0.0         0.0        79.5       2
+Function 3: my_extract_dependency_among_parameterscJSON_GetArraySize         0.0         0.0        79.5       1
+Function 3: my_extract_dependency_among_parameterscJSON_GetNumberValue         0.0         0.0        79.5       1
+Function 3: my_extract_dependency_among_parameterscJSON_GetObjectItem         0.0         0.0        79.5       2
+Function 3: my_extract_dependency_among_parameterscJSON_GetObjectItemCaseSensitive         0.0         0.0        79.5       2
+Function 3: my_extract_dependency_among_parameterscJSON_GetStringValue         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_HasObjectItem         0.0         0.0        79.6       2
+Function 3: my_extract_dependency_among_parameterscJSON_InitHooks         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_InsertItemInArray         0.0         0.0        79.6       3
+Function 3: my_extract_dependency_among_parameterscJSON_IsArray         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsBool         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsFalse         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsInvalid         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsNull         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsNumber         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsObject         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsRaw         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsString         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_IsTrue         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_Minify         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_Parse         0.0         0.0        79.6       1
+Function 3: my_extract_dependency_among_parameterscJSON_ParseWithLength         0.0         0.0        79.7       2
+Function 3: my_extract_dependency_among_parameterscJSON_ParseWithLengthOpts         0.0         0.0        79.8       4
+Function 3: my_extract_dependency_among_parameterscJSON_ParseWithOpts         0.0         0.0        79.8       3
+Function 3: my_extract_dependency_among_parameterscJSON_Print         0.0         0.0        79.8       1
+Function 3: my_extract_dependency_among_parameterscJSON_PrintBuffered         0.0         0.0        79.9       3
+Function 3: my_extract_dependency_among_parameterscJSON_PrintPreallocated         0.0         0.0        80.0       4
+Function 3: my_extract_dependency_among_parameterscJSON_PrintUnformatted         0.0         0.0        80.0       1
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemInArray         0.0         0.0        80.0       3
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemInObject         0.0         0.0        80.1       3
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemInObjectCaseSensitive         0.0         0.0        80.1       3
+Function 3: my_extract_dependency_among_parameterscJSON_ReplaceItemViaPointer         0.0         0.0        80.1       3
+Function 3: my_extract_dependency_among_parameterscJSON_SetNumberHelper         0.0         0.0        80.1       2
+Function 3: my_extract_dependency_among_parameterscJSON_SetValuestring         0.0         0.0        80.1       2
+Function 3: my_extract_dependency_among_parameterscJSON_free         0.0         0.0        80.1       1
+Function 3: my_extract_dependency_among_parameterscJSON_malloc         0.0         0.0        80.1       1
+Function 4: extract_return_metadata              0.0         0.1        80.1      78
+Function 4: extract_return_metadata: cJSON_AddArrayToObject         0.1         0.1        77.8       1
+Function 4: extract_return_metadata: cJSON_AddBoolToObject         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddFalseToObject         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddItemReferenceToArray         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddItemReferenceToObject         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddItemToArray         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddItemToObject         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddItemToObjectCS         0.0         0.0        77.9       1
+Function 4: extract_return_metadata: cJSON_AddNullToObject         0.1         0.1        78.0       1
+Function 4: extract_return_metadata: cJSON_AddNumberToObject         0.0         0.0        78.1       1
+Function 4: extract_return_metadata: cJSON_AddObjectToObject         0.0         0.0        78.1       1
+Function 4: extract_return_metadata: cJSON_AddRawToObject         0.0         0.0        78.1       1
+Function 4: extract_return_metadata: cJSON_AddStringToObject         0.0         0.0        78.2       1
+Function 4: extract_return_metadata: cJSON_AddTrueToObject         0.0         0.0        78.2       1
+Function 4: extract_return_metadata: cJSON_Compare         0.0         0.0        79.0       1
+Function 4: extract_return_metadata: cJSON_CreateArray         0.0         0.0        79.0       1
+Function 4: extract_return_metadata: cJSON_CreateArrayReference         0.0         0.0        79.0       1
+Function 4: extract_return_metadata: cJSON_CreateBool         0.0         0.0        79.0       1
+Function 4: extract_return_metadata: cJSON_CreateDoubleArray         0.1         0.1        79.0       1
+Function 4: extract_return_metadata: cJSON_CreateFalse         0.0         0.0        79.0       1
+Function 4: extract_return_metadata: cJSON_CreateFloatArray         0.0         0.0        79.1       1
+Function 4: extract_return_metadata: cJSON_CreateIntArray         0.0         0.0        79.1       1
+Function 4: extract_return_metadata: cJSON_CreateNull         0.0         0.0        79.1       1
+Function 4: extract_return_metadata: cJSON_CreateNumber         0.0         0.0        79.1       1
+Function 4: extract_return_metadata: cJSON_CreateObject         0.0         0.0        79.1       1
+Function 4: extract_return_metadata: cJSON_CreateObjectReference         0.0         0.0        79.1       1
+Function 4: extract_return_metadata: cJSON_CreateRaw         0.1         0.1        79.2       1
+Function 4: extract_return_metadata: cJSON_CreateString         0.0         0.0        79.2       1
+Function 4: extract_return_metadata: cJSON_CreateStringArray         0.0         0.0        79.2       1
+Function 4: extract_return_metadata: cJSON_CreateStringReference         0.0         0.0        79.2       1
+Function 4: extract_return_metadata: cJSON_CreateTrue         0.0         0.0        79.2       1
+Function 4: extract_return_metadata: cJSON_Delete         0.0         0.0        79.3       1
+Function 4: extract_return_metadata: cJSON_DeleteItemFromArray         0.0         0.0        79.3       1
+Function 4: extract_return_metadata: cJSON_DeleteItemFromObject         0.0         0.0        79.3       1
+Function 4: extract_return_metadata: cJSON_DeleteItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Function 4: extract_return_metadata: cJSON_DetachItemFromArray         0.0         0.0        79.4       1
+Function 4: extract_return_metadata: cJSON_DetachItemFromObject         0.0         0.0        79.4       1
+Function 4: extract_return_metadata: cJSON_DetachItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Function 4: extract_return_metadata: cJSON_DetachItemViaPointer         0.0         0.0        79.4       1
+Function 4: extract_return_metadata: cJSON_Duplicate         0.1         0.1        79.5       1
+Function 4: extract_return_metadata: cJSON_GetArrayItem         0.0         0.0        79.5       1
+Function 4: extract_return_metadata: cJSON_GetArraySize         0.0         0.0        79.5       1
+Function 4: extract_return_metadata: cJSON_GetErrorPtr         0.0         0.0        79.5       1
+Function 4: extract_return_metadata: cJSON_GetNumberValue         0.0         0.0        79.5       1
+Function 4: extract_return_metadata: cJSON_GetObjectItem         0.0         0.0        79.5       1
+Function 4: extract_return_metadata: cJSON_GetObjectItemCaseSensitive         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_GetStringValue         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_HasObjectItem         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_InitHooks         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_InsertItemInArray         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsArray         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsBool         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsFalse         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsInvalid         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsNull         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsNumber         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsObject         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsRaw         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsString         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_IsTrue         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_Minify         0.0         0.0        79.6       1
+Function 4: extract_return_metadata: cJSON_Parse         0.1         0.1        79.7       1
+Function 4: extract_return_metadata: cJSON_ParseWithLength         0.0         0.0        79.8       1
+Function 4: extract_return_metadata: cJSON_ParseWithLengthOpts         0.0         0.0        79.8       1
+Function 4: extract_return_metadata: cJSON_ParseWithOpts         0.0         0.0        79.8       1
+Function 4: extract_return_metadata: cJSON_Print         0.0         0.0        79.9       1
+Function 4: extract_return_metadata: cJSON_PrintBuffered         0.0         0.0        79.9       1
+Function 4: extract_return_metadata: cJSON_PrintPreallocated         0.0         0.0        80.0       1
+Function 4: extract_return_metadata: cJSON_PrintUnformatted         0.0         0.0        80.0       1
+Function 4: extract_return_metadata: cJSON_ReplaceItemInArray         0.0         0.0        80.0       1
+Function 4: extract_return_metadata: cJSON_ReplaceItemInObject         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_ReplaceItemInObjectCaseSensitive         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_ReplaceItemViaPointer         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_SetNumberHelper         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_SetValuestring         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_Version         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_free         0.0         0.0        80.1       1
+Function 4: extract_return_metadata: cJSON_malloc         0.0         0.0        80.1       1
+GlobalStruct: Build Slot Map                     0.0         0.0        64.2       1
+GlobalStruct: Globals Processing                 0.0         0.0        64.2       1
+GlobalStruct: Resolve Indirect Calls             0.0         0.0        64.2       1
+GlobalStruct: Unresolved Calls                   0.0         0.0        64.2       1
+GlobalStruct: base PTA analyze                   9.3         9.3        64.2       1
+GlobalStruct::analyze Total Time                 9.4         9.4        64.3       1
+Process Function: cJSON_AddArrayToObject         1.5         1.5        77.8       1
+Process Function: cJSON_AddBoolToObject          0.0         0.0        77.9       1
+Process Function: cJSON_AddFalseToObject         0.0         0.0        77.9       1
+Process Function: cJSON_AddItemReferenceToArray         0.0         0.0        77.9       1
+Process Function: cJSON_AddItemReferenceToObject         0.0         0.0        77.9       1
+Process Function: cJSON_AddItemToArray           0.0         0.0        77.9       1
+Process Function: cJSON_AddItemToObject          0.0         0.0        77.9       1
+Process Function: cJSON_AddItemToObjectCS         0.0         0.0        77.9       1
+Process Function: cJSON_AddNullToObject          0.1         0.1        78.0       1
+Process Function: cJSON_AddNumberToObject         0.0         0.0        78.1       1
+Process Function: cJSON_AddObjectToObject         0.0         0.0        78.1       1
+Process Function: cJSON_AddRawToObject           0.0         0.0        78.1       1
+Process Function: cJSON_AddStringToObject         0.0         0.0        78.2       1
+Process Function: cJSON_AddTrueToObject          0.0         0.0        78.2       1
+Process Function: cJSON_Compare                  0.7         0.7        79.0       1
+Process Function: cJSON_CreateArray              0.0         0.0        79.0       1
+Process Function: cJSON_CreateArrayReference         0.0         0.0        79.0       1
+Process Function: cJSON_CreateBool               0.0         0.0        79.0       1
+Process Function: cJSON_CreateDoubleArray         0.1         0.1        79.0       1
+Process Function: cJSON_CreateFalse              0.0         0.0        79.0       1
+Process Function: cJSON_CreateFloatArray         0.0         0.0        79.1       1
+Process Function: cJSON_CreateIntArray           0.0         0.0        79.1       1
+Process Function: cJSON_CreateNull               0.0         0.0        79.1       1
+Process Function: cJSON_CreateNumber             0.0         0.0        79.1       1
+Process Function: cJSON_CreateObject             0.0         0.0        79.1       1
+Process Function: cJSON_CreateObjectReference         0.0         0.0        79.1       1
+Process Function: cJSON_CreateRaw                0.1         0.1        79.2       1
+Process Function: cJSON_CreateString             0.0         0.0        79.2       1
+Process Function: cJSON_CreateStringArray         0.0         0.0        79.2       1
+Process Function: cJSON_CreateStringReference         0.0         0.0        79.2       1
+Process Function: cJSON_CreateTrue               0.0         0.0        79.2       1
+Process Function: cJSON_Delete                   0.0         0.0        79.3       1
+Process Function: cJSON_DeleteItemFromArray         0.0         0.0        79.3       1
+Process Function: cJSON_DeleteItemFromObject         0.0         0.0        79.3       1
+Process Function: cJSON_DeleteItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Process Function: cJSON_DetachItemFromArray         0.0         0.0        79.4       1
+Process Function: cJSON_DetachItemFromObject         0.0         0.0        79.4       1
+Process Function: cJSON_DetachItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Process Function: cJSON_DetachItemViaPointer         0.0         0.0        79.4       1
+Process Function: cJSON_Duplicate                0.1         0.1        79.5       1
+Process Function: cJSON_GetArrayItem             0.0         0.0        79.5       1
+Process Function: cJSON_GetArraySize             0.0         0.0        79.5       1
+Process Function: cJSON_GetErrorPtr              0.0         0.0        79.5       1
+Process Function: cJSON_GetNumberValue           0.0         0.0        79.5       1
+Process Function: cJSON_GetObjectItem            0.0         0.0        79.5       1
+Process Function: cJSON_GetObjectItemCaseSensitive         0.0         0.0        79.6       1
+Process Function: cJSON_GetStringValue           0.0         0.0        79.6       1
+Process Function: cJSON_HasObjectItem            0.0         0.0        79.6       1
+Process Function: cJSON_InitHooks                0.0         0.0        79.6       1
+Process Function: cJSON_InsertItemInArray         0.0         0.0        79.6       1
+Process Function: cJSON_IsArray                  0.0         0.0        79.6       1
+Process Function: cJSON_IsBool                   0.0         0.0        79.6       1
+Process Function: cJSON_IsFalse                  0.0         0.0        79.6       1
+Process Function: cJSON_IsInvalid                0.0         0.0        79.6       1
+Process Function: cJSON_IsNull                   0.0         0.0        79.6       1
+Process Function: cJSON_IsNumber                 0.0         0.0        79.6       1
+Process Function: cJSON_IsObject                 0.0         0.0        79.6       1
+Process Function: cJSON_IsRaw                    0.0         0.0        79.6       1
+Process Function: cJSON_IsString                 0.0         0.0        79.6       1
+Process Function: cJSON_IsTrue                   0.0         0.0        79.6       1
+Process Function: cJSON_Minify                   0.0         0.0        79.6       1
+Process Function: cJSON_Parse                    0.1         0.1        79.7       1
+Process Function: cJSON_ParseWithLength          0.0         0.0        79.8       1
+Process Function: cJSON_ParseWithLengthOpts         0.0         0.0        79.8       1
+Process Function: cJSON_ParseWithOpts            0.0         0.0        79.8       1
+Process Function: cJSON_Print                    0.1         0.1        79.9       1
+Process Function: cJSON_PrintBuffered            0.0         0.0        79.9       1
+Process Function: cJSON_PrintPreallocated         0.0         0.0        80.0       1
+Process Function: cJSON_PrintUnformatted         0.0         0.0        80.0       1
+Process Function: cJSON_ReplaceItemInArray         0.0         0.0        80.0       1
+Process Function: cJSON_ReplaceItemInObject         0.0         0.0        80.1       1
+Process Function: cJSON_ReplaceItemInObjectCaseSensitive         0.0         0.0        80.1       1
+Process Function: cJSON_ReplaceItemViaPointer         0.1         0.1        80.1       1
+Process Function: cJSON_SetNumberHelper          0.0         0.0        80.1       1
+Process Function: cJSON_SetValuestring           0.0         0.0        80.1       1
+Process Function: cJSON_Version                  0.0         0.0        80.1       1
+Process Function: cJSON_free                     0.0         0.0        80.1       1
+Process Function: cJSON_malloc                   0.0         0.0        80.1       1
+Process Parameters: cJSON_AddArrayToObject         1.4         1.4        77.7       1
+Process Parameters: cJSON_AddBoolToObject         0.0         0.0        77.8       1
+Process Parameters: cJSON_AddFalseToObject         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddItemReferenceToArray         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddItemReferenceToObject         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddItemToArray         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddItemToObject         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddItemToObjectCS         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddNullToObject         0.0         0.0        77.9       1
+Process Parameters: cJSON_AddNumberToObject         0.0         0.0        78.0       1
+Process Parameters: cJSON_AddObjectToObject         0.0         0.0        78.1       1
+Process Parameters: cJSON_AddRawToObject         0.0         0.0        78.1       1
+Process Parameters: cJSON_AddStringToObject         0.0         0.0        78.1       1
+Process Parameters: cJSON_AddTrueToObject         0.0         0.0        78.2       1
+Process Parameters: cJSON_Compare                0.7         0.7        79.0       1
+Process Parameters: cJSON_CreateArray            0.0         0.0        79.0       1
+Process Parameters: cJSON_CreateArrayReference         0.0         0.0        79.0       1
+Process Parameters: cJSON_CreateBool             0.0         0.0        79.0       1
+Process Parameters: cJSON_CreateDoubleArray         0.0         0.0        79.0       1
+Process Parameters: cJSON_CreateFalse            0.0         0.0        79.0       1
+Process Parameters: cJSON_CreateFloatArray         0.0         0.0        79.0       1
+Process Parameters: cJSON_CreateIntArray         0.0         0.0        79.1       1
+Process Parameters: cJSON_CreateNull             0.0         0.0        79.1       1
+Process Parameters: cJSON_CreateNumber           0.0         0.0        79.1       1
+Process Parameters: cJSON_CreateObject           0.0         0.0        79.1       1
+Process Parameters: cJSON_CreateObjectReference         0.0         0.0        79.1       1
+Process Parameters: cJSON_CreateRaw              0.0         0.0        79.1       1
+Process Parameters: cJSON_CreateString           0.0         0.0        79.2       1
+Process Parameters: cJSON_CreateStringArray         0.0         0.0        79.2       1
+Process Parameters: cJSON_CreateStringReference         0.0         0.0        79.2       1
+Process Parameters: cJSON_CreateTrue             0.0         0.0        79.2       1
+Process Parameters: cJSON_Delete                 0.0         0.0        79.3       1
+Process Parameters: cJSON_DeleteItemFromArray         0.0         0.0        79.3       1
+Process Parameters: cJSON_DeleteItemFromObject         0.0         0.0        79.3       1
+Process Parameters: cJSON_DeleteItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Process Parameters: cJSON_DetachItemFromArray         0.0         0.0        79.4       1
+Process Parameters: cJSON_DetachItemFromObject         0.0         0.0        79.4       1
+Process Parameters: cJSON_DetachItemFromObjectCaseSensitive         0.0         0.0        79.4       1
+Process Parameters: cJSON_DetachItemViaPointer         0.0         0.0        79.4       1
+Process Parameters: cJSON_Duplicate              0.0         0.0        79.5       1
+Process Parameters: cJSON_GetArrayItem           0.0         0.0        79.5       1
+Process Parameters: cJSON_GetArraySize           0.0         0.0        79.5       1
+Process Parameters: cJSON_GetErrorPtr            0.0         0.0        79.5       1
+Process Parameters: cJSON_GetNumberValue         0.0         0.0        79.5       1
+Process Parameters: cJSON_GetObjectItem          0.0         0.0        79.5       1
+Process Parameters: cJSON_GetObjectItemCaseSensitive         0.0         0.0        79.5       1
+Process Parameters: cJSON_GetStringValue         0.0         0.0        79.6       1
+Process Parameters: cJSON_HasObjectItem          0.0         0.0        79.6       1
+Process Parameters: cJSON_InitHooks              0.0         0.0        79.6       1
+Process Parameters: cJSON_InsertItemInArray         0.0         0.0        79.6       1
+Process Parameters: cJSON_IsArray                0.0         0.0        79.6       1
+Process Parameters: cJSON_IsBool                 0.0         0.0        79.6       1
+Process Parameters: cJSON_IsFalse                0.0         0.0        79.6       1
+Process Parameters: cJSON_IsInvalid              0.0         0.0        79.6       1
+Process Parameters: cJSON_IsNull                 0.0         0.0        79.6       1
+Process Parameters: cJSON_IsNumber               0.0         0.0        79.6       1
+Process Parameters: cJSON_IsObject               0.0         0.0        79.6       1
+Process Parameters: cJSON_IsRaw                  0.0         0.0        79.6       1
+Process Parameters: cJSON_IsString               0.0         0.0        79.6       1
+Process Parameters: cJSON_IsTrue                 0.0         0.0        79.6       1
+Process Parameters: cJSON_Minify                 0.0         0.0        79.6       1
+Process Parameters: cJSON_Parse                  0.0         0.0        79.6       1
+Process Parameters: cJSON_ParseWithLength         0.0         0.0        79.7       1
+Process Parameters: cJSON_ParseWithLengthOpts         0.0         0.0        79.8       1
+Process Parameters: cJSON_ParseWithOpts          0.0         0.0        79.8       1
+Process Parameters: cJSON_Print                  0.1         0.1        79.9       1
+Process Parameters: cJSON_PrintBuffered          0.0         0.0        79.9       1
+Process Parameters: cJSON_PrintPreallocated         0.0         0.0        80.0       1
+Process Parameters: cJSON_PrintUnformatted         0.0         0.0        80.0 [COMPOSE] attempts=6320 di_match=6278 di_reject=30 di_void=12 undecidable=0 absent=0 unnamed=0)
+[NODES] tota_dp_processed=11941 pops=13724 dedup=1783
+[IS_MALLOC_SIZE] 1
+[GEP_TYPE] void_recovered0 untyped_skip=50
+      1
+Process Parameters: cJSON_ReplaceItemInArray         0.0         0.0        80.0       1
+Process Parameters: cJSON_ReplaceItemInObject         0.0         0.0        80.1       1
+Process Parameters: cJSON_ReplaceItemInObjectCaseSensitive         0.0         0.0        80.1       1
+Process Parameters: cJSON_ReplaceItemViaPointer         0.1         0.1        80.1       1
+Process Parameters: cJSON_SetNumberHelper         0.0         0.0        80.1       1
+Process Parameters: cJSON_SetValuestring         0.0         0.0        80.1       1
+Process Parameters: cJSON_Version                0.0         0.0        80.1       1
+Process Parameters: cJSON_free                   0.0         0.0        80.1       1
+Process Parameters: cJSON_malloc                 0.0         0.0        80.1       1
+Total Condition Extraction (all 4 functions total)         3.8         3.8        80.2       1
+
+Saved to /workspaces/libfuzz/analysis/cjson//work/apipass/conditions.json
+Analysis complete for cjson
++ echo 'Finished analysis'
+Finished analysis
++ ./analysis.sh cjson --run-only
++ echo 'Analysing cjson'
++ source setup_target.sh cjson
+++ source setup.sh
++++ set -e
++++++ realpath ./analysis.sh
+++++ dirname /workspaces/libfuzz/analysis.sh
++++ export PROJECT=/workspaces/libfuzz
++++ PROJECT=/workspaces/libfuzz
++++ '[' -z /workspaces/libfuzz ']'
++++ '[' -z /home/libfuzz ']'
+++ [[ ! -z cjson ]]
+++ export TARGET_NAME=cjson
+++ TARGET_NAME=cjson
+++ export GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ GEN_TARGET_DIR=/workspaces/libfuzz/targets
+++ export TARGET_DIR=/workspaces/libfuzz/targets/cjson
+++ TARGET_DIR=/workspaces/libfuzz/targets/cjson
+++ CONFIG_FILE=/workspaces/libfuzz/targets/cjson/config.sh
+++ export LLVM_COMPILER=clang
+++ LLVM_COMPILER=clang
+++ '[' -n /home/libfuzz/llvm-21/ ']'
+++ export LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ LLVM_COMPILER_PATH=/home/libfuzz/llvm-21//bin
+++ export CC=wllvm
+++ CC=wllvm
+++ export CXX=wllvm++
+++ CXX=wllvm++
++ export TARGET=/workspaces/libfuzz/analysis/cjson/
++ TARGET=/workspaces/libfuzz/analysis/cjson/
++ export WORK=/workspaces/libfuzz/analysis/cjson//work
++ WORK=/workspaces/libfuzz/analysis/cjson//work
++ FETCH_ONLY=false
++ RUN_ONLY=false
++ DEBUG_ONLY=false
++ BUILD_ONLY=false
++ FUNCTION=
++ LOG_TAGS=
++ shift
++ '[' 1 -gt 0 ']'
++ case "$1" in
++ RUN_ONLY=true
++ shift
++ '[' 0 -gt 0 ']'
++ '[' -n '' ']'
++ export FUNCTION LOG_TAGS
++ source /workspaces/libfuzz/targets/cjson/config.sh
+++ REPO_URL=https://github.com/DaveGamble/cJSON.git
+++ REPO_COMMIT=c859b25da02955fef659d658b8f324b5cde87be3
+++ BC_FILE_NAME=libcjson.a
++ '[' true = false ']'
++ '[' false = true ']'
++ command -v wllvm
++ '[' true = false ']'
++ cd /workspaces/libfuzz
++ '[' false = false ']'
++ '[' false = true ']'
++ source run_analysis.sh
+++ DEBUG=
+++ '[' '' == --debug ']'
+++ mkdir -p /workspaces/libfuzz/analysis/cjson//work
+++ mkdir -p /workspaces/libfuzz/analysis/cjson//work/lib /workspaces/libfuzz/analysis/cjson//work/include
+++ '[' -n '' ']'
+++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cjson//work/apipass
+++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cjson//work/apipass
+++ rm -rf /workspaces/libfuzz/analysis/cjson//work/apipass
+++ mkdir -p /workspaces/libfuzz/analysis/cjson//work/apipass
+++ touch /workspaces/libfuzz/analysis/cjson//work/apipass/exported_functions.txt
+++ touch /workspaces/libfuzz/analysis/cjson//work/apipass/incomplete_types.txt
+++ touch /workspaces/libfuzz/analysis/cjson//work/apipass/apis_clang.json
+++ touch /workspaces/libfuzz/analysis/cjson//work/apipass/apis_llvm.json
+++ touch /workspaces/libfuzz/analysis/cjson//work/apipass/coerce.log
+++ touch /workspaces/libfuzz/analysis/cjson//work/apipass/enum_types.txt
+++ python3 -c 'import wllvm'
+++ echo '[INFO] WLLVM is installed.'
+++ '[' -d /workspaces/libfuzz/condition_extractor ']'
+++ echo '[INFO] Syncing condition_extractor...'
+++ rsync -au --exclude=.git --exclude=build --exclude=build_release /workspaces/libfuzz/condition_extractor/ /home/libfuzz/condition_extractor/
+++ '[' -z libcjson.a ']'
+++ ARCHIVE_PATH=/workspaces/libfuzz/analysis/cjson//work/lib/libcjson.a
+++ '[' '!' -f /workspaces/libfuzz/analysis/cjson//work/lib/libcjson.a ']'
+++ extract-bc -b /workspaces/libfuzz/analysis/cjson//work/lib/libcjson.a
+Writing output to /workspaces/libfuzz/analysis/cjson/work/lib/libcjson.a.bc
+++ PUBLIC_HEADERS=/workspaces/libfuzz/targets/cjson/public_headers.txt
+++ '[' '!' -s /workspaces/libfuzz/targets/cjson/public_headers.txt ']'
+++ INCLUDE_DIR=/workspaces/libfuzz/analysis/cjson//work/include
+++ /workspaces/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/cjson//work/include -t cjson -p /workspaces/libfuzz/targets/cjson/public_headers.txt -e /workspaces/libfuzz/analysis/cjson//work/apipass/exported_functions.txt -I /workspaces/libfuzz/analysis/cjson//work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/cjson//work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/cjson//work/apipass/enum_types.txt
+/workspaces/libfuzz/tool/misc/extract_included_functions.py:83: SyntaxWarning: "\[" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\["? A raw string is also an option.
+  type_str = re.sub('\[\d*\]', '*', type_str)
+++ '[' -n '' ']'
+++ EXTRACTOR_BUILD_DIR=build_release
+++ EXTRACTOR_BIN=/home/libfuzz/condition_extractor/build_release/bin/extractor
+++ '[' '!' -x /home/libfuzz/condition_extractor/build_release/bin/extractor ']'
+++ echo '[INFO] Using extractor: /home/libfuzz/condition_extractor/build_release/bin/extractor'
+++ '[' '!' -x /usr/bin/time ']'
+++ cd /workspaces/libfuzz/analysis/cjson//work
+++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/build_release/bin/extractor /workspaces/libfuzz/analysis/cjson//work/lib/libcjson.a.bc -target cjson -interface /workspaces/libfuzz/analysis/cjson//work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/cjson//work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/cjson//work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/cjson//work/apipass/data_layout.txt -metrics -log Summary -profiling
+sh: 1: npm: not found
+sh: 1: npm: not found
+real 0.54
+user 0.47
+sys 0.06
+maxrss_kb 91084
+++ echo 'Saved to /workspaces/libfuzz/analysis/cjson//work/apipass/conditions.json'
+++ type target_post_analysis
++ echo 'Analysis complete for cjson'
+
+real	0m1.050s
+user	0m0.795s
+sys	0m0.220s
