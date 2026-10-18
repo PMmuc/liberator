@@ -14,6 +14,8 @@
 // std because stdout gives conflict
 enum OutType { txt, json, stdo };
 enum Verbosity { v0, v1, v2, v3 };
+// Points-to analysis behind GlobalStruct (-pta), see GlobalStruct.h
+enum class pta_kind_e { andersen, flow_sensitive };
 
 struct config_t {
   // Name of the target (library) currently being analysed
@@ -24,6 +26,7 @@ struct config_t {
   bool debug;
   std::string debug_condition;
   bool consider_indirect_calls;
+  pta_kind_e pta_kind = pta_kind_e::flow_sensitive;
   OutType output_type;
   std::string output_file;
   std::string minimize_api;

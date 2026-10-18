@@ -1,6 +1,7 @@
 #ifndef GLOBALSTRUCTANALYSIS_H_
 #define GLOBALSTRUCTANALYSIS_H_
 
+#include "Config.h"
 #include "FastCluster/fastcluster.h"
 #include "Graphs/SVFGOPT.h"
 #include "MSSA/SVFGBuilder.h"
@@ -14,61 +15,57 @@
 using namespace SVF;
 using namespace SVFUtil;
 
-/// Base pointer analysis backing GlobalStruct.
+/// Runs the points-to analysis selected with -pta (config_t::pta_kind) and
+/// then resolves indirect calls through function pointers in global constants
+/// that it left without targets (empty points-to set).
 ///
-/// FlowSensitive::initialize() builds a PTR-only SVFG plus its MemSSA and then
-/// keeps per-program-point points-to state for every node in it. On large
-/// targets that dominates the whole run's memory. The only consumer of the
-/// flow-sensitive result in this codebase is the `getPts(...).empty()` test in
-/// GlobalStruct::analyze(); the two sites that read points-to contents
-/// (AccessTypeHandler.cpp, ConditionExtractor.cpp) already ask Andersen.
-/// AndersenBase::initialize() only builds a ConstraintGraph - no SVFG.
-using GlobalStructPTA = AndersenWaveDiff;
-
-class GlobalStruct : public GlobalStructPTA {
+/// The choice reaches further than GlobalStruct::analyze(): the full SVFG is
+/// built from pta() (its points-to sets decide which memory regions every load
+/// and store touches, i.e. the indirect SVFG edges), and its call graph
+/// resolves indirect calls for the ICFG, the SVFG and the bottom-up SCC walk.
+///  - andersen: AndersenWaveDiff. Flow-insensitive, builds only a constraint
+///    graph; far cheaper, but its points-to sets can be larger.
+///  - fs: FlowSensitive, as in the original condition extractor. Refines
+///    Andersen with strong updates on its own PTR-only SVFG and MemSSA and
+///    keeps points-to state per program point; on large targets that
+///    dominates the run's time and memory.
+class GlobalStruct {
 
 public:
-  /// Constructor
-  explicit GlobalStruct(SVFIR *_pag) : GlobalStructPTA(_pag) {}
+  typedef PointerAnalysis::CallEdgeMap CallEdgeMap;
 
-  /// Destructor
-  ~GlobalStruct() override = default;
-
-  /// Create single instance of flow-sensitive pointer analysis.
-  /// Note: this only constructs the instance. The caller must invoke analyze()
-  /// exactly once. Calling it here as well made FlowSensitive::analyze() run
-  /// twice, and it has no guard - it re-runs initialize(), which rebuilds the
-  /// PTR-only SVFG and MemSSA from scratch, then re-solves the fixpoint.
-  static GlobalStruct *createSGWPA(SVFIR *_pag) {
-    if (gspta == nullptr) {
-      // FIXME: creates flow sensitive points-to analysis
-      gspta = std::unique_ptr<GlobalStruct>(new GlobalStruct(_pag));
-    }
+  /// Create the single instance with the given points-to analysis. Note:
+  /// this only constructs it; the caller must invoke analyze() exactly once.
+  static GlobalStruct *createSGWPA(SVFIR *_pag, pta_kind_e kind) {
+    if (gspta == nullptr)
+      gspta = std::unique_ptr<GlobalStruct>(new GlobalStruct(_pag, kind));
+    assert(gspta->kind_ == kind && "GlobalStruct already created with "
+                                   "another points-to analysis");
     return gspta.get();
   }
 
-  /// Release flow-sensitive pointer analysis
+  /// Release the analysis
   static void releaseFSWPA() { gspta = nullptr; }
 
-  /// We start from here
-  virtual bool runOnModule(llvm::Module *) { return false; }
+  /// Run the points-to analysis, then resolve the global function pointers.
+  void analyze();
 
-  /// GlobalStruct analysis
-  void analyze() override;
+  /// The points-to analysis, with the call edges analyze() added.
+  BVDataPTAImpl *pta() const { return pta_.get(); }
 
-  /**
-   * Build the AndersenConstraintGraph
-   */
-  void initialize() override;
+  CallGraph *getCallGraph() const { return pta_->getCallGraph(); }
 
-  /// Finalize analysis
-  void finalize() override;
+  pta_kind_e kind() const { return kind_; }
 
   CallEdgeMap get_new_edges() { return new_edges; }
 
-protected:
+private:
+  GlobalStruct(SVFIR *_pag, pta_kind_e kind);
+
   static std::unique_ptr<GlobalStruct> gspta;
 
+  std::unique_ptr<BVDataPTAImpl> pta_;
+  pta_kind_e kind_;
   CallEdgeMap new_edges;
 
   void get_function_pointers(

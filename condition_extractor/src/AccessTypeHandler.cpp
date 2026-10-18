@@ -33,11 +33,6 @@
 #include "Config.h"
 #include "ValueMetadata.hpp"
 
-/// Defined in GlobalStruct.cpp. Declared here rather than including
-/// GlobalStruct.h, whose header-scope `using namespace SVF/SVFUtil` would make
-/// llvm::dyn_cast and llvm::outs ambiguous throughout this file.
-SVF::Andersen *global_struct_pta(SVF::SVFIR *pag);
-
 namespace {
 
 const Type *getPointedType(const Value *V, std::set<const Value *> &Vis) {

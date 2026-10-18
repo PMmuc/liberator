@@ -86,6 +86,18 @@ static llvm::cl::opt<bool>
               llvm::cl::desc("Include indirect jumps in the analysis"),
               llvm::cl::init(false));
 
+static llvm::cl::opt<pta_kind_e> PtaKind(
+    "pta", llvm::cl::desc("Points-to analysis the SVFG and call graph are "
+                          "built from"),
+    llvm::cl::init(pta_kind_e::flow_sensitive),
+    llvm::cl::values(
+        clEnumValN(pta_kind_e::andersen, "andersen",
+                   "AndersenWaveDiff, flow-insensitive; cheaper, less "
+                   "precise"),
+        clEnumValN(pta_kind_e::flow_sensitive, "fs",
+                   "FlowSensitive, as in the original condition extractor "
+                   "(default)")));
+
 static llvm::cl::opt<std::string>
     minimizeApi("minimize_api", llvm::cl::desc("Minimize API <out_folder>"),
                 llvm::cl::init(""));
@@ -136,6 +148,9 @@ void print_config(const config_t &config) {
   llvm::outs() << "------- CONFIG ---------"
                << "\n\tTrace Indirect Jumps: "
                << (config.consider_indirect_calls ? "true" : "false")
+               << "\n\tPoints-to analysis: "
+               << (config.pta_kind == pta_kind_e::flow_sensitive ? "fs"
+                                                                 : "andersen")
                << "\n\tOutput Metrics: "
                << (config.print_metrics ? "true" : "false")
                << "\n\tTarget: " << config.target_name << "\n"
@@ -162,6 +177,7 @@ int main(int argc, char **argv) {
   config->function = FunctionName;
   config->verbose = Verbose;
   config->consider_indirect_calls = doIndJump;
+  config->pta_kind = PtaKind;
   config->debug_condition = DebugCondition;
   config->output_type = OutputType;
   config->output_file = OutputFile;

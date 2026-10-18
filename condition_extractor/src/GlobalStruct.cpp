@@ -29,13 +29,11 @@ using namespace SVFUtil;
 
 std::unique_ptr<GlobalStruct> GlobalStruct::gspta;
 
-/// Accessor for translation units that must not include GlobalStruct.h
-/// (its header-scope `using namespace SVF` breaks llvm::dyn_cast there).
-/// GlobalStruct is itself an Andersen, so callers that just want the
-/// Andersen points-to result should come through here instead of building a
-/// second one via AndersenWaveDiff::createAndersenWaveDiff().
-SVF::Andersen *global_struct_pta(SVF::SVFIR *pag) {
-  return GlobalStruct::createSGWPA(pag);
+GlobalStruct::GlobalStruct(SVFIR *_pag, pta_kind_e kind) : kind_(kind) {
+  if (kind == pta_kind_e::flow_sensitive)
+    pta_ = std::make_unique<FlowSensitive>(_pag);
+  else
+    pta_ = std::make_unique<AndersenWaveDiff>(_pag);
 }
 
 /// GlobalStruct analysis
@@ -50,8 +48,10 @@ void GlobalStruct::analyze() {
   // let's do the base class analysis
   {
     PROFILE_MEM("GlobalStruct: base PTA analyze");
-    GlobalStructPTA::analyze();
+    pta_->analyze();
   }
+
+  SVFIR *pag = pta_->getPAG();
 
   LLVMModuleSet *llvmModuleSet = LLVMModuleSet::getLLVMModuleSet();
   Module *svfModule = LLVMModuleSet::getLLVMModuleSet()->getMainLLVMModule();
@@ -99,9 +99,9 @@ void GlobalStruct::analyze() {
       // id of callsite node in the PAG
       auto node_id = call.second;
       // All indirect callsites for one function.
-      CallSiteSet target_set = pag->getIndCallSites(node_id);
+      SVFIR::CallSiteSet target_set = pag->getIndCallSites(node_id);
       // the points to set that the indirect call can point to
-      PointsTo x = this->getPts(node_id);
+      PointsTo x = pta_->getPts(node_id);
       // if x is empty the ptr points to nothing
       if (x.empty())
         unresolved_calls.insert(icfg_node);
@@ -221,7 +221,7 @@ void GlobalStruct::analyze() {
         //     SVFUtil::outs() << "it is internal!\n";
 
         newEdges[callsite].insert(fun_callee);
-        getIndCallMap()[callsite].insert(fun_callee);
+        pta_->getIndCallMap()[callsite].insert(fun_callee);
         if (config_t::instance()->consider_indirect_calls)
           ptacg->addIndirectCallGraphEdge(callsite, fun_caller, fun_callee);
       }
@@ -296,11 +296,6 @@ void GlobalStruct::analyze() {
   // make_condition_extractor(), from the call graph these edges were already
   // added to (see addIndirectCallGraphEdge above).
 }
-
-void GlobalStruct::initialize() { GlobalStructPTA::initialize(); }
-
-/// Finalize analysis
-void GlobalStruct::finalize() { GlobalStructPTA::finalize(); }
 
 /**
  * @param in_value variable that is either a global variable, a constant,

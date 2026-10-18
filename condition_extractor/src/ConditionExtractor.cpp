@@ -404,7 +404,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   // point_to_analysys = FlowSensitive::createFSWPA(pag); AndersenSCD*
   // point_to_analysys = AndersenSCD::createAndersenSCD(pag); TypeAnalysis*
   // point_to_analysys = new TypeAnalysis(pag);
-  auto point_to_analyses = GlobalStruct::createSGWPA(pag);
+  auto point_to_analyses =
+      GlobalStruct::createSGWPA(pag, config_t::instance()->pta_kind);
   {
     PROFILE_SCOPED("3. Points-to Analysis");
     PROFILE_MEM("3. Points-to Analysis");
@@ -445,8 +446,8 @@ make_condition_extractor(std::vector<std::string> &module_name_vec,
   {
     PROFILE_SCOPED("4. Full SVFG Build");
     PROFILE_MEM("4. Full SVFG Build");
-    svfg = svfBuilder->buildFullSVFG(point_to_analyses);
-    svfg->updateCallGraph(point_to_analyses);
+    svfg = svfBuilder->buildFullSVFG(point_to_analyses->pta());
+    svfg->updateCallGraph(point_to_analyses->pta());
   }
 
   // svfg->dump("from_extractor");
@@ -643,7 +644,7 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
         std::string postdom_cache_file = getCachePostDomFile(fun_name);
 
         auto dom = make_unique<Dominator>(
-            point_to_analyses_, fun_entry,
+            point_to_analyses_->pta(), fun_entry,
             config_t::instance()->consider_indirect_calls);
         // SVFUtil::outs() << "[INFO] Running pruneUnreachableFunctions()\n";
         // dom->pruneUnreachableFunctions();
@@ -674,7 +675,7 @@ function_condition_set_t condition_extractor_t::extract_function_conditions() {
         }
 
         auto pDom = make_unique<PostDominator>(
-            point_to_analyses_, fun_entry, fun_exit,
+            point_to_analyses_->pta(), fun_entry, fun_exit,
             config_t::instance()->consider_indirect_calls);
 
         if (config_t::instance()->cache_folder != "" &&

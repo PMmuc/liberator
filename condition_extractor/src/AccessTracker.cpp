@@ -112,6 +112,10 @@ static bool is_formal_pointer_type(const VFGNode *n) {
   return v && v->getType()->isPointerTy();
 }
 
+/**
+ * @return true if we are in a store and the previous value is the value being
+ * written.
+ */
 bool stores_value(const StoreVFGNode *st, liberator::Path &p) {
   auto *llvm_store = llvm::dyn_cast_or_null<llvm::StoreInst>(
       LLVMModuleSet::getLLVMModuleSet()->getLLVMModuleSet()->getLLVMValue(
