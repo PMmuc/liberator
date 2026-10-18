@@ -1,0 +1,257 @@
++ ./analysis.sh
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/pthreadpool/work
++ rm -rf /workspaces/libfuzz/analysis/pthreadpool/work
++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool/work
++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool/work/lib /workspaces/libfuzz/analysis/pthreadpool/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/bin
++ LLVM_COMPILER_PATH=/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/pthreadpool/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/pthreadpool/work/apipass
++ export CFLAGS=
++ CFLAGS=
++ mkdir -p /workspaces/libfuzz/analysis/pthreadpool/work/apipass
++ echo 'make 1'
++ cd /workspaces/libfuzz/analysis/pthreadpool/repo
++ echo cmake
++ cmake . -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/pthreadpool/work -DBUILD_SHARED_LIBS=off -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0' -DBENCHMARK_ENABLE_GTEST_TESTS=off -DBENCHMARK_ENABLE_INSTALL=off -DPTHREADPOOL_BUILD_TESTS=OFF -DPTHREADPOOL_BUILD_BENCHMARKS=OFF
+Cloning into 'FXdiv-source'...
+Already on 'master'
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BENCHMARK_ENABLE_GTEST_TESTS
+    BENCHMARK_ENABLE_INSTALL
+    ENABLE_STATIC
+
+
++ rm -rf /workspaces/libfuzz/analysis/pthreadpool/work/apipass/apis.log
++ touch /workspaces/libfuzz/analysis/pthreadpool/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/pthreadpool/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/pthreadpool/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/pthreadpool/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/pthreadpool/work/apipass/coerce.log
++ echo 'make clean'
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1
+/workspaces/libfuzz/analysis/pthreadpool/repo/src/legacy-api.c:64:2: warning: 'pthreadpool_function_3d_tiled_t' is deprecated [-Wdeprecated-declarations]
+        pthreadpool_function_3d_tiled_t function;
+        ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1100:104: note: 'pthreadpool_function_3d_tiled_t' has been explicitly marked deprecated here
+typedef void (*pthreadpool_function_3d_tiled_t)(void*, size_t, size_t, size_t, size_t, size_t, size_t) PTHREADPOOL_DEPRECATED;
+                                                                                                       ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1091:48: note: expanded from macro 'PTHREADPOOL_DEPRECATED'
+        #define PTHREADPOOL_DEPRECATED __attribute__((__deprecated__))
+                                                      ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/src/legacy-api.c:138:2: warning: 'pthreadpool_function_4d_tiled_t' is deprecated [-Wdeprecated-declarations]
+        pthreadpool_function_4d_tiled_t function;
+        ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1101:120: note: 'pthreadpool_function_4d_tiled_t' has been explicitly marked deprecated here
+typedef void (*pthreadpool_function_4d_tiled_t)(void*, size_t, size_t, size_t, size_t, size_t, size_t, size_t, size_t) PTHREADPOOL_DEPRECATED;
+                                                                                                                       ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1091:48: note: expanded from macro 'PTHREADPOOL_DEPRECATED'
+        #define PTHREADPOOL_DEPRECATED __attribute__((__deprecated__))
+                                                      ^
+2 warnings generated.
+/workspaces/libfuzz/analysis/pthreadpool/repo/src/legacy-api.c:64:2: warning: 'pthreadpool_function_3d_tiled_t' is deprecated [-Wdeprecated-declarations]
+        pthreadpool_function_3d_tiled_t function;
+        ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1100:104: note: 'pthreadpool_function_3d_tiled_t' has been explicitly marked deprecated here
+typedef void (*pthreadpool_function_3d_tiled_t)(void*, size_t, size_t, size_t, size_t, size_t, size_t) PTHREADPOOL_DEPRECATED;
+                                                                                                       ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1091:48: note: expanded from macro 'PTHREADPOOL_DEPRECATED'
+        #define PTHREADPOOL_DEPRECATED __attribute__((__deprecated__))
+                                                      ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/src/legacy-api.c:138:2: warning: 'pthreadpool_function_4d_tiled_t' is deprecated [-Wdeprecated-declarations]
+        pthreadpool_function_4d_tiled_t function;
+        ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1101:120: note: 'pthreadpool_function_4d_tiled_t' has been explicitly marked deprecated here
+typedef void (*pthreadpool_function_4d_tiled_t)(void*, size_t, size_t, size_t, size_t, size_t, size_t, size_t, size_t) PTHREADPOOL_DEPRECATED;
+                                                                                                                       ^
+/workspaces/libfuzz/analysis/pthreadpool/repo/include/pthreadpool.h:1091:48: note: expanded from macro 'PTHREADPOOL_DEPRECATED'
+        #define PTHREADPOOL_DEPRECATED __attribute__((__deprecated__))
+                                                      ^
+2 warnings generated.
++ echo 'make install'
++ make install
++ extract-bc -b /workspaces/libfuzz/analysis/pthreadpool/work/lib/libpthreadpool.a
+Writing output to /workspaces/libfuzz/analysis/pthreadpool/work/lib/libpthreadpool.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/pthreadpool/work/include -p /workspaces/libfuzz/targets/pthreadpool/public_headers.txt -e /workspaces/libfuzz/analysis/pthreadpool/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/pthreadpool/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/pthreadpool/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/pthreadpool/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/pthreadpool/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/pthreadpool/work/lib/libpthreadpool.a.bc -interface /workspaces/libfuzz/analysis/pthreadpool/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/pthreadpool/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/pthreadpool/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/pthreadpool/work/apipass/data_layout.txt
+Doing: pthreadpool_thread_parallelize_6d_tile_1d_fastpath
+Doing: pthreadpool_thread_parallelize_5d_fastpath
+Doing: pthreadpool_thread_parallelize_4d_tile_1d_fastpath
+Doing: pthreadpool_thread_parallelize_3d_tile_2d_with_uarch_fastpath
+Doing: pthreadpool_thread_parallelize_3d_tile_2d_fastpath
+Doing: pthreadpool_parallelize_1d
+Doing: modulo_decrement.47
+Doing: pthreadpool_parallelize_3d_tile_2d
+Doing: pthreadpool_create
+Doing: thread_parallelize_3d_tile_1d
+Doing: pthreadpool_parallelize_3d
+Doing: pthreadpool_store_relaxed_size_t
+Doing: fxdiv_init_uint64_t.16
+Doing: pthreadpool_store_release_uint32_t
+Doing: fxdiv_mulhi_uint64_t.15
+Doing: pthreadpool_parallelize_2d_tile_1d
+Doing: thread_main
+Doing: set_fpu_state
+Doing: thread_parallelize_2d
+Doing: get_fpu_state
+Doing: pthreadpool_parallelize_2d
+Doing: pthreadpool_parallelize_3d_tile_2d_with_uarch
+Doing: pthreadpool_parallelize_6d_tile_2d
+Doing: thread_parallelize_3d_tile_2d
+Doing: thread_parallelize_6d_tile_1d
+Doing: min.7
+Doing: pthreadpool_parallelize_1d_tile_1d
+Doing: pthreadpool_get_threads_count
+Doing: pthreadpool_thread_parallelize_4d_tile_2d_fastpath
+Doing: pthreadpool_yield
+Doing: thread_parallelize_2d_tile_2d
+Doing: thread_parallelize_1d_tile_1d
+Doing: fxdiv_quotient_size_t
+Doing: fxdiv_quotient_uint64_t.14
+Doing: pthreadpool_thread_parallelize_4d_tile_2d_with_uarch_fastpath
+Doing: fxdiv_divide_size_t
+Doing: thread_parallelize_6d
+Doing: thread_parallelize_3d
+Doing: thread_parallelize_1d_with_uarch
+Doing: pthreadpool_fence_release
+Doing: pthreadpool_thread_parallelize_1d_fastpath
+Doing: pthreadpool_compute_2d_tiled
+Doing: fxdiv_mulext_uint32_t.17
+Doing: fxdiv_init_size_t.11
+Doing: thread_parallelize_6d_tile_2d
+Doing: divide_round_up.8
+Doing: min
+Doing: pthreadpool_load_relaxed_size_t
+Doing: fxdiv_mulhi_uint64_t.40
+Doing: modulo_decrement
+Doing: fxdiv_mulhi_uint64_t
+Doing: thread_parallelize_2d_tile_1d
+Doing: pthreadpool_compute_2d
+Doing: wait_for_new_command
+Doing: pthreadpool_load_relaxed_void_p
+Doing: pthreadpool_decrement_fetch_relaxed_size_t
+Doing: pthreadpool_compute_1d_tiled
+Doing: thread_parallelize_3d_tile_2d_with_uarch
+Doing: fxdiv_quotient_uint64_t
+Doing: pthreadpool_try_decrement_relaxed_size_t
+Doing: pthreadpool_thread_parallelize_5d_tile_1d_fastpath
+Doing: pthreadpool_thread_parallelize_1d_with_uarch_fastpath
+Doing: disable_fpu_denormals
+Doing: pthreadpool_parallelize_2d_tile_2d
+Doing: pthreadpool_compute_1d
+Doing: fxdiv_init_uint64_t.29
+Doing: pthreadpool_deallocate
+Doing: pthreadpool_thread_parallelize_3d_tile_1d_fastpath
+Doing: pthreadpool_compute_4d_tiled
+Doing: pthreadpool_parallelize_4d
+Doing: pthreadpool_thread_parallelize_5d_tile_2d_fastpath
+Doing: pthreadpool_thread_parallelize_1d_tile_1d_fastpath
+Doing: fxdiv_mulext_uint32_t
+Doing: thread_parallelize_2d_tile_2d_with_uarch
+Doing: fxdiv_init_size_t
+Doing: pthreadpool_store_relaxed_uint32_t
+Doing: compute_4d_tiled
+Doing: compute_3d_tiled
+Doing: pthreadpool_thread_parallelize_2d_tile_2d_with_uarch_fastpath
+Doing: fxdiv_init_uint64_t
+Doing: pthreadpool_compute_3d_tiled
+Doing: pthreadpool_store_relaxed_void_p
+Doing: fxdiv_divide_size_t.50
+Doing: pthreadpool_parallelize_3d_tile_1d
+Doing: thread_parallelize_4d
+Doing: pthreadpool_fence_release.36
+Doing: pthreadpool_parallelize_4d_tile_1d
+Doing: fxdiv_quotient_uint64_t.39
+Doing: thread_parallelize_1d
+Doing: pthreadpool_parallelize_4d_tile_2d
+Doing: thread_parallelize_4d_tile_2d
+Doing: pthreadpool_thread_parallelize_6d_tile_2d_fastpath
+Doing: fxdiv_quotient_size_t.13
+Doing: pthreadpool_parallelize_4d_tile_2d_with_uarch
+Doing: thread_parallelize_4d_tile_2d_with_uarch
+Doing: pthreadpool_parallelize_5d
+Doing: fxdiv_mulhi_uint64_t.53
+Doing: pthreadpool_thread_parallelize_4d_fastpath
+Doing: pthreadpool_parallelize_5d_tile_1d
+Doing: pthreadpool_thread_parallelize_2d_tile_1d_fastpath
+Doing: divide_round_up
+Doing: thread_parallelize_5d_tile_1d
+Doing: pthreadpool_parallelize_5d_tile_2d
+Doing: fxdiv_mulext_uint32_t.30
+Doing: thread_parallelize_5d_tile_2d
+Doing: futex_wait
+Doing: pthreadpool_parallelize_6d_tile_1d
+Doing: fxdiv_init_size_t.23
+Doing: pthreadpool_allocate
+Doing: wait_worker_threads
+Doing: futex_wake_all
+Doing: pthreadpool_load_acquire_uint32_t
+Doing: checkin_worker_thread
+Doing: pthreadpool_thread_parallelize_2d_fastpath
+Doing: pthreadpool_fence_acquire
+Doing: pthreadpool_thread_parallelize_3d_fastpath
+Doing: pthreadpool_load_relaxed_uint32_t
+Doing: fxdiv_quotient_size_t.51
+Doing: pthreadpool_load_relaxed_void_p.24
+Doing: disable_fpu_denormals.26
+Doing: set_fpu_state.27
+Doing: pthreadpool_fence_release.48
+Doing: thread_parallelize_5d
+Doing: pthreadpool_decrement_fetch_relaxed_size_t.28
+Doing: pthreadpool_parallelize_6d
+Doing: pthreadpool_parallelize
+Doing: fxdiv_divide_size_t.37
+Doing: thread_parallelize_4d_tile_1d
+Doing: fxdiv_quotient_size_t.38
+Doing: pthreadpool_parallelize_2d_tile_2d_with_uarch
+Doing: pthreadpool_destroy
+Doing: pthreadpool_load_relaxed_void_p.44
+Doing: fxdiv_divide_size_t.12
+Doing: pthreadpool_load_relaxed_size_t.45
+Doing: pthreadpool_decrement_fetch_relaxed_size_t.46
+Doing: pthreadpool_thread_parallelize_6d_fastpath
+Doing: min.49
+Doing: pthreadpool_parallelize_1d_with_uarch
+Doing: get_fpu_state.25
+Doing: fxdiv_quotient_uint64_t.52
+Doing: pthreadpool_thread_parallelize_2d_tile_2d_fastpath
+Doing: pthread_mutex_unlock
+Doing: llvm.x86.sse2.pause
+Doing: llvm.dbg.declare
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: posix_memalign
+Doing: pthread_mutex_destroy
+Doing: llvm.x86.sse.stmxcsr
+Doing: llvm.memset.p0i8.i64
+Doing: __assert_fail
+Doing: sysconf
+Doing: pthread_mutex_init
+Doing: pthread_mutex_lock
+Doing: llvm.ctlz.i64
+Doing: pthread_create
+Doing: pthread_join
+Doing: llvm.x86.sse.ldmxcsr
+Doing: free
+Doing: syscall
+real 2.02
+user 1.90
+sys 0.12
+maxrss_kb 172284
+
+real	0m8.658s
+user	0m4.419s
+sys	0m1.496s

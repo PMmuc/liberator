@@ -1,0 +1,1742 @@
+++++ realpath run_analysis.sh
++++ dirname /data/paul2/liberator/docker/run_analysis.sh
+++ dirname /data/paul2/liberator/docker
++ ROOT_DIR=/data/paul2/liberator/
++ echo /data/paul2/liberator/
+/data/paul2/liberator/
++ IMG_NAME=libpp-analysis-org
++ LIBPP=../
++ '[' 1 '!=' 1 ']'
++ '[' 0 = 1 ']'
++ '[' -z libplist ']'
++ '[' -s ..//analysis/libplist/work/apipass/conditions.json ']'
++ echo libpp-analysis-org
+libpp-analysis-org
++ PROF_FLAG=()
++ [[ 0 -gt 0 ]]
++ CPUSET=0
++ [[ -n '' ]]
++ docker rm -f libpp-analysis-org-libplist
++ docker run --env PROF_FLAG= --rm --cpuset-cpus=0 --name libpp-analysis-org-libplist --user root --env TARGET=libplist -v /data/paul2/liberator/:/workspaces/libfuzz libpp-analysis-org
+[TOOLS_DIR] /home/libfuzz
+[TARGET] /workspaces/libfuzz/analysis/libplist
++ export TARGET_NAME=libplist
++ TARGET_NAME=libplist
++ export TARGET=/workspaces/libfuzz/analysis/libplist
++ TARGET=/workspaces/libfuzz/analysis/libplist
++ echo '[TOOLS_DIR] /home/libfuzz'
++ echo '[TARGET] /workspaces/libfuzz/analysis/libplist'
+++ which wllvm
+[WLLVM] /home/libfuzz/.local/bin/wllvm
++ echo '[WLLVM] /home/libfuzz/.local/bin/wllvm'
++ cd /workspaces/libfuzz/targets/libplist
++ sudo ./preinstall.sh
+Reading package lists...
+Building dependency tree...
+Reading state information...
+autoconf is already the newest version (2.69-11.1).
+automake is already the newest version (1:1.16.1-4ubuntu6).
+libtool-bin is already the newest version (2.4.6-14).
+pkg-config is already the newest version (0.29.1-0ubuntu4).
+pkg-config set to manually installed.
+build-essential is already the newest version (12.8ubuntu1.1).
+git is already the newest version (1:2.25.1-1ubuntu3.14).
+The following additional packages will be installed:
+  icu-devtools libelf-dev libicu-dev
+Suggested packages:
+  gettext cython-doc flex-doc gawk-doc icu-doc
+Recommended packages:
+  python-dev libfl-dev
+The following NEW packages will be installed:
+  autopoint checkinstall cython cython3 flex gawk icu-devtools libdw-dev
+  libelf-dev libicu-dev libxml2-dev
+0 upgraded, 11 newly installed, 0 to remove and 0 not upgraded.
+Need to get 14.8 MB of archives.
+After this operation, 68.0 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 flex amd64 2.6.4-6.2 [317 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 gawk amd64 1:5.0.1+dfsg-1ubuntu0.1 [415 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal/main amd64 autopoint all 0.19.8.1-10build1 [412 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal/universe amd64 checkinstall amd64 1.6.2+git20170426.d24a630-2ubuntu1 [99.3 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal/universe amd64 cython amd64 0.29.14-0.1ubuntu3 [1402 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal/universe amd64 cython3 amd64 0.29.14-0.1ubuntu3 [1474 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 icu-devtools amd64 66.1-2ubuntu2.1 [189 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libelf-dev amd64 0.176-1.1ubuntu0.1 [57.1 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdw-dev amd64 0.176-1.1ubuntu0.1 [213 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libicu-dev amd64 66.1-2ubuntu2.1 [9451 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libxml2-dev amd64 2.9.10+dfsg-5ubuntu0.20.04.10 [735 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 14.8 MB in 0s (38.8 MB/s)
+Selecting previously unselected package flex.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 39318 files and directories currently installed.)
+Preparing to unpack .../00-flex_2.6.4-6.2_amd64.deb ...
+Unpacking flex (2.6.4-6.2) ...
+Selecting previously unselected package gawk.
+Preparing to unpack .../01-gawk_1%3a5.0.1+dfsg-1ubuntu0.1_amd64.deb ...
+Unpacking gawk (1:5.0.1+dfsg-1ubuntu0.1) ...
+Selecting previously unselected package autopoint.
+Preparing to unpack .../02-autopoint_0.19.8.1-10build1_all.deb ...
+Unpacking autopoint (0.19.8.1-10build1) ...
+Selecting previously unselected package checkinstall.
+Preparing to unpack .../03-checkinstall_1.6.2+git20170426.d24a630-2ubuntu1_amd64.deb ...
+Unpacking checkinstall (1.6.2+git20170426.d24a630-2ubuntu1) ...
+Selecting previously unselected package cython.
+Preparing to unpack .../04-cython_0.29.14-0.1ubuntu3_amd64.deb ...
+Unpacking cython (0.29.14-0.1ubuntu3) ...
+Selecting previously unselected package cython3.
+Preparing to unpack .../05-cython3_0.29.14-0.1ubuntu3_amd64.deb ...
+Unpacking cython3 (0.29.14-0.1ubuntu3) ...
+Selecting previously unselected package icu-devtools.
+Preparing to unpack .../06-icu-devtools_66.1-2ubuntu2.1_amd64.deb ...
+Unpacking icu-devtools (66.1-2ubuntu2.1) ...
+Selecting previously unselected package libelf-dev:amd64.
+Preparing to unpack .../07-libelf-dev_0.176-1.1ubuntu0.1_amd64.deb ...
+Unpacking libelf-dev:amd64 (0.176-1.1ubuntu0.1) ...
+Selecting previously unselected package libdw-dev:amd64.
+Preparing to unpack .../08-libdw-dev_0.176-1.1ubuntu0.1_amd64.deb ...
+Unpacking libdw-dev:amd64 (0.176-1.1ubuntu0.1) ...
+Selecting previously unselected package libicu-dev:amd64.
+Preparing to unpack .../09-libicu-dev_66.1-2ubuntu2.1_amd64.deb ...
+Unpacking libicu-dev:amd64 (66.1-2ubuntu2.1) ...
+Selecting previously unselected package libxml2-dev:amd64.
+Preparing to unpack .../10-libxml2-dev_2.9.10+dfsg-5ubuntu0.20.04.10_amd64.deb ...
+Unpacking libxml2-dev:amd64 (2.9.10+dfsg-5ubuntu0.20.04.10) ...
+Setting up cython (0.29.14-0.1ubuntu3) ...
+Setting up flex (2.6.4-6.2) ...
+Setting up gawk (1:5.0.1+dfsg-1ubuntu0.1) ...
+Setting up cython3 (0.29.14-0.1ubuntu3) ...
+Setting up libelf-dev:amd64 (0.176-1.1ubuntu0.1) ...
+Setting up autopoint (0.19.8.1-10build1) ...
+Setting up icu-devtools (66.1-2ubuntu2.1) ...
+Setting up checkinstall (1.6.2+git20170426.d24a630-2ubuntu1) ...
+Setting up libicu-dev:amd64 (66.1-2ubuntu2.1) ...
+Setting up libdw-dev:amd64 (0.176-1.1ubuntu0.1) ...
+Setting up libxml2-dev:amd64 (2.9.10+dfsg-5ubuntu0.20.04.10) ...
++ ./fetch.sh
+HEAD is now at 02cf35b Bump version number
+Ubuntu clang version 12.0.0-3ubuntu1~20.04.5
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+make 1
+-- The C compiler identification is Clang 12.0.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /home/libfuzz/.local/bin/wllvm
+-- Check for working C compiler: /home/libfuzz/.local/bin/wllvm -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/g++
+-- Check for working CXX compiler: /usr/bin/g++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1") 
+-- Checking for module 'libxml-2.0'
+--   Found libxml-2.0, version 2.9.10
+-- xmllint program not found. Install it if you want validate generated doc file.
+-- Found LibXml2: /usr/lib/x86_64-linux-gnu/libxml2.so  
+-- Checking for module 'glib-2.0'
+--   Found glib-2.0, version 2.64.6
+-- Found GLIB2: /usr/lib/x86_64-linux-gnu/libglib-2.0.so  
+-- Could NOT find SWIG (missing: SWIG_EXECUTABLE SWIG_DIR) 
+-- Found PythonInterp: /usr/bin/python (found version "3.8.10") 
+-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.8.so (found version "3.8.10") 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /workspaces/libfuzz/analysis/libplist/repo/build
+make clean
+make
+Scanning dependencies of target plist
+[  4%] Building C object src/CMakeFiles/plist.dir/plist.c.o
+[  9%] Building C object src/CMakeFiles/plist.dir/bplist.c.o
+[ 14%] Building C object src/CMakeFiles/plist.dir/xplist.c.o
+[ 19%] Linking C static library libplist.a
+[ 19%] Built target plist
+Scanning dependencies of target plist++
+[ 23%] Building CXX object src/CMakeFiles/plist++.dir/Node.cpp.o
+[ 28%] Building CXX object src/CMakeFiles/plist++.dir/Boolean.cpp.o
+[ 33%] Building CXX object src/CMakeFiles/plist++.dir/Integer.cpp.o
+[ 38%] Building CXX object src/CMakeFiles/plist++.dir/Real.cpp.o
+[ 42%] Building CXX object src/CMakeFiles/plist++.dir/String.cpp.o
+[ 47%] Building CXX object src/CMakeFiles/plist++.dir/Date.cpp.o
+[ 52%] Building CXX object src/CMakeFiles/plist++.dir/Data.cpp.o
+[ 57%] Building CXX object src/CMakeFiles/plist++.dir/Structure.cpp.o
+[ 61%] Building CXX object src/CMakeFiles/plist++.dir/Array.cpp.o
+[ 66%] Building CXX object src/CMakeFiles/plist++.dir/Dictionary.cpp.o
+[ 71%] Linking CXX static library libplist++.a
+[ 71%] Built target plist++
+Scanning dependencies of target plutil
+[ 76%] Building C object plutil/CMakeFiles/plutil.dir/plutil.c.o
+[ 80%] Linking C executable plutil
+[ 80%] Built target plutil
+Scanning dependencies of target plist_test
+[ 85%] Building C object test/CMakeFiles/plist_test.dir/plist_test.c.o
+[ 90%] Linking C executable plist_test
+[ 90%] Built target plist_test
+Scanning dependencies of target plist_cmp
+[ 95%] Building C object test/CMakeFiles/plist_cmp.dir/plist_cmp.c.o
+[100%] Linking C executable plist_cmp
+[100%] Built target plist_cmp
+make install
+[ 19%] Built target plist
+[ 71%] Built target plist++
+[ 80%] Built target plutil
+[ 90%] Built target plist_test
+[100%] Built target plist_cmp
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/lib/pkgconfig/libplist.pc
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/lib/pkgconfig/libplist++.pc
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/lib/libplist.a
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/lib/libplist++.a
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/bin/plutil-1.3
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/bin/plutil
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/plist.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/plist++.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Array.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Boolean.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Data.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Date.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Dictionary.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Integer.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Node.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Real.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/String.h
+-- Installing: /workspaces/libfuzz/analysis/libplist/work/include/plist/Structure.h
+/tmp/tmp6unmoa5o.cc
+['void', '*']
+['void', '*']
+['void', '*']
+['const', 'char', '*']
+['void', '*']
+['__uint8_t']
+['void', '*']
+['__uint64_t']
+['void', '*']
+['double']
+['void', '*']
+['const', 'char', '*']
+['__uint64_t']
+['void', '*']
+['__int32_t']
+['__int32_t']
+['void']
+['void', '*']
+['void', '*']
+['void', '*']
+['__uint32_t']
+['void', '*']
+['void', '*']
+['void', '*']
+['__uint32_t']
+['__uint32_t']
+['void', '*']
+['void']
+['void', '*']
+['void', '*']
+['__uint32_t']
+['void']
+['void', '*']
+['void', '*']
+['void']
+['void', '*']
+['void', '*']
+['__uint32_t']
+['void']
+['void', '*']
+['__uint32_t']
+['__uint32_t']
+['void', '*']
+['void']
+['void', '*']
+['plist_dict_iter', '*']
+['void']
+['void', '*']
+['void', '*']
+['char', '*', '*']
+['plist_t', '*']
+['void']
+['void', '*']
+['char', '*', '*']
+['void', '*']
+['void', '*']
+['const', 'char', '*']
+['void']
+['void', '*']
+['const', 'char', '*']
+['void', '*']
+['void']
+['void', '*']
+['const', 'char', '*']
+['void', '*']
+['void']
+['void', '*']
+['const', 'char', '*']
+['void', '*']
+['void', '*']
+['plist_type']
+['void', '*']
+['void']
+['void', '*']
+['char', '*', '*']
+['void']
+['void', '*']
+['char', '*', '*']
+['void']
+['void', '*']
+['uint8_t', '*']
+['void']
+['void', '*']
+['uint64_t', '*']
+['void']
+['void', '*']
+['double', '*']
+['void']
+['void', '*']
+['char', '*', '*']
+['uint64_t', '*']
+['void']
+['void', '*']
+['int32_t', '*']
+['int32_t', '*']
+['void']
+['void', '*']
+['plist_type']
+['void']
+['void', '*']
+['const', 'char', '*']
+['void']
+['void', '*']
+['const', 'char', '*']
+['void']
+['void', '*']
+['__uint8_t']
+['void']
+['void', '*']
+['__uint64_t']
+['void']
+['void', '*']
+['double']
+['void']
+['void', '*']
+['const', 'char', '*']
+['__uint64_t']
+['void']
+['void', '*']
+['__int32_t']
+['__int32_t']
+['void']
+['void', '*']
+['char', '*', '*']
+['uint32_t', '*']
+['void']
+['void', '*']
+['char', '*', '*']
+['uint32_t', '*']
+['void']
+['const', 'char', '*']
+['__uint32_t']
+['plist_t', '*']
+['void']
+['const', 'char', '*']
+['__uint32_t']
+['plist_t', '*']
+['void', '*']
+['void', '*']
+['__uint32_t']
+['void', '*']
+['void', '*']
+['__uint32_t']
+['__builtin_va_list']
+['char']
+['void', '*']
+['void', '*']
+[INFO] Loading library...
+[INFO] Done
+[INFO] I analyze all the functions
+
+*********CallGraph Stats***************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+TotalNode           145
+TotalEdge           446
+TotalCycle          2
+MaxNodeInCycle      1
+NodeInCycle         2
+CalRetPairInCycle   7
+#######################################################
+
+*********General Stats***************
+################ (program : libplist.a.bc)###############
+BBWith2Succ         233
+BBWith3Succ         16
+TotalPointers       8271
+TotalObjects        799
+TotalFieldObjects   43
+MaxStructSize       24
+TotalSVFStmts       7328
+TotalPTASVFStmts    4251
+FIObjNum            12
+FSObjNum            786
+AddrsNum            913
+LoadsNum            1972
+StoresNum           1010
+CopysNum            892
+GepsNum             691
+CallsNum            288
+ReturnsNum          110
+FunctionObjs        145
+GlobalObjs          2
+HeapObjs            43
+StackObjs           607
+VarStructObj        17
+VarArrayObj         3
+ConstStructObj      0
+ConstArrayObj       0
+NonPtrObj           393
+ConstantObj         0
+IndCallSites        7
+TotalCallSite       451
+-------------------------------------------------------
+LLVMIRTime          0.025
+SymbolTableTime     0.009
+SVFIRTime           0.04
+#######################################################
+
+*********Constraint Graph Stats***************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+AvgIn/OutCopyEdge   0.709901
+AvgIn/OutLoadEdge   0.275762
+AvgIn/OutAddrEdge   0.187052
+AvgIn/OutEdge       1.29055
+LocalVarInRecur     29
+NumOfCGNode         9330
+TotalValidNode      4464
+TotalValidObjNode   808
+NumOfCGEdge         4926
+NumOfAddrs          835
+NumOfCopys          2483
+NumOfGeps           686
+NumOfLoads          1231
+NumOfStores         526
+MaxInCopyEdge       29
+MaxOutCopyEdge      61
+MaxInLoadEdge       3
+MaxOutLoadEdge      30
+MaxInStoreEdge      11
+MaxOutStoreEdge     57
+AvgIn/OutStoreEdge  0
+MaxInAddrEdge       1
+MaxOutAddrEdge      40
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.024
+UpdateCGTime        0
+AvgTopLvlPtsSize    0.567265
+SCCDetectTime       0
+SCCMergeTime        0
+LoadStoreTime       0
+CopyGepTime         0
+AvgPtsSetSize       0.227652
+CollapseTime        0
+Pointers            8233
+TotalPointers       8271
+TotalObjects        842
+IndCallSites        7
+MemObjects          799
+DummyFieldPtrs      38
+FieldObjs           43
+SolveIterations     3
+IndEdgeSolved       0
+NullPointer         167
+PointsToConstPtr    0
+PointsToBlkPtr      0
+AddrProcessed       837
+CopyProcessed       779
+GepProcessed        355
+LoadProcessed       1094
+StoreProcessed      470
+NumOfSFRs           0
+NumOfFieldExpand    0
+MaxPtsSetSize       7
+NumOfSCCDetect      3
+TotalCycleNum       4
+TotalPWCCycleNum    1
+NodesInCycles       26
+MaxNodesInSCC       16
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libplist.a.bc)###############
+UniquePointsToSets       880
+TotalUnions              2093
+PropertyUnions           1972
+UniqueUnions             31
+LookupUnions             30
+PreemptiveUnions         60
+TotalComplements         28014
+PropertyComplements      27963
+UniqueComplements        10
+LookupComplements        31
+PreemptiveComplements    10
+TotalIntersections       1611
+PropertyIntersections    1591
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  20
+#######################################################
+
+*********Memory SSA Statistics***************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.0158
+SSARenameTime       0.003
+InsertPHITime       0
+GenMUCHITime        0.003
+GenRegionTime       0.014
+TotalMSSATime       0.021
+BBHasMSSAPhi        95
+MSSAPhi             578
+StoreHasChi         535
+LoadHasMu           1237
+CSHasMu             92
+CSHasChi            82
+FunHasRetMu         88
+FunHasEntryChi      88
+StoreChiNode        505
+LoadMuNode          1123
+CSMuNode            97
+CSChiNode           83
+FunRetMu            488
+FunEntryChi         488
+MemRegions          443
+MaxRegSize          4
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.004
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.003
+TLNodeTime          0
+ATNodeTime          0.001
+OptTime             0
+AvgWeight           1.00821
+TotalNode           6635
+FormalIn            488
+FormalOut           488
+FormalParam         138
+FormalRet           30
+ActualIn            97
+ActualOut           83
+ActualParam         621
+ActualRet           158
+TotalEdge           8142
+DirectEdge          4610
+IndirectEdge        3532
+IndirectEdgeLabels  3561
+IndCallEdge         57
+IndRetEdge          43
+DirectCallEdge      223
+DirectRetEdge       75
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         29
+MaxOutDegree        97
+AvgIndInDeg         1
+AvgIndOutDeg        2
+MaxIndInDeg         22
+MaxIndOutDeg        31
+MSSAPhi             578
+PHI                 39
+Addr                837
+Copy                613
+Gep                 691
+Load                1237
+Store               536
+#######################################################
+
+*********CallGraph Stats***************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+TotalNode           145
+TotalEdge           446
+TotalCycle          2
+MaxNodeInCycle      1
+NodeInCycle         2
+CalRetPairInCycle   7
+FIObjNum            12
+FSObjNum            787
+#######################################################
+
+*********General Stats***************
+################ (program : libplist.a.bc)###############
+BBWith2Succ         233
+BBWith3Succ         16
+TotalPointers       8271
+TotalObjects        799
+TotalFieldObjects   44
+MaxStructSize       24
+TotalSVFStmts       7328
+TotalPTASVFStmts    4251
+FIObjNum            12
+FSObjNum            786
+AddrsNum            913
+LoadsNum            1972
+StoresNum           1010
+CopysNum            892
+GepsNum             691
+CallsNum            288
+ReturnsNum          110
+FunctionObjs        145
+GlobalObjs          2
+HeapObjs            43
+StackObjs           607
+VarStructObj        17
+VarArrayObj         3
+ConstStructObj      0
+ConstArrayObj       0
+NonPtrObj           393
+ConstantObj         0
+IndCallSites        7
+TotalCallSite       451
+-------------------------------------------------------
+LLVMIRTime          0.025
+SymbolTableTime     0.009
+SVFIRTime           0.04
+#######################################################
+
+****Flow-Sensitive Pointer Analysis Statistics****
+
+************************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.09
+SolveTime           0.009
+SCCTime             0
+ProcessTime         0
+PropagationTime     0
+DirectPropaTime     0
+IndirectPropaTime   0
+Strong/WeakUpdTime  0
+AddrTime            0
+CopyTime            0
+LoadTime            0
+UpdateCGTime        0
+PhiTime             0
+AvgPtsSize          0.563621
+AvgTopLvlPtsSize    0.563621
+AvgAddrTakenVarPts  0.223092
+AvgINPtsSize        0
+AvgOUTPtsSize       0
+AverageSCCSize      5.69892
+StoreTime           0
+GepTime             0
+Pointers            8233
+LocalVarInRecur     29
+TotalPointers       8271
+TotalObjects        843
+StoresNum           536
+CopysNum            613
+MemObjects          799
+DummyFieldPtrs      38
+FieldObjs           44
+SolveIterations     1
+IndEdgeSolved       0
+NullPointer         170
+PointsToConstPtr    0
+PointsToBlkPtr      0
+StrongUpdates       413
+FI_SNodesHaveIN     0
+FI_SNodesHaveOUT    0
+FO_SNodesHaveIN     0
+FO_SNodesHaveOUT    0
+AI_SNodesHaveIN     0
+AI_SNodesHaveOUT    0
+AO_SNodesHaveIN     0
+AO_SNodesHaveOUT    0
+LD_SNodesHaveIN     0
+SNodesHaveIN        0
+LD_SNodesHaveOUT    0
+SNodesHaveOUT       0
+ST_SNodesHaveIN     0
+ST_SNodesHaveOUT    0
+PHI_SNodesHaveIN    0
+PHI_SNodesHaveOUT   0
+PotentialVarHaveIN  0
+VarHaveIN           0
+PotentialVarHaveOUT 0
+VarHaveOUT          0
+VarHaveEmptyIN      0
+VarHaveEmptyOUT     0
+VarHaveIN_FI        0
+VarHaveOUT_FI       0
+VarHaveIN_FO        0
+VarHaveOUT_FO       0
+VarHaveIN_AI        0
+VarHaveOUT_AI       0
+VarHaveIN_AO        0
+VarHaveOUT_AO       0
+VarHaveIN_LD        0
+VarHaveOUT_LD       0
+VarHaveIN_ST        0
+VarHaveOUT_ST       0
+VarHaveIN_PHI       0
+VarHaveOUT_PHI      0
+MaxPtsSize          7
+MaxTopLvlPtsSize    7
+MaxINPtsSize        0
+MaxOUTPtsSize       0
+NumOfAddrTakenVar   511
+MaxAddrTakenVarPts  7
+ProcessedAddr       837
+ProcessedCopy       613
+ProcessedGep        693
+ProcessedLoad       1240
+ProcessedStore      547
+ProcessedPhi        39
+ProcessedAParam     0
+ProcessedFRet       0
+ProcessedMSSANode   1739
+NumOfNodesInSCC     530
+MaxSCCSize          44
+NumOfSCC            93
+#######################################################
+
+****Persistent Points-To Cache Statistics: flow-sensitive analysis bitvector****
+################ (program : libplist.a.bc)###############
+UniquePointsToSets       870
+TotalUnions              3437
+PropertyUnions           3348
+UniqueUnions             27
+LookupUnions             8
+PreemptiveUnions         54
+TotalComplements         0
+PropertyComplements      0
+UniqueComplements        0
+LookupComplements        0
+PreemptiveComplements    0
+TotalIntersections       0
+PropertyIntersections    0
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  0
+#######################################################
+[INFO] Analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.04161
+SSARenameTime       0.006
+InsertPHITime       0.001
+GenMUCHITime        0.007
+GenRegionTime       0.02
+TotalMSSATime       0.03
+BBHasMSSAPhi        116
+MSSAPhi             1112
+StoreHasChi         1009
+LoadHasMu           1972
+CSHasMu             108
+CSHasChi            99
+FunHasRetMu         88
+FunHasEntryChi      88
+StoreChiNode        956
+LoadMuNode          1691
+CSMuNode            135
+CSChiNode           116
+FunRetMu            792
+FunEntryChi         792
+MemRegions          697
+MaxRegSize          7
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libplist.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.008
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.005
+TLNodeTime          0
+ATNodeTime          0.003
+OptTime             0
+AvgWeight           1.02742
+TotalNode           11198
+FormalIn            792
+FormalOut           792
+FormalParam         185
+FormalRet           39
+ActualIn            135
+ActualOut           116
+ActualParam         856
+ActualRet           240
+TotalEdge           14468
+DirectEdge          8377
+IndirectEdge        6091
+IndirectEdgeLabels  6258
+IndCallEdge         96
+IndRetEdge          77
+DirectCallEdge      288
+DirectRetEdge       110
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         29
+MaxOutDegree        608
+AvgIndInDeg         1
+AvgIndOutDeg        1
+MaxIndInDeg         22
+MaxIndOutDeg        31
+MSSAPhi             1112
+PHI                 99
+Addr                913
+Copy                892
+Gep                 691
+Load                1972
+Store               1010
+#######################################################
+[INFO] running analysis...
+[INFO 1/49] processing params for: plist_access_path
+[INFO 1/49] processing return for: plist_access_path
+[INFO 2/49] processing params for: plist_access_pathv
+[INFO 2/49] processing return for: plist_access_pathv
+[INFO 3/49] processing params for: plist_array_append_item
+[INFO 4/49] processing params for: plist_array_get_item
+[INFO 4/49] processing return for: plist_array_get_item
+[INFO 5/49] processing params for: plist_array_get_item_index
+[INFO 5/49] processing return for: plist_array_get_item_index
+[INFO 6/49] processing params for: plist_array_get_size
+[INFO 6/49] processing return for: plist_array_get_size
+[INFO 7/49] processing params for: plist_array_insert_item
+[INFO 8/49] processing params for: plist_array_remove_item
+[INFO 9/49] processing params for: plist_array_set_item
+[INFO 10/49] processing params for: plist_compare_node_value
+[INFO 10/49] processing return for: plist_compare_node_value
+[INFO 11/49] processing params for: plist_copy
+[INFO 11/49] processing return for: plist_copy
+[INFO 12/49] processing params for: plist_dict_get_item
+[INFO 12/49] processing return for: plist_dict_get_item
+[INFO 13/49] processing params for: plist_dict_get_item_key
+[INFO 14/49] processing params for: plist_dict_get_size
+[INFO 14/49] processing return for: plist_dict_get_size
+[INFO 15/49] processing params for: plist_dict_insert_item
+[INFO 16/49] processing params for: plist_dict_new_iter
+[INFO 17/49] processing params for: plist_dict_next_item
+[INFO 18/49] processing params for: plist_dict_remove_item
+[INFO 19/49] processing params for: plist_dict_set_item
+[INFO 20/49] processing params for: plist_free
+[INFO 21/49] processing params for: plist_from_bin
+[INFO 22/49] processing params for: plist_from_xml
+[INFO 23/49] processing params for: plist_get_bool_val
+[INFO 24/49] processing params for: plist_get_data_val
+[INFO 25/49] processing params for: plist_get_date_val
+[INFO 26/49] processing params for: plist_get_key_val
+[INFO 27/49] processing params for: plist_get_node_type
+[INFO 27/49] processing return for: plist_get_node_type
+[INFO 28/49] processing params for: plist_get_parent
+[INFO 28/49] processing return for: plist_get_parent
+[INFO 29/49] processing params for: plist_get_real_val
+[INFO 30/49] processing params for: plist_get_string_val
+[INFO 31/49] processing params for: plist_get_uint_val
+[INFO 32/49] processing return for: plist_new_array
+[INFO 33/49] processing params for: plist_new_bool
+[INFO 33/49] processing return for: plist_new_bool
+[INFO 34/49] processing params for: plist_new_data
+[INFO 34/49] processing return for: plist_new_data
+[INFO 35/49] processing params for: plist_new_date
+[INFO 35/49] processing return for: plist_new_date
+[INFO 36/49] processing return for: plist_new_dict
+[INFO 37/49] processing params for: plist_new_real
+[INFO 37/49] processing return for: plist_new_real
+[INFO 38/49] processing params for: plist_new_string
+[INFO 38/49] processing return for: plist_new_string
+[INFO 39/49] processing params for: plist_new_uint
+[INFO 39/49] processing return for: plist_new_uint
+[INFO 40/49] processing params for: plist_set_bool_val
+[INFO 41/49] processing params for: plist_set_data_val
+[INFO 42/49] processing params for: plist_set_date_val
+[INFO 43/49] processing params for: plist_set_key_val
+[INFO 44/49] processing params for: plist_set_real_val
+[INFO 45/49] processing params for: plist_set_string_val
+[INFO 46/49] processing params for: plist_set_type
+[INFO 47/49] processing params for: plist_set_uint_val
+[INFO 48/49] processing params for: plist_to_bin
+[INFO 49/49] processing params for: plist_to_xml
+[INFO] Summary plist_access_path:
+param_0: 1 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary plist_access_pathv:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 7 access types
+return: 2 access types
+[INFO] Summary plist_array_append_item:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_array_get_item:
+param_0: 1 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary plist_array_get_item_index:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary plist_array_get_size:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary plist_array_insert_item:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary plist_array_remove_item:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_array_set_item:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary plist_compare_node_value:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_copy:
+param_0: 1 access types
+return: 3 access types
+[INFO] Summary plist_dict_get_item:
+param_0: 1 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary plist_dict_get_item_key:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary plist_dict_get_size:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary plist_dict_insert_item:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary plist_dict_new_iter:
+param_0: 1 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary plist_dict_next_item:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 3 access types
+param_3: 2 access types
+return: 0 access types
+[INFO] Summary plist_dict_remove_item:
+param_0: 3 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_dict_set_item:
+param_0: 3 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary plist_free:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary plist_from_bin:
+param_0: 3 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary plist_from_xml:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary plist_get_bool_val:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary plist_get_data_val:
+param_0: 2 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary plist_get_date_val:
+param_0: 2 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary plist_get_key_val:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary plist_get_node_type:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary plist_get_parent:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary plist_get_real_val:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary plist_get_string_val:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary plist_get_uint_val:
+param_0: 2 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary plist_new_array:
+return: 1 access types
+[INFO] Summary plist_new_bool:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary plist_new_data:
+param_0: 2 access types
+param_1: 1 access types
+return: 3 access types
+[INFO] Summary plist_new_date:
+param_0: 1 access types
+param_1: 1 access types
+return: 1 access types
+[INFO] Summary plist_new_dict:
+return: 1 access types
+[INFO] Summary plist_new_real:
+param_0: 1 access types
+return: 1 access types
+[INFO] Summary plist_new_string:
+param_0: 2 access types
+return: 3 access types
+[INFO] Summary plist_new_uint:
+param_0: 1 access types
+return: 1 access types
+[INFO] Summary plist_set_bool_val:
+param_0: 4 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_set_data_val:
+param_0: 4 access types
+param_1: 2 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary plist_set_date_val:
+param_0: 4 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary plist_set_key_val:
+param_0: 4 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary plist_set_real_val:
+param_0: 4 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_set_string_val:
+param_0: 4 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary plist_set_type:
+param_0: 3 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_set_uint_val:
+param_0: 4 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary plist_to_bin:
+param_0: 1 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary plist_to_xml:
+param_0: 1 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                         34.71         1     34.71
+2. PAG Builder                               40.37         1     40.37
+3. Points-to Analysis                        95.08         1     95.08
+4. Full SVFG Build                           50.83         1     50.83
+Function 1: extract_parameter_metadata      111.46        98      1.14
+Function 1: extract_parameter_metadata: plist_access_path      0.44         2      0.22
+Function 1: extract_parameter_metadata: plist_access_pathv      0.59         3      0.20
+Function 1: extract_parameter_metadata: plist_array_append_item      0.18         2      0.09
+Function 1: extract_parameter_metadata: plist_array_get_item      0.16         2      0.08
+Function 1: extract_parameter_metadata: plist_array_get_item_index      0.16         1      0.16
+Function 1: extract_parameter_metadata: plist_array_get_size      0.12         1      0.12
+Function 1: extract_parameter_metadata: plist_array_insert_item      0.23         3      0.08
+Function 1: extract_parameter_metadata: plist_array_remove_item      0.19         2      0.09
+Function 1: extract_parameter_metadata: plist_array_set_item      0.34         3      0.11
+Function 1: extract_parameter_metadata: plist_compare_node_value      0.34         2      0.17
+Function 1: extract_parameter_metadata: plist_copy      0.14         1      0.14
+Function 1: extract_parameter_metadata: plist_dict_get_item      0.33         2      0.17
+Function 1: extract_parameter_metadata: plist_dict_get_item_key      0.54         2      0.27
+Function 1: extract_parameter_metadata: plist_dict_get_size      0.15         1      0.15
+Function 1: extract_parameter_metadata: plist_dict_insert_item      0.26         3      0.09
+Function 1: extract_parameter_metadata: plist_dict_new_iter      0.12         2      0.06
+Function 1: extract_parameter_metadata: plist_dict_next_item      0.46         4      0.12
+Function 1: extract_parameter_metadata: plist_dict_remove_item      0.62         2      0.31
+Function 1: extract_parameter_metadata: plist_dict_set_item      0.61         3      0.20
+Function 1: extract_parameter_metadata: plist_free      0.18         1      0.18
+Function 1: extract_parameter_metadata: plist_from_bin     98.52         3     32.84
+Function 1: extract_parameter_metadata: plist_from_xml      0.24         3      0.08
+Function 1: extract_parameter_metadata: plist_get_bool_val      0.43         2      0.22
+Function 1: extract_parameter_metadata: plist_get_data_val      0.46         3      0.15
+Function 1: extract_parameter_metadata: plist_get_date_val      0.36         3      0.12
+Function 1: extract_parameter_metadata: plist_get_key_val      0.40         2      0.20
+Function 1: extract_parameter_metadata: plist_get_node_type      0.12         1      0.12
+Function 1: extract_parameter_metadata: plist_get_parent      0.07         1      0.07
+Function 1: extract_parameter_metadata: plist_get_real_val      0.36         2      0.18
+Function 1: extract_parameter_metadata: plist_get_string_val      0.42         2      0.21
+Function 1: extract_parameter_metadata: plist_get_uint_val      0.38         2      0.19
+Function 1: extract_parameter_metadata: plist_new_bool      0.06         1      0.06
+Function 1: extract_parameter_metadata: plist_new_data      0.12         2      0.06
+Function 1: extract_parameter_metadata: plist_new_date      0.11         2      0.06
+Function 1: extract_parameter_metadata: plist_new_real      0.06         1      0.06
+Function 1: extract_parameter_metadata: plist_new_string      0.06         1      0.06
+Function 1: extract_parameter_metadata: plist_new_uint      0.06         1      0.06
+Function 1: extract_parameter_metadata: plist_set_bool_val      0.32         2      0.16
+Function 1: extract_parameter_metadata: plist_set_data_val      0.40         3      0.13
+Function 1: extract_parameter_metadata: plist_set_date_val      0.31         3      0.10
+Function 1: extract_parameter_metadata: plist_set_key_val      0.30         2      0.15
+Function 1: extract_parameter_metadata: plist_set_real_val      0.24         2      0.12
+Function 1: extract_parameter_metadata: plist_set_string_val      0.29         2      0.14
+Function 1: extract_parameter_metadata: plist_set_type      0.24         2      0.12
+Function 1: extract_parameter_metadata: plist_set_uint_val      0.26         2      0.13
+Function 1: extract_parameter_metadata: plist_to_bin      0.24         3      0.08
+Function 1: extract_parameter_metadata: plist_to_xml      0.42         3      0.14
+Function 2: extractLenDependencyParameter      3.05        33      0.09
+Function 2: extractLenDependencyParameter: plist_dict_get_item_key      0.16         2      0.08
+Function 2: extractLenDependencyParameter: plist_dict_insert_item      0.07         1      0.07
+Function 2: extractLenDependencyParameter: plist_dict_next_item      0.07         1      0.07
+Function 2: extractLenDependencyParameter: plist_from_bin      0.99         2      0.49
+Function 2: extractLenDependencyParameter: plist_get_bool_val      0.14         2      0.07
+Function 2: extractLenDependencyParameter: plist_get_data_val      0.14         2      0.07
+Function 2: extractLenDependencyParameter: plist_get_date_val      0.07         1      0.07
+Function 2: extractLenDependencyParameter: plist_get_key_val      0.13         2      0.06
+Function 2: extractLenDependencyParameter: plist_get_real_val      0.13         2      0.07
+Function 2: extractLenDependencyParameter: plist_get_string_val      0.14         2      0.07
+Function 2: extractLenDependencyParameter: plist_get_uint_val      0.13         2      0.06
+Function 2: extractLenDependencyParameter: plist_new_data      0.07         1      0.07
+Function 2: extractLenDependencyParameter: plist_new_string      0.06         1      0.06
+Function 2: extractLenDependencyParameter: plist_set_bool_val      0.07         1      0.07
+Function 2: extractLenDependencyParameter: plist_set_data_val      0.12         2      0.06
+Function 2: extractLenDependencyParameter: plist_set_date_val      0.06         1      0.06
+Function 2: extractLenDependencyParameter: plist_set_key_val      0.12         2      0.06
+Function 2: extractLenDependencyParameter: plist_set_real_val      0.06         1      0.06
+Function 2: extractLenDependencyParameter: plist_set_string_val      0.12         2      0.06
+Function 2: extractLenDependencyParameter: plist_set_uint_val      0.06         1      0.06
+Function 2: extractLenDependencyParameter: plist_to_bin      0.07         1      0.07
+Function 2: extractLenDependencyParameter: plist_to_xml      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters     49.46        98      0.50
+Function 3: my_extract_dependency_among_parameters: plist_access_path      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_access_pathv      0.22         3      0.07
+Function 3: my_extract_dependency_among_parameters: plist_array_append_item      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_array_get_item      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_array_get_item_index      0.08         1      0.08
+Function 3: my_extract_dependency_among_parameters: plist_array_get_size      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: plist_array_insert_item      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameters: plist_array_remove_item      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameters: plist_array_set_item      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameters: plist_compare_node_value      0.11         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_copy      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: plist_dict_get_item      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_dict_get_item_key      4.08         2      2.04
+Function 3: my_extract_dependency_among_parameters: plist_dict_get_size      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: plist_dict_insert_item      0.16         3      0.05
+Function 3: my_extract_dependency_among_parameters: plist_dict_new_iter      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_dict_next_item      9.95         4      2.49
+Function 3: my_extract_dependency_among_parameters: plist_dict_remove_item      0.15         2      0.07
+Function 3: my_extract_dependency_among_parameters: plist_dict_set_item      0.19         3      0.06
+Function 3: my_extract_dependency_among_parameters: plist_free      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: plist_from_bin      2.08         3      0.69
+Function 3: my_extract_dependency_among_parameters: plist_from_xml      0.19         3      0.06
+Function 3: my_extract_dependency_among_parameters: plist_get_bool_val      3.70         2      1.85
+Function 3: my_extract_dependency_among_parameters: plist_get_data_val      7.81         3      2.60
+Function 3: my_extract_dependency_among_parameters: plist_get_date_val      2.99         3      1.00
+Function 3: my_extract_dependency_among_parameters: plist_get_key_val      3.40         2      1.70
+Function 3: my_extract_dependency_among_parameters: plist_get_node_type      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: plist_get_parent      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameters: plist_get_real_val      3.61         2      1.80
+Function 3: my_extract_dependency_among_parameters: plist_get_string_val      3.51         2      1.75
+Function 3: my_extract_dependency_among_parameters: plist_get_uint_val      3.54         2      1.77
+Function 3: my_extract_dependency_among_parameters: plist_new_bool      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: plist_new_data      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameters: plist_new_date      0.11         2      0.05
+Function 3: my_extract_dependency_among_parameters: plist_new_real      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameters: plist_new_string      0.05         1      0.05
+Function 3: my_extract_dependency_among_parameters: plist_new_uint      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: plist_set_bool_val      0.20         2      0.10
+Function 3: my_extract_dependency_among_parameters: plist_set_data_val      0.23         3      0.08
+Function 3: my_extract_dependency_among_parameters: plist_set_date_val      0.22         3      0.07
+Function 3: my_extract_dependency_among_parameters: plist_set_key_val      0.16         2      0.08
+Function 3: my_extract_dependency_among_parameters: plist_set_real_val      0.15         2      0.08
+Function 3: my_extract_dependency_among_parameters: plist_set_string_val      0.15         2      0.07
+Function 3: my_extract_dependency_among_parameters: plist_set_type      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameters: plist_set_uint_val      0.16         2      0.08
+Function 3: my_extract_dependency_among_parameters: plist_to_bin      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameters: plist_to_xml      0.17         3      0.06
+Function 4: extract_return_metadata          15.78        49      0.32
+Function 4: extract_return_metadata: plist_access_path      4.97         1      4.97
+Function 4: extract_return_metadata: plist_access_pathv      4.03         1      4.03
+Function 4: extract_return_metadata: plist_array_append_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_array_get_item      0.41         1      0.41
+Function 4: extract_return_metadata: plist_array_get_item_index      0.05         1      0.05
+Function 4: extract_return_metadata: plist_array_get_size      0.05         1      0.05
+Function 4: extract_return_metadata: plist_array_insert_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_array_remove_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_array_set_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_compare_node_value      0.05         1      0.05
+Function 4: extract_return_metadata: plist_copy      1.41         1      1.41
+Function 4: extract_return_metadata: plist_dict_get_item      1.64         1      1.64
+Function 4: extract_return_metadata: plist_dict_get_item_key      0.05         1      0.05
+Function 4: extract_return_metadata: plist_dict_get_size      0.05         1      0.05
+Function 4: extract_return_metadata: plist_dict_insert_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_dict_new_iter      0.05         1      0.05
+Function 4: extract_return_metadata: plist_dict_next_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_dict_remove_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_dict_set_item      0.05         1      0.05
+Function 4: extract_return_metadata: plist_free      0.05         1      0.05
+Function 4: extract_return_metadata: plist_from_bin      0.05         1      0.05
+Function 4: extract_return_metadata: plist_from_xml      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_bool_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_data_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_date_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_key_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_node_type      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_parent      0.25         1      0.25
+Function 4: extract_return_metadata: plist_get_real_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_string_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_get_uint_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_new_array      0.28         1      0.28
+Function 4: extract_return_metadata: plist_new_bool      0.18         1      0.18
+Function 4: extract_return_metadata: plist_new_data      0.19         1      0.19
+Function 4: extract_return_metadata: plist_new_date      0.15         1      0.15
+Function 4: extract_return_metadata: plist_new_dict      0.14         1      0.14
+Function 4: extract_return_metadata: plist_new_real      0.14         1      0.14
+Function 4: extract_return_metadata: plist_new_string      0.16         1      0.16
+Function 4: extract_return_metadata: plist_new_uint      0.14         1      0.14
+Function 4: extract_return_metadata: plist_set_bool_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_data_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_date_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_key_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_real_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_string_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_type      0.05         1      0.05
+Function 4: extract_return_metadata: plist_set_uint_val      0.05         1      0.05
+Function 4: extract_return_metadata: plist_to_bin      0.05         1      0.05
+Function 4: extract_return_metadata: plist_to_xml      0.05         1      0.05
+Process Function: plist_access_path           5.63         1      5.63
+Process Function: plist_access_pathv          4.96         1      4.96
+Process Function: plist_array_append_item      0.42         1      0.42
+Process Function: plist_array_get_item        0.75         1      0.75
+Process Function: plist_array_get_item_index      0.35         1      0.35
+Process Function: plist_array_get_size        0.29         1      0.29
+Process Function: plist_array_insert_item      0.50         1      0.50
+Process Function: plist_array_remove_item      0.41         1      0.41
+Process Function: plist_array_set_item        0.62         1      0.62
+Process Function: plist_compare_node_value      0.57         1      0.57
+Process Function: plist_copy                  1.70         1      1.70
+Process Function: plist_dict_get_item         2.19         1      2.19
+Process Function: plist_dict_get_item_key      4.93         1      4.93
+Process Function: plist_dict_get_size         0.32         1      0.32
+Process Function: plist_dict_insert_item      0.61         1      0.61
+Process Function: plist_dict_new_iter         0.34         1      0.34
+Process Function: plist_dict_next_item       10.62         1     10.62
+Process Function: plist_dict_remove_item      0.90         1      0.90
+Process Function: plist_dict_set_item         0.95         1      0.95
+Process Function: plist_free                  0.38         1      0.38
+Process Function: plist_from_bin            102.29         1    102.29
+Process Function: plist_from_xml              0.54         1      0.54
+Process Function: plist_get_bool_val          4.42         1      4.42
+Process Function: plist_get_data_val          8.55         1      8.55
+Process Function: plist_get_date_val          3.55         1      3.55
+Process Function: plist_get_key_val           4.07         1      4.07
+Process Function: plist_get_node_type         0.30         1      0.30
+Process Function: plist_get_parent            0.43         1      0.43
+Process Function: plist_get_real_val          4.24         1      4.24
+Process Function: plist_get_string_val        4.21         1      4.21
+Process Function: plist_get_uint_val          4.19         1      4.19
+Process Function: plist_new_array             0.33         1      0.33
+Process Function: plist_new_bool              0.36         1      0.36
+Process Function: plist_new_data              0.55         1      0.55
+Process Function: plist_new_date              0.44         1      0.44
+Process Function: plist_new_dict              0.19         1      0.19
+Process Function: plist_new_real              0.30         1      0.30
+Process Function: plist_new_string            0.39         1      0.39
+Process Function: plist_new_uint              0.31         1      0.31
+Process Function: plist_set_bool_val          0.70         1      0.70
+Process Function: plist_set_data_val          0.88         1      0.88
+Process Function: plist_set_date_val          0.71         1      0.71
+Process Function: plist_set_key_val           0.70         1      0.70
+Process Function: plist_set_real_val          0.57         1      0.57
+Process Function: plist_set_string_val        0.68         1      0.68
+Process Function: plist_set_type              0.48         1      0.48
+Process Function: plist_set_uint_val          0.60         1      0.60
+Process Function: plist_to_bin                0.63         1      0.63
+Process Function: plist_to_xml                0.78         1      0.78
+Process Parameters: plist_access_path         0.61         1      0.61
+Process Parameters: plist_access_pathv        0.86         1      0.86
+Process Parameters: plist_array_append_item      0.34         1      0.34
+Process Parameters: plist_array_get_item      0.30         1      0.30
+Process Parameters: plist_array_get_item_index      0.27         1      0.27
+Process Parameters: plist_array_get_size      0.21         1      0.21
+Process Parameters: plist_array_insert_item      0.42         1      0.42
+Process Parameters: plist_array_remove_item      0.33         1      0.33
+Process Parameters: plist_array_set_item      0.54         1      0.54
+Process Parameters: plist_compare_node_value      0.49         1      0.49
+Process Parameters: plist_copy                0.24         1      0.24
+Process Parameters: plist_dict_get_item       0.49         1      0.49
+Process Parameters: plist_dict_get_item_key      4.84         1      4.84
+Process Parameters: plist_dict_get_size       0.25         1      0.25
+Process Parameters: plist_dict_insert_item      0.54         1      0.54
+Process Parameters: plist_dict_new_iter       0.27         1      0.27
+Process Parameters: plist_dict_next_item     10.53         1     10.53
+Process Parameters: plist_dict_remove_item      0.81         1      0.81
+Process Parameters: plist_dict_set_item       0.85         1      0.85
+Process Parameters: plist_free                0.30         1      0.30
+Process Parameters: plist_from_bin          101.92         1    101.92
+Process Parameters: plist_from_xml            0.46         1      0.46
+Process Parameters: plist_get_bool_val        4.32         1      4.32
+Process Parameters: plist_get_data_val        8.46         1      8.46
+Process Parameters: plist_get_date_val        3.46         1      3.46
+Process Parameters: plist_get_key_val         3.98         1      3.98
+Process Parameters: plist_get_node_type       0.22         1      0.22
+Process Parameters: plist_get_parent          0.15         1      0.15
+Process Parameters: plist_get_real_val        4.14         1      4.14
+Process Parameters: plist_get_string_val      4.12         1      4.12
+Process Parameters: plist_get_uint_val        4.10         1      4.10
+Process Parameters: plist_new_array           0.02         1      0.02
+Process Parameters: plist_new_bool            0.15         1      0.15
+Process Parameters: plist_new_data            0.33         1      0.33
+Process Parameters: plist_new_date            0.25         1      0.25
+Process Parameters: plist_new_dict            0.02         1      0.02
+Process Parameters: plist_new_real            0.14         1      0.14
+Process Parameters: plist_new_string          0.20         1      0.20
+Process Parameters: plist_new_uint            0.14         1      0.14
+Process Parameters: plist_set_bool_val        0.62         1      0.62
+Process Parameters: plist_set_data_val        0.79         1      0.79
+Process Parameters: plist_set_date_val        0.63         1      0.63
+Process Parameters: plist_set_key_val         0.62         1      0.62
+Process Parameters: plist_set_real_val        0.49         1      0.49
+Process Parameters: plist_set_string_val      0.60         1      0.60
+Process Parameters: plist_set_type            0.41         1      0.41
+Process Parameters: plist_set_uint_val        0.52         1      0.52
+Process Parameters: plist_to_bin              0.55         1      0.55
+Process Parameters: plist_to_xml              0.69         1      0.69
+Total Condition Extraction (all 4 functions total)    183.87         1    183.87
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                            10.3        10.3        19.6       1
+2. PAG Builder                                  15.0        15.0        34.8       1
+3. Points-to Analysis                           25.9        25.9        60.7       1
+4. Full SVFG Build                              11.4        11.4        72.2       1
+Function 1: extract_parameter_metadata           0.0         2.4        74.6      98
+Function 1: extract_parameter_metadata: plist_access_path         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_access_pathv         0.0         0.0        72.2       3
+Function 1: extract_parameter_metadata: plist_array_append_item         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_array_get_item         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_array_get_item_index         0.0         0.0        72.2       1
+Function 1: extract_parameter_metadata: plist_array_get_size         0.0         0.0        72.2       1
+Function 1: extract_parameter_metadata: plist_array_insert_item         0.0         0.0        72.2       3
+Function 1: extract_parameter_metadata: plist_array_remove_item         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_array_set_item         0.0         0.0        72.2       3
+Function 1: extract_parameter_metadata: plist_compare_node_value         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_copy         0.0         0.0        72.2       1
+Function 1: extract_parameter_metadata: plist_dict_get_item         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_dict_get_item_key         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_dict_get_size         0.0         0.0        72.2       1
+Function 1: extract_parameter_metadata: plist_dict_insert_item         0.0         0.0        72.2       3
+Function 1: extract_parameter_metadata: plist_dict_new_iter         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_dict_next_item         0.0         0.0        72.2       4
+Function 1: extract_parameter_metadata: plist_dict_remove_item         0.0         0.0        72.2       2
+Function 1: extract_parameter_metadata: plist_dict_set_item         0.0         0.0        72.2       3
+Function 1: extract_parameter_metadata: plist_free         0.0         0.0        72.2       1
+Function 1: extract_parameter_metadata: plist_from_bin         0.8         2.4        74.6       3
+Function 1: extract_parameter_metadata: plist_from_xml         0.0         0.0        74.6       3
+Function 1: extract_parameter_metadata: plist_get_bool_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_get_data_val         0.0         0.0        74.6       3
+Function 1: extract_parameter_metadata: plist_get_date_val         0.0         0.0        74.6       3
+Function 1: extract_parameter_metadata: plist_get_key_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_get_node_type         0.0         0.0        74.6       1
+Function 1: extract_parameter_metadata: plist_get_parent         0.0         0.0        74.6       1
+Function 1: extract_parameter_metadata: plist_get_real_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_get_string_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_get_uint_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_new_bool         0.0         0.0        74.6       1
+Function 1: extract_parameter_metadata: plist_new_data         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_new_date         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_new_real         0.0         0.0        74.6       1
+Function 1: extract_parameter_metadata: plist_new_string         0.0         0.0        74.6       1
+Function 1: extract_parameter_metadata: plist_new_uint         0.0         0.0        74.6       1
+Function 1: extract_parameter_metadata: plist_set_bool_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_set_data_val         0.0         0.0        74.6       3
+Function 1: extract_parameter_metadata: plist_set_date_val         0.0         0.0        74.6       3
+Function 1: extract_parameter_metadata: plist_set_key_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_set_real_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_set_string_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_set_type         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_set_uint_val         0.0         0.0        74.6       2
+Function 1: extract_parameter_metadata: plist_to_bin         0.0         0.0        74.6       3
+Function 1: extract_parameter_metadata: plist_to_xml         0.0         0.0        74.6       3
+Function 2: extractLenDependencyParameter         0.0         0.0        74.6      33
+Function 2: extractLenDependencyParameter: plist_dict_get_item_key         0.0         0.0        72.2       2
+Function 2: extractLenDependencyParameter: plist_dict_insert_item         0.0         0.0        72.2       1
+Function 2: extractLenDependencyParameter: plist_dict_next_item         0.0         0.0        72.2       1
+Function 2: extractLenDependencyParameter: plist_from_bin         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_get_bool_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_get_data_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_get_date_val         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_get_key_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_get_real_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_get_string_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_get_uint_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_new_data         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_new_string         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_set_bool_val         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_set_data_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_set_date_val         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_set_key_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_set_real_val         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_set_string_val         0.0         0.0        74.6       2
+Function 2: extractLenDependencyParameter: plist_set_uint_val         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_to_bin         0.0         0.0        74.6       1
+Function 2: extractLenDependencyParameter: plist_to_xml         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters         0.0         0.0        74.6      98
+Function 3: my_extract_dependency_among_parameters: plist_access_path         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_access_pathv         0.0         0.0        72.2       3
+Function 3: my_extract_dependency_among_parameters: plist_array_append_item         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_array_get_item         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_array_get_item_index         0.0         0.0        72.2       1
+Function 3: my_extract_dependency_among_parameters: plist_array_get_size         0.0         0.0        72.2       1
+Function 3: my_extract_dependency_among_parameters: plist_array_insert_item         0.0         0.0        72.2       3
+Function 3: my_extract_dependency_among_parameters: plist_array_remove_item         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_array_set_item         0.0         0.0        72.2       3
+Function 3: my_extract_dependency_among_parameters: plist_compare_node_value         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_copy         0.0         0.0        72.2       1
+Function 3: my_extract_dependency_among_parameters: plist_dict_get_item         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_dict_get_item_key         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_dict_get_size         0.0         0.0        72.2       1
+Function 3: my_extract_dependency_among_parameters: plist_dict_insert_item         0.0         0.0        72.2       3
+Function 3: my_extract_dependency_among_parameters: plist_dict_new_iter         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_dict_next_item         0.0         0.0        72.2       4
+Function 3: my_extract_dependency_among_parameters: plist_dict_remove_item         0.0         0.0        72.2       2
+Function 3: my_extract_dependency_among_parameters: plist_dict_set_item         0.0         0.0        72.2       3
+Function 3: my_extract_dependency_among_parameters: plist_free         0.0         0.0        72.2       1
+Function 3: my_extract_dependency_among_parameters: plist_from_bin         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_from_xml         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_get_bool_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_get_data_val         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_get_date_val         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_get_key_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_get_node_type         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters: plist_get_parent         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters: plist_get_real_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_get_string_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_get_uint_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_new_bool         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters: plist_new_data         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_new_date         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_new_real         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters: plist_new_string         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters: plist_new_uint         0.0         0.0        74.6       1
+Function 3: my_extract_dependency_among_parameters: plist_set_bool_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_set_data_val         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_set_date_val         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_set_key_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_set_real_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_set_string_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_set_type         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_set_uint_val         0.0         0.0        74.6       2
+Function 3: my_extract_dependency_among_parameters: plist_to_bin         0.0         0.0        74.6       3
+Function 3: my_extract_dependency_among_parameters: plist_to_xml         0.0         0.0        74.6       3
+Function 4: extract_return_metadata              0.0         0.0        74.6      49
+Function 4: extract_return_metadata: plist_access_path         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_access_pathv         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_append_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_get_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_get_item_index         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_get_size         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_insert_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_remove_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_array_set_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_compare_node_value         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_copy         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_get_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_get_item_key         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_get_size         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_insert_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_new_iter         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_next_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_remove_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_dict_set_item         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_free         0.0         0.0        72.2       1
+Function 4: extract_return_metadata: plist_from_bin         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_from_xml         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_bool_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_data_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_date_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_key_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_node_type         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_parent         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_real_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_string_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_get_uint_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_array         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_bool         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_data         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_date         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_dict         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_real         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_string         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_new_uint         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_bool_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_data_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_date_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_key_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_real_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_string_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_type         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_set_uint_val         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_to_bin         0.0         0.0        74.6       1
+Function 4: extract_return_metadata: plist_to_xml         0.0         0.0        74.6       1
+Process Function: plist_access_path              0.0         0.0        72.2       1
+Process Function: plist_access_pathv             0.0         0.0        72.2       1
+Process Function: plist_array_append_item         0.0         0.0        72.2       1
+Process Function: plist_array_get_item           0.0         0.0        72.2       1
+Process Function: plist_array_get_item_index         0.0         0.0        72.2       1
+Process Function: plist_array_get_size           0.0         0.0        72.2       1
+Process Function: plist_array_insert_item         0.0         0.0        72.2       1
+Process Function: plist_array_remove_item         0.0         0.0        72.2       1
+Process Function: plist_array_set_item           0.0         0.0        72.2       1
+Process Function: plist_compare_node_value         0.0         0.0        72.2       1
+Process Function: plist_copy                     0.0         0.0        72.2       1
+Process Function: plist_dict_get_item            0.0         0.0        72.2       1
+Process Function: plist_dict_get_item_key         0.0         0.0        72.2       1
+Process Function: plist_dict_get_size            0.0         0.0        72.2       1
+Process Function: plist_dict_insert_item         0.0         0.0        72.2       1
+Process Function: plist_dict_new_iter            0.0         0.0        72.2       1
+Process Function: plist_dict_next_item           0.0         0.0        72.2       1
+Process Function: plist_dict_remove_item         0.0         0.0        72.2       1
+Process Function: plist_dict_set_item            0.0         0.0        72.2       1
+Process Function: plist_free                     0.0         0.0        72.2       1
+Process Function: plist_from_bin                 2.4         2.4        74.6       1
+Process Function: plist_from_xml                 0.0         0.0        74.6       1
+Process Function: plist_get_bool_val             0.0         0.0        74.6       1
+Process Function: plist_get_data_val             0.0         0.0        74.6       1
+Process Function: plist_get_date_val             0.0         0.0        74.6       1
+Process Function: plist_get_key_val              0.0         0.0        74.6       1
+Process Function: plist_get_node_type            0.0         0.0        74.6       1
+Process Function: plist_get_parent               0.0         0.0        74.6       1
+Process Function: plist_get_real_val             0.0         0.0        74.6       1
+Process Function: plist_get_string_val           0.0         0.0        74.6       1
+Process Function: plist_get_uint_val             0.0         0.0        74.6       1
+Process Function: plist_new_array                0.0         0.0        74.6       1
+Process Function: plist_new_bool                 0.0         0.0        74.6       1
+Process Function: plist_new_data                 0.0         0.0        74.6       1
+Process Function: plist_new_date                 0.0         0.0        74.6       1
+Process Function: plist_new_dict                 0.0         0.0        74.6       1
+Process Function: plist_new_real                 0.0         0.0        74.6       1
+Process Function: plist_new_string               0.0         0.0        74.6       1
+Process Function: plist_new_uint                 0.0         0.0        74.6       1
+Process Function: plist_set_bool_val             0.0         0.0        74.6       1
+Process Function: plist_set_data_val             0.0         0.0        74.6       1
+Process Function: plist_set_date_val             0.0         0.0        74.6       1
+Process Function: plist_set_key_val              0.0         0.0        74.6       1
+Process Function: plist_set_real_val             0.0         0.0        74.6       1
+Process Function: plist_set_string_val           0.0         0.0        74.6       1
+Process Function: plist_set_type                 0.0         0.0        74.6       1
+Process Function: plist_set_uint_val             0.0         0.0        74.6       1
+Process Function: plist_to_bin                   0.0         0.0        74.6       1
+Process Function: plist_to_xml                   0.0         0.0        74.6       1
+Process Parameters: plist_access_path            0.0         0.0        72.2       1
+Process Parameters: plist_access_pathv           0.0         0.0        72.2       1
+Process Parameters: plist_array_append_item         0.0         0.0        72.2       1
+Process Parameters: plist_array_get_item         0.0         0.0        72.2       1
+Process Parameters: plist_array_get_item_index         0.0         0.0        72.2       1
+Process Parameters: plist_array_get_size         0.0         0.0        72.2       1
+Process Parameters: plist_array_insert_item         0.0         0.0        72.2       1
+Process Parameters: plist_array_remove_item         0.0         0.0        72.2       1
+Process Parameters: plist_array_set_item         0.0         0.0        72.2       1
+Process Parameters: plist_compare_node_value         0.0         0.0        72.2       1
+Process Parameters: plist_copy                   0.0         0.0        72.2       1
+Process Parameters: plist_dict_get_item          0.0         0.0        72.2       1
+Process Parameters: plist_dict_get_item_key         0.0         0.0        72.2       1
+Process Parameters: plist_dict_get_size          0.0         0.0        72.2       1
+Process Parameters: plist_dict_insert_item         0.0         0.0        72.2       1
+Process Parameters: plist_dict_new_iter          0.0         0.0        72.2       1
+Process Parameters: plist_dict_next_item         0.0         0.0        72.2       1
+Process Parameters: plist_dict_remove_item         0.0         0.0        72.2       1
+Process Parameters: plist_dict_set_item          0.0         0.0        72.2       1
+Process Parameters: plist_free                   0.0         0.0        72.2       1
+Process Parameters: plist_from_bin               2.4         2.4        74.6       1
+Process Parameters: plist_from_xml               0.0         0.0        74.6       1
+Process Parameters: plist_get_bool_val           0.0         0.0        74.6       1
+Process Parameters: plist_get_data_val           0.0         0.0        74.6       1
+Process Parameters: plist_get_date_val           0.0         0.0        74.6       1
+Process Parameters: plist_get_key_val            0.0         0.0        74.6       1
+Process Parameters: plist_get_node_type          0.0         0.0        74.6       1
+Process Parameters: plist_get_parent             0.0         0.0        74.6       1
+Process Parameters: plist_get_real_val           0.0         0.0        74.6       1
+Process Parameters: plist_get_string_val         0.0         0.0        74.6       1
+Process Parameters: plist_get_uint_val           0.0         0.0        74.6       1
+Process Parameters: plist_new_array              0.0         0.0        74.6       1
+Process Parameters: plist_new_bool               0.0         0.0        74.6       1
+Process Parameters: plist_new_data               0.0         0.0        74.6       1
+Process Parameters: plist_new_date               0.0         0.0        74.6       1
+Process Parameters: plist_new_dict               0.0         0.0        74.6       1
+Process Parameters: plist_new_real               0.0         0.0        74.6       1
+Process Parameters: plist_nplist_get_data
+plist_get_node_type
+plist_array_get_item
+plist_array_get_item
+plist_array_get_item
+plist_access_path
+plist_access_path
+plist_access_path
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_access_pathv
+plist_access_pathv
+plist_access_pathv
+plist_access_pathv
+plist_access_pathv
+plist_access_path
+plist_access_path
+plist_get_data
+plist_get_node_type
+plist_array_get_item
+plist_array_get_item
+plist_array_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_access_pathv
+plist_access_pathv
+plist_access_pathv
+plist_access_pathv
+plist_access_pathv
+plist_get_data
+plist_get_node_type
+plist_array_get_item
+plist_array_get_item
+plist_array_get_item
+plist_new_node
+plist_new_node
+plist_get_data
+plist_new_plist_data
+plist_copy
+plist_copy
+plist_copy
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_copy_node
+plist_get_node_type
+plist_get_data
+plist_get_node_type
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_dict_get_item
+plist_get_parent
+plist_get_parent
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_array
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_bool
+plist_new_bool
+plist_new_data
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_data
+plist_new_data
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_date
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_dict
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_real
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_string
+plist_new_string
+plist_new_string
+plist_new_node
+plist_new_node
+plist_new_plist_data
+plist_new_uint
+ew_string             0.0         0.0        74.6       1
+Process Parameters: plist_new_uint               0.0         0.0        74.6       1
+Process Parameters: plist_set_bool_val           0.0         0.0        74.6       1
+Process Parameters: plist_set_data_val           0.0         0.0        74.6       1
+Process Parameters: plist_set_date_val           0.0         0.0        74.6       1
+Process Parameters: plist_set_key_val            0.0         0.0        74.6       1
+Process Parameters: plist_set_real_val           0.0         0.0        74.6       1
+Process Parameters: plist_set_string_val         0.0         0.0        74.6       1
+Process Parameters: plist_set_type               0.0         0.0        74.6       1
+Process Parameters: plist_set_uint_val           0.0         0.0        74.6       1
+Process Parameters: plist_to_bin                 0.0         0.0        74.6       1
+Process Parameters: plist_to_xml                 0.0         0.0        74.6       1
+Total Condition Extraction (all 4 functions total)         2.5         2.5        74.6       1
+
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!

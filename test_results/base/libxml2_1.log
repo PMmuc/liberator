@@ -1,0 +1,62 @@
++ ./analysis.sh
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/libxml2/work
++ rm -rf /workspaces/libfuzz/analysis/libxml2/work
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/work
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/work/lib /workspaces/libfuzz/analysis/libxml2/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/bin
++ LLVM_COMPILER_PATH=/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libxml2/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libxml2/work/apipass
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/work/apipass
++ echo 'make 1'
++ cd /workspaces/libfuzz/analysis/libxml2/repo
++ rm -rf /workspaces/libfuzz/analysis/libxml2/repo/build
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/repo/build
++ cd /workspaces/libfuzz/analysis/libxml2/repo/build
++ cmake .. -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/libxml2/work -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Debug -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_PROGRAMS=OFF -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_ZLIB=OFF '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0'
+CMake Error at CMakeLists.txt:1 (cmake_minimum_required):
+  CMake 3.18 or higher is required.  You are running version 3.16.3
+
+
+
+real	0m0.037s
+user	0m0.007s
+sys	0m0.011s
++ ./analysis.sh
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/libxml2/work
++ rm -rf /workspaces/libfuzz/analysis/libxml2/work
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/work
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/work/lib /workspaces/libfuzz/analysis/libxml2/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/bin
++ LLVM_COMPILER_PATH=/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libxml2/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libxml2/work/apipass
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/work/apipass
++ echo 'make 1'
++ cd /workspaces/libfuzz/analysis/libxml2/repo
++ rm -rf /workspaces/libfuzz/analysis/libxml2/repo/build
++ mkdir -p /workspaces/libfuzz/analysis/libxml2/repo/build
++ cd /workspaces/libfuzz/analysis/libxml2/repo/build
++ cmake .. -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/libxml2/work -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Debug -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_PROGRAMS=OFF -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_ZLIB=OFF '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0'
+CMake Error at CMakeLists.txt:1 (cmake_minimum_required):
+  CMake 3.18 or higher is required.  You are running version 3.16.3
+
+
+
+real	0m0.017s
+user	0m0.015s
+sys	0m0.003s

@@ -1,0 +1,199 @@
++ ./analysis.sh
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/cjson/work
++ rm -rf /workspaces/libfuzz/analysis/cjson/work
++ mkdir -p /workspaces/libfuzz/analysis/cjson/work
++ mkdir -p /workspaces/libfuzz/analysis/cjson/work/lib /workspaces/libfuzz/analysis/cjson/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ echo ''
++ export LLVM_COMPILER_PATH=/bin
++ LLVM_COMPILER_PATH=/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cjson/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cjson/work/apipass
++ mkdir -p /workspaces/libfuzz/analysis/cjson/work/apipass
++ echo 'make 1'
++ mkdir -p /workspaces/libfuzz/analysis/cjson/repo/cJSON_build
++ cd /workspaces/libfuzz/analysis/cjson/repo/cJSON_build
++ cmake .. -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/cjson/work -DBUILD_SHARED_AND_STATIC_LIBS=On -DBUILD_SHARED_LIBS=off -DCMAKE_BUILD_TYPE=Debug '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0'
++ rm -rf /workspaces/libfuzz/analysis/cjson/work/apipass/apis.log
++ touch /workspaces/libfuzz/analysis/cjson/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/cjson/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/cjson/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/cjson/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/cjson/work/apipass/coerce.log
++ echo 'make clean'
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1
+WARNING:Did not recognize the compiler flag "libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
+WARNING:Did not recognize the compiler flag "../libcjson.so.1.7.19"
++ echo 'make install'
++ make install
++ extract-bc -b /workspaces/libfuzz/analysis/cjson/work/lib/libcjson.a
+Writing output to /workspaces/libfuzz/analysis/cjson/work/lib/libcjson.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/cjson/work/include -p /workspaces/libfuzz/targets/cjson/public_headers.txt -e /workspaces/libfuzz/analysis/cjson/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/cjson/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/cjson/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/cjson/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/cjson/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/cjson/work/lib/libcjson.a.bc -interface /workspaces/libfuzz/analysis/cjson/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/cjson/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/cjson/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/cjson/work/apipass/data_layout.txt
+Doing: cJSON_IsArray
+Doing: cJSON_IsNull
+Doing: cJSON_IsBool
+Doing: cJSON_IsTrue
+Doing: cJSON_Duplicate
+Doing: cJSON_CreateStringArray
+Doing: cJSON_CreateDoubleArray
+Doing: cJSON_CreateArrayReference
+Doing: cJSON_IsObject
+Doing: cJSON_ReplaceItemInArray
+Doing: cJSON_DeleteItemFromObjectCaseSensitive
+Doing: cJSON_DetachItemFromObjectCaseSensitive
+Doing: cJSON_DeleteItemFromArray
+Doing: cJSON_DetachItemFromArray
+Doing: cJSON_DetachItemViaPointer
+Doing: cJSON_CreateArray
+Doing: cJSON_AddArrayToObject
+Doing: cJSON_CreateObject
+Doing: cJSON_AddObjectToObject
+Doing: cJSON_CreateRaw
+Doing: cJSON_CreateString
+Doing: cJSON_AddStringToObject
+Doing: cJSON_CreateNumber
+Doing: cJSON_ReplaceItemInObjectCaseSensitive
+Doing: cJSON_AddNumberToObject
+Doing: replace_item_in_object
+Doing: cJSON_CreateBool
+Doing: cJSON_AddBoolToObject
+Doing: cJSON_IsFalse
+Doing: cJSON_CreateFalse
+Doing: print
+Doing: cJSON_Parse
+Doing: cJSON_AddRawToObject
+Doing: print_value
+Doing: print_string
+Doing: parse_string
+Doing: print_object
+Doing: cJSON_IsInvalid
+Doing: cJSON_ReplaceItemInObject
+Doing: cJSON_AddFalseToObject
+Doing: buffer_skip_whitespace
+Doing: cJSON_AddItemToObject
+Doing: minify_string
+Doing: cJSON_CreateTrue
+Doing: skip_utf8_bom
+Doing: suffix_object
+Doing: skip_multiline_comment
+Doing: cJSON_DeleteItemFromObject
+Doing: cJSON_AddTrueToObject
+Doing: cJSON_New_Item
+Doing: add_item_to_array
+Doing: cJSON_ParseWithLengthOpts
+Doing: cJSON_IsString
+Doing: cJSON_Delete
+Doing: cJSON_DetachItemFromObject
+Doing: parse_number
+Doing: print_string_ptr
+Doing: cJSON_GetErrorPtr
+Doing: cJSON_malloc
+Doing: get_object_item
+Doing: cJSON_CreateIntArray
+Doing: parse_object
+Doing: cJSON_free
+Doing: cJSON_Duplicate_rec
+Doing: cJSON_GetNumberValue
+Doing: cJSON_Print
+Doing: ensure
+Doing: cJSON_CreateFloatArray
+Doing: get_decimal_point
+Doing: compare_double
+Doing: cJSON_Minify
+Doing: cJSON_AddNullToObject
+Doing: cJSON_IsNumber
+Doing: cJSON_GetObjectItemCaseSensitive
+Doing: cJSON_CreateStringReference
+Doing: cJSON_ParseWithLength
+Doing: print_array
+Doing: update_offset
+Doing: cJSON_InitHooks
+Doing: skip_oneline_comment
+Doing: cJSON_CreateNull
+Doing: cJSON_Version
+Doing: cJSON_GetStringValue
+Doing: parse_array
+Doing: cJSON_AddItemReferenceToObject
+Doing: cJSON_ParseWithOpts
+Doing: print_number
+Doing: cJSON_SetValuestring
+Doing: parse_value
+Doing: cJSON_PrintBuffered
+Doing: cJSON_SetNumberHelper
+Doing: cJSON_PrintUnformatted
+Doing: cJSON_InsertItemInArray
+Doing: utf16_literal_to_utf8
+Doing: cJSON_PrintPreallocated
+Doing: cJSON_strdup
+Doing: cJSON_GetArrayItem
+Doing: cJSON_ReplaceItemViaPointer
+Doing: parse_hex4
+Doing: cJSON_GetArraySize
+Doing: cJSON_IsRaw
+Doing: get_array_item
+Doing: case_insensitive_strcmp
+Doing: cJSON_Compare
+Doing: cJSON_CreateObjectReference
+Doing: cJSON_GetObjectItem
+Doing: create_reference
+Doing: cJSON_HasObjectItem
+Doing: cJSON_AddItemToArray
+Doing: add_item_to_object
+Doing: cast_away_const
+Doing: cJSON_AddItemToObjectCS
+Doing: cJSON_AddItemReferenceToArray
+Doing: llvm.fabs.f64
+Doing: llvm.dbg.label
+Doing: sprintf
+Doing: malloc
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: realloc
+Doing: free
+Doing: localeconv
+Doing: strlen
+Doing: strcpy
+Doing: llvm.dbg.declare
+Doing: llvm.memset.p0i8.i64
+Doing: tolower
+Doing: strcmp
+Doing: strncmp
+Doing: __isoc99_sscanf
+Doing: strtod
+real 0.58
+user 0.53
+sys 0.05
+maxrss_kb 72084
+
+real	0m17.834s
+user	0m7.228s
+sys	0m2.963s

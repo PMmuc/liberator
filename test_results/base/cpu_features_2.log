@@ -1,0 +1,202 @@
++ ./analysis.sh
++ set -e
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/cpu_features/work
++ rm -rf /workspaces/libfuzz/analysis/cpu_features/work
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features/work
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features/work/lib /workspaces/libfuzz/analysis/cpu_features/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/usr/bin
++ LLVM_COMPILER_PATH=/usr/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cpu_features/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cpu_features/work/apipass
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features/work/apipass
++ cd /workspaces/libfuzz/analysis/cpu_features/repo
++ cmake . -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/cpu_features/work -DBUILD_SHARED_LIBS=off -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_TESTING=OFF '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0'
++ rm -rf /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis.log
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/coerce.log
++ echo 'make clean'
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1 VERBOSE=1
++ echo 'make install'
++ make install
++ extract-bc -b /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a
+Writing output to /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/cpu_features/work/include -p /workspaces/libfuzz/targets/cpu_features/public_headers.txt -e /workspaces/libfuzz/analysis/cpu_features/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/cpu_features/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/cpu_features/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/cpu_features/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a.bc -interface /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/cpu_features/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/cpu_features/work/apipass/data_layout.txt
+Doing: CpuFeatures_StringView_CopyString
+Doing: ParsePositiveNumberWithBase
+Doing: CpuFeatures_StringView_ParsePositiveNumber
+Doing: CpuFeatures_StringView_TrimWhitespace
+Doing: CpuFeatures_StringView_Back
+Doing: CpuFeatures_StringView_KeepFront
+Doing: CpuFeatures_StringView_IsEquals
+Doing: view.149
+Doing: equals.148
+Doing: CpuFeatures_StringView_StartsWith
+Doing: CpuFeatures_StringView_PopFront
+Doing: get_X86_HLE
+Doing: get_X86_VPCLMULQDQ
+Doing: HasYmmOsXSave
+Doing: get_X86_FMA4
+Doing: ExtractBitRange
+Doing: get_X86_ERMS
+Doing: get_X86_FS_REP_CMPSB_SCASB
+Doing: IsBitSet
+Doing: get_X86_AES
+Doing: FillX86BrandString
+Doing: ParseExtraAMDCpuId
+Doing: get_X86_MMX
+Doing: ParseCpuId
+Doing: get_X86_CLFSH
+Doing: get_X86_FS_REP_STOSB
+Doing: GetCacheLevelInfo
+Doing: get_X86_CX8
+Doing: get_X86_FZ_REP_MOVSB
+Doing: GetWaysLegacyAMD
+Doing: get_X86_TSC
+Doing: get_X86_FS_REP_MOV
+Doing: GetCacheSizeLegacyAMD
+Doing: GetX86FeaturesEnumValue
+Doing: get_X86_CLWB
+Doing: get_X86_MOVDIR64B
+Doing: ParseCacheInfoLegacyAMD
+Doing: get_X86_FPU
+Doing: ParseLeaf2
+Doing: get_X86_GFNI
+Doing: SetVendor
+Doing: IsVendor
+Doing: get_X86_MOVDIRI
+Doing: ParseCacheInfo
+Doing: copy
+Doing: ReadLeaves
+Doing: get_X86_VAES
+Doing: HasTmmOsXSave
+Doing: SafeCpuIdEx
+Doing: HasZmmOsXSave
+Doing: get_X86_FMA3
+Doing: get_X86_F16C
+Doing: HasXmmOsXSave
+Doing: get_X86_BMI2
+Doing: CreateLineResult
+Doing: CreateValidLineResult
+Doing: equals
+Doing: GetCpuidLeaf
+Doing: get_X86_LAM
+Doing: CpuFeatures_StringView_Front
+Doing: get_X86_SSE2
+Doing: get_X86_BMI1
+Doing: get_X86_DCA
+Doing: get_X86_AVX512F
+Doing: CpuFeatures_memchr
+Doing: OverrideOsPreserves
+Doing: get_X86_AVX512IFMA
+Doing: get_X86_PCLMULQDQ
+Doing: get_X86_SSE3
+Doing: HasSecondFMA
+Doing: BringToFrontAndLoadMore
+Doing: get_X86_RDSEED
+Doing: HasMask
+Doing: CpuFeatures_OpenFile
+Doing: get_X86_SSSE3
+Doing: DetectFeaturesFromOs
+Doing: CreateEOFLineResult
+Doing: get_X86_CLFLUSHOPT
+Doing: get_X86_SSE4_1
+Doing: str
+Doing: CreateTruncatedLineResult
+Doing: GetX86Info
+Doing: view
+Doing: IsVendorByX86Info
+Doing: GetX86Microarchitecture
+Doing: get_X86_RTM
+Doing: get_X86_LZCNT
+Doing: GetX86CacheInfo
+Doing: str.158
+Doing: get_X86_SHA
+Doing: get_X86_SSE4A
+Doing: GetXCR0Eax
+Doing: CpuFeatures_StringView_IndexOf
+Doing: get_X86_AMX_TILE
+Doing: get_X86_AVX512BW
+Doing: get_X86_AMX_INT8
+Doing: get_X86_AVX512DQ
+Doing: CpuFeatures_StringView_PopBack
+Doing: get_X86_AMX_FP16
+Doing: get_X86_AVX512VL
+Doing: get_X86_AVX512VNNI
+Doing: get_X86_AVX512BITALG
+Doing: get_X86_AVX512VPOPCNTDQ
+Doing: get_X86_AVX512_4VNNIW
+Doing: get_X86_AVX512_4VBMI2
+Doing: HexValue
+Doing: get_X86_AVX512_SECOND_FMA
+Doing: get_X86_AVX512_4FMAPS
+Doing: copy.159
+Doing: get_X86_AVX512_BF16
+Doing: CpuFeatures_StringView_HasWord
+Doing: get_X86_AVX512_VP2INTERSECT
+Doing: get_X86_AVX512PF
+Doing: get_X86_AMX_BF16
+Doing: get_X86_AVX512VBMI
+Doing: get_X86_SMX
+Doing: get_X86_AVX512VBMI2
+Doing: get_X86_SGX
+Doing: get_X86_AVX
+Doing: get_X86_POPCNT
+Doing: get_X86_AVX_VNNI
+Doing: get_X86_MOVBE
+Doing: get_X86_SSE4_2
+Doing: get_X86_CX16
+Doing: StackLineReader_NextLine
+Doing: get_X86_AVX2
+Doing: get_X86_RDRND
+Doing: get_X86_AVX512CD
+Doing: get_X86_SS
+Doing: CpuFeatures_StringView_GetAttributeKeyValue
+Doing: get_X86_AVX512ER
+Doing: get_X86_AVX512_FP16
+Doing: get_X86_ADX
+Doing: get_X86_UAI
+Doing: GetX86FeaturesEnumName
+Doing: GetX86MicroarchitectureName
+Doing: get_X86_SSE
+Doing: CpuFeatures_CloseFile
+Doing: IndexOfEol
+Doing: CpuFeatures_ReadFile
+Doing: StackLineReader_Initialize
+Doing: SkipToNextLine
+Doing: LoadMore
+Doing: LoadFullBuffer
+Doing: CpuFeatures_StringView_IndexOfChar
+Doing: __ctype_b_loc
+Doing: read
+Doing: close
+Doing: __errno_location
+Doing: open
+Doing: __assert_fail
+Doing: strlen
+Doing: llvm.memmove.p0i8.p0i8.i64
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: llvm.dbg.declare
+real 0.31
+user 0.29
+sys 0.01
+maxrss_kb 73604
+
+real	0m5.926s
+user	0m1.830s
+sys	0m1.031s

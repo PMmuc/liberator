@@ -1,0 +1,1993 @@
+++++ realpath run_analysis.sh
++++ dirname /data/paul2/liberator/docker/run_analysis.sh
+++ dirname /data/paul2/liberator/docker
++ ROOT_DIR=/data/paul2/liberator/
++ echo /data/paul2/liberator/
+/data/paul2/liberator/
++ IMG_NAME=libpp-analysis-org
++ LIBPP=../
++ '[' 1 '!=' 1 ']'
++ '[' 0 = 1 ']'
++ '[' -z libsndfile ']'
++ '[' -s ..//analysis/libsndfile/work/apipass/conditions.json ']'
++ echo libpp-analysis-org
+libpp-analysis-org
++ PROF_FLAG=()
++ [[ 0 -gt 0 ]]
++ CPUSET=0
++ [[ -n '' ]]
++ docker rm -f libpp-analysis-org-libsndfile
++ docker run --env PROF_FLAG= --rm --cpuset-cpus=0 --name libpp-analysis-org-libsndfile --user root --env TARGET=libsndfile -v /data/paul2/liberator/:/workspaces/libfuzz libpp-analysis-org
++ export TARGET_NAME=libsndfile
++ TARGET_NAME=libsndfile
++ export TARGET=/workspaces/libfuzz/analysis/libsndfile
++ TARGET=/workspaces/libfuzz/analysis/libsndfile
++ echo '[TOOLS_DIR] /home/libfuzz'
+[TOOLS_DIR] /home/libfuzz
+[TARGET] /workspaces/libfuzz/analysis/libsndfile
++ echo '[TARGET] /workspaces/libfuzz/analysis/libsndfile'
+++ which wllvm
+[WLLVM] /home/libfuzz/.local/bin/wllvm
++ echo '[WLLVM] /home/libfuzz/.local/bin/wllvm'
++ cd /workspaces/libfuzz/targets/libsndfile
++ sudo ./preinstall.sh
+Reading package lists...
+Building dependency tree...
+Reading state information...
+autoconf is already the newest version (2.69-11.1).
+automake is already the newest version (1:1.16.1-4ubuntu6).
+libogg0 is already the newest version (1.3.4-0ubuntu1).
+libogg0 set to manually installed.
+libtool is already the newest version (2.4.6-14).
+libvorbis0a is already the newest version (1.3.6-2ubuntu1).
+libvorbis0a set to manually installed.
+pkg-config is already the newest version (0.29.1-0ubuntu4).
+pkg-config set to manually installed.
+build-essential is already the newest version (12.8ubuntu1.1).
+libasound2 is already the newest version (1.2.2-2.1ubuntu2.5).
+libasound2 set to manually installed.
+The following additional packages will be installed:
+  guile-2.2-libs libopts25 libopts25-dev libout123-0 libvorbisenc2
+Suggested packages:
+  libasound2-doc opus-tools
+Recommended packages:
+  autogen-doc
+The following packages will be REMOVED:
+  python-is-python3
+The following NEW packages will be installed:
+  autogen guile-2.2-libs libasound2-dev libflac-dev libflac8 libmp3lame-dev
+  libmp3lame0 libmpg123-0 libmpg123-dev libogg-dev libopts25 libopts25-dev
+  libopus-dev libopus0 libout123-0 libvorbis-dev libvorbisenc2
+  python-is-python2
+0 upgraded, 18 newly installed, 1 to remove and 0 not upgraded.
+Need to get 7479 kB of archives.
+After this operation, 54.4 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 guile-2.2-libs amd64 2.2.7+1-4 [4962 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/universe amd64 libopts25 amd64 1:5.18.16-3 [59.4 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal/universe amd64 libopts25-dev amd64 1:5.18.16-3 [96.0 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal/universe amd64 autogen amd64 1:5.18.16-3 [559 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libasound2-dev amd64 1.2.2-2.1ubuntu2.5 [104 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libflac8 amd64 1.3.3-1ubuntu0.2 [103 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal/main amd64 libogg-dev amd64 1.3.4-0ubuntu1 [161 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libflac-dev amd64 1.3.3-1ubuntu0.2 [151 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal/main amd64 libmp3lame0 amd64 3.100-3 [133 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal/main amd64 libmp3lame-dev amd64 3.100-3 [153 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libmpg123-0 amd64 1.25.13-1ubuntu0.2 [124 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libout123-0 amd64 1.25.13-1ubuntu0.2 [23.6 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libmpg123-dev amd64 1.25.13-1ubuntu0.2 [34.5 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal/main amd64 libopus0 amd64 1.3.1-0ubuntu1 [191 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal/main amd64 libopus-dev amd64 1.3.1-0ubuntu1 [236 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal/main amd64 libvorbisenc2 amd64 1.3.6-2ubuntu1 [70.7 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal/main amd64 libvorbis-dev amd64 1.3.6-2ubuntu1 [316 kB]
+Get:18 http://archive.ubuntu.com/ubuntu focal/universe amd64 python-is-python2 all 2.7.17-4 [2496 B]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 7479 kB in 1s (6667 kB/s)
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 39318 files and directories currently installed.)
+Removing python-is-python3 (3.8.2-4) ...
+Selecting previously unselected package guile-2.2-libs:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 39314 files and directories currently installed.)
+Preparing to unpack .../00-guile-2.2-libs_2.2.7+1-4_amd64.deb ...
+Unpacking guile-2.2-libs:amd64 (2.2.7+1-4) ...
+Selecting previously unselected package libopts25:amd64.
+Preparing to unpack .../01-libopts25_1%3a5.18.16-3_amd64.deb ...
+Unpacking libopts25:amd64 (1:5.18.16-3) ...
+Selecting previously unselected package libopts25-dev:amd64.
+Preparing to unpack .../02-libopts25-dev_1%3a5.18.16-3_amd64.deb ...
+Unpacking libopts25-dev:amd64 (1:5.18.16-3) ...
+Selecting previously unselected package autogen.
+Preparing to unpack .../03-autogen_1%3a5.18.16-3_amd64.deb ...
+Unpacking autogen (1:5.18.16-3) ...
+Replaced by files in installed package libopts25-dev:amd64 (1:5.18.16-3) ...
+Selecting previously unselected package libasound2-dev:amd64.
+Preparing to unpack .../04-libasound2-dev_1.2.2-2.1ubuntu2.5_amd64.deb ...
+Unpacking libasound2-dev:amd64 (1.2.2-2.1ubuntu2.5) ...
+Selecting previously unselected package libflac8:amd64.
+Preparing to unpack .../05-libflac8_1.3.3-1ubuntu0.2_amd64.deb ...
+Unpacking libflac8:amd64 (1.3.3-1ubuntu0.2) ...
+Selecting previously unselected package libogg-dev:amd64.
+Preparing to unpack .../06-libogg-dev_1.3.4-0ubuntu1_amd64.deb ...
+Unpacking libogg-dev:amd64 (1.3.4-0ubuntu1) ...
+Selecting previously unselected package libflac-dev:amd64.
+Preparing to unpack .../07-libflac-dev_1.3.3-1ubuntu0.2_amd64.deb ...
+Unpacking libflac-dev:amd64 (1.3.3-1ubuntu0.2) ...
+Selecting previously unselected package libmp3lame0:amd64.
+Preparing to unpack .../08-libmp3lame0_3.100-3_amd64.deb ...
+Unpacking libmp3lame0:amd64 (3.100-3) ...
+Selecting previously unselected package libmp3lame-dev:amd64.
+Preparing to unpack .../09-libmp3lame-dev_3.100-3_amd64.deb ...
+Unpacking libmp3lame-dev:amd64 (3.100-3) ...
+Selecting previously unselected package libmpg123-0:amd64.
+Preparing to unpack .../10-libmpg123-0_1.25.13-1ubuntu0.2_amd64.deb ...
+Unpacking libmpg123-0:amd64 (1.25.13-1ubuntu0.2) ...
+Selecting previously unselected package libout123-0:amd64.
+Preparing to unpack .../11-libout123-0_1.25.13-1ubuntu0.2_amd64.deb ...
+Unpacking libout123-0:amd64 (1.25.13-1ubuntu0.2) ...
+Selecting previously unselected package libmpg123-dev:amd64.
+Preparing to unpack .../12-libmpg123-dev_1.25.13-1ubuntu0.2_amd64.deb ...
+Unpacking libmpg123-dev:amd64 (1.25.13-1ubuntu0.2) ...
+Selecting previously unselected package libopus0:amd64.
+Preparing to unpack .../13-libopus0_1.3.1-0ubuntu1_amd64.deb ...
+Unpacking libopus0:amd64 (1.3.1-0ubuntu1) ...
+Selecting previously unselected package libopus-dev:amd64.
+Preparing to unpack .../14-libopus-dev_1.3.1-0ubuntu1_amd64.deb ...
+Unpacking libopus-dev:amd64 (1.3.1-0ubuntu1) ...
+Selecting previously unselected package libvorbisenc2:amd64.
+Preparing to unpack .../15-libvorbisenc2_1.3.6-2ubuntu1_amd64.deb ...
+Unpacking libvorbisenc2:amd64 (1.3.6-2ubuntu1) ...
+Selecting previously unselected package libvorbis-dev:amd64.
+Preparing to unpack .../16-libvorbis-dev_1.3.6-2ubuntu1_amd64.deb ...
+Unpacking libvorbis-dev:amd64 (1.3.6-2ubuntu1) ...
+Selecting previously unselected package python-is-python2.
+Preparing to unpack .../17-python-is-python2_2.7.17-4_all.deb ...
+Unpacking python-is-python2 (2.7.17-4) ...
+Setting up libmpg123-0:amd64 (1.25.13-1ubuntu0.2) ...
+Setting up libogg-dev:amd64 (1.3.4-0ubuntu1) ...
+Setting up libopts25:amd64 (1:5.18.16-3) ...
+Setting up libflac8:amd64 (1.3.3-1ubuntu0.2) ...
+Setting up libout123-0:amd64 (1.25.13-1ubuntu0.2) ...
+Setting up libopus0:amd64 (1.3.1-0ubuntu1) ...
+Setting up libasound2-dev:amd64 (1.2.2-2.1ubuntu2.5) ...
+Setting up guile-2.2-libs:amd64 (2.2.7+1-4) ...
+Setting up libmp3lame0:amd64 (3.100-3) ...
+Setting up libvorbisenc2:amd64 (1.3.6-2ubuntu1) ...
+Setting up python-is-python2 (2.7.17-4) ...
+Setting up libvorbis-dev:amd64 (1.3.6-2ubuntu1) ...
+Setting up libflac-dev:amd64 (1.3.3-1ubuntu0.2) ...
+Setting up libopts25-dev:amd64 (1:5.18.16-3) ...
+Setting up libmp3lame-dev:amd64 (3.100-3) ...
+Setting up libopus-dev:amd64 (1.3.1-0ubuntu1) ...
+Setting up libmpg123-dev:amd64 (1.25.13-1ubuntu0.2) ...
+Setting up autogen (1:5.18.16-3) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.18) ...
++ ./fetch.sh
+HEAD is now at 0d3f80b7 github: bump upload-artifact to v4 for cifuzz action
+
+make 1
+-- Could NOT find Sndio (missing: SNDIO_LIBRARY SNDIO_INCLUDE_DIR) 
+-- Could NOT find Speex (missing: SPEEX_LIBRARY SPEEX_INCLUDE_DIR) 
+-- Could NOT find SQLite3 (missing: SQLite3_INCLUDE_DIR SQLite3_LIBRARY) 
+-- The following features have been enabled:
+
+ * ENABLE_EXTERNAL_LIBS, enable FLAC, Vorbis, and Opus codecs
+ * ENABLE_MPEG, enable MPEG audio (including mp3) codecs
+ * ENABLE_CPACK, enable CPack support
+ * ENABLE_PACKAGE_CONFIG, generate and install package config file
+ * INSTALL_PKGCONFIG_MODULE, generate and install pkg-config module
+
+-- The following OPTIONAL packages have been found:
+
+ * ALSA
+
+-- The following RECOMMENDED packages have been found:
+
+ * Vorbis, open source lossy audio codec, <www.vorbis.com/>
+   Enables Vorbis support
+ * FLAC, Free Lossless Audio Codec Library, <www.xiph.org/flac/>
+   Enables FLAC support
+ * Opus, Standardized open source low-latency fullband codec, <www.opus-codec.org/>
+   Enables experimental Opus support
+ * mp3lame, High quality MPEG Audio Layer III (MP3) encoder, <https://lame.sourceforge.io/>
+   Enables MPEG layer III (MP3) writing support
+ * mpg123 (required version >= 1.25.10), MPEG Audio Layer I/II/III decoder, <https://www.mpg123.de/>
+   Enables MPEG Audio reading support
+
+-- The following features have been disabled:
+
+ * BUILD_SHARED_LIBS, build shared libraries
+ * ENABLE_EXPERIMENTAL, enable experimental code
+ * BUILD_TESTING, build tests
+ * BUILD_REGTEST, build regtest
+ * ENABLE_BOW_DOCS, enable black-on-white html docs
+ * INSTALL_MANPAGES, install man pages for programs
+
+-- The following OPTIONAL packages have not been found:
+
+ * Sndio
+ * Speex, an audio codec tuned for speech, <www.speex.org/>
+   Enables experimental Speex support
+ * SQLite3, light weight SQL database engine., <www.sqlite.org/>
+   Enables regtest
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /workspaces/libfuzz/analysis/libsndfile/repo/libsndfile_build
+make clean
+make
+[  1%] Building C object CMakeFiles/sndfile.dir/src/common.c.o
+[  2%] Building C object CMakeFiles/sndfile.dir/src/file_io.c.o
+[  3%] Building C object CMakeFiles/sndfile.dir/src/command.c.o
+[  4%] Building C object CMakeFiles/sndfile.dir/src/pcm.c.o
+[  5%] Building C object CMakeFiles/sndfile.dir/src/ulaw.c.o
+[  6%] Building C object CMakeFiles/sndfile.dir/src/alaw.c.o
+[  7%] Building C object CMakeFiles/sndfile.dir/src/float32.c.o
+[  7%] Building C object CMakeFiles/sndfile.dir/src/double64.c.o
+[  8%] Building C object CMakeFiles/sndfile.dir/src/ima_adpcm.c.o
+[  9%] Building C object CMakeFiles/sndfile.dir/src/ms_adpcm.c.o
+[ 10%] Building C object CMakeFiles/sndfile.dir/src/gsm610.c.o
+[ 11%] Building C object CMakeFiles/sndfile.dir/src/dwvw.c.o
+[ 12%] Building C object CMakeFiles/sndfile.dir/src/vox_adpcm.c.o
+[ 13%] Building C object CMakeFiles/sndfile.dir/src/interleave.c.o
+[ 14%] Building C object CMakeFiles/sndfile.dir/src/strings.c.o
+[ 15%] Building C object CMakeFiles/sndfile.dir/src/dither.c.o
+[ 16%] Building C object CMakeFiles/sndfile.dir/src/cart.c.o
+[ 17%] Building C object CMakeFiles/sndfile.dir/src/broadcast.c.o
+[ 18%] Building C object CMakeFiles/sndfile.dir/src/audio_detect.c.o
+[ 19%] Building C object CMakeFiles/sndfile.dir/src/ima_oki_adpcm.c.o
+[ 20%] Building C object CMakeFiles/sndfile.dir/src/alac.c.o
+[ 21%] Building C object CMakeFiles/sndfile.dir/src/chunk.c.o
+[ 21%] Building C object CMakeFiles/sndfile.dir/src/ogg.c.o
+[ 22%] Building C object CMakeFiles/sndfile.dir/src/chanmap.c.o
+[ 23%] Building C object CMakeFiles/sndfile.dir/src/id3.c.o
+[ 24%] Building C object CMakeFiles/sndfile.dir/src/sndfile.c.o
+[ 25%] Building C object CMakeFiles/sndfile.dir/src/aiff.c.o
+[ 26%] Building C object CMakeFiles/sndfile.dir/src/au.c.o
+[ 27%] Building C object CMakeFiles/sndfile.dir/src/avr.c.o
+[ 28%] Building C object CMakeFiles/sndfile.dir/src/caf.c.o
+[ 29%] Building C object CMakeFiles/sndfile.dir/src/dwd.c.o
+[ 30%] Building C object CMakeFiles/sndfile.dir/src/flac.c.o
+[ 31%] Building C object CMakeFiles/sndfile.dir/src/g72x.c.o
+[ 32%] Building C object CMakeFiles/sndfile.dir/src/htk.c.o
+[ 33%] Building C object CMakeFiles/sndfile.dir/src/ircam.c.o
+[ 34%] Building C object CMakeFiles/sndfile.dir/src/macos.c.o
+[ 35%] Building C object CMakeFiles/sndfile.dir/src/mat4.c.o
+[ 35%] Building C object CMakeFiles/sndfile.dir/src/mat5.c.o
+[ 36%] Building C object CMakeFiles/sndfile.dir/src/nist.c.o
+[ 37%] Building C object CMakeFiles/sndfile.dir/src/paf.c.o
+[ 38%] Building C object CMakeFiles/sndfile.dir/src/pvf.c.o
+[ 39%] Building C object CMakeFiles/sndfile.dir/src/raw.c.o
+[ 40%] Building C object CMakeFiles/sndfile.dir/src/rx2.c.o
+[ 41%] Building C object CMakeFiles/sndfile.dir/src/sd2.c.o
+[ 42%] Building C object CMakeFiles/sndfile.dir/src/sds.c.o
+[ 43%] Building C object CMakeFiles/sndfile.dir/src/svx.c.o
+[ 44%] Building C object CMakeFiles/sndfile.dir/src/txw.c.o
+[ 45%] Building C object CMakeFiles/sndfile.dir/src/voc.c.o
+[ 46%] Building C object CMakeFiles/sndfile.dir/src/wve.c.o
+[ 47%] Building C object CMakeFiles/sndfile.dir/src/w64.c.o
+[ 48%] Building C object CMakeFiles/sndfile.dir/src/wavlike.c.o
+[ 49%] Building C object CMakeFiles/sndfile.dir/src/wav.c.o
+[ 50%] Building C object CMakeFiles/sndfile.dir/src/xi.c.o
+[ 50%] Building C object CMakeFiles/sndfile.dir/src/mpc2k.c.o
+[ 51%] Building C object CMakeFiles/sndfile.dir/src/rf64.c.o
+[ 52%] Building C object CMakeFiles/sndfile.dir/src/ogg_vorbis.c.o
+[ 53%] Building C object CMakeFiles/sndfile.dir/src/ogg_speex.c.o
+[ 54%] Building C object CMakeFiles/sndfile.dir/src/ogg_pcm.c.o
+[ 55%] Building C object CMakeFiles/sndfile.dir/src/ogg_opus.c.o
+[ 56%] Building C object CMakeFiles/sndfile.dir/src/ogg_vcomment.c.o
+[ 57%] Building C object CMakeFiles/sndfile.dir/src/nms_adpcm.c.o
+[ 58%] Building C object CMakeFiles/sndfile.dir/src/mpeg.c.o
+[ 59%] Building C object CMakeFiles/sndfile.dir/src/mpeg_decode.c.o
+[ 60%] Building C object CMakeFiles/sndfile.dir/src/mpeg_l3_encode.c.o
+[ 61%] Building C object CMakeFiles/sndfile.dir/src/GSM610/add.c.o
+[ 62%] Building C object CMakeFiles/sndfile.dir/src/GSM610/code.c.o
+[ 63%] Building C object CMakeFiles/sndfile.dir/src/GSM610/decode.c.o
+[ 64%] Building C object CMakeFiles/sndfile.dir/src/GSM610/gsm_create.c.o
+[ 64%] Building C object CMakeFiles/sndfile.dir/src/GSM610/gsm_decode.c.o
+[ 65%] Building C object CMakeFiles/sndfile.dir/src/GSM610/gsm_destroy.c.o
+[ 66%] Building C object CMakeFiles/sndfile.dir/src/GSM610/gsm_encode.c.o
+[ 67%] Building C object CMakeFiles/sndfile.dir/src/GSM610/gsm_option.c.o
+[ 68%] Building C object CMakeFiles/sndfile.dir/src/GSM610/long_term.c.o
+[ 69%] Building C object CMakeFiles/sndfile.dir/src/GSM610/lpc.c.o
+[ 70%] Building C object CMakeFiles/sndfile.dir/src/GSM610/preprocess.c.o
+[ 71%] Building C object CMakeFiles/sndfile.dir/src/GSM610/rpe.c.o
+[ 72%] Building C object CMakeFiles/sndfile.dir/src/GSM610/short_term.c.o
+[ 73%] Building C object CMakeFiles/sndfile.dir/src/GSM610/table.c.o
+[ 74%] Building C object CMakeFiles/sndfile.dir/src/G72x/g721.c.o
+[ 75%] Building C object CMakeFiles/sndfile.dir/src/G72x/g723_16.c.o
+[ 76%] Building C object CMakeFiles/sndfile.dir/src/G72x/g723_24.c.o
+[ 77%] Building C object CMakeFiles/sndfile.dir/src/G72x/g723_40.c.o
+[ 78%] Building C object CMakeFiles/sndfile.dir/src/G72x/g72x.c.o
+[ 78%] Building C object CMakeFiles/sndfile.dir/src/ALAC/ALACBitUtilities.c.o
+[ 79%] Building C object CMakeFiles/sndfile.dir/src/ALAC/ag_dec.c.o
+[ 80%] Building C object CMakeFiles/sndfile.dir/src/ALAC/ag_enc.c.o
+[ 81%] Building C object CMakeFiles/sndfile.dir/src/ALAC/dp_dec.c.o
+[ 82%] Building C object CMakeFiles/sndfile.dir/src/ALAC/dp_enc.c.o
+[ 83%] Building C object CMakeFiles/sndfile.dir/src/ALAC/matrix_dec.c.o
+[ 84%] Building C object CMakeFiles/sndfile.dir/src/ALAC/matrix_enc.c.o
+[ 85%] Building C object CMakeFiles/sndfile.dir/src/ALAC/alac_decoder.c.o
+[ 86%] Building C object CMakeFiles/sndfile.dir/src/ALAC/alac_encoder.c.o
+[ 87%] Linking C static library libsndfile.a
+[ 87%] Built target sndfile
+[ 88%] Building C object CMakeFiles/sndfile-loopify.dir/examples/sndfile-loopify.c.o
+[ 89%] Linking C executable sndfile-loopify
+[ 89%] Built target sndfile-loopify
+[ 90%] Building C object CMakeFiles/list_formats.dir/examples/list_formats.c.o
+[ 91%] Linking C executable list_formats
+[ 91%] Built target list_formats
+[ 92%] Building C object CMakeFiles/sndfile-to-text.dir/examples/sndfile-to-text.c.o
+[ 93%] Linking C executable sndfile-to-text
+[ 93%] Built target sndfile-to-text
+[ 94%] Building C object CMakeFiles/make_sine.dir/examples/make_sine.c.o
+[ 95%] Linking C executable make_sine
+[ 95%] Built target make_sine
+[ 95%] Building C object CMakeFiles/generate.dir/examples/generate.c.o
+[ 96%] Linking C executable generate
+[ 96%] Built target generate
+[ 97%] Building C object CMakeFiles/sfprocess.dir/examples/sfprocess.c.o
+[ 98%] Linking C executable sfprocess
+[ 98%] Built target sfprocess
+[ 99%] Building CXX object CMakeFiles/sndfilehandle.dir/examples/sndfilehandle.cc.o
+[100%] Linking CXX executable sndfilehandle
+[100%] Built target sndfilehandle
+make install
+[ 87%] Built target sndfile
+[ 89%] Built target sndfile-loopify
+[ 91%] Built target list_formats
+[ 93%] Built target sndfile-to-text
+[ 95%] Built target make_sine
+[ 96%] Built target generate
+[ 98%] Built target sfprocess
+[100%] Built target sndfilehandle
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/libsndfile.a
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/include/sndfile.h
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/include/sndfile.hh
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/SndFileTargets.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/SndFileTargets-debug.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/SndFileConfig.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/SndFileConfigVersion.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/FindFLAC.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/FindOgg.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/FindOpus.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/FindVorbis.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/Findmpg123.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/cmake/SndFile/Findmp3lame.cmake
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/index.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/libsndfile.jpg
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/libsndfile.css
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/print.css
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/api.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/command.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/bugs.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/formats.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/sndfile_info.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/new_file_type_howto.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/win32.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/FAQ.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/lists.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/embedded_files.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/octave.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/share/doc/libsndfile/tutorial.md
+-- Installing: /workspaces/libfuzz/analysis/libsndfile/work/lib/pkgconfig/sndfile.pc
+/tmp/tmp29iiq9lr.cc
+['SNDFILE', '*']
+['const', 'char', '*']
+['int']
+['SF_INFO', '*']
+['SNDFILE', '*']
+['int']
+['int']
+['SF_INFO', '*']
+['int']
+['SNDFILE', '*']
+['SF_VIRTUAL_IO', '*']
+['int']
+['SF_INFO', '*']
+['void', '*']
+['int']
+['SNDFILE', '*']
+['const', 'char', '*']
+['SNDFILE', '*']
+['const', 'char', '*']
+['int']
+['int']
+['SNDFILE', '*']
+['int']
+['SNDFILE', '*']
+['char', '*']
+['unsigned', 'long']
+['int']
+['SNDFILE', '*']
+['int']
+['void', '*']
+['int']
+['int']
+['const', 'SF_INFO', '*']
+['int64_t']
+['SNDFILE', '*']
+['int64_t']
+['int']
+['int']
+['SNDFILE', '*']
+['int']
+['const', 'char', '*']
+['const', 'char', '*']
+['SNDFILE', '*']
+['int']
+['const', 'char', '*']
+['int']
+['SNDFILE', '*']
+['int64_t']
+['SNDFILE', '*']
+['void', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'void', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['double', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'double', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'short', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'int', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'float', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['double', '*']
+['int64_t']
+['int64_t']
+['SNDFILE', '*']
+['const', 'double', '*']
+['int64_t']
+['int']
+['SNDFILE', '*']
+['void']
+['SNDFILE', '*']
+['int']
+['SNDFILE', '*']
+['const', 'SF_CHUNK_INFO', '*']
+['SF_CHUNK_ITERATOR', '*']
+['SNDFILE', '*']
+['const', 'SF_CHUNK_INFO', '*']
+['SF_CHUNK_ITERATOR', '*']
+['SF_CHUNK_ITERATOR', '*']
+['int']
+['const', 'SF_CHUNK_ITERATOR', '*']
+['SF_CHUNK_INFO', '*']
+['int']
+['const', 'SF_CHUNK_ITERATOR', '*']
+['SF_CHUNK_INFO', '*']
+[INFO] Loading library...
+[INFO] Done
+[INFO] I analyze all the functions
+
+*********CallGraph Stats***************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+TotalNode           1441
+TotalEdge           5497
+TotalCycle          1
+MaxNodeInCycle      3
+NodeInCycle         3
+CalRetPairInCycle   13
+#######################################################
+
+*********General Stats***************
+################ (program : libsndfile.a.bc)###############
+BBWith2Succ         5996
+BBWith3Succ         194
+TotalPointers       169191
+TotalObjects        9797
+TotalFieldObjects   922
+MaxStructSize       116
+TotalSVFStmts       163054
+TotalPTASVFStmts    66841
+FIObjNum            295
+FSObjNum            9501
+AddrsNum            12891
+LoadsNum            45982
+StoresNum           21873
+CopysNum            11762
+GepsNum             22433
+CallsNum            11459
+ReturnsNum          2463
+FunctionObjs        1441
+GlobalObjs          88
+HeapObjs            105
+StackObjs           8161
+VarStructObj        314
+VarArrayObj         151
+ConstStructObj      1
+ConstArrayObj       20
+NonPtrObj           7001
+ConstantObj         0
+IndCallSites        156
+TotalCallSite       5058
+-------------------------------------------------------
+LLVMIRTime          0.65
+SymbolTableTime     0.162
+SVFIRTime           1.073
+#######################################################
+
+*********Constraint Graph Stats***************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+AvgIn/OutCopyEdge   0.807531
+AvgIn/OutLoadEdge   0.281375
+AvgIn/OutAddrEdge   0.178552
+AvgIn/OutEdge       1.33589
+LocalVarInRecur     39
+NumOfCGNode         181297
+TotalValidNode      66104
+TotalValidObjNode   9900
+NumOfCGEdge         76505
+NumOfAddrs          11803
+NumOfCopys          31393
+NumOfGeps           21988
+NumOfLoads          18600
+NumOfStores         4524
+MaxInCopyEdge       930
+MaxOutCopyEdge      324
+MaxInLoadEdge       17
+MaxOutLoadEdge      238
+MaxInStoreEdge      186
+MaxOutStoreEdge     86
+AvgIn/OutStoreEdge  0
+MaxInAddrEdge       1
+MaxOutAddrEdge      2044
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+TotalTime           1.863
+UpdateCGTime        0
+AvgTopLvlPtsSize    4.87175
+SCCDetectTime       0
+SCCMergeTime        0
+LoadStoreTime       0
+CopyGepTime         0
+AvgPtsSetSize       1.60292
+CollapseTime        0
+Pointers            168972
+TotalPointers       169191
+TotalObjects        10719
+IndCallSites        156
+MemObjects          9797
+DummyFieldPtrs      219
+FieldObjs           922
+SolveIterations     8
+IndEdgeSolved       584
+NullPointer         2264
+PointsToConstPtr    1075
+PointsToBlkPtr      0
+AddrProcessed       11839
+CopyProcessed       29252
+GepProcessed        20748
+LoadProcessed       24536
+StoreProcessed      5402
+NumOfSFRs           0
+NumOfFieldExpand    0
+MaxPtsSetSize       374
+NumOfSCCDetect      8
+TotalCycleNum       118
+TotalPWCCycleNum    26
+NodesInCycles       1093
+MaxNodesInSCC       197
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libsndfile.a.bc)###############
+UniquePointsToSets       13998
+TotalUnions              75405
+PropertyUnions           57874
+UniqueUnions             2268
+LookupUnions             11089
+PreemptiveUnions         4174
+TotalComplements         1459231
+PropertyComplements      1445309
+UniqueComplements        1410
+LookupComplements        11102
+PreemptiveComplements    1410
+TotalIntersections       29996
+PropertyIntersections    26999
+UniqueIntersections      12
+LookupIntersections      159
+PreemptiveIntersections  2826
+#######################################################
+
+*********Memory SSA Statistics***************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.72014
+SSARenameTime       0.031
+InsertPHITime       0.005
+GenMUCHITime        0.1
+GenRegionTime       0.321
+TotalMSSATime       0.468
+BBHasMSSAPhi        1271
+MSSAPhi             3397
+StoreHasChi         4277
+LoadHasMu           18903
+CSHasMu             1836
+CSHasChi            1322
+FunHasRetMu         1230
+FunHasEntryChi      1143
+StoreChiNode        4196
+LoadMuNode          18248
+CSMuNode            5512
+CSChiNode           2516
+FunRetMu            4853
+FunEntryChi         4853
+MemRegions          3223
+MaxRegSize          77
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.101
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.071
+TLNodeTime          0
+ATNodeTime          0.03
+OptTime             0
+AvgWeight           1.82353
+TotalNode           91527
+FormalIn            4853
+FormalOut           4853
+FormalParam         1945
+FormalRet           53
+ActualIn            5512
+ActualOut           2516
+ActualParam         8338
+ActualRet           115
+TotalEdge           121831
+DirectEdge          68339
+IndirectEdge        53492
+IndirectEdgeLabels  97544
+IndCallEdge         8128
+IndRetEdge          3999
+DirectCallEdge      6814
+DirectRetEdge       83
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         930
+MaxOutDegree        305
+AvgIndInDeg         1
+AvgIndOutDeg        2
+MaxIndInDeg         490
+MaxIndOutDeg        305
+MSSAPhi             3397
+PHI                 162
+Addr                11839
+Copy                1770
+Gep                 22433
+Load                18903
+Store               4837
+#######################################################
+
+*********CallGraph Stats***************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+TotalNode           1441
+TotalEdge           5312
+TotalCycle          1
+MaxNodeInCycle      3
+NodeInCycle         3
+CalRetPairInCycle   13
+FIObjNum            295
+FSObjNum            9502
+#######################################################
+
+*********General Stats***************
+################ (program : libsndfile.a.bc)###############
+BBWith2Succ         5996
+BBWith3Succ         194
+TotalPointers       169191
+TotalObjects        9797
+TotalFieldObjects   922
+MaxStructSize       116
+TotalSVFStmts       163054
+TotalPTASVFStmts    66841
+FIObjNum            295
+FSObjNum            9501
+AddrsNum            12891
+LoadsNum            45982
+StoresNum           21873
+CopysNum            11762
+GepsNum             22433
+CallsNum            11459
+ReturnsNum          2463
+FunctionObjs        1441
+GlobalObjs          88
+HeapObjs            105
+StackObjs           8161
+VarStructObj        314
+VarArrayObj         151
+ConstStructObj      1
+ConstArrayObj       20
+NonPtrObj           7001
+ConstantObj         0
+IndCallSites        156
+TotalCallSite       5058
+-------------------------------------------------------
+LLVMIRTime          0.65
+SymbolTableTime     0.162
+SVFIRTime           1.073
+#######################################################
+
+****Flow-Sensitive Pointer Analysis Statistics****
+
+************************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+TotalTime           4.058
+SolveTime           0.916
+SCCTime             0
+ProcessTime         0
+PropagationTime     0
+DirectPropaTime     0
+IndirectPropaTime   0
+Strong/WeakUpdTime  0
+AddrTime            0
+CopyTime            0
+LoadTime            0
+UpdateCGTime        0
+PhiTime             0
+AvgPtsSize          3.41442
+AvgTopLvlPtsSize    3.41442
+AvgAddrTakenVarPts  5.77727
+AvgINPtsSize        0
+AvgOUTPtsSize       0
+AverageSCCSize      28.1011
+StoreTime           0
+GepTime             0
+Pointers            168972
+LocalVarInRecur     39
+TotalPointers       169191
+TotalObjects        10719
+StoresNum           4837
+CopysNum            1770
+MemObjects          9797
+DummyFieldPtrs      219
+FieldObjs           922
+SolveIterations     4
+IndEdgeSolved       399
+NullPointer         2808
+PointsToConstPtr    0
+PointsToBlkPtr      973
+StrongUpdates       3367
+FI_SNodesHaveIN     0
+FI_SNodesHaveOUT    0
+FO_SNodesHaveIN     0
+FO_SNodesHaveOUT    0
+AI_SNodesHaveIN     0
+AI_SNodesHaveOUT    0
+AO_SNodesHaveIN     0
+AO_SNodesHaveOUT    0
+LD_SNodesHaveIN     0
+SNodesHaveIN        0
+LD_SNodesHaveOUT    0
+SNodesHaveOUT       0
+ST_SNodesHaveIN     0
+ST_SNodesHaveOUT    0
+PHI_SNodesHaveIN    0
+PHI_SNodesHaveOUT   0
+PotentialVarHaveIN  0
+VarHaveIN           0
+PotentialVarHaveOUT 0
+VarHaveOUT          0
+VarHaveEmptyIN      0
+VarHaveEmptyOUT     0
+VarHaveIN_FI        0
+VarHaveOUT_FI       0
+VarHaveIN_FO        0
+VarHaveOUT_FO       0
+VarHaveIN_AI        0
+VarHaveOUT_AI       0
+VarHaveIN_AO        0
+VarHaveOUT_AO       0
+VarHaveIN_LD        0
+VarHaveOUT_LD       0
+VarHaveIN_ST        0
+VarHaveOUT_ST       0
+VarHaveIN_PHI       0
+VarHaveOUT_PHI      0
+MaxPtsSize          315
+MaxTopLvlPtsSize    315
+MaxINPtsSize        0
+MaxOUTPtsSize       0
+NumOfAddrTakenVar   5051
+MaxAddrTakenVarPts  120
+ProcessedAddr       47356
+ProcessedCopy       7195
+ProcessedGep        92740
+ProcessedLoad       79997
+ProcessedStore      21099
+ProcessedPhi        668
+ProcessedAParam     0
+ProcessedFRet       0
+ProcessedMSSANode   93607
+NumOfNodesInSCC     7503
+MaxSCCSize          5224
+NumOfSCC            267
+#######################################################
+
+****Persistent Points-To Cache Statistics: flow-sensitive analysis bitvector****
+################ (program : libsndfile.a.bc)###############
+UniquePointsToSets       12147
+TotalUnions              503569
+PropertyUnions           434701
+UniqueUnions             3542
+LookupUnions             60202
+PreemptiveUnions         5124
+TotalComplements         0
+PropertyComplements      0
+UniqueComplements        0
+LookupComplements        0
+PreemptiveComplements    0
+TotalIntersections       0
+PropertyIntersections    0
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  0
+#######################################################
+[INFO] Analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.31995
+SSARenameTime       0.085
+InsertPHITime       0.025
+GenMUCHITime        0.306
+GenRegionTime       0.587
+TotalMSSATime       0.876
+BBHasMSSAPhi        3486
+MSSAPhi             17239
+StoreHasChi         20759
+LoadHasMu           45982
+CSHasMu             3230
+CSHasChi            2973
+FunHasRetMu         1230
+FunHasEntryChi      1226
+StoreChiNode        20129
+LoadMuNode          44025
+CSMuNode            15077
+CSChiNode           9399
+FunRetMu            13366
+FunEntryChi         13366
+MemRegions          9267
+MaxRegSize          64
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libsndfile.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.404
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.302
+TLNodeTime          0
+ATNodeTime          0.102
+OptTime             0
+AvgWeight           1.67488
+TotalNode           238908
+FormalIn            13366
+FormalOut           13366
+FormalParam         3131
+FormalRet           913
+ActualIn            15077
+ActualOut           9399
+ActualParam         14194
+ActualRet           3090
+TotalEdge           358345
+DirectEdge          190291
+IndirectEdge        168054
+IndirectEdgeLabels  281471
+IndCallEdge         20845
+IndRetEdge          12935
+DirectCallEdge      12403
+DirectRetEdge       2780
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         1050
+MaxOutDegree        10465
+AvgIndInDeg         1
+AvgIndOutDeg        2
+MaxIndInDeg         1016
+MaxIndOutDeg        868
+MSSAPhi             17239
+PHI                 1559
+Addr                12891
+Copy                11762
+Gep                 22433
+Load                45982
+Store               21873
+#######################################################
+sf_error_number
+psf_get_chunk_iterator
+psf_get_chunk_iterator
+sf_get_chunk_iterator
+sf_get_chunk_iterator
+sf_get_chunk_iterator
+psf_get_string
+sf_get_string
+sf_get_string
+sf_next_chunk_iterator
+sf_next_chunk_iterator
+sf_next_chunk_iterator
+psf_asciiheader_printf
+psf_binheader_readf
+psf_binheader_writef
+header_put_le_int
+psf_allocate
+psf_allocate
+psf_allocate
+log_putchar
+psf_log_printf
+psf_bump_header_allocation
+header_put_marker
+header_put_byte
+header_put_be_short
+header_put_le_short
+header_put_be_3byte
+header_put_le_3byte
+header_put_be_int
+header_put_be_8byte
+psf_decode_frame_count
+header_put_le_8byte
+header_read
+header_gets
+header_seek
+psf_log_SF_INFO
+psf_copy_filename
+psf_fopen
+psf_log_syserr
+psf_fclose
+psf_open_rsrc
+psf_get_filelen
+psf_close_rsrc
+psf_set_stdio
+psf_file_valid
+psf_fseek
+psf_fread
+psf_fwrite
+psf_ftell
+psf_is_pipe
+psf_ftruncate
+psf_init_files
+psf_use_rsrc
+ogg_open
+ogg_close
+ogg_stream_classify
+ogg_page_classify
+wavlike_ima_init
+ima_reader_init
+ima_writer_init
+ima_close
+wavlike_ima_encode_block
+aiff_ima_encode_block
+wavlike_ima_decode_block
+aiff_ima_decode_block
+aiff_ima_init
+wavlike_msadpcm_init
+msadpcm_decode_block
+msadpcm_close
+msadpcm_encode_block
+msadpcm_get_bpred
+wavlike_msadpcm_write_adapt_coeffs
+psf_store_string
+psf_get_string
+psf_location_string_count
+audio_detect
+alac_init
+alac_close
+alac_reader_init
+alac_writer_init
+alac_byterate
+alac_pakt_read_decode
+alac_kuki_read
+alac_seek
+alac_reader_calc_frames
+alac_decode_block
+alac_pakt_encode
+psf_get_chunk_iterator
+ogg_sync_fseek
+ogg_sync_next_page
+ogg_write_page
+ogg_sync_ftell
+ogg_read_first_page
+ogg_stream_next_page
+ogg_stream_unpack_page
+ogg_sync_last_page_before
+sf_open
+sf_open
+sf_open
+sf_open
+psf_close
+psf_open_file
+psf_open_file
+guess_file_type
+format_from_extension
+save_header_info
+validate_psf
+try_resource_fork
+vorbiscomment_read_tags
+vorbiscomment_write_tags
+mpeg_init
+mpeg_write_header
+mpeg_open
+psf_asciiheader_printf
+psf_binheader_readf
+psf_binheader_writef
+header_put_le_int
+psf_allocate
+psf_allocate
+psf_allocate
+log_putchar
+psf_log_printf
+psf_bump_header_allocation
+header_put_marker
+header_put_byte
+header_put_be_short
+header_put_le_short
+header_put_be_3byte
+header_put_le_3byte
+header_put_be_int
+header_put_be_8byte
+psf_decode_frame_count
+header_put_le_8byte
+header_read
+header_gets
+header_seek
+psf_log_SF_INFO
+psf_copy_filename
+psf_log_syserr
+psf_fclose
+psf_open_rsrc
+psf_get_filelen
+psf_close_rsrc
+psf_set_file
+psf_file_valid
+psf_fseek
+psf_fread
+psf_fwrite
+psf_ftell
+psf_is_pipe
+psf_ftruncate
+psf_init_files
+psf_use_rsrc
+ogg_open
+ogg_close
+ogg_stream_classify
+ogg_page_classify
+wavlike_ima_init
+ima_reader_init
+ima_writer_init
+ima_close
+wavlike_ima_encode_block
+aiff_ima_encode_block
+wavlike_ima_decode_block
+aiff_ima_decode_block
+aiff_ima_init
+wavlike_msadpcm_init
+msadpcm_decode_block
+msadpcm_close
+msadpcm_encode_block
+msadpcm_get_bpred
+wavlike_msadpcm_write_adapt_coeffs
+psf_store_string
+psf_get_string
+psf_location_string_count
+audio_detect
+alac_init
+alac_close
+alac_reader_init
+alac_writer_init
+alac_byterate
+alac_pakt_read_decode
+alac_kuki_read
+alac_seek
+alac_reader_calc_frames
+alac_decode_block
+alac_pakt_encode
+psf_get_chunk_iterator
+ogg_sync_fseek
+ogg_sync_next_page
+ogg_write_page
+ogg_sync_ftell
+ogg_read_first_page
+ogg_stream_next_page
+ogg_stream_unpack_page
+ogg_sync_last_page_before
+psf_close
+psf_open_file
+psf_open_file
+guess_file_type
+format_from_extension
+save_header_info
+validate_psf
+try_resource_fork
+sf_open_fd
+sf_open_fd
+sf_open_fd
+sf_open_fd
+vorbiscomment_read_tags
+vorbiscomment_write_tags
+mpeg_init
+mpeg_write_header
+mpeg_open
+psf_asciiheader_printf
+psf_binheader_readf
+psf_binheader_writef
+header_put_le_int
+psf_allocate
+psf_allocate
+psf_allocate
+log_putchar
+psf_log_printf
+psf_bump_header_allocation
+header_put_marker
+header_put_byte
+header_put_be_short
+header_put_le_short
+header_put_be_3byte
+header_put_le_3byte
+header_put_be_int
+header_put_be_8byte
+psf_decode_frame_count
+header_put_le_8byte
+header_read
+header_gets
+header_seek
+psf_log_SF_INFO
+psf_log_syserr
+psf_fclose
+psf_open_rsrc
+psf_get_filelen
+psf_close_rsrc
+psf_file_valid
+psf_fseek
+psf_fre[INFO] running analysis...
+[INFO 1/40] processing params for: sf_close
+[INFO 1/40] processing return for: sf_close
+[INFO 2/40] processing params for: sf_command
+[INFO 2/40] processing return for: sf_command
+[INFO 3/40] processing params for: sf_current_byterate
+[INFO 3/40] processing return for: sf_current_byterate
+[INFO 4/40] processing params for: sf_error
+[INFO 4/40] processing return for: sf_error
+[INFO 5/40] processing params for: sf_error_number
+[INFO 5/40] processing return for: sf_error_number
+[INFO 6/40] processing params for: sf_error_str
+[INFO 6/40] processing return for: sf_error_str
+[INFO 7/40] processing params for: sf_format_check
+[INFO 7/40] processing return for: sf_format_check
+[INFO 8/40] processing params for: sf_get_chunk_data
+[INFO 8/40] processing return for: sf_get_chunk_data
+[INFO 9/40] processing params for: sf_get_chunk_iterator
+[INFO 9/40] processing return for: sf_get_chunk_iterator
+[INFO 10/40] processing params for: sf_get_chunk_size
+[INFO 10/40] processing return for: sf_get_chunk_size
+[INFO 11/40] processing params for: sf_get_string
+[INFO 11/40] processing return for: sf_get_string
+[INFO 12/40] processing params for: sf_next_chunk_iterator
+[INFO 12/40] processing return for: sf_next_chunk_iterator
+[INFO 13/40] processing params for: sf_open
+[INFO 13/40] processing return for: sf_open
+[INFO 14/40] processing params for: sf_open_fd
+[INFO 14/40] processing return for: sf_open_fd
+[INFO 15/40] processing params for: sf_open_virtual
+[INFO 15/40] processing return for: sf_open_virtual
+[INFO 16/40] processing params for: sf_perror
+[INFO 16/40] processing return for: sf_perror
+[INFO 17/40] processing params for: sf_read_double
+[INFO 17/40] processing return for: sf_read_double
+[INFO 18/40] processing params for: sf_read_float
+[INFO 18/40] processing return for: sf_read_float
+[INFO 19/40] processing params for: sf_read_int
+[INFO 19/40] processing return for: sf_read_int
+[INFO 20/40] processing params for: sf_read_raw
+[INFO 20/40] processing return for: sf_read_raw
+[INFO 21/40] processing params for: sf_read_short
+[INFO 21/40] processing return for: sf_read_short
+[INFO 22/40] processing params for: sf_readf_double
+[INFO 22/40] processing return for: sf_readf_double
+[INFO 23/40] processing params for: sf_readf_float
+[INFO 23/40] processing return for: sf_readf_float
+[INFO 24/40] processing params for: sf_readf_int
+[INFO 24/40] processing return for: sf_readf_int
+[INFO 25/40] processing params for: sf_readf_short
+[INFO 25/40] processing return for: sf_readf_short
+[INFO 26/40] processing params for: sf_seek
+[INFO 26/40] processing return for: sf_seek
+[INFO 27/40] processing params for: sf_set_chunk
+[INFO 27/40] processing return for: sf_set_chunk
+[INFO 28/40] processing params for: sf_set_string
+[INFO 28/40] processing return for: sf_set_string
+[INFO 29/40] processing params for: sf_strerror
+[INFO 29/40] processing return for: sf_strerror
+[INFO 30/40] processing return for: sf_version_string
+[INFO 31/40] processing params for: sf_write_double
+[INFO 31/40] processing return for: sf_write_double
+[INFO 32/40] processing params for: sf_write_float
+[INFO 32/40] processing return for: sf_write_float
+[INFO 33/40] processing params for: sf_write_int
+[INFO 33/40] processing return for: sf_write_int
+[INFO 34/40] processing params for: sf_write_raw
+[INFO 34/40] processing return for: sf_write_raw
+[INFO 35/40] processing params for: sf_write_short
+[INFO 35/40] processing return for: sf_write_short
+[INFO 36/40] processing params for: sf_write_sync
+[INFO 37/40] processing params for: sf_writef_double
+[INFO 37/40] processing return for: sf_writef_double
+[INFO 38/40] processing params for: sf_writef_float
+[INFO 38/40] processing return for: sf_writef_float
+[INFO 39/40] processing params for: sf_writef_int
+[INFO 39/40] processing return for: sf_writef_int
+[INFO 40/40] processing params for: sf_writef_short
+[INFO 40/40] processing return for: sf_writef_short
+[INFO] Summary sf_close:
+param_0: 94 access types
+return: 0 access types
+[INFO] Summary sf_command:
+param_0: 115 access types
+param_1: 1 access types
+param_2: 5 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary sf_current_byterate:
+param_0: 6 access types
+return: 0 access types
+[INFO] Summary sf_error:
+param_0: 7 access types
+return: 0 access types
+[INFO] Summary sf_error_number:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary sf_error_str:
+param_0: 7 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_format_check:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary sf_get_chunk_data:
+param_0: 9 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary sf_get_chunk_iterator:
+param_0: 14 access types
+param_1: 3 access types
+return: 10 access types
+[INFO] Summary sf_get_chunk_size:
+param_0: 9 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary sf_get_string:
+param_0: 4 access types
+param_1: 1 access types
+return: 2 access types
+[INFO] Summary sf_next_chunk_iterator:
+param_0: 9 access types
+return: 10 access types
+[INFO] Summary sf_open:
+param_0: 2 access types
+param_1: 1 access types
+param_2: 13 access types
+return: 337 access types
+[INFO] Summary sf_open_fd:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 13 access types
+param_3: 1 access types
+return: 337 access types
+[INFO] Summary sf_open_virtual:
+param_0: 7 access types
+param_1: 1 access types
+param_2: 14 access types
+param_3: 1 access types
+return: 337 access types
+[INFO] Summary sf_perror:
+param_0: 7 access types
+return: 0 access types
+[INFO] Summary sf_read_double:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_float:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_int:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_raw:
+param_0: 20 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_read_short:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_double:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_float:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_int:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_readf_short:
+param_0: 13 access types
+param_1: 3 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_seek:
+param_0: 14 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_set_chunk:
+param_0: 7 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary sf_set_string:
+param_0: 11 access types
+param_1: 1 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary sf_strerror:
+param_0: 5 access types
+return: 2 access types
+[INFO] Summary sf_version_string:
+return: 0 access types
+[INFO] Summary sf_write_double:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_float:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_int:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_raw:
+param_0: 26 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_short:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_write_sync:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary sf_writef_double:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_writef_float:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_writef_int:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary sf_writef_short:
+param_0: 19 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                        812.65         1    812.65
+2. PAG Builder                             1073.77         1   1073.77
+3. Points-to Analysis                      4179.91         1   4179.91
+4. Full SVFG Build                         1733.48         1   1733.48
+Function 1: extract_parameter_metadata     5819.19        97     59.99
+Function 1: extract_parameter_metadata: sf_close   5742.03         1   5742.03
+Function 1: extract_parameter_metadata: sf_command     33.99         4      8.50
+Function 1: extract_parameter_metadata: sf_current_byterate      0.48         1      0.48
+Function 1: extract_parameter_metadata: sf_error      0.18         1      0.18
+Function 1: extract_parameter_metadata: sf_error_number      0.08         1      0.08
+Function 1: extract_parameter_metadata: sf_error_str      0.34         3      0.11
+Function 1: extract_parameter_metadata: sf_format_check      4.64         1      4.64
+Function 1: extract_parameter_metadata: sf_get_chunk_data      0.34         2      0.17
+Function 1: extract_parameter_metadata: sf_get_chunk_iterator      0.74         2      0.37
+Function 1: extract_parameter_metadata: sf_get_chunk_size      0.30         2      0.15
+Function 1: extract_parameter_metadata: sf_get_string      0.24         2      0.12
+Function 1: extract_parameter_metadata: sf_next_chunk_iterator      0.26         1      0.26
+Function 1: extract_parameter_metadata: sf_open      5.22         3      1.74
+Function 1: extract_parameter_metadata: sf_open_fd      5.17         4      1.29
+Function 1: extract_parameter_metadata: sf_open_virtual      5.13         4      1.28
+Function 1: extract_parameter_metadata: sf_perror      0.27         1      0.27
+Function 1: extract_parameter_metadata: sf_read_double      1.14         3      0.38
+Function 1: extract_parameter_metadata: sf_read_float      1.15         3      0.38
+Function 1: extract_parameter_metadata: sf_read_int      1.11         3      0.37
+Function 1: extract_parameter_metadata: sf_read_raw      1.80         3      0.60
+Function 1: extract_parameter_metadata: sf_read_short      1.20         3      0.40
+Function 1: extract_parameter_metadata: sf_readf_double      1.16         3      0.39
+Function 1: extract_parameter_metadata: sf_readf_float      1.14         3      0.38
+Function 1: extract_parameter_metadata: sf_readf_int      1.15         3      0.38
+Function 1: extract_parameter_metadata: sf_readf_short      1.15         3      0.38
+Function 1: extract_parameter_metadata: sf_seek      0.94         3      0.31
+Function 1: extract_parameter_metadata: sf_set_chunk      0.23         2      0.12
+Function 1: extract_parameter_metadata: sf_set_string      1.40         3      0.47
+Function 1: extract_parameter_metadata: sf_strerror      0.22         1      0.22
+Function 1: extract_parameter_metadata: sf_write_double      0.63         3      0.21
+Function 1: extract_parameter_metadata: sf_write_float      0.59         3      0.20
+Function 1: extract_parameter_metadata: sf_write_int      0.59         3      0.20
+Function 1: extract_parameter_metadata: sf_write_raw      1.04         3      0.35
+Function 1: extract_parameter_metadata: sf_write_short      0.60         3      0.20
+Function 1: extract_parameter_metadata: sf_write_sync      0.13         1      0.13
+Function 1: extract_parameter_metadata: sf_writef_double      0.60         3      0.20
+Function 1: extract_parameter_metadata: sf_writef_float      0.57         3      0.19
+Function 1: extract_parameter_metadata: sf_writef_int      0.57         3      0.19
+Function 1: extract_parameter_metadata: sf_writef_short      0.59         3      0.20
+Function 2: extractLenDependencyParameter   1352.35        25     54.09
+Function 2: extractLenDependencyParameter: sf_command      5.25         1      5.25
+Function 2: extractLenDependencyParameter: sf_open      1.31         2      0.66
+Function 2: extractLenDependencyParameter: sf_open_fd      0.67         1      0.67
+Function 2: extractLenDependencyParameter: sf_open_virtual      0.50         1      0.50
+Function 2: extractLenDependencyParameter: sf_read_double      0.52         2      0.26
+Function 2: extractLenDependencyParameter: sf_read_float      0.31         2      0.16
+Function 2: extractLenDependencyParameter: sf_read_int    117.48         2     58.74
+Function 2: extractLenDependencyParameter: sf_read_raw    477.56         2    238.78
+Function 2: extractLenDependencyParameter: sf_read_short    119.94         2     59.97
+Function 2: extractLenDependencyParameter: sf_readf_double      0.40         2      0.20
+Function 2: extractLenDependencyParameter: sf_readf_float      0.29         2      0.15
+Function 2: extractLenDependencyParameter: sf_readf_int    117.40         2     58.70
+Function 2: extractLenDependencyParameter: sf_readf_short    116.75         2     58.38
+Function 2: extractLenDependencyParameter: sf_set_string      0.44         1      0.44
+Function 2: extractLenDependencyParameter: sf_write_raw    393.49         1    393.49
+Function 3: my_extract_dependency_among_parameters   2095.46        97     21.60
+Function 3: my_extract_dependency_among_parameters: sf_close      4.37         1      4.37
+Function 3: my_extract_dependency_among_parameters: sf_command    874.05         4    218.51
+Function 3: my_extract_dependency_among_parameters: sf_current_byterate      0.26         1      0.26
+Function 3: my_extract_dependency_among_parameters: sf_error      0.24         1      0.24
+Function 3: my_extract_dependency_among_parameters: sf_error_number      0.23         1      0.23
+Function 3: my_extract_dependency_among_parameters: sf_error_str      0.71         3      0.24
+Function 3: my_extract_dependency_among_parameters: sf_format_check      0.31         1      0.31
+Function 3: my_extract_dependency_among_parameters: sf_get_chunk_data      0.48         2      0.24
+Function 3: my_extract_dependency_among_parameters: sf_get_chunk_iterator     58.07         2     29.03
+Function 3: my_extract_dependency_among_parameters: sf_get_chunk_size      0.65         2      0.32
+Function 3: my_extract_dependency_among_parameters: sf_get_string      0.46         2      0.23
+Function 3: my_extract_dependency_among_parameters: sf_next_chunk_iterator      0.43         1      0.43
+Function 3: my_extract_dependency_among_parameters: sf_open      0.67         3      0.22
+Function 3: my_extract_dependency_among_parameters: sf_open_fd      1.20         4      0.30
+Function 3: my_extract_dependency_among_parameters: sf_open_virtual      0.84         4      0.21
+Function 3: my_extract_dependency_among_parameters: sf_perror      0.45         1      0.45
+Function 3: my_extract_dependency_among_parameters: sf_read_double      0.80         3      0.27
+Function 3: my_extract_dependency_among_parameters: sf_read_float      0.61         3      0.20
+Function 3: my_extract_dependency_among_parameters: sf_read_int      0.75         3      0.25
+Function 3: my_extract_dependency_among_parameters: sf_read_raw    234.50         3     78.17
+Function 3: my_extract_dependency_among_parameters: sf_read_short      0.94         3      0.31
+Function 3: my_extract_dependency_among_parameters: sf_readf_double      0.65         3      0.22
+Function 3: my_extract_dependency_among_parameters: sf_readf_float      0.57         3      0.19
+Function 3: my_extract_dependency_among_parameters: sf_readf_int      0.70         3      0.23
+Function 3: my_extract_dependency_among_parameters: sf_readf_short      0.85         3      0.28
+Function 3: my_extract_dependency_among_parameters: sf_seek      1.00         3      0.33
+Function 3: my_extract_dependency_among_parameters: sf_set_chunk      0.32         2      0.16
+Function 3: my_extract_dependency_among_parameters: sf_set_string    682.83         3    227.61
+Function 3: my_extract_dependency_among_parameters: sf_strerror      0.19         1      0.19
+Function 3: my_extract_dependency_among_parameters: sf_write_double      0.66         3      0.22
+Function 3: my_extract_dependency_among_parameters: sf_write_float      0.53         3      0.18
+Function 3: my_extract_dependency_among_parameters: sf_write_int      0.57         3      0.19
+Function 3: my_extract_dependency_among_parameters: sf_write_raw    222.72         3     74.24
+Function 3: my_extract_dependency_among_parameters: sf_write_short      0.57         3      0.19
+Function 3: my_extract_dependency_among_parameters: sf_write_sync      0.16         1      0.16
+Function 3: my_extract_dependency_among_parameters: sf_writef_double      0.51         3      0.17
+Function 3: my_extract_dependency_among_parameters: sf_writef_float      0.51         3      0.17
+Function 3: my_extract_dependency_among_parameters: sf_writef_int      0.50         3      0.17
+Function 3: my_extract_dependency_among_parameters: sf_writef_short      0.50         3      0.17
+Function 4: extract_return_metadata      717996.74        40  17949.92
+Function 4: extract_return_metadata: sf_close      0.12         1      0.12
+Function 4: extract_return_metadata: sf_command      0.09         1      0.09
+Function 4: extract_return_metadata: sf_current_byterate      0.07         1      0.07
+Function 4: extract_return_metadata: sf_error      0.06         1      0.06
+Function 4: extract_return_metadata: sf_error_number     13.22         1     13.22
+Function 4: extract_return_metadata: sf_error_str      0.07         1      0.07
+Function 4: extract_return_metadata: sf_format_check      0.07         1      0.07
+Function 4: extract_return_metadata: sf_get_chunk_data      0.06         1      0.06
+Function 4: extract_return_metadata: sf_get_chunk_iterator     13.57         1     13.57
+Function 4: extract_return_metadata: sf_get_chunk_size      0.07         1      0.07
+Function 4: extract_return_metadata: sf_get_string     12.94         1     12.94
+Function 4: extract_return_metadata: sf_next_chunk_iterator     13.13         1     13.13
+Function 4: extract_return_metadata: sf_open 241623.68         1 241623.68
+Function 4: extract_return_metadata: sf_open_fd 245119.21         1 245119.21
+Function 4: extract_return_metadata: sf_open_virtual 231177.94         1 231177.94
+Function 4: extract_return_metadata: sf_perror      0.07         1      0.07
+Function 4: extract_return_metadata: sf_read_double      0.07         1      0.07
+Function 4: extract_return_metadata: sf_read_float      0.07         1      0.07
+Function 4: extract_return_metadata: sf_read_int      0.08         1      0.08
+Function 4: extract_return_metadata: sf_read_raw      0.07         1      0.07
+Function 4: extract_return_metadata: sf_read_short      0.08         1      0.08
+Function 4: extract_return_metadata: sf_readf_double      0.06         1      0.06
+Function 4: extract_return_metadata: sf_readf_float      0.06         1      0.06
+Function 4: extract_return_metadata: sf_readf_int      0.06         1      0.06
+Function 4: extract_return_metadata: sf_readf_short      0.08         1      0.08
+Function 4: extract_return_metadata: sf_seek      0.06         1      0.06
+Function 4: extract_return_metadata: sf_set_chunk      0.06         1      0.06
+Function 4: extract_return_metadata: sf_set_string      0.07         1      0.07
+Function 4: extract_return_metadata: sf_strerror     10.73         1     10.73
+Function 4: extract_return_metadata: sf_version_string     10.22         1     10.22
+Function 4: extract_return_metadata: sf_write_double      0.06         1      0.06
+Function 4: extract_return_metadata: sf_write_float      0.05         1      0.05
+Function 4: extract_return_metadata: sf_write_int      0.05         1      0.05
+Function 4: extract_return_metadata: sf_write_raw      0.06         1      0.06
+Function 4: extract_return_metadata: sf_write_short      0.06         1      0.06
+Function 4: extract_return_metadata: sf_write_sync      0.05         1      0.05
+Function 4: extract_return_metadata: sf_writef_double      0.05         1      0.05
+Function 4: extract_return_metadata: sf_writef_float      0.05         1      0.05
+Function 4: extract_return_metadata: sf_writef_int      0.05         1      0.05
+Function 4: extract_return_metadata: sf_writef_short      0.05         1      0.05
+Process Function: sf_close                 5754.17         1   5754.17
+Process Function: sf_command                914.54         1    914.54
+Process Function: sf_current_byterate         0.93         1      0.93
+Process Function: sf_error                    0.58         1      0.58
+Process Function: sf_error_number            13.62         1     13.62
+Process Function: sf_error_str                1.24         1      1.24
+Process Function: sf_format_check             5.24         1      5.24
+Process Function: sf_get_chunk_data           0.99         1      0.99
+Process Function: sf_get_chunk_iterator      72.57         1     72.57
+Process Function: sf_get_chunk_size           1.17         1      1.17
+Process Function: sf_get_string              13.75         1     13.75
+Process Function: sf_next_chunk_iterator     14.00         1     14.00
+Process Function: sf_open                241635.79         1 241635.79
+Process Function: sf_open_fd             245130.83         1 245130.83
+Process Function: sf_open_virtual        231189.27         1 231189.27
+Process Function: sf_perror                   0.93         1      0.93
+Process Function: sf_read_double              2.75         1      2.75
+Process Function: sf_read_float               2.31         1      2.31
+Process Function: sf_read_int               119.61         1    119.61
+Process Function: sf_read_raw               714.18         1    714.18
+Process Function: sf_read_short             122.36         1    122.36
+Process Function: sf_readf_double             2.43         1      2.43
+Process Function: sf_readf_float              2.21         1      2.21
+Process Function: sf_readf_int              119.50         1    119.50
+Process Function: sf_readf_short            119.09         1    119.09
+Process Function: sf_seek                     2.15         1      2.15
+Process Function: sf_set_chunk                0.71         1      0.71
+Process Function: sf_set_string             684.91         1    684.91
+Process Function: sf_strerror                11.24         1     11.24
+Process Function: sf_version_string          10.31         1     10.31
+Process Function: sf_write_double             1.50         1      1.50
+Process Function: sf_write_float              1.29         1      1.29
+Process Function: sf_write_int                1.32         1      1.32
+Process Function: sf_write_raw              617.52         1    617.52
+Process Function: sf_write_short              1.36         1      1.36
+Process Function: sf_write_sync               0.41         1      0.41
+Process Function: sf_writef_double            1.29         1      1.29
+Process Function: sf_writef_float             1.25         1      1.25
+Process Function: sf_writef_int               1.24         1      1.24
+Process Function: sf_writef_short             1.26         1      1.26
+Process Parameters: sf_close               5751.09         1   5751.09
+Process Parameters: sf_command              913.87         1    913.87
+Process Parameters: sf_current_byterate       0.82         1      0.82
+Process Parameters: sf_error                  0.48         1      0.48
+Process Parameters: sf_error_number           0.36         1      0.36
+Process Parameters: sf_error_str              1.13         1      1.13
+Process Parameters: sf_format_check           5.08         1      5.08
+Process Parameters: sf_get_chunk_data         0.88         1      0.88
+Process Parameters: sf_get_chunk_iterator     58.93         1     58.93
+Process Parameters: sf_get_chunk_size         1.05         1      1.05
+Process Parameters: sf_get_string             0.76         1      0.76
+Process Parameters: sf_next_chunk_iterator      0.78         1      0.78
+Process Parameters: sf_open                   7.38         1      7.38
+Process Parameters: sf_open_fd                7.19         1      7.19
+Process Parameters: sf_open_virtual           6.59         1      6.59
+Process Parameters: sf_perror                 0.81         1      0.81
+Process Parameters: sf_read_double            2.60         1      2.60
+Process Parameters: sf_read_float             2.17         1      2.17
+Process Parameters: sf_read_int             119.44         1    119.44
+Process Parameters: sf_read_raw             714.01         1    714.01
+Process Parameters: sf_read_short           122.19         1    122.19
+Process Parameters: sf_readf_double           2.30         1      2.30
+Process Parameters: sf_readf_float            2.09         1      2.09
+Process Parameters: sf_readf_int            119.35         1    119.35
+Process Parameters: sf_readf_short          118.86         1    118.86
+Process Parameters: sf_seek                   2.02         1      2.02
+Process Parameters: sf_set_chunk              0.61         1      0.61
+Process Parameters: sf_set_string           684.76         1    684.76
+Process Parameters: sf_strerror               0.47         1      0.47
+Process Parameters: sf_version_string         0.05         1      0.05
+Process Parameters: sf_write_double           1.38         1      1.38
+Process Parameters: sf_write_float            1.19         1      1.19
+Process Parameters: sf_write_int              1.22         1      1.22
+Process Parameters: sf_write_raw            617.37         1    617.37
+Process Parameters: sf_write_short            1.25         1      1.25
+Process Parameters: sf_write_sync             0.33         1      0.33
+Process Parameters: sf_writef_double          1.19         1      1.19
+Process Parameters: sf_writef_float           1.14         1      1.14
+Process Parameters: sf_writef_int             1.13         1      1.13
+Process Parameters: sf_writef_short           1.15         1      1.15
+Total Condition Extraction (all 4 functions total) 727291.87         1 727291.87
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                           178.5       178.5       187.8       1
+2. PAG Builder                                 299.7       299.7       487.7       1
+3. Points-to Analysis                          489.4       489.4       977.3       1
+4. Full SVFG Build                             260.5       260.5      1238.0       1
+Function 1: extract_parameter_metadata           0.3        26.9      1317.4      97
+Function 1: extract_parameter_metadata: sf_close        26.9        26.9      1264.9       1
+Function 1: extract_parameter_metadata: sf_command         0.0         0.0      1264.9       4
+Function 1: extract_parameter_metadata: sf_current_byterate         0.0         0.0      1264.9       1
+Function 1: extract_parameter_metadata: sf_error         0.0         0.0      1264.9       1
+Function 1: extract_parameter_metadata: sf_error_number         0.0         0.0      1264.9       1
+Function 1: extract_parameter_metadata: sf_error_str         0.0         0.0      1264.9       3
+Function 1: extract_parameter_metadata: sf_format_check         0.0         0.0      1264.9       1
+Function 1: extract_parameter_metadata: sf_get_chunk_data         0.0         0.0      1264.9       2
+Function 1: extract_parameter_metadata: sf_get_chunk_iterator         0.0         0.0      1264.9       2
+Function 1: extract_parameter_metadata: sf_get_chunk_size         0.0         0.0      1264.9       2
+Function 1: extract_parameter_metadata: sf_get_string         0.0         0.0      1264.9       2
+Function 1: extract_parameter_metadata: sf_next_chunk_iterator         0.0         0.0      1264.9       1
+Function 1: extract_parameter_metadata: sf_open         0.0         0.0      1264.9       3
+Function 1: extract_parameter_metadata: sf_open_fd         0.0         0.0      1313.3       4
+Function 1: extract_parameter_metadata: sf_open_virtual         0.0         0.0      1315.6       4
+Function 1: extract_parameter_metadata: sf_perror         0.0         0.0      1317.4       1
+Function 1: extract_parameter_metadata: sf_read_double         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_read_float         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_read_int         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_read_raw         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_read_short         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_readf_double         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_readf_float         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_readf_int         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_readf_short         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_seek         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_set_chunk         0.0         0.0      1317.4       2
+Function 1: extract_parameter_metadata: sf_set_string         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_strerror         0.0         0.0      1317.4       1
+Function 1: extract_parameter_metadata: sf_write_double         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_write_float         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_write_int         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_write_raw         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_write_short         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_write_sync         0.0         0.0      1317.4       1
+Function 1: extract_parameter_metadata: sf_writef_double         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_writef_float         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_writef_int         0.0         0.0      1317.4       3
+Function 1: extract_parameter_metadata: sf_writef_short         0.0         0.0      1317.4       3
+Function 2: extractLenDependencyParameter         0.0         0.0      1317.4      25
+Function 2: extractLenDependencyParameter: sf_command         0.0         0.0      1264.9       1
+Function 2: extractLenDependencyParameter: sf_open         0.0         0.0      1264.9       2
+Function 2: extractLenDependencyParameter: sf_open_fd         0.0         0.0      1313.3       1
+Function 2: extractLenDependencyParameter: sf_open_virtual         0.0         0.0      1315.6       1
+Function 2: extractLenDependencyParameter: sf_read_double         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_read_float         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_read_int         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_read_raw         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_read_short         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_readf_double         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_readf_float         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_readf_int         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_readf_short         0.0         0.0      1317.4       2
+Function 2: extractLenDependencyParameter: sf_set_string         0.0         0.0      1317.4       1
+Function 2: extractLenDependencyParameter: sf_write_raw         0.0         0.0      1317.4       1
+Function 3: my_extract_dependency_among_parameters         0.0         0.0      1317.4      97
+Function 3: my_extract_dependency_among_parameters: sf_close         0.0         0.0      1264.9       1
+Function 3: my_extract_dependency_among_parameters: sf_command         0.0         0.0      1264.9       4
+Function 3: my_extract_dependency_among_parameters: sf_current_byterate         0.0         0.0      1264.9       1
+Function 3: my_extract_dependency_among_parameters: sf_error         0.0         0.0      1264.9       1
+Function 3: my_extract_dependency_among_parameters: sf_error_number         0.0         0.0      1264.9       1
+Function 3: my_extract_dependency_among_parameters: sf_error_str         0.0         0.0      1264.9       3
+Function 3: my_extract_dependency_among_parameters: sf_format_check         0.0         0.0      1264.9       1
+Function 3: my_extract_dependency_among_parameters: sf_get_chunk_data         0.0         0.0      1264.9       2
+Function 3: my_extract_dependency_among_parameters: sf_get_chunk_iterator         0.0         0.0      1264.9       2
+Function 3: my_extract_dependency_among_parameters: sf_get_chunk_size         0.0         0.0      1264.9       2
+Function 3: my_extract_dependency_among_parameters: sf_get_string         0.0         0.0      1264.9       2
+Function 3: my_extract_dependency_among_parameters: sf_next_chunk_iterator         0.0         0.0      1264.9       1
+Function 3: my_extract_dependency_among_parameters: sf_open         0.0         0.0      1264.9       3
+Function 3: my_extract_dependency_among_parameters: sf_open_fd         0.0         0.0      1313.3       4
+Function 3: my_extract_dependency_among_parameters: sf_open_virtual         0.0         0.0      1315.6       4
+Function 3: my_extract_dependency_among_parameters: sf_perror         0.0         0.0      1317.4       1
+Function 3: my_extract_dependency_among_parameters: sf_read_double         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_read_float         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_read_int         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_read_raw         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_read_short         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_readf_double         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_readf_float         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_readf_int         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_readf_short         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_seek         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_set_chunk         0.0         0.0      1317.4       2
+Function 3: my_extract_dependency_among_parameters: sf_set_string         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_strerror         0.0         0.0      1317.4       1
+Function 3: my_extract_dependency_among_parameters: sf_write_double         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_write_float         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_write_int         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_write_raw         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_write_short         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_write_sync         0.0         0.0      1317.4       1
+Function 3: my_extract_dependency_among_parameters: sf_writef_double         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_writef_float         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_writef_int         0.0         0.0      1317.4       3
+Function 3: my_extract_dependency_among_parameters: sf_writef_short         0.0         0.0      1317.4       3
+Function 4: extract_return_metadata              1.3        48.4      1317.4      40
+Function 4: extract_return_metadata: sf_close         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_command         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_current_byterate         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_error         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_error_number         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_error_str         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_format_check         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_get_chunk_data         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_get_chunk_iterator         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_get_chunk_size         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_get_string         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_next_chunk_iterator         0.0         0.0      1264.9       1
+Function 4: extract_return_metadata: sf_open        48.4        48.4      1313.3       1
+Function 4: extract_return_metadata: sf_open_fd         2.3         2.3      1315.6       1
+Function 4: extract_return_metadata: sf_open_virtual         1.8         1.8      1317.4       1
+Function 4: extract_return_metadata: sf_perror         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_read_double         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_read_float         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_read_int         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_read_raw         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_read_short         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_readf_double         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_readf_float         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_readf_int         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_readf_short         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_seek         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_set_chunk         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_set_string         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_strerror         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_version_string         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_write_double         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_write_float         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_write_int         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_write_raw         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_write_short         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_write_sync         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_writef_double         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_writef_float         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_writef_int         0.0         0.0      1317.4       1
+Function 4: extract_return_metadata: sf_writef_short         0.0         0.0      1317.4       1
+Process Function: sf_close                      26.9        26.9      1264.9       1
+Process Function: sf_command                     0.0         0.0      1264.9       1
+Process Function: sf_current_byterate            0.0         0.0      1264.9       1
+Process Function: sf_error                       0.0         0.0      1264.9       1
+Process Function: sf_error_number                0.0         0.0      1264.9       1
+Process Function: sf_error_str                   0.0         0.0      1264.9       1
+Process Function: sf_format_check                0.0         0.0      1264.9       1
+Process Function: sf_get_chunk_data              0.0         0.0      1264.9       1
+Process Function: sf_get_chunk_iterator          0.0         0.0      1264.9       1
+Process Function: sf_get_chunk_size              0.0         0.0      1264.9       1
+Process Function: sf_get_string                  0.0         0.0      1264.9       1
+Process Function: sf_next_chunk_iterator         0.0         0.0      1264.9       1
+Process Function: sf_open                       48.4        48.4      1313.3       1
+Process Function: sf_open_fd                     2.3         2.3      1315.6       1
+Process Function: sf_open_virtual                1.8         1.8      1317.4       1
+Process Function: sf_perror                      0.0         0.0      1317.4       1
+Process Function: sf_read_double                 0.0         0.0      1317.4       1
+Process Function: sf_read_float                  0.0         0.0      1317.4       1
+Process Function: sf_read_int                    0.0         0.0      1317.4       1
+Process Function: sf_read_raw                    0.0         0.0      1317.4       1
+Process Function: sf_read_short                  0.0         0.0      1317.4       1
+Process Function: sf_readf_double                0.0         0.0      1317.4       1
+Process Function: sf_readf_float                 0.0         0.0      1317.4       1
+Process Function: sf_readf_int                   0.0         0.0      1317.4       1
+Process Function: sf_readf_short                 0.0         0.0      1317.4       1
+Process Function: sf_seek                        0.0         0.0      1317.4       1
+Process Function: sf_set_chunk                   0.0         0.0      1317.4       1
+Process Function: sf_set_string                  0.0         0.0      1317.4       1
+Process Function: sf_strerror                    0.0         0.0      1317.4       1
+Process Function: sf_version_string              0.0         0.0      1317.4       1
+Process Function: sf_write_double                0.0         0.0      1317.4       1
+Process Function: sf_write_float                 0.0         0.0      1317.4       1
+Process Function: sf_write_int                   0.0         0.0      1317.4       1
+Process Function: sf_write_raw                   0.0         0.0      1317.4       1
+Process Function: sf_write_short                 0.0         0.0      1317.4       1
+Process Function: sf_write_sync                  0.0         0.0      1317.4       1
+Process Function: sf_writef_double               0.0         0.0      1317.4       1
+Process Function: sf_writef_float                0.0         0.0      1317.4       1
+Process Function: sf_writef_int                  0.0         0.0      1317.4       1
+Process Function: sf_writef_short                0.0         0.0      1317.4       1
+Process Parameters: sf_close                    26.9        26.9      1264.9       1
+Process Parameters: sf_command                   0.0         0.0      1264.9       1
+Process Parameters: sf_current_byterate          0.0         0.0      1264.9       1
+Process Parameters: sf_error                     0.0         0.0      1264.9       1
+Process Parameters: sf_error_number              0.0         0.0      1264.9       1
+Process Parameters: sf_error_str                 0.0         0.0      1264.9       1
+Process Parameters: sf_format_check              0.0         0.0      1264.9       1
+Process Parameters: sf_get_chunk_data            0.0         0.0      1264.9       1
+Process Parameters: sf_get_chunk_iterator         0.0         0.0      1264.9       1
+Process Parameters: sf_get_chunk_size            0.0         0.0      1264.9       1
+Process Parameters: sf_get_string     ad
+psf_fwrite
+psf_ftell
+psf_is_pipe
+psf_ftruncate
+psf_init_files
+psf_use_rsrc
+ogg_open
+ogg_close
+ogg_stream_classify
+ogg_page_classify
+wavlike_ima_init
+ima_reader_init
+ima_writer_init
+ima_close
+wavlike_ima_encode_block
+aiff_ima_encode_block
+wavlike_ima_decode_block
+aiff_ima_decode_block
+aiff_ima_init
+wavlike_msadpcm_init
+msadpcm_decode_block
+msadpcm_close
+msadpcm_encode_block
+msadpcm_get_bpred
+wavlike_msadpcm_write_adapt_coeffs
+psf_store_string
+psf_get_string
+psf_location_string_count
+audio_detect
+alac_init
+alac_close
+alac_reader_init
+alac_writer_init
+alac_byterate
+alac_pakt_read_decode
+alac_kuki_read
+alac_seek
+alac_reader_calc_frames
+alac_decode_block
+alac_pakt_encode
+psf_get_chunk_iterator
+ogg_sync_fseek
+ogg_sync_next_page
+ogg_write_page
+ogg_sync_ftell
+ogg_read_first_page
+ogg_stream_next_page
+ogg_stream_unpack_page
+ogg_sync_last_page_before
+psf_close
+psf_open_file
+psf_open_file
+guess_file_type
+format_from_extension
+save_header_info
+validate_psf
+try_resource_fork
+sf_open_virtual
+sf_open_virtual
+sf_open_virtual
+sf_open_virtual
+vorbiscomment_read_tags
+vorbiscomment_write_tags
+mpeg_init
+mpeg_write_header
+mpeg_open
+sf_error_number
+sf_strerror
+sf_strerror
+           0.0         0.0      1264.9       1
+Process Parameters: sf_next_chunk_iterator         0.0         0.0      1264.9       1
+Process Parameters: sf_open                      0.0         0.0      1264.9       1
+Process Parameters: sf_open_fd                   0.0         0.0      1313.3       1
+Process Parameters: sf_open_virtual              0.0         0.0      1315.6       1
+Process Parameters: sf_perror                    0.0         0.0      1317.4       1
+Process Parameters: sf_read_double               0.0         0.0      1317.4       1
+Process Parameters: sf_read_float                0.0         0.0      1317.4       1
+Process Parameters: sf_read_int                  0.0         0.0      1317.4       1
+Process Parameters: sf_read_raw                  0.0         0.0      1317.4       1
+Process Parameters: sf_read_short                0.0         0.0      1317.4       1
+Process Parameters: sf_readf_double              0.0         0.0      1317.4       1
+Process Parameters: sf_readf_float               0.0         0.0      1317.4       1
+Process Parameters: sf_readf_int                 0.0         0.0      1317.4       1
+Process Parameters: sf_readf_short               0.0         0.0      1317.4       1
+Process Parameters: sf_seek                      0.0         0.0      1317.4       1
+Process Parameters: sf_set_chunk                 0.0         0.0      1317.4       1
+Process Parameters: sf_set_string                0.0         0.0      1317.4       1
+Process Parameters: sf_strerror                  0.0         0.0      1317.4       1
+Process Parameters: sf_version_string            0.0         0.0      1317.4       1
+Process Parameters: sf_write_double              0.0         0.0      1317.4       1
+Process Parameters: sf_write_float               0.0         0.0      1317.4       1
+Process Parameters: sf_write_int                 0.0         0.0      1317.4       1
+Process Parameters: sf_write_raw                 0.0         0.0      1317.4       1
+Process Parameters: sf_write_short               0.0         0.0      1317.4       1
+Process Parameters: sf_write_sync                0.0         0.0      1317.4       1
+Process Parameters: sf_writef_double             0.0         0.0      1317.4       1
+Process Parameters: sf_writef_float              0.0         0.0      1317.4       1
+Process Parameters: sf_writef_int                0.0         0.0      1317.4       1
+Process Parameters: sf_writef_short              0.0         0.0      1317.4       1
+Total Condition Extraction (all 4 functions total)        79.4        79.4      1317.4       1
+
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!

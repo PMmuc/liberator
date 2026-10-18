@@ -1,0 +1,2810 @@
+++++ realpath run_analysis.sh
++++ dirname /data/paul2/liberator/docker/run_analysis.sh
+++ dirname /data/paul2/liberator/docker
++ ROOT_DIR=/data/paul2/liberator/
++ echo /data/paul2/liberator/
+/data/paul2/liberator/
++ IMG_NAME=libpp-analysis-org
++ LIBPP=../
++ '[' 1 '!=' 1 ']'
++ '[' 0 = 1 ']'
++ '[' -z zlib ']'
++ '[' -s ..//analysis/zlib/work/apipass/conditions.json ']'
++ echo libpp-analysis-org
+libpp-analysis-org
++ PROF_FLAG=()
++ [[ 0 -gt 0 ]]
++ CPUSET=0
++ [[ -n '' ]]
++ docker rm -f libpp-analysis-org-zlib
++ docker run --env PROF_FLAG= --rm --cpuset-cpus=0 --name libpp-analysis-org-zlib --user root --env TARGET=zlib -v /data/paul2/liberator/:/workspaces/libfuzz libpp-analysis-org
+[TOOLS_DIR] /home/libfuzz
+[TARGET] /workspaces/libfuzz/analysis/zlib
++ export TARGET_NAME=zlib
++ TARGET_NAME=zlib
++ export TARGET=/workspaces/libfuzz/analysis/zlib
++ TARGET=/workspaces/libfuzz/analysis/zlib
++ echo '[TOOLS_DIR] /home/libfuzz'
++ echo '[TARGET] /workspaces/libfuzz/analysis/zlib'
+++ which wllvm
+[WLLVM] /home/libfuzz/.local/bin/wllvm
++ echo '[WLLVM] /home/libfuzz/.local/bin/wllvm'
++ cd /workspaces/libfuzz/targets/zlib
++ sudo ./preinstall.sh
+[INFO] Nothing to preinstall
++ ./fetch.sh
+HEAD is now at da607da zlib 1.3.2
+make 1
+cmake
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /workspaces/libfuzz/analysis/zlib/repo
+make clean
+make
+Scanning dependencies of target zlibstatic
+[  2%] Building C object CMakeFiles/zlibstatic.dir/adler32.c.o
+[  4%] Building C object CMakeFiles/zlibstatic.dir/compress.c.o
+[  6%] Building C object CMakeFiles/zlibstatic.dir/crc32.c.o
+[  8%] Building C object CMakeFiles/zlibstatic.dir/deflate.c.o
+[ 10%] Building C object CMakeFiles/zlibstatic.dir/gzclose.c.o
+[ 13%] Building C object CMakeFiles/zlibstatic.dir/gzlib.c.o
+[ 15%] Building C object CMakeFiles/zlibstatic.dir/gzread.c.o
+[ 17%] Building C object CMakeFiles/zlibstatic.dir/gzwrite.c.o
+[ 19%] Building C object CMakeFiles/zlibstatic.dir/inflate.c.o
+[ 21%] Building C object CMakeFiles/zlibstatic.dir/infback.c.o
+[ 23%] Building C object CMakeFiles/zlibstatic.dir/inftrees.c.o
+[ 26%] Building C object CMakeFiles/zlibstatic.dir/inffast.c.o
+[ 28%] Building C object CMakeFiles/zlibstatic.dir/trees.c.o
+[ 30%] Building C object CMakeFiles/zlibstatic.dir/uncompr.c.o
+[ 32%] Building C object CMakeFiles/zlibstatic.dir/zutil.c.o
+[ 34%] Linking C static library libz.a
+[ 34%] Built target zlibstatic
+Scanning dependencies of target zlib
+[ 36%] Building C object CMakeFiles/zlib.dir/adler32.c.o
+[ 39%] Building C object CMakeFiles/zlib.dir/compress.c.o
+[ 41%] Building C object CMakeFiles/zlib.dir/crc32.c.o
+[ 43%] Building C object CMakeFiles/zlib.dir/deflate.c.o
+[ 45%] Building C object CMakeFiles/zlib.dir/gzclose.c.o
+[ 47%] Building C object CMakeFiles/zlib.dir/gzlib.c.o
+[ 50%] Building C object CMakeFiles/zlib.dir/gzread.c.o
+[ 52%] Building C object CMakeFiles/zlib.dir/gzwrite.c.o
+[ 54%] Building C object CMakeFiles/zlib.dir/inflate.c.o
+[ 56%] Building C object CMakeFiles/zlib.dir/infback.c.o
+[ 58%] Building C object CMakeFiles/zlib.dir/inftrees.c.o
+[ 60%] Building C object CMakeFiles/zlib.dir/inffast.c.o
+[ 63%] Building C object CMakeFiles/zlib.dir/trees.c.o
+[ 65%] Building C object CMakeFiles/zlib.dir/uncompr.c.o
+[ 67%] Building C object CMakeFiles/zlib.dir/zutil.c.o
+[ 69%] Linking C shared library libz.so
+[ 69%] Built target zlib
+Scanning dependencies of target minigzip
+[ 71%] Building C object test/CMakeFiles/minigzip.dir/minigzip.c.o
+[ 73%] Linking C executable minigzip
+[ 73%] Built target minigzip
+Scanning dependencies of target zlib_example
+[ 76%] Building C object test/CMakeFiles/zlib_example.dir/example.c.o
+[ 78%] Linking C executable zlib_example
+[ 78%] Built target zlib_example
+Scanning dependencies of target zlib_example64
+[ 80%] Building C object test/CMakeFiles/zlib_example64.dir/example.c.o
+[ 82%] Linking C executable zlib_example64
+[ 82%] Built target zlib_example64
+Scanning dependencies of target zlib_static_example
+[ 84%] Building C object test/CMakeFiles/zlib_static_example.dir/example.c.o
+[ 86%] Linking C executable zlib_static_example
+[ 86%] Built target zlib_static_example
+Scanning dependencies of target infcover
+[ 89%] Building C object test/CMakeFiles/infcover.dir/infcover.c.o
+[ 91%] Linking C executable infcover
+[ 91%] Built target infcover
+Scanning dependencies of target static_minigzip
+[ 93%] Building C object test/CMakeFiles/static_minigzip.dir/minigzip.c.o
+[ 95%] Linking C executable static_minigzip
+[ 95%] Built target static_minigzip
+Scanning dependencies of target zlib_static_example64
+[ 97%] Building C object test/CMakeFiles/zlib_static_example64.dir/example.c.o
+[100%] Linking C executable zlib_static_example64
+[100%] Built target zlib_static_example64
+make install
+[ 34%] Built target zlibstatic
+[ 69%] Built target zlib
+[ 73%] Built target minigzip
+[ 78%] Built target zlib_example
+[ 82%] Built target zlib_example64
+[ 86%] Built target zlib_static_example
+[ 91%] Built target infcover
+[ 95%] Built target static_minigzip
+[100%] Built target zlib_static_example64
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/libz.so.1.3.2
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/libz.so.1
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/libz.so
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/cmake/zlib/ZLIB-shared.cmake
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/cmake/zlib/ZLIB-shared-debug.cmake
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/libz.a
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/cmake/zlib/ZLIB-static.cmake
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/cmake/zlib/ZLIB-static-debug.cmake
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/cmake/zlib/ZLIBConfig.cmake
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/cmake/zlib/ZLIBConfigVersion.cmake
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/include/zconf.h
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/include/zlib.h
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/man/man3/zlib.3
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/LICENSE
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/algorithm.txt
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/crc-doc.1.0.pdf
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/rfc1950.txt
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/rfc1951.txt
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/rfc1952.txt
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/share/doc/zlib/zlib/txtvsbin.txt
+-- Installing: /workspaces/libfuzz/analysis/zlib/work/lib/pkgconfig/zlib.pc
+/tmp/tmp55osyvtt.cc
+['const', 'char', '*']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['const', 'Bytef', '*']
+['unsigned', 'int']
+['int']
+['z_stream', '*']
+['Bytef', '*']
+['uInt', '*']
+['int']
+['z_stream', '*']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['int']
+['int']
+['unsigned', 'long']
+['z_stream', '*']
+['unsigned', 'long']
+['size_t']
+['z_stream', '*']
+['size_t']
+['int']
+['z_stream', '*']
+['unsigned', 'int', '*']
+['int', '*']
+['int']
+['z_stream', '*']
+['int', '*']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['int']
+['z_stream', '*']
+['gz_header', '*']
+['int']
+['z_stream', '*']
+['const', 'Bytef', '*']
+['unsigned', 'int']
+['int']
+['z_stream', '*']
+['Bytef', '*']
+['uInt', '*']
+['int']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['long']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['gz_header', '*']
+['int']
+['z_stream', '*']
+['void', '*']
+['void', '*']
+['int']
+['z_stream', '*']
+['unsigned', 'long']
+['int']
+['Bytef', '*']
+['uLongf', '*']
+['const', 'Bytef', '*']
+['unsigned', 'long']
+['int']
+['Bytef', '*']
+['z_size_t', '*']
+['const', 'Bytef', '*']
+['size_t']
+['int']
+['Bytef', '*']
+['uLongf', '*']
+['const', 'Bytef', '*']
+['unsigned', 'long']
+['int']
+['int']
+['Bytef', '*']
+['z_size_t', '*']
+['const', 'Bytef', '*']
+['size_t']
+['int']
+['unsigned', 'long']
+['unsigned', 'long']
+['size_t']
+['size_t']
+['int']
+['Bytef', '*']
+['uLongf', '*']
+['const', 'Bytef', '*']
+['unsigned', 'long']
+['int']
+['Bytef', '*']
+['z_size_t', '*']
+['const', 'Bytef', '*']
+['size_t']
+['int']
+['Bytef', '*']
+['uLongf', '*']
+['const', 'Bytef', '*']
+['uLong', '*']
+['int']
+['Bytef', '*']
+['z_size_t', '*']
+['const', 'Bytef', '*']
+['z_size_t', '*']
+['gzFile_s', '*']
+['int']
+['const', 'char', '*']
+['int']
+['gzFile_s', '*']
+['unsigned', 'int']
+['int']
+['gzFile_s', '*']
+['int']
+['int']
+['int']
+['gzFile_s', '*']
+['void', '*']
+['unsigned', 'int']
+['size_t']
+['void', '*']
+['size_t']
+['size_t']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['const', 'void', '*']
+['unsigned', 'int']
+['size_t']
+['const', 'void', '*']
+['size_t']
+['size_t']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['const', 'char', '*']
+['int']
+['gzFile_s', '*']
+['const', 'char', '*']
+['char', '*']
+['gzFile_s', '*']
+['char', '*']
+['int']
+['int']
+['gzFile_s', '*']
+['int']
+['int']
+['gzFile_s', '*']
+['int']
+['int']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['int']
+['int']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['int']
+['gzFile_s', '*']
+['const', 'char', '*']
+['gzFile_s', '*']
+['int', '*']
+['void']
+['gzFile_s', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['const', 'Bytef', '*']
+['unsigned', 'int']
+['unsigned', 'long']
+['unsigned', 'long']
+['const', 'Bytef', '*']
+['size_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['const', 'Bytef', '*']
+['unsigned', 'int']
+['unsigned', 'long']
+['unsigned', 'long']
+['const', 'Bytef', '*']
+['size_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['int']
+['z_stream', '*']
+['int']
+['const', 'char', '*']
+['int']
+['int']
+['z_stream', '*']
+['const', 'char', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['int']
+['int']
+['int']
+['const', 'char', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['const', 'char', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['unsigned', 'char', '*']
+['const', 'char', '*']
+['int']
+['int']
+['gzFile_s', '*']
+['gzFile_s', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['__off64_t']
+['gzFile_s', '*']
+['__off64_t']
+['int']
+['__off64_t']
+['gzFile_s', '*']
+['__off64_t']
+['gzFile_s', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__off64_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__off64_t']
+['unsigned', 'long']
+['__off64_t']
+['gzFile_s', '*']
+['const', 'char', '*']
+['const', 'char', '*']
+['__off_t']
+['gzFile_s', '*']
+['__off_t']
+['int']
+['__off_t']
+['gzFile_s', '*']
+['__off_t']
+['gzFile_s', '*']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__off_t']
+['unsigned', 'long']
+['unsigned', 'long']
+['unsigned', 'long']
+['__off_t']
+['unsigned', 'long']
+['__off_t']
+['const', 'char', '*']
+['int']
+['int']
+['z_stream', '*']
+['const', 'z_crc_t', '*']
+['int']
+['z_stream', '*']
+['int']
+['int']
+['z_stream', '*']
+['int']
+['unsigned', 'long']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['z_stream', '*']
+['int']
+['gzFile_s', '*']
+['const', 'char', '*']
+['__builtin_va_list']
+[INFO] Loading library...
+[INFO] Done
+[INFO] I analyze all the functions
+
+*********CallGraph Stats***************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+TotalNode           180
+TotalEdge           473
+TotalCycle          0
+MaxNodeInCycle      0
+NodeInCycle         0
+CalRetPairInCycle   0
+#######################################################
+
+*********General Stats***************
+################ (program : libz.a.bc)###############
+BBWith2Succ         1395
+BBWith3Succ         8
+TotalPointers       31378
+TotalObjects        1095
+TotalFieldObjects   71
+MaxStructSize       70
+TotalSVFStmts       31156
+TotalPTASVFStmts    13015
+FIObjNum            5
+FSObjNum            1089
+AddrsNum            1742
+LoadsNum            9644
+StoresNum           4616
+CopysNum            1997
+GepsNum             5253
+CallsNum            625
+ReturnsNum          157
+FunctionObjs        180
+GlobalObjs          5
+HeapObjs            26
+StackObjs           882
+VarStructObj        10
+VarArrayObj         8
+ConstStructObj      3
+ConstArrayObj       2
+NonPtrObj           726
+ConstantObj         0
+IndCallSites        46
+TotalCallSite       509
+-------------------------------------------------------
+LLVMIRTime          0.107
+SymbolTableTime     0.026
+SVFIRTime           0.19
+#######################################################
+
+*********Constraint Graph Stats***************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+AvgIn/OutCopyEdge   0.793166
+AvgIn/OutLoadEdge   0.380208
+AvgIn/OutAddrEdge   0.0935922
+AvgIn/OutEdge       1.33215
+LocalVarInRecur     0
+NumOfCGNode         33258
+TotalValidNode      12672
+TotalValidObjNode   1108
+NumOfCGEdge         15695
+NumOfAddrs          1186
+NumOfCopys          4951
+NumOfGeps           5100
+NumOfLoads          4818
+NumOfStores         826
+MaxInCopyEdge       39
+MaxOutCopyEdge      318
+MaxInLoadEdge       2
+MaxOutLoadEdge      318
+MaxInStoreEdge      9
+MaxOutStoreEdge     45
+AvgIn/OutStoreEdge  0
+MaxInAddrEdge       1
+MaxOutAddrEdge      94
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.24
+UpdateCGTime        0
+AvgTopLvlPtsSize    0.201747
+SCCDetectTime       0
+SCCMergeTime        0
+LoadStoreTime       0
+CopyGepTime         0
+AvgPtsSetSize       0.0713158
+CollapseTime        0
+Pointers            31305
+TotalPointers       31378
+TotalObjects        1166
+IndCallSites        46
+MemObjects          1095
+DummyFieldPtrs      73
+FieldObjs           71
+SolveIterations     7
+IndEdgeSolved       8
+NullPointer         2998
+PointsToConstPtr    90
+PointsToBlkPtr      0
+AddrProcessed       1187
+CopyProcessed       447
+GepProcessed        714
+LoadProcessed       4063
+StoreProcessed      582
+NumOfSFRs           0
+NumOfFieldExpand    0
+MaxPtsSetSize       5
+NumOfSCCDetect      7
+TotalCycleNum       26
+TotalPWCCycleNum    10
+NodesInCycles       335
+MaxNodesInSCC       55
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libz.a.bc)###############
+UniquePointsToSets       1262
+TotalUnions              2924
+PropertyUnions           2859
+UniqueUnions             14
+LookupUnions             25
+PreemptiveUnions         26
+TotalComplements         233384
+PropertyComplements      233137
+UniqueComplements        85
+LookupComplements        77
+PreemptiveComplements    85
+TotalIntersections       5183
+PropertyIntersections    5013
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  170
+#######################################################
+
+*********Memory SSA Statistics***************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.01592
+SSARenameTime       0.004
+InsertPHITime       0.001
+GenMUCHITime        0.014
+GenRegionTime       0.036
+TotalMSSATime       0.057
+BBHasMSSAPhi        183
+MSSAPhi             350
+StoreHasChi         806
+LoadHasMu           3876
+CSHasMu             55
+CSHasChi            24
+FunHasRetMu         140
+FunHasEntryChi      119
+StoreChiNode        514
+LoadMuNode          3214
+CSMuNode            73
+CSChiNode           27
+FunRetMu            361
+FunEntryChi         361
+MemRegions          377
+MaxRegSize          5
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.007
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.005
+TLNodeTime          0
+ATNodeTime          0.002
+OptTime             0
+AvgWeight           1.01299
+TotalNode           14712
+FormalIn            361
+FormalOut           361
+FormalParam         214
+FormalRet           10
+ActualIn            73
+ActualOut           27
+ActualParam         676
+ActualRet           18
+TotalEdge           18590
+DirectEdge          13509
+IndirectEdge        5081
+IndirectEdgeLabels  5147
+IndCallEdge         74
+IndRetEdge          23
+DirectCallEdge      391
+DirectRetEdge       3
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         39
+MaxOutDegree        319
+AvgIndInDeg         1
+AvgIndOutDeg        3
+MaxIndInDeg         19
+MaxIndOutDeg        151
+MSSAPhi             350
+PHI                 26
+Addr                1187
+Copy                231
+Gep                 5253
+Load                4945
+Store               979
+#######################################################
+
+*********CallGraph Stats***************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+TotalNode           180
+TotalEdge           470
+TotalCycle          0
+MaxNodeInCycle      0
+NodeInCycle         0
+CalRetPairInCycle   0
+FIObjNum            5
+FSObjNum            1090
+#######################################################
+
+*********General Stats***************
+################ (program : libz.a.bc)###############
+BBWith2Succ         1395
+BBWith3Succ         8
+TotalPointers       31378
+TotalObjects        1095
+TotalFieldObjects   71
+MaxStructSize       70
+TotalSVFStmts       31156
+TotalPTASVFStmts    13015
+FIObjNum            5
+FSObjNum            1089
+AddrsNum            1742
+LoadsNum            9644
+StoresNum           4616
+CopysNum            1997
+GepsNum             5253
+CallsNum            625
+ReturnsNum          157
+FunctionObjs        180
+GlobalObjs          5
+HeapObjs            26
+StackObjs           882
+VarStructObj        10
+VarArrayObj         8
+ConstStructObj      3
+ConstArrayObj       2
+NonPtrObj           726
+ConstantObj         0
+IndCallSites        46
+TotalCallSite       509
+-------------------------------------------------------
+LLVMIRTime          0.107
+SymbolTableTime     0.026
+SVFIRTime           0.19
+#######################################################
+
+****Flow-Sensitive Pointer Analysis Statistics****
+
+************************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.476
+SolveTime           0.045
+SCCTime             0
+ProcessTime         0
+PropagationTime     0
+DirectPropaTime     0
+IndirectPropaTime   0
+Strong/WeakUpdTime  0
+AddrTime            0
+CopyTime            0
+LoadTime            0
+UpdateCGTime        0
+PhiTime             0
+AvgPtsSize          0.197164
+AvgTopLvlPtsSize    0.197164
+AvgAddrTakenVarPts  0.135861
+AvgINPtsSize        0
+AvgOUTPtsSize       0
+AverageSCCSize      14.1463
+StoreTime           0
+GepTime             0
+Pointers            31305
+LocalVarInRecur     0
+TotalPointers       31378
+TotalObjects        1166
+StoresNum           979
+CopysNum            231
+MemObjects          1095
+DummyFieldPtrs      73
+FieldObjs           71
+SolveIterations     2
+IndEdgeSolved       5
+NullPointer         2998
+PointsToConstPtr    0
+PointsToBlkPtr      90
+StrongUpdates       598
+FI_SNodesHaveIN     0
+FI_SNodesHaveOUT    0
+FO_SNodesHaveIN     0
+FO_SNodesHaveOUT    0
+AI_SNodesHaveIN     0
+AI_SNodesHaveOUT    0
+AO_SNodesHaveIN     0
+AO_SNodesHaveOUT    0
+LD_SNodesHaveIN     0
+SNodesHaveIN        0
+LD_SNodesHaveOUT    0
+SNodesHaveOUT       0
+ST_SNodesHaveIN     0
+ST_SNodesHaveOUT    0
+PHI_SNodesHaveIN    0
+PHI_SNodesHaveOUT   0
+PotentialVarHaveIN  0
+VarHaveIN           0
+PotentialVarHaveOUT 0
+VarHaveOUT          0
+VarHaveEmptyIN      0
+VarHaveEmptyOUT     0
+VarHaveIN_FI        0
+VarHaveOUT_FI       0
+VarHaveIN_FO        0
+VarHaveOUT_FO       0
+VarHaveIN_AI        0
+VarHaveOUT_AI       0
+VarHaveIN_AO        0
+VarHaveOUT_AO       0
+VarHaveIN_LD        0
+VarHaveOUT_LD       0
+VarHaveIN_ST        0
+VarHaveOUT_ST       0
+VarHaveIN_PHI       0
+VarHaveOUT_PHI      0
+MaxPtsSize          5
+MaxTopLvlPtsSize    5
+MaxINPtsSize        0
+MaxOUTPtsSize       0
+NumOfAddrTakenVar   633
+MaxAddrTakenVarPts  5
+ProcessedAddr       2374
+ProcessedCopy       462
+ProcessedGep        10508
+ProcessedLoad       9892
+ProcessedStore      1962
+ProcessedPhi        52
+ProcessedAParam     0
+ProcessedFRet       0
+ProcessedMSSANode   2344
+NumOfNodesInSCC     580
+MaxSCCSize          76
+NumOfSCC            41
+#######################################################
+
+****Persistent Points-To Cache Statistics: flow-sensitive analysis bitvector****
+################ (program : libz.a.bc)###############
+UniquePointsToSets       1175
+TotalUnions              15175
+PropertyUnions           15064
+UniqueUnions             13
+LookupUnions             76
+PreemptiveUnions         22
+TotalComplements         0
+PropertyComplements      0
+UniqueComplements        0
+LookupComplements        0
+PreemptiveComplements    0
+TotalIntersections       0
+PropertyIntersections    0
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  0
+#######################################################
+[INFO] Analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.04588
+SSARenameTime       0.01
+InsertPHITime       0.003
+GenMUCHITime        0.038
+GenRegionTime       0.053
+TotalMSSATime       0.085
+BBHasMSSAPhi        449
+MSSAPhi             1512
+StoreHasChi         3162
+LoadHasMu           7663
+CSHasMu             62
+CSHasChi            28
+FunHasRetMu         140
+FunHasEntryChi      136
+StoreChiNode        1968
+LoadMuNode          5414
+CSMuNode            86
+CSChiNode           33
+FunRetMu            914
+FunEntryChi         914
+MemRegions          959
+MaxRegSize          22
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libz.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.02
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.014
+TLNodeTime          0
+ATNodeTime          0.006
+OptTime             0
+AvgWeight           1.04904
+TotalNode           35749
+FormalIn            914
+FormalOut           914
+FormalParam         346
+FormalRet           131
+ActualIn            86
+ActualOut           33
+ActualParam         1183
+ActualRet           255
+TotalEdge           47367
+DirectEdge          35296
+IndirectEdge        12071
+IndirectEdgeLabels  12663
+IndCallEdge         136
+IndRetEdge          64
+DirectCallEdge      646
+DirectRetEdge       165
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         39
+MaxOutDegree        2278
+AvgIndInDeg         1
+AvgIndOutDeg        2
+MaxIndInDeg         21
+MaxIndOutDeg        151
+MSSAPhi             1512
+PHI                 269
+Addr                1742
+Copy                1997
+Gep                 5253
+Load                9644
+Store               4616
+#######################################################
+[INFO] running analysis...
+[INFO 1/95] processing params for: adler32
+[INFO 1/95] processing return for: adler32
+[INFO 2/95] processing params for: adler32_combine
+[INFO 2/95] processing return for: adler32_combine
+[INFO 3/95] processing params for: adler32_combine64
+[INFO 3/95] processing return for: adler32_combine64
+[INFO 4/95] processing params for: adler32_z
+[INFO 4/95] processing return for: adler32_z
+[INFO 5/95] processing params for: compress
+[INFO 5/95] processing return for: compress
+[INFO 6/95] processing params for: compress2
+[INFO 6/95] processing return for: compress2
+[INFO 7/95] processing params for: compress2_z
+[INFO 7/95] processing return for: compress2_z
+[INFO 8/95] processing params for: compressBound
+[INFO 8/95] processing return for: compressBound
+[INFO 9/95] processing params for: compressBound_z
+[INFO 9/95] processing return for: compressBound_z
+[INFO 10/95] processing params for: compress_z
+[INFO 10/95] processing return for: compress_z
+[INFO 11/95] processing params for: crc32
+[INFO 11/95] processing return for: crc32
+[INFO 12/95] processing params for: crc32_combine
+[INFO 12/95] processing return for: crc32_combine
+[INFO 13/95] processing params for: crc32_combine64
+[INFO 13/95] processing return for: crc32_combine64
+[INFO 14/95] processing params for: crc32_combine_gen
+[INFO 14/95] processing return for: crc32_combine_gen
+[INFO 15/95] processing params for: crc32_combine_gen64
+[INFO 15/95] processing return for: crc32_combine_gen64
+[INFO 16/95] processing params for: crc32_combine_op
+[INFO 16/95] processing return for: crc32_combine_op
+[INFO 17/95] processing params for: crc32_z
+[INFO 17/95] processing return for: crc32_z
+[INFO 18/95] processing params for: deflate
+[INFO 18/95] processing return for: deflate
+[INFO 19/95] processing params for: deflateBound
+[INFO 19/95] processing return for: deflateBound
+[INFO 20/95] processing params for: deflateBound_z
+[INFO 20/95] processing return for: deflateBound_z
+[INFO 21/95] processing params for: deflateCopy
+[INFO 21/95] processing return for: deflateCopy
+[INFO 22/95] processing params for: deflateEnd
+[INFO 22/95] processing return for: deflateEnd
+[INFO 23/95] processing params for: deflateGetDictionary
+[INFO 23/95] processing return for: deflateGetDictionary
+[INFO 24/95] processing params for: deflateInit2_
+[INFO 24/95] processing return for: deflateInit2_
+[INFO 25/95] processing params for: deflateInit_
+[INFO 25/95] processing return for: deflateInit_
+[INFO 26/95] processing params for: deflateParams
+[INFO 26/95] processing return for: deflateParams
+[INFO 27/95] processing params for: deflatePending
+[INFO 27/95] processing return for: deflatePending
+[INFO 28/95] processing params for: deflatePrime
+[INFO 28/95] processing return for: deflatePrime
+[INFO 29/95] processing params for: deflateReset
+[INFO 29/95] processing return for: deflateReset
+[INFO 30/95] processing params for: deflateResetKeep
+[INFO 30/95] processing return for: deflateResetKeep
+[INFO 31/95] processing params for: deflateSetDictionary
+[INFO 31/95] processing return for: deflateSetDictionary
+[INFO 32/95] processing params for: deflateSetHeader
+[INFO 32/95] processing return for: deflateSetHeader
+[INFO 33/95] processing params for: deflateTune
+[INFO 33/95] processing return for: deflateTune
+[INFO 34/95] processing params for: deflateUsed
+[INFO 34/95] processing return for: deflateUsed
+[INFO 35/95] processing return for: get_crc_table
+[INFO 36/95] processing params for: gzbuffer
+[INFO 36/95] processing return for: gzbuffer
+[INFO 37/95] processing params for: gzclearerr
+[INFO 38/95] processing params for: gzclose
+[INFO 38/95] processing return for: gzclose
+[INFO 39/95] processing params for: gzclose_r
+[INFO 39/95] processing return for: gzclose_r
+[INFO 40/95] processing params for: gzclose_w
+[INFO 40/95] processing return for: gzclose_w
+[INFO 41/95] processing params for: gzdirect
+[INFO 41/95] processing return for: gzdirect
+[INFO 42/95] processing params for: gzdopen
+[INFO 42/95] processing return for: gzdopen
+[INFO 43/95] processing params for: gzeof
+[INFO 43/95] processing return for: gzeof
+[INFO 44/95] processing params for: gzerror
+[INFO 44/95] processing return for: gzerror
+[INFO 45/95] processing params for: gzflush
+[INFO 45/95] processing return for: gzflush
+[INFO 46/95] processing params for: gzfread
+[INFO 46/95] processing return for: gzfread
+[INFO 47/95] processing params for: gzfwrite
+[INFO 47/95] processing return for: gzfwrite
+[INFO 48/95] processing params for: gzgetc
+[INFO 48/95] processing return for: gzgetc
+[INFO 49/95] processing params for: gzgetc_
+[INFO 49/95] processing return for: gzgetc_
+[INFO 50/95] processing params for: gzgets
+[INFO 50/95] processing return for: gzgets
+[INFO 51/95] processing params for: gzoffset
+[INFO 51/95] processing return for: gzoffset
+[INFO 52/95] processing params for: gzoffset64
+[INFO 52/95] processing return for: gzoffset64
+[INFO 53/95] processing params for: gzopen
+[INFO 53/95] processing return for: gzopen
+[INFO 54/95] processing params for: gzopen64
+[INFO 54/95] processing return for: gzopen64
+[INFO 55/95] processing params for: gzprintf
+[INFO 55/95] processing return for: gzprintf
+[INFO 56/95] processing params for: gzputc
+[INFO 56/95] processing return for: gzputc
+[INFO 57/95] processing params for: gzputs
+[INFO 57/95] processing return for: gzputs
+[INFO 58/95] processing params for: gzread
+[INFO 58/95] processing return for: gzread
+[INFO 59/95] processing params for: gzrewind
+[INFO 59/95] processing return for: gzrewind
+[INFO 60/95] processing params for: gzseek
+[INFO 60/95] processing return for: gzseek
+[INFO 61/95] processing params for: gzseek64
+[INFO 61/95] processing return for: gzseek64
+[INFO 62/95] processing params for: gzsetparams
+[INFO 62/95] processing return for: gzsetparams
+[INFO 63/95] processing params for: gztell
+[INFO 63/95] processing return for: gztell
+[INFO 64/95] processing params for: gztell64
+[INFO 64/95] processing return for: gztell64
+[INFO 65/95] processing params for: gzungetc
+[INFO 65/95] processing return for: gzungetc
+[INFO 66/95] processing params for: gzvprintf
+[INFO 66/95] processing return for: gzvprintf
+[INFO 67/95] processing params for: gzwrite
+[INFO 67/95] processing return for: gzwrite
+[INFO 68/95] processing params for: inflate
+[INFO 68/95] processing return for: inflate
+[INFO 69/95] processing params for: inflateBack
+[INFO 69/95] processing return for: inflateBack
+[INFO 70/95] processing params for: inflateBackEnd
+[INFO 70/95] processing return for: inflateBackEnd
+[INFO 71/95] processing params for: inflateBackInit_
+[INFO 71/95] processing return for: inflateBackInit_
+[INFO 72/95] processing params for: inflateCodesUsed
+[INFO 72/95] processing return for: inflateCodesUsed
+[INFO 73/95] processing params for: inflateCopy
+[INFO 73/95] processing return for: inflateCopy
+[INFO 74/95] processing params for: inflateEnd
+[INFO 74/95] processing return for: inflateEnd
+[INFO 75/95] processing params for: inflateGetDictionary
+[INFO 75/95] processing return for: inflateGetDictionary
+[INFO 76/95] processing params for: inflateGetHeader
+[INFO 76/95] processing return for: inflateGetHeader
+[INFO 77/95] processing params for: inflateInit2_
+[INFO 77/95] processing return for: inflateInit2_
+[INFO 78/95] processing params for: inflateInit_
+[INFO 78/95] processing return for: inflateInit_
+[INFO 79/95] processing params for: inflateMark
+[INFO 79/95] processing return for: inflateMark
+[INFO 80/95] processing params for: inflatePrime
+[INFO 80/95] processing return for: inflatePrime
+[INFO 81/95] processing params for: inflateReset
+[INFO 81/95] processing return for: inflateReset
+[INFO 82/95] processing params for: inflateReset2
+[INFO 82/95] processing return for: inflateReset2
+[INFO 83/95] processing params for: inflateResetKeep
+[INFO 83/95] processing return for: inflateResetKeep
+[INFO 84/95] processing params for: inflateSetDictionary
+[INFO 84/95] processing return for: inflateSetDictionary
+[INFO 85/95] processing params for: inflateSync
+[INFO 85/95] processing return for: inflateSync
+[INFO 86/95] processing params for: inflateSyncPoint
+[INFO 86/95] processing return for: inflateSyncPoint
+[INFO 87/95] processing params for: inflateUndermine
+[INFO 87/95] processing return for: inflateUndermine
+[INFO 88/95] processing params for: inflateValidate
+[INFO 88/95] processing return for: inflateValidate
+[INFO 89/95] processing params for: uncompress
+[INFO 89/95] processing return for: uncompress
+[INFO 90/95] processing params for: uncompress2
+[INFO 90/95] processing return for: uncompress2
+[INFO 91/95] processing params for: uncompress2_z
+[INFO 91/95] processing return for: uncompress2_z
+[INFO 92/95] processing params for: uncompress_z
+[INFO 92/95] processing return for: uncompress_z
+[INFO 93/95] processing params for: zError
+[INFO 93/95] processing return for: zError
+[INFO 94/95] processing return for: zlibCompileFlags
+[INFO 95/95] processing return for: zlibVersion
+[INFO] Summary adler32:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary adler32_combine:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary adler32_combine64:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary adler32_z:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary compress:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary compress2:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary compress2_z:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary compressBound:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary compressBound_z:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary compress_z:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary crc32:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary crc32_combine:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary crc32_combine64:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary crc32_combine_gen:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary crc32_combine_gen64:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary crc32_combine_op:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary crc32_z:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary deflate:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary deflateBound:
+param_0: 20 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary deflateBound_z:
+param_0: 20 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary deflateCopy:
+param_0: 5 access types
+param_1: 20 access types
+return: 0 access types
+[INFO] Summary deflateEnd:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary deflateGetDictionary:
+param_0: 12 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary deflateInit2_:
+param_0: 12 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+param_5: 1 access types
+param_6: 1 access types
+param_7: 1 access types
+return: 0 access types
+[INFO] Summary deflateInit_:
+param_0: 12 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary deflateParams:
+param_0: 29 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary deflatePending:
+param_0: 10 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary deflatePrime:
+param_0: 17 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary deflateReset:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary deflateResetKeep:
+param_0: 36 access types
+return: 0 access types
+[INFO] Summary deflateSetDictionary:
+param_0: 46 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary deflateSetHeader:
+param_0: 10 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary deflateTune:
+param_0: 12 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary deflateUsed:
+param_0: 9 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary get_crc_table:
+return: 0 access types
+[INFO] Summary gzbuffer:
+param_0: 2 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary gzclearerr:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary gzclose:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gzclose_r:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary gzclose_w:
+param_0: 10 access types
+return: 0 access types
+[INFO] Summary gzdirect:
+param_0: 8 access types
+return: 0 access types
+[INFO] Summary gzdopen:
+param_0: 1 access types
+param_1: 1 access types
+return: 3 access types
+[INFO] Summary gzeof:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gzerror:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary gzflush:
+param_0: 10 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary gzfread:
+param_0: 2 access types
+param_1: 2 access types
+param_2: 2 access types
+param_3: 10 access types
+return: 0 access types
+[INFO] Summary gzfwrite:
+param_0: 2 access types
+param_1: 2 access types
+param_2: 2 access types
+param_3: 10 access types
+return: 0 access types
+[INFO] Summary gzgetc:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gzgetc_:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gzgets:
+param_0: 10 access types
+param_1: 3 access types
+param_2: 3 access types
+return: 3 access types
+[INFO] Summary gzoffset:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gzoffset64:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gzopen:
+param_0: 2 access types
+param_1: 1 access types
+return: 3 access types
+[INFO] Summary gzopen64:
+param_0: 2 access types
+param_1: 1 access types
+return: 3 access types
+[INFO] Summary gzprintf:
+param_0: 10 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary gzputc:
+param_0: 10 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary gzputs:
+param_0: 10 access types
+param_1: 2 access types
+return: 0 access types
+[INFO] Summary gzread:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary gzrewind:
+param_0: 6 access types
+return: 0 access types
+[INFO] Summary gzseek:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary gzseek64:
+param_0: 10 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary gzsetparams:
+param_0: 10 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary gztell:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary gztell64:
+param_0: 3 access types
+return: 0 access types
+[INFO] Summary gzungetc:
+param_0: 1 access types
+param_1: 10 access types
+return: 0 access types
+[INFO] Summary gzvprintf:
+param_0: 10 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary gzwrite:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary inflate:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary inflateBack:
+param_0: 13 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary inflateBackEnd:
+param_0: 6 access types
+return: 0 access types
+[INFO] Summary inflateBackInit_:
+param_0: 10 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+param_4: 1 access types
+return: 0 access types
+[INFO] Summary inflateCodesUsed:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary inflateCopy:
+param_0: 3 access types
+param_1: 6 access types
+return: 0 access types
+[INFO] Summary inflateEnd:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary inflateGetDictionary:
+param_0: 5 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary inflateGetHeader:
+param_0: 6 access types
+param_1: 3 access types
+return: 0 access types
+[INFO] Summary inflateInit2_:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary inflateInit_:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary inflateMark:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary inflatePrime:
+param_0: 6 access types
+param_1: 1 access types
+param_2: 1 access types
+return: 0 access types
+[INFO] Summary inflateReset:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary inflateReset2:
+param_0: 7 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary inflateResetKeep:
+param_0: 11 access types
+return: 0 access types
+[INFO] Summary inflateSetDictionary:
+param_0: 7 access types
+param_1: 2 access types
+param_2: 2 access types
+return: 0 access types
+[INFO] Summary inflateSync:
+param_0: 14 access types
+return: 0 access types
+[INFO] Summary inflateSyncPoint:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary inflateUndermine:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary inflateValidate:
+param_0: 6 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary uncompress:
+param_0: 1 access types
+param_1: 1 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary uncompress2:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 1 access types
+param_3: 2 access types
+return: 0 access types
+[INFO] Summary uncompress2_z:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 1 access types
+param_3: 2 access types
+return: 0 access types
+[INFO] Summary uncompress_z:
+param_0: 1 access types
+param_1: 2 access types
+param_2: 1 access types
+param_3: 1 access types
+return: 0 access types
+[INFO] Summary zError:
+param_0: 1 access types
+return: 0 access types
+[INFO] Summary zlibCompileFlags:
+return: 0 access types
+[INFO] Summary zlibVersion:
+return: 0 access types
+
+Profiler Stats:
+Key                                      Total(ms)     Count   Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                        133.63         1    133.63
+2. PAG Builder                              191.03         1    191.03
+3. Points-to Analysis                       501.01         1    501.01
+4. Full SVFG Build                          181.32         1    181.32
+Function 1: extract_parameter_metadata      263.20       221      1.19
+Function 1: extract_parameter_metadata: adler32      4.78         3      1.59
+Function 1: extract_parameter_metadata: adler32_combine      0.51         3      0.17
+Function 1: extract_parameter_metadata: adler32_combine64      0.41         3      0.14
+Function 1: extract_parameter_metadata: adler32_z      4.71         3      1.57
+Function 1: extract_parameter_metadata: compress      0.22         4      0.06
+Function 1: extract_parameter_metadata: compress2      0.26         5      0.05
+Function 1: extract_parameter_metadata: compress2_z      0.68         5      0.14
+Function 1: extract_parameter_metadata: compressBound      0.14         1      0.14
+Function 1: extract_parameter_metadata: compressBound_z      0.08         1      0.08
+Function 1: extract_parameter_metadata: compress_z      0.56         4      0.14
+Function 1: extract_parameter_metadata: crc32      0.15         3      0.05
+Function 1: extract_parameter_metadata: crc32_combine      0.34         3      0.11
+Function 1: extract_parameter_metadata: crc32_combine64      0.32         3      0.11
+Function 1: extract_parameter_metadata: crc32_combine_gen      0.08         1      0.08
+Function 1: extract_parameter_metadata: crc32_combine_gen64      0.08         1      0.08
+Function 1: extract_parameter_metadata: crc32_combine_op      0.24         3      0.08
+Function 1: extract_parameter_metadata: crc32_z      6.52         3      2.17
+Function 1: extract_parameter_metadata: deflate      0.11         2      0.05
+Function 1: extract_parameter_metadata: deflateBound      1.15         2      0.57
+Function 1: extract_parameter_metadata: deflateBound_z      0.88         2      0.44
+Function 1: extract_parameter_metadata: deflateCopy      0.78         2      0.39
+Function 1: extract_parameter_metadata: deflateEnd      0.06         1      0.06
+Function 1: extract_parameter_metadata: deflateGetDictionary      0.55         3      0.18
+Function 1: extract_parameter_metadata: deflateInit2_      1.11         8      0.14
+Function 1: extract_parameter_metadata: deflateInit_      0.68         4      0.17
+Function 1: extract_parameter_metadata: deflateParams      1.26         3      0.42
+Function 1: extract_parameter_metadata: deflatePending      0.47         3      0.16
+Function 1: extract_parameter_metadata: deflatePrime      0.95         3      0.32
+Function 1: extract_parameter_metadata: deflateReset      0.06         1      0.06
+Function 1: extract_parameter_metadata: deflateResetKeep      0.73         1      0.73
+Function 1: extract_parameter_metadata: deflateSetDictionary     28.45         3      9.48
+Function 1: extract_parameter_metadata: deflateSetHeader      0.37         2      0.18
+Function 1: extract_parameter_metadata: deflateTune      0.46         5      0.09
+Function 1: extract_parameter_metadata: deflateUsed      0.27         2      0.14
+Function 1: extract_parameter_metadata: gzbuffer      0.18         2      0.09
+Function 1: extract_parameter_metadata: gzclearerr      0.28         1      0.28
+Function 1: extract_parameter_metadata: gzclose      0.06         1      0.06
+Function 1: extract_parameter_metadata: gzclose_r      0.28         1      0.28
+Function 1: extract_parameter_metadata: gzclose_w      3.91         1      3.91
+Function 1: extract_parameter_metadata: gzdirect      2.00         1      2.00
+Function 1: extract_parameter_metadata: gzdopen      0.27         2      0.13
+Function 1: extract_parameter_metadata: gzeof      0.06         1      0.06
+Function 1: extract_parameter_metadata: gzerror      0.10         2      0.05
+Function 1: extract_parameter_metadata: gzflush      3.86         2      1.93
+Function 1: extract_parameter_metadata: gzfread      6.76         4      1.69
+Function 1: extract_parameter_metadata: gzfwrite      6.78         4      1.69
+Function 1: extract_parameter_metadata: gzgetc      0.08         1      0.08
+Function 1: extract_parameter_metadata: gzgetc_      0.06         1      0.06
+Function 1: extract_parameter_metadata: gzgets      5.76         3      1.92
+Function 1: extract_parameter_metadata: gzoffset      0.21         1      0.21
+Function 1: extract_parameter_metadata: gzoffset64      0.11         1      0.11
+Function 1: extract_parameter_metadata: gzopen      0.22         2      0.11
+Function 1: extract_parameter_metadata: gzopen64      0.20         2      0.10
+Function 1: extract_parameter_metadata: gzprintf      6.21         2      3.10
+Function 1: extract_parameter_metadata: gzputc      8.88         2      4.44
+Function 1: extract_parameter_metadata: gzputs      6.36         2      3.18
+Function 1: extract_parameter_metadata: gzread      0.15         3      0.05
+Function 1: extract_parameter_metadata: gzrewind      0.42         1      0.42
+Function 1: extract_parameter_metadata: gzseek      0.15         3      0.05
+Function 1: extract_parameter_metadata: gzseek64      1.58         3      0.53
+Function 1: extract_parameter_metadata: gzsetparams      7.86         3      2.62
+Function 1: extract_parameter_metadata: gztell      0.06         1      0.06
+Function 1: extract_parameter_metadata: gztell64      0.15         1      0.15
+Function 1: extract_parameter_metadata: gzungetc      6.25         2      3.12
+Function 1: extract_parameter_metadata: gzvprintf      6.12         3      2.04
+Function 1: extract_parameter_metadata: gzwrite      0.15         3      0.05
+Function 1: extract_parameter_metadata: inflate      0.10         2      0.05
+Function 1: extract_parameter_metadata: inflateBack    117.64         5     23.53
+Function 1: extract_parameter_metadata: inflateBackEnd      0.13         1      0.13
+Function 1: extract_parameter_metadata: inflateBackInit_      0.42         5      0.08
+Function 1: extract_parameter_metadata: inflateCodesUsed      0.23         1      0.23
+Function 1: extract_parameter_metadata: inflateCopy      0.65         2      0.32
+Function 1: extract_parameter_metadata: inflateEnd      0.06         1      0.06
+Function 1: extract_parameter_metadata: inflateGetDictionary      0.43         3      0.14
+Function 1: extract_parameter_metadata: inflateGetHeader      0.23         2      0.11
+Function 1: extract_parameter_metadata: inflateInit2_      0.22         4      0.05
+Function 1: extract_parameter_metadata: inflateInit_      0.16         3      0.05
+Function 1: extract_parameter_metadata: inflateMark      0.24         1      0.24
+Function 1: extract_parameter_metadata: inflatePrime      0.38         3      0.13
+Function 1: extract_parameter_metadata: inflateReset      0.06         1      0.06
+Function 1: extract_parameter_metadata: inflateReset2      0.38         2      0.19
+Function 1: extract_parameter_metadata: inflateResetKeep      0.33         1      0.33
+Function 1: extract_parameter_metadata: inflateSetDictionary      4.78         3      1.59
+Function 1: extract_parameter_metadata: inflateSync      0.74         1      0.74
+Function 1: extract_parameter_metadata: inflateSyncPoint      0.18         1      0.18
+Function 1: extract_parameter_metadata: inflateUndermine      0.21         2      0.10
+Function 1: extract_parameter_metadata: inflateValidate      0.26         2      0.13
+Function 1: extract_parameter_metadata: uncompress      0.21         4      0.05
+Function 1: extract_parameter_metadata: uncompress2      0.29         4      0.07
+Function 1: extract_parameter_metadata: uncompress2_z      0.42         4      0.11
+Function 1: extract_parameter_metadata: uncompress_z      0.33         4      0.08
+Function 1: extract_parameter_metadata: zError      0.09         1      0.09
+Function 2: extractLenDependencyParameter     58.09        41      1.42
+Function 2: extractLenDependencyParameter: adler32     16.33         1     16.33
+Function 2: extractLenDependencyParameter: adler32_z     16.36         1     16.36
+Function 2: extractLenDependencyParameter: crc32_z      1.27         1      1.27
+Function 2: extractLenDependencyParameter: deflateGetDictionary      0.11         1      0.11
+Function 2: extractLenDependencyParameter: deflateInit2_      0.11         1      0.11
+Function 2: extractLenDependencyParameter: deflateInit_      0.09         1      0.09
+Function 2: extractLenDependencyParameter: deflateSetDictionary      9.64         1      9.64
+Function 2: extractLenDependencyParameter: gzclearerr      0.09         1      0.09
+Function 2: extractLenDependencyParameter: gzclose_r      0.07         1      0.07
+Function 2: extractLenDependencyParameter: gzclose_w      0.13         1      0.13
+Function 2: extractLenDependencyParameter: gzdirect      0.11         1      0.11
+Function 2: extractLenDependencyParameter: gzdopen      0.18         1      0.18
+Function 2: extractLenDependencyParameter: gzflush      0.14         1      0.14
+Function 2: extractLenDependencyParameter: gzfread      0.74         4      0.19
+Function 2: extractLenDependencyParameter: gzfwrite      0.58         4      0.15
+Function 2: extractLenDependencyParameter: gzgets      0.46         3      0.15
+Function 2: extractLenDependencyParameter: gzopen      0.24         2      0.12
+Function 2: extractLenDependencyParameter: gzopen64      0.21         2      0.11
+Function 2: extractLenDependencyParameter: gzprintf      0.13         1      0.13
+Function 2: extractLenDependencyParameter: gzputc      0.25         1      0.25
+Function 2: extractLenDependencyParameter: gzputs      0.39         2      0.19
+Function 2: extractLenDependencyParameter: gzrewind      0.07         1      0.07
+Function 2: extractLenDependencyParameter: gzseek64      0.08         1      0.08
+Function 2: extractLenDependencyParameter: gzsetparams      0.28         1      0.28
+Function 2: extractLenDependencyParameter: gzungetc      0.16         1      0.16
+Function 2: extractLenDependencyParameter: gzvprintf      0.13         1      0.13
+Function 2: extractLenDependencyParameter: inflateBackInit_      0.12         1      0.12
+Function 2: extractLenDependencyParameter: inflateGetDictionary      0.11         1      0.11
+Function 2: extractLenDependencyParameter: inflateSetDictionary      9.48         2      4.74
+Function 3: my_extract_dependency_among_parameters     46.48       221      0.21
+Function 3: my_extract_dependency_among_parameters: adler32      0.33         3      0.11
+Function 3: my_extract_dependency_among_parameters: adler32_combine      0.19         3      0.06
+Function 3: my_extract_dependency_among_parameters: adler32_combine64      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameters: adler32_z      0.28         3      0.09
+Function 3: my_extract_dependency_among_parameters: compress      0.24         4      0.06
+Function 3: my_extract_dependency_among_parameters: compress2      0.29         5      0.06
+Function 3: my_extract_dependency_among_parameters: compress2_z      0.76         5      0.15
+Function 3: my_extract_dependency_among_parameters: compressBound      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: compressBound_z      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: compress_z      0.51         4      0.13
+Function 3: my_extract_dependency_among_parameters: crc32      0.20         3      0.07
+Function 3: my_extract_dependency_among_parameters: crc32_combine      0.19         3      0.06
+Function 3: my_extract_dependency_among_parameters: crc32_combine64      0.23         3      0.08
+Function 3: my_extract_dependency_among_parameters: crc32_combine_gen      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: crc32_combine_gen64      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: crc32_combine_op      0.20         3      0.07
+Function 3: my_extract_dependency_among_parameters: crc32_z      0.30         3      0.10
+Function 3: my_extract_dependency_among_parameters: deflate      0.13         2      0.07
+Function 3: my_extract_dependency_among_parameters: deflateBound      0.14         2      0.07
+Function 3: my_extract_dependency_among_parameters: deflateBound_z      0.14         2      0.07
+Function 3: my_extract_dependency_among_parameters: deflateCopy      0.15         2      0.08
+Function 3: my_extract_dependency_among_parameters: deflateEnd      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: deflateGetDictionary      0.21         3      0.07
+Function 3: my_extract_dependency_among_parameters: deflateInit2_      0.93         8      0.12
+Function 3: my_extract_dependency_among_parameters: deflateInit_      0.31         4      0.08
+Function 3: my_extract_dependency_among_parameters: deflateParams      0.47         3      0.16
+Function 3: my_extract_dependency_among_parameters: deflatePending      0.28         3      0.09
+Function 3: my_extract_dependency_among_parameters: deflatePrime      0.64         3      0.21
+Function 3: my_extract_dependency_among_parameters: deflateReset      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: deflateResetKeep      0.14         1      0.14
+Function 3: my_extract_dependency_among_parameters: deflateSetDictionary      2.05         3      0.68
+Function 3: my_extract_dependency_among_parameters: deflateSetHeader      0.15         2      0.07
+Function 3: my_extract_dependency_among_parameters: deflateTune      0.35         5      0.07
+Function 3: my_extract_dependency_among_parameters: deflateUsed      0.13         2      0.07
+Function 3: my_extract_dependency_among_parameters: gzbuffer      0.14         2      0.07
+Function 3: my_extract_dependency_among_parameters: gzclearerr      0.11         1      0.11
+Function 3: my_extract_dependency_among_parameters: gzclose      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: gzclose_r      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: gzclose_w      0.18         1      0.18
+Function 3: my_extract_dependency_among_parameters: gzdirect      0.14         1      0.14
+Function 3: my_extract_dependency_among_parameters: gzdopen      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameters: gzeof      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: gzerror      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameters: gzflush      0.53         2      0.26
+Function 3: my_extract_dependency_among_parameters: gzfread      1.30         4      0.33
+Function 3: my_extract_dependency_among_parameters: gzfwrite      1.14         4      0.28
+Function 3: my_extract_dependency_among_parameters: gzgetc      0.09         1      0.09
+Function 3: my_extract_dependency_among_parameters: gzgetc_      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: gzgets      0.91         3      0.30
+Function 3: my_extract_dependency_among_parameters: gzoffset      0.08         1      0.08
+Function 3: my_extract_dependency_among_parameters: gzoffset64      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: gzopen      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameters: gzopen64      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameters: gzprintf      0.60         2      0.30
+Function 3: my_extract_dependency_among_parameters: gzputc      0.86         2      0.43
+Function 3: my_extract_dependency_among_parameters: gzputs      0.71         2      0.35
+Function 3: my_extract_dependency_among_parameters: gzread      0.18         3      0.06
+Function 3: my_extract_dependency_among_parameters: gzrewind      0.09         1      0.09
+Function 3: my_extract_dependency_among_parameters: gzseek      0.18         3      0.06
+Function 3: my_extract_dependency_among_parameters: gzseek64      0.36         3      0.12
+Function 3: my_extract_dependency_among_parameters: gzsetparams      1.07         3      0.36
+Function 3: my_extract_dependency_among_parameters: gztell      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: gztell64      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: gzungetc      0.68         2      0.34
+Function 3: my_extract_dependency_among_parameters: gzvprintf      0.91         3      0.30
+Function 3: my_extract_dependency_among_parameters: gzwrite      0.18         3      0.06
+Function 3: my_extract_dependency_among_parameters: inflate      0.12         2      0.06
+Function 3: my_extract_dependency_among_parameters: inflateBack     20.09         5      4.02
+Function 3: my_extract_dependency_among_parameters: inflateBackEnd      0.08         1      0.08
+Function 3: my_extract_dependency_among_parameters: inflateBackInit_      0.36         5      0.07
+Function 3: my_extract_dependency_among_parameters: inflateCodesUsed      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: inflateCopy      0.15         2      0.07
+Function 3: my_extract_dependency_among_parameters: inflateEnd      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: inflateGetDictionary      0.20         3      0.07
+Function 3: my_extract_dependency_among_parameters: inflateGetHeader      0.14         2      0.07
+Function 3: my_extract_dependency_among_parameters: inflateInit2_      0.25         4      0.06
+Function 3: my_extract_dependency_among_parameters: inflateInit_      0.18         3      0.06
+Function 3: my_extract_dependency_among_parameters: inflateMark      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: inflatePrime      0.24         3      0.08
+Function 3: my_extract_dependency_among_parameters: inflateReset      0.06         1      0.06
+Function 3: my_extract_dependency_among_parameters: inflateReset2      0.15         2      0.08
+Function 3: my_extract_dependency_among_parameters: inflateResetKeep      0.10         1      0.10
+Function 3: my_extract_dependency_among_parameters: inflateSetDictionary      0.40         3      0.13
+Function 3: my_extract_dependency_among_parameters: inflateSync      0.14         1      0.14
+Function 3: my_extract_dependency_among_parameters: inflateSyncPoint      0.07         1      0.07
+Function 3: my_extract_dependency_among_parameters: inflateUndermine      0.13         2      0.06
+Function 3: my_extract_dependency_among_parameters: inflateValidate      0.14         2      0.07
+Function 3: my_extract_dependency_among_parameters: uncompress      0.24         4      0.06
+Function 3: my_extract_dependency_among_parameters: uncompress2      0.35         4      0.09
+Function 3: my_extract_dependency_among_parameters: uncompress2_z      0.33         4      0.08
+Function 3: my_extract_dependency_among_parameters: uncompress_z      0.27         4      0.07
+Function 3: my_extract_dependency_among_parameters: zError      0.06         1      0.06
+Function 4: extract_return_metadata           9.62        95      0.10
+Function 4: extract_return_metadata: adler32      0.06         1      0.06
+Function 4: extract_return_metadata: adler32_combine      0.05         1      0.05
+Function 4: extract_return_metadata: adler32_combine64      0.05         1      0.05
+Function 4: extract_return_metadata: adler32_z      0.05         1      0.05
+Function 4: extract_return_metadata: compress      0.05         1      0.05
+Function 4: extract_return_metadata: compress2      0.05         1      0.05
+Function 4: extract_return_metadata: compress2_z      0.06         1      0.06
+Function 4: extract_return_metadata: compressBound      0.05         1      0.05
+Function 4: extract_return_metadata: compressBound_z      0.05         1      0.05
+Function 4: extract_return_metadata: compress_z      0.05         1      0.05
+Function 4: extract_return_metadata: crc32      0.05         1      0.05
+Function 4: extract_return_metadata: crc32_combine      0.05         1      0.05
+Function 4: extract_return_metadata: crc32_combine64      0.05         1      0.05
+Function 4: extract_return_metadata: crc32_combine_gen      0.05         1      0.05
+Function 4: extract_return_metadata: crc32_combine_gen64      0.05         1      0.05
+Function 4: extract_return_metadata: crc32_combine_op      0.05         1      0.05
+Function 4: extract_return_metadata: crc32_z      0.05         1      0.05
+Function 4: extract_return_metadata: deflate      0.05         1      0.05
+Function 4: extract_return_metadata: deflateBound      0.05         1      0.05
+Function 4: extract_return_metadata: deflateBound_z      0.05         1      0.05
+Function 4: extract_return_metadata: deflateCopy      0.05         1      0.05
+Function 4: extract_return_metadata: deflateEnd      0.05         1      0.05
+Function 4: extract_return_metadata: deflateGetDictionary      0.05         1      0.05
+Function 4: extract_return_metadata: deflateInit2_      0.05         1      0.05
+Function 4: extract_return_metadata: deflateInit_      0.05         1      0.05
+Function 4: extract_return_metadata: deflateParams      0.05         1      0.05
+Function 4: extract_return_metadata: deflatePending      0.06         1      0.06
+Function 4: extract_return_metadata: deflatePrime      0.05         1      0.05
+Function 4: extract_return_metadata: deflateReset      0.05         1      0.05
+Function 4: extract_return_metadata: deflateResetKeep      0.05         1      0.05
+Function 4: extract_return_metadata: deflateSetDictionary      0.06         1      0.06
+Function 4: extract_return_metadata: deflateSetHeader      0.05         1      0.05
+Function 4: extract_return_metadata: deflateTune      0.05         1      0.05
+Function 4: extract_return_metadata: deflateUsed      0.05         1      0.05
+Function 4: extract_return_metadata: get_crc_table      0.29         1      0.29
+Function 4: extract_return_metadata: gzbuffer      0.05         1      0.05
+Function 4: extract_return_metadata: gzclearerr      0.05         1      0.05
+Function 4: extract_return_metadata: gzclose      0.05         1      0.05
+Function 4: extract_return_metadata: gzclose_r      0.06         1      0.06
+Function 4: extract_return_metadata: gzclose_w      0.06         1      0.06
+Function 4: extract_return_metadata: gzdirect      0.05         1      0.05
+Function 4: extract_return_metadata: gzdopen      0.83         1      0.83
+Function 4: extract_return_metadata: gzeof      0.06         1      0.06
+Function 4: extract_return_metadata: gzerror      0.19         1      0.19
+Function 4: extract_return_metadata: gzflush      0.05         1      0.05
+Function 4: extract_return_metadata: gzfread      0.06         1      0.06
+Function 4: extract_return_metadata: gzfwrite      0.06         1      0.06
+Function 4: extract_return_metadata: gzgetc      0.05         1      0.05
+Function 4: extract_return_metadata: gzgetc_      0.05         1      0.05
+Function 4: extract_return_metadata: gzgets      2.08         1      2.08
+Function 4: extract_return_metadata: gzoffset      0.05         1      0.05
+Function 4: extract_return_metadata: gzoffset64      0.05         1      0.05
+Function 4: extract_return_metadata: gzopen      0.69         1      0.69
+Function 4: extract_return_metadata: gzopen64      0.49         1      0.49
+Function 4: extract_return_metadata: gzprintf      0.06         1      0.06
+Function 4: extract_return_metadata: gzputc      0.07         1      0.07
+Function 4: extract_return_metadata: gzputs      0.06         1      0.06
+Function 4: extract_return_metadata: gzread      0.05         1      0.05
+Function 4: extract_return_metadata: gzrewind      0.05         1      0.05
+Function 4: extract_return_metadata: gzseek      0.05         1      0.05
+Function 4: extract_return_metadata: gzseek64      0.07         1      0.07
+Function 4: extract_return_metadata: gzsetparams      0.05         1      0.05
+Function 4: extract_return_metadata: gztell      0.05         1      0.05
+Function 4: extract_return_metadata: gztell64      0.05         1      0.05
+Function 4: extract_return_metadata: gzungetc      0.06         1      0.06
+Function 4: extract_return_metadata: gzvprintf      0.06         1      0.06
+Function 4: extract_return_metadata: gzwrite      0.05         1      0.05
+Function 4: extract_return_metadata: inflate      0.05         1      0.05
+Function 4: extract_return_metadata: inflateBack      0.06         1      0.06
+Function 4: extract_return_metadata: inflateBackEnd      0.05         1      0.05
+Function 4: extract_return_metadata: inflateBackInit_      0.05         1      0.05
+Function 4: extract_return_metadata: inflateCodesUsed      0.05         1      0.05
+Function 4: extract_return_metadata: inflateCopy      0.05         1      0.05
+Function 4: extract_return_metadata: inflateEnd      0.05         1      0.05
+Function 4: extract_return_metadata: inflateGetDictionary      0.05         1      0.05
+Function 4: extract_return_metadata: inflateGetHeader      0.05         1      0.05
+Function 4: extract_return_metadata: inflateInit2_      0.05         1      0.05
+Function 4: extract_return_metadata: inflateInit_      0.05         1      0.05
+Function 4: extract_return_metadata: inflateMark      0.05         1      0.05
+Function 4: extract_return_metadata: inflatePrime      0.05         1      0.05
+Function 4: extract_return_metadata: inflateReset      0.05         1      0.05
+Function 4: extract_return_metadata: inflateReset2      0.05         1      0.05
+Function 4: extract_return_metadata: inflateResetKeep      0.05         1      0.05
+Function 4: extract_return_metadata: inflateSetDictionary      0.06         1      0.06
+Function 4: extract_return_metadata: inflateSync      0.05         1      0.05
+Function 4: extract_return_metadata: inflateSyncPoint      0.05         1      0.05
+Function 4: extract_return_metadata: inflateUndermine      0.06         1      0.06
+Function 4: extract_return_metadata: inflateValidate      0.05         1      0.05
+Function 4: extract_return_metadata: uncompress      0.05         1      0.05
+Function 4: extract_return_metadata: uncompress2      0.05         1      0.05
+Function 4: extract_return_metadata: uncompress2_z      0.05         1      0.05
+Function 4: extract_return_metadata: uncompress_z      0.05         1      0.05
+Function 4: extract_return_metadata: zError      0.26         1      0.26
+Function 4: extract_return_metadata: zlibCompileFlags      0.06         1      0.06
+Function 4: extract_return_metadata: zlibVersion      0.15         1      0.15
+Process Function: adler32                    21.69         1     21.69
+Process Function: adler32_combine             0.85         1      0.85
+Process Function: adler32_combine64           0.75         1      0.75
+Process Function: adler32_z                  21.60         1     21.60
+Process Function: compress                    0.57         1      0.57
+Process Function: compress2                   0.66         1      0.66
+Process Function: compress2_z                 1.60         1      1.60
+Process Function: compressBound               0.33         1      0.33
+Process Function: compressBound_z             0.24         1      0.24
+Process Function: compress_z                  1.21         1      1.21
+Process Function: crc32                       0.46         1      0.46
+Process Function: crc32_combine               0.66         1      0.66
+Process Function: crc32_combine64             0.69         1      0.69
+Process Function: crc32_combine_gen           0.26         1      0.26
+Process Function: crc32_combine_gen64         0.26         1      0.26
+Process Function: crc32_combine_op            0.56         1      0.56
+Process Function: crc32_z                     8.34         1      8.34
+Process Function: deflate                     0.35         1      0.35
+Process Function: deflateBound                1.48         1      1.48
+Process Function: deflateBound_z              1.20         1      1.20
+Process Function: deflateCopy                 1.15         1      1.15
+Process Function: deflateEnd                  0.22         1      0.22
+Process Function: deflateGetDictionary        1.02         1      1.02
+Process Function: deflateInit2_               2.34         1      2.34
+Process Function: deflateInit_                1.23         1      1.23
+Process Function: deflateParams               1.93         1      1.93
+Process Function: deflatePending              0.92         1      0.92
+Process Function: deflatePrime                1.78         1      1.78
+Process Function: deflateReset                0.22         1      0.22
+Process Function: deflateResetKeep            1.05         1      1.05
+Process Function: deflateSetDictionary       40.92         1     40.92
+Process Function: deflateSetHeader            0.66         1      0.66
+Process Function: deflateTune                 0.95         1      0.95
+Process Function: deflateUsed                 0.53         1      0.53
+Process Function: get_crc_table               0.34         1      0.34
+Process Function: gzbuffer                    0.44         1      0.44
+Process Function: gzclearerr                  0.61         1      0.61
+Process Function: gzclose                     0.22         1      0.22
+Process Function: gzclose_r                   0.54         1      0.54
+Process Function: gzclose_w                   4.46         1      4.46
+Process Function: gzdirect                    2.46         1      2.46
+Process Function: gzdopen                     1.49         1      1.49
+Process Function: gzeof                       0.25         1      0.25
+Process Function: gzerror                     0.46         1      0.46
+Process Function: gzflush                     4.73         1      4.73
+Process Function: gzfread                     9.18         1      9.18
+Process Function: gzfwrite                    8.85         1      8.85
+Process Function: gzgetc                      0.30         1      0.30
+Process Function: gzgetc_                     0.23         1      0.23
+Process Function: gzgets                      9.46         1      9.46
+Process Function: gzoffset                    0.42         1      0.42
+Process Function: gzoffset64                  0.27         1      0.27
+Process Function: gzopen                      1.35         1      1.35
+Process Function: gzopen64                    1.10         1      1.10
+Process Function: gzprintf                    7.20         1      7.20
+Process Function: gzputc                     10.37         1     10.37
+Process Function: gzputs                      7.72         1      7.72
+Process Function: gzread                      0.45         1      0.45
+Process Function: gzrewind                    0.71         1      0.71
+Process Function: gzseek                      0.43         1      0.43
+Process Function: gzseek64                    2.23         1      2.23
+Process Function: gzsetparams                 9.51         1      9.51
+Process Function: gztell                      0.23         1      0.23
+Process Function: gztell64                    0.32         1      0.32
+Process Function: gzungetc                    7.38         1      7.38
+Process Function: gzvprintf                   7.41         1      7.41
+Process Function: gzwrite                     0.45         1      0.45
+Process Function: inflate                     0.32         1      0.32
+Process Function: inflateBack               139.31         1    139.31
+Process Function: inflateBackEnd              0.34         1      0.34
+Process Function: inflateBackInit_            1.03         1      1.03
+Process Function: inflateCodesUsed            0.42         1      0.42
+Process Function: inflateCopy                 0.94         1      0.94
+Process Function: inflateEnd                  0.25         1      0.25
+Process Function: inflateGetDictionary        0.88         1      0.88
+Process Function: inflateGetHeader            0.49         1      0.49
+Process Function: inflateInit2_               0.58         1      0.58
+Process Function: inflateInit_                0.45         1      0.45
+Process Function: inflateMark                 0.43         1      0.43
+Process Function: inflatePrime                0.75         1      0.75
+Process Function: inflateReset                0.22         1      0.22
+Process Function: inflateReset2               0.67         1      0.67
+Process Function: inflateResetKeep            0.56         1      0.56
+Process Function: inflateSetDictionary       14.94         1     14.94
+Process Function: inflateSync                 1.07         1      1.07
+Process Function: inflateSyncPoint            0.37         1      0.37
+Process Function: inflateUndermine            0.47         1      0.47
+Process Function: inflateValidate             0.53         1      0.53
+Process Function: uncompress                  0.56         1      0.56
+Process Function: uncompress2                 0.75         1      0.75
+Process Function: uncompress2_z               0.88         1      0.88
+Process Function: uncompress_z                0.73         1      0.73
+Process Function: zError                      0.47         1      0.47
+Process Function: zlibCompileFlags            0.11         1      0.11
+Process Function: zlibVersion                 0.20         1      0.20
+Process Parameters: adler32                  21.53         1     21.53
+Process Parameters: adler32_combine           0.76         1      0.76
+Process Parameters: adler32_combine64         0.66         1      0.66
+Process Parameters: adler32_z                21.44         1     21.44
+Process Parameters: compress                  0.49         1      0.49
+Process Parameters: compress2                 0.58         1      0.58
+Process Parameters: compress2_z               1.50         1      1.50
+Process Parameters: compressBound             0.25         1      0.25
+Process Parameters: compressBound_z           0.17         1      0.17
+Process Parameters: compress_z                1.12         1      1.12
+Process Parameters: crc32                     0.38         1      0.38
+Process Parameters: crc32_combine             0.57         1      0.57
+Process Parameters: crc32_combine64           0.60         1      0.60
+Process Parameters: crc32_combine_gen         0.17         1      0.17
+Process Parameters: crc32_combine_gen64       0.18         1      0.18
+Process Parameters: crc32_combine_op          0.47         1      0.47
+Process Parameters: crc32_z                   8.19         1      8.19
+Process Parameters: deflate                   0.27         1      0.27
+Process Parameters: deflateBound              1.36         1      1.36
+Process Parameters: deflateBound_z            1.09         1      1.09
+Process Parameters: deflateCopy               0.99         1      0.99
+Process Parameters: deflateEnd                0.15         1      0.15
+Process Parameters: deflateGetDictionary      0.92         1      0.92
+Process Parameters: deflateInit2_             2.23         1      2.23
+Process Parameters: deflateInit_              1.12         1      1.12
+Process Parameters: deflateParams             1.80         1      1.80
+Process Parameters: deflatePending            0.81         1      0.81
+Process Parameters: deflatePrime              1.66         1      1.66
+Process Parameters: deflateReset              0.15         1      0.15
+Process Parameters: deflateResetKeep          0.94         1      0.94
+Process Parameters: deflateSetDictionary     40.48         1     40.48
+Process Parameters: deflateSetHeader          0.56         1      0.56
+Process Parameters: deflateTune               0.86         1      0.86
+Process Parameters: deflateUsed               0.45         1      0.45
+Process Parameters: get_crc_table             0.02         1      0.02
+Process Parameters: gzbuffer                  0.36         1      0.36
+Process Parameters: gzclearerr                0.52         1      0.52
+Process Parameters: gzclose                   0.15         1      0.15
+Process Parameters: gzclose_r                 0.45         1      0.45
+Process Parameters: gzclose_w                 4.32         1      4.32
+Process Parameters: gzdirect                  2.33         1      2.33
+Process Parameters: gzdopen                   0.62         1      0.62
+Process Parameters: gzeof                     0.16         1      0.16
+Process Parameters: gzerror                   0.25         1      0.25
+Process Parameters: gzflush                   4.60         1      4.60
+Process Parameters: gzfread                   8.98         1      8.98
+Process Parameters: gzfwrite                  8.65         1      8.65
+Process Parameters: gzgetc                    0.21         1      0.21
+Process Parameters: gzgetc_                   0.15         1      0.15
+Process Parameters: gzgets                    7.24         1      7.24
+Process Parameters: gzoffset                  0.33         1      0.33
+Process Parameters: gzoffset64                0.20         1      0.20
+Process Parameters: gzopen                    0.62         1      0.62
+Process Parameters: gzopen64                  0.57         1      0.57
+Process Parameters: gzprintf                  7.03         1      7.03
+Process Parameters: gzputc                   10.16         1     10.16
+Process Parameters: gzputs                    7.56         1      7.56
+Process Parameters: gzread                    0.38         1      0.38
+Process Parameters: gzrewind                  0.62         1      0.62
+Process Parameters: gzseek                    0.36         1      0.36
+Process Parameters: gzseek64                  2.09         1      2.09
+Process Parameters: gzsetparams               9.35         1      9.35
+Process Parameters: gztell                    0.15         1      0.15
+Process Parameters: gztell64                  0.25         1      0.25
+Process Parameters: gzungetc                  7.22         1      7.22
+Process Parameters: gzvprintf                 7.25         1      7.25
+Process Parameters: gzwrite                   0.37         1      0.37
+Process Parameters: inflate                   0.25         1      0.25
+Process Parameters: inflateBack             138.68         1    138.68
+Process Parameters: inflateBackEnd            0.25         1      0.25
+Process Parameters: inflateBackInit_          0.94         1      0.94
+Process Parameters: inflateCodesUsed          0.34         1      0.34
+Process Parameters: inflateCopy               0.85         1      0.85
+Process Parameters: inflateEnd                0.16         1      0.16
+Process Parameters: inflateGetDictionary      0.78         1      0.78
+Process Parameters: inflateGetHeader          0.40         1      0.40
+Process Parameters: inflateInit2_             0.50         1      0.50
+Process Parameters: inflateInit_              0.37         1      0.37
+Process Parameters: inflateMark               0.35         1      0.35
+Process Parameters: inflatePrime              0.66         1      0.66
+Process Parameters: inflateReset              0.14         1      0.14
+Process Parameters: inflateReset2             0.58         1      0.58
+Process Parameters: inflateResetKeep          0.47         1      0.47
+Process Parameters: inflateSetDictionary     14.76         1     14.76
+Process Parameters: inflateSync               0.95         1      0.95
+Process Parameters: inflateSyncPoint          0.29         1      0.29
+Process Parameters: inflateUndermine          0.38         1      0.38
+Process Parameters: inflateValidate           0.44         1      0.44
+Process Parameters: uncompress                0.48         1      0.48
+Process Parameters: uncompress2               0.67         1      0.67
+Process Parameters: uncompress2_z             0.80         1      0.80
+Process Parameters: uncompress_z              0.64         1      0.64
+Process Parameters: zError                    0.18         1      0.18
+Process Parameters: zlibCompileFlags          0.02         1      0.02
+Process Parameters: zlibVersion               0.02         1      0.02
+Total Condition Extraction (all 4 functions total)    389.18         1    389.18
+
+
+Memory Stats (MB):
+Key                                         AvgDelta    MaxDelta     MaxPeak   Count
+1. LLVM Module Build                            28.5        28.5        37.8       1
+2. PAG Builder                                  56.1        56.1        94.1       1
+3. Points-to Analysis                           74.6        74.6       168.8       1
+4. Full SVFG Build                              32.7        32.7       201.4       1
+Function 1: extract_parameter_metadata           0.0         4.2       209.1     221
+Function 1: extract_parameter_metadata: adler32         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: adler32_combine         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: adler32_combine64         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: adler32_z         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: compress         0.0         0.0       201.4       4
+Function 1: extract_parameter_metadata: compress2         0.0         0.0       201.4       5
+Function 1: extract_parameter_metadata: compress2_z         0.0         0.0       201.4       5
+Function 1: extract_parameter_metadata: compressBound         0.0         0.0       201.4       1
+Function 1: extract_parameter_metadata: compressBound_z         0.0         0.0       201.4       1
+Function 1: extract_parameter_metadata: compress_z         0.0         0.0       201.4       4
+Function 1: extract_parameter_metadata: crc32         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: crc32_combine         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: crc32_combine64         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: crc32_combine_gen         0.0         0.0       201.4       1
+Function 1: extract_parameter_metadata: crc32_combine_gen64         0.0         0.0       201.4       1
+Function 1: extract_parameter_metadata: crc32_combine_op         0.0         0.0       201.4       3
+Function 1: extract_parameter_metadata: crc32_z         0.1         0.3       201.7       3
+Function 1: extract_parameter_metadata: deflate         0.0         0.0       201.7       2
+Function 1: extract_parameter_metadata: deflateBound         0.0         0.0       201.7       2
+Function 1: extract_parameter_metadata: deflateBound_z         0.0         0.0       201.7       2
+Function 1: extract_parameter_metadata: deflateCopy         0.0         0.0       201.7       2
+Function 1: extract_parameter_metadata: deflateEnd         0.0         0.0       201.7       1
+Function 1: extract_parameter_metadata: deflateGetDictionary         0.0         0.0       201.7       3
+Function 1: extract_parameter_metadata: deflateInit2_         0.0         0.0       201.7       8
+Function 1: extract_parameter_metadata: deflateInit_         0.0         0.0       201.7       4
+Function 1: extract_parameter_metadata: deflateParams         0.0         0.0       201.7       3
+Function 1: extract_parameter_metadata: deflatePending         0.0         0.0       201.7       3
+Function 1: extract_parameter_metadata: deflatePrime         0.0         0.0       201.7       3
+Function 1: extract_parameter_metadata: deflateReset         0.0         0.0       201.7       1
+Function 1: extract_parameter_metadata: deflateResetKeep         0.0         0.0       201.7       1
+Function 1: extract_parameter_metadata: deflateSetDictionary         1.0         3.1       204.8       3
+Function 1: extract_parameter_metadata: deflateSetHeader         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: deflateTune         0.0         0.0       204.8       5
+Function 1: extract_parameter_metadata: deflateUsed         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzbuffer         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzclearerr         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzclose         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzclose_r         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzclose_w         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzdirect         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzdopen         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzeof         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzerror         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzflush         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzfread         0.0         0.0       204.8       4
+Function 1: extract_parameter_metadata: gzfwrite         0.0         0.0       204.8       4
+Function 1: extract_parameter_metadata: gzgetc         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzgetc_         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzgets         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: gzoffset         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzoffset64         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzopen         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzopen64         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzprintf         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzputc         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzputs         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzread         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: gzrewind         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzseek         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: gzseek64         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: gzsetparams         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: gztell         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gztell64         0.0         0.0       204.8       1
+Function 1: extract_parameter_metadata: gzungetc         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: gzvprintf         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: gzwrite         0.0         0.0       204.8       3
+Function 1: extract_parameter_metadata: inflate         0.0         0.0       204.8       2
+Function 1: extract_parameter_metadata: inflateBack         0.8         4.2       209.1       5
+Function 1: extract_parameter_metadata: inflateBackEnd         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateBackInit_         0.0         0.0       209.1       5
+Function 1: extract_parameter_metadata: inflateCodesUsed         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateCopy         0.0         0.0       209.1       2
+Function 1: extract_parameter_metadata: inflateEnd         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateGetDictionary         0.0         0.0       209.1       3
+Function 1: extract_parameter_metadata: inflateGetHeader         0.0         0.0       209.1       2
+Function 1: extract_parameter_metadata: inflateInit2_         0.0         0.0       209.1       4
+Function 1: extract_parameter_metadata: inflateInit_         0.0         0.0       209.1       3
+Function 1: extract_parameter_metadata: inflateMark         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflatePrime         0.0         0.0       209.1       3
+Function 1: extract_parameter_metadata: inflateReset         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateReset2         0.0         0.0       209.1       2
+Function 1: extract_parameter_metadata: inflateResetKeep         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateSetDictionary         0.0         0.0       209.1       3
+Function 1: extract_parameter_metadata: inflateSync         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateSyncPoint         0.0         0.0       209.1       1
+Function 1: extract_parameter_metadata: inflateUndermine         0.0         0.0       209.1       2
+Function 1: extract_parameter_metadata: inflateValidate         0.0         0.0       209.1       2
+Function 1: extract_parameter_metadata: uncompress         0.0         0.0       209.1       4
+Function 1: extract_parameter_metadata: uncompress2         0.0         0.0       209.1       4
+Function 1: extract_parameter_metadata: uncompress2_z         0.0         0.0       209.1       4
+Function 1: extract_parameter_metadata: uncompress_z         0.0         0.0       209.1       4
+Function 1: extract_parameter_metadata: zError         0.0         0.0       209.1       1
+Function 2: extractLenDependencyParameter         0.0         0.0       209.1      41
+Function 2: extractLenDependencyParameter: adler32         0.0         0.0       201.4       1
+Function 2: extractLenDependencyParameter: adler32_z         0.0         0.0       201.4       1
+Function 2: extractLenDependencyParameter: crc32_z         0.0         0.0       201.7       1
+Function 2: extractLenDependencyParameter: deflateGetDictionary         0.0         0.0       201.7       1
+Function 2: extractLenDependencyParameter: deflateInit2_         0.0         0.0       201.7       1
+Function 2: extractLenDependencyParameter: deflateInit_         0.0         0.0       201.7       1
+Function 2: extractLenDependencyParameter: deflateSetDictionary         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzclearerr         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzclose_r         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzclose_w         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzdirect         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzdopen         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzflush         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzfread         0.0         0.0       204.8       4
+Function 2: extractLenDependencyParameter: gzfwrite         0.0         0.0       204.8       4
+Function 2: extractLenDependencyParameter: gzgets         0.0         0.0       204.8       3
+Function 2: extractLenDependencyParameter: gzopen         0.0         0.0       204.8       2
+Function 2: extractLenDependencyParameter: gzopen64         0.0         0.0       204.8       2
+Function 2: extractLenDependencyParameter: gzprintf         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzputc         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzputs         0.0         0.0       204.8       2
+Function 2: extractLenDependencyParameter: gzrewind         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzseek64         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzsetparams         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzungetc         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: gzvprintf         0.0         0.0       204.8       1
+Function 2: extractLenDependencyParameter: inflateBackInit_         0.0         0.0       209.1       1
+Function 2: extractLenDependencyParameter: inflateGetDictionary         0.0         0.0       209.1       1
+Function 2: extractLenDependencyParameter: inflateSetDictionary         0.0         0.0       209.1       2
+Function 3: my_extract_dependency_among_parameters         0.0         0.0       209.1     221
+Function 3: my_extract_dependency_among_parameters: adler32         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: adler32_combine         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: adler32_combine64         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: adler32_z         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: compress         0.0         0.0       201.4       4
+Function 3: my_extract_dependency_among_parameters: compress2         0.0         0.0       201.4       5
+Function 3: my_extract_dependency_among_parameters: compress2_z         0.0         0.0       201.4       5
+Function 3: my_extract_dependency_among_parameters: compressBound         0.0         0.0       201.4       1
+Function 3: my_extract_dependency_among_parameters: compressBound_z         0.0         0.0       201.4       1
+Function 3: my_extract_dependency_among_parameters: compress_z         0.0         0.0       201.4       4
+Function 3: my_extract_dependency_among_parameters: crc32         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: crc32_combine         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: crc32_combine64         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: crc32_combine_gen         0.0         0.0       201.4       1
+Function 3: my_extract_dependency_among_parameters: crc32_combine_gen64         0.0         0.0       201.4       1
+Function 3: my_extract_dependency_among_parameters: crc32_combine_op         0.0         0.0       201.4       3
+Function 3: my_extract_dependency_among_parameters: crc32_z         0.0         0.0       201.7       3
+Function 3: my_extract_dependency_among_parameters: deflate         0.0         0.0       201.7       2
+Function 3: my_extract_dependency_among_parameters: deflateBound         0.0         0.0       201.7       2
+Function 3: my_extract_dependency_among_parameters: deflateBound_z         0.0         0.0       201.7       2
+Function 3: my_extract_dependency_among_parameters: deflateCopy         0.0         0.0       201.7       2
+Function 3: my_extract_dependency_among_parameters: deflateEnd         0.0         0.0       201.7       1
+Function 3: my_extract_dependency_among_parameters: deflateGetDictionary         0.0         0.0       201.7       3
+Function 3: my_extract_dependency_among_parameters: deflateInit2_         0.0         0.0       201.7       8
+Function 3: my_extract_dependency_among_parameters: deflateInit_         0.0         0.0       201.7       4
+Function 3: my_extract_dependency_among_parameters: deflateParams         0.0         0.0       201.7       3
+Function 3: my_extract_dependency_among_parameters: deflatePending         0.0         0.0       201.7       3
+Function 3: my_extract_dependency_among_parameters: deflatePrime         0.0         0.0       201.7       3
+Function 3: my_extract_dependency_among_parameters: deflateReset         0.0         0.0       201.7       1
+Function 3: my_extract_dependency_among_parameters: deflateResetKeep         0.0         0.0       201.7       1
+Function 3: my_extract_dependency_among_parameters: deflateSetDictionary         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: deflateSetHeader         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: deflateTune         0.0         0.0       204.8       5
+Function 3: my_extract_dependency_among_parameters: deflateUsed         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzbuffer         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzclearerr         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzclose         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzclose_r         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzclose_w         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzdirect         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzdopen         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzeof         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzerror         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzflush         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzfread         0.0         0.0       204.8       4
+Function 3: my_extract_dependency_among_parameters: gzfwrite         0.0         0.0       204.8       4
+Function 3: my_extract_dependency_among_parameters: gzgetc         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzgetc_         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzgets         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: gzoffset         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzoffset64         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzopen         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzopen64         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzprintf         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzputc         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzputs         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzread         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: gzrewind         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzseek         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: gzseek64         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: gzsetparams         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: gztell         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gztell64         0.0         0.0       204.8       1
+Function 3: my_extract_dependency_among_parameters: gzungetc         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: gzvprintf         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: gzwrite         0.0         0.0       204.8       3
+Function 3: my_extract_dependency_among_parameters: inflate         0.0         0.0       204.8       2
+Function 3: my_extract_dependency_among_parameters: inflateBack         0.0         0.0       209.1       5
+Function 3: my_extract_dependency_among_parameters: inflateBackEnd         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateBackInit_         0.0         0.0       209.1       5
+Function 3: my_extract_dependency_among_parameters: inflateCodesUsed         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateCopy         0.0         0.0       209.1       2
+Function 3: my_extract_dependency_among_parameters: inflateEnd         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateGetDictionary         0.0         0.0       209.1       3
+Function 3: my_extract_dependency_among_parameters: inflateGetHeader         0.0         0.0       209.1       2
+Function 3: my_extract_dependency_among_parameters: inflateInit2_         0.0         0.0       209.1       4
+Function 3: my_extract_dependency_among_parameters: inflateInit_         0.0         0.0       209.1       3
+Function 3: my_extract_dependency_among_parameters: inflateMark         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflatePrime         0.0         0.0       209.1       3
+Function 3: my_extract_dependency_among_parameters: inflateReset         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateReset2         0.0         0.0       209.1       2
+Function 3: my_extract_dependency_among_parameters: inflateResetKeep         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateSetDictionary         0.0         0.0       209.1       3
+Function 3: my_extract_dependency_among_parameters: inflateSync         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateSyncPoint         0.0         0.0       209.1       1
+Function 3: my_extract_dependency_among_parameters: inflateUndermine         0.0         0.0       209.1       2
+Function 3: my_extract_dependency_among_parameters: inflateValidate         0.0         0.0       209.1       2
+Function 3: my_extract_dependency_among_parameters: uncompress         0.0         0.0       209.1       4
+Function 3: my_extract_dependency_among_parameters: uncompress2         0.0         0.0       209.1       4
+Function 3: my_extract_dependency_among_parameters: uncompress2_z         0.0         0.0       209.1       4
+Function 3: my_extract_dependency_among_parameters: uncompress_z         0.0         0.0       209.1       4
+Function 3: my_extract_dependency_among_parameters: zError         0.0         0.0       209.1       1
+Function 4: extract_return_metadata              0.0         0.0       209.1      95
+Function 4: extract_return_metadata: adler32         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: adler32_combine         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: adler32_combine64         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: adler32_z         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: compress         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: compress2         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: compress2_z         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: compressBound         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: compressBound_z         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: compress_z         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32_combine         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32_combine64         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32_combine_gen         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32_combine_gen64         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32_combine_op         0.0         0.0       201.4       1
+Function 4: extract_return_metadata: crc32_z         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflate         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateBound         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateBound_z         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateCopy         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateEnd         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateGetDictionary         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateInit2_         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateInit_         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateParams         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflatePending         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflatePrime         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateReset         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateResetKeep         0.0         0.0       201.7       1
+Function 4: extract_return_metadata: deflateSetDictionary         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: deflateSetHeader         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: deflateTune         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: deflateUsed         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: get_crc_table         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzbuffer         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzclearerr         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzclose         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzclose_r         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzclose_w         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzdirect         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzdopen         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzeof         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzerror         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzflush         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzfread         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzfwrite         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzgetc         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzgetc_         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzgets         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzoffset         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzoffset64         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzopen         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzopen64         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzprintf         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzputc         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzputs         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzread         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzrewind         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzseek         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzseek64         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzsetparams         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gztell         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gztell64         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzungetc         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzvprintf         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: gzwrite         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: inflate         0.0         0.0       204.8       1
+Function 4: extract_return_metadata: inflateBack         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateBackEnd         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateBackInit_         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateCodesUsed         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateCopy         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateEnd         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateGetDictionary         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateGetHeader         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateInit2_         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateInit_         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateMark         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflatePrime         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateReset         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateReset2         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateResetKeep         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateSetDictionary         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateSync         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateSyncPoint         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateUndermine         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: inflateValidate         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: uncompress         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: uncompress2         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: uncompress2_z         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: uncompress_z         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: zError         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: zlibCompileFlags         0.0         0.0       209.1       1
+Function 4: extract_return_metadata: zlibVersion         0.0         0.0       209.1       1
+Process Function: adler32                        0.0         0.0       201.4       1
+Process Function: adler32_combine                0.0         0.0       201.4       1
+Process Function: adler32_combine64              0.0         0.0       201.4       1
+Process Function: adler32_z                      0.0         0.0       201.4       1
+Process Function: compress                       0.0         0.0       201.4       1
+Process Function: compress2                      0.0         0.0       201.4       1
+Process Function: compress2_z                    0.0         0.0       201.4       1
+Process Function: compressBound                  0.0         0.0       201.4       1
+Process Function: compressBound_z                0.0         0.0       201.4       1
+Process Function: compress_z                     0.0         0.0       201.4       1
+Process Function: crc32                          0.0         0.0       201.4       1
+Process Function: crc32_combine                  0.0         0.0       201.4       1
+Process Function: crc32_combine64                0.0         0.0       201.4       1
+Process Function: crc32_combine_gen              0.0         0.0       201.4       1
+Process Function: crc32_combine_gen64            0.0         0.0       201.4       1
+Process Function: crc32_combine_op               0.0         0.0       201.4       1
+Process Function: crc32_z                        0.3         0.3       201.7       1
+Process Function: deflate                        0.0         0.0       201.7       1
+Process Function: deflateBound                   0.0         0.0       201.7       1
+Process Function: deflateBound_z                 0.0         0.0       201.7       1
+Process Function: deflateCopy                    0.0         0.0       201.7       1
+Process Function: deflateEnd                     0.0         0.0       201.7       1
+Process Function: deflateGetDictionary           0.0         0.0       201.7       1
+Process Function: deflateInit2_                  0.0         0.0       201.7       1
+Process Function: deflateInit_                   0.0         0.0       201.7       1
+Process Function: deflateParams                  0.0         0.0       201.7       1
+Process Function: deflatePending                 0.0         0.0       201.7       1
+Process Function: deflatePrime                   0.0         0.0       201.7       1
+Process Function: deflateReset                   0.0         0.0       201.7       1
+Process Function: deflateResetKeep               0.0         0.0       201.7       1
+Process Function: deflateSetDictionary           3.1         3.1       204.8       1
+Process Function: deflateSetHeader               0.0         0.0       204.8       1
+Process Function: deflateTune                    0.0         0.0       204.8       1
+Process Function: deflateUsed                    0.0         0.0       204.8       1
+Process Function: get_crc_table                  0.0         0.0       204.8       1
+Process Function: gzbuffer                       0.0         0.0       204.8       1
+Process Function: gzclearerr                     0.0         0.0       204.8       1
+Process Function: gzclose                        0.0         0.0       204.8       1
+Process Function: gzclose_r                      0.0         0.0       204.8       1
+Process Function: gzclose_w                      0.0         0.0       204.8       1
+Process Function: gzdirect                       0.0         0.0       204.8       1
+Process Function: gzdopen                        0.0         0.0       204.8       1
+Process Function: gzeof                          0.0         0.0       204.8       1
+Process Function: gzerror                        0.0         0.0       204.8       1
+Process Function: gzflush                        0.0         0.0       204.8       1
+Process Function: gzfread                        0.0         0.0       204.8       1
+Process Function: gzfwrite                       0.0         0.0       204.8       1
+Process Function: gzgetc                         0.0         0.0       204.8       1
+Process Function: gzgetc_                        0.0         0.0       204.8       1
+Process Function: gzgets                         0.0         0.0       204.8       1
+Process Function: gzoffset                       0.0         0.0       204.8       1
+Process Function: gzoffset64                     0.0         0.0       204.8       1
+Process Function: gzopen                         0.0         0.0       204.8       1
+Process Function: gzopen64                       0.0         0.0       204.8       1
+Process Function: gzprintf                       0.0         0.0       204.8       1
+Process Function: gzputc                         0.0         0.0       204.8       1
+Process Function: gzputs                         0.0         0.0       204.8       1
+Process Function: gzread                         0.0         0.0       204.8       1
+Process Function: gzrewind                       0.0         0.0       204.8       1
+Process Function: gzseek                         0.0         0.0       204.8       1
+Process Function: gzseek64                       0.0         0.0       204.8       1
+Process Function: gzsetparams                    0.0         0.0       204.8       1
+Process Function: gztell                         0.0         0.0       204.8       1
+Process Function: gztell64                       0.0         0.0       204.8       1
+Process Function: gzungetc                       0.0         0.0       204.8       1
+Process Function: gzvprintf                      0.0         0.0       204.8       1
+Process Function: gzwrite                        0.0         0.0       204.8       1
+Process Function: inflate                        0.0         0.0       204.8       1
+Process Function: inflateBack                    4.2         4.2       209.1       1
+Process Function: inflateBackEnd                 0.0         0.0       209.1       1
+Process Function: inflateBackInit_               0.0         0.0       209.1       1
+Process Function: inflateCodesUsed               0.0         0.0       209.1       1
+Process Function: inflateCopy                    0.0         0.0       209.1       1
+Process Function: inflateEnd                     0.0         0.0       209.1       1
+Process Function: inflateGetDictionary           0.0         0.0       209.1       1
+Process Function: inflateGetHeader               0.0         0.0       209.1       1
+Process Function: inflateInit2_                  0.0         0.0       209.1       1
+Process Function: inflateInit_                   0.0         0.0       209.1       1
+Process Function: inflateMark                    0.0         0.0       209.1       1
+Process Function: inflatePrime                   0.0         0.0       209.1       1
+Process Function: inflateReset                   0.0         0.0       209.1       1
+Process Function: inflateReset2                  0.0         0.0       209.1       1
+Process Function: inflateResetKeep               0.0         0.0       209.1       1
+Process Function: inflateSetDictionary           0.0         0.0       209.1       1
+Process Function: inflateSync                    0.0         0.0       209.1       1
+Process Function: inflateSyncPoint               0.0         0.0       209.1       1
+Process Function: inflateUndermine               0.0         0.0       209.1       1
+Process Function: inflateValidate                0.0         0.0       209.1       1
+Process Function: uncompress                     0.0         0.0       209.1       1
+Process Function: uncompress2                    0.0         0.0       209.1       1
+Process Function: uncompress2_z                  0.0         0.0       209.1       1
+Process Function: uncompress_z                   0.0         0.0       209.1       1
+Process Function: zError                         0.0         0.0       209.1       1
+Process Function: zlibCompileFlags               0.0         0.0       209.1       1
+Process Function: zlibVersion                    0.0         0.0       209.1       1
+Process Parameters: adler32                      0.0         0.0       201.4       1
+Process Parameters: adler32_combine              0.0         0.0       201.4       1
+Process Parameters: adler32_combine64            0.0         0.0       201.4       1
+Process Parameters: adler32_z                    0.0         0.0       201.4       1
+Process Parameters: compress                     0.0         0.0       201.4       1
+Process Parameters: compress2                    0.0         0.0       201.4       1
+Process Parameters: compress2_z                  0.0         0.0       201.4       1
+Process Parameters: compressBound                0.0         0.0       201.4       1
+Process Parameters: compressBound_z              0.0         0.0       201.4       1
+Process Parameters: compress_z                   0.0         0.0       201.4       1
+Process Parameters: crc32                        0.0         0.0       201.4       1
+Process Parameters: crc32_combine                0.0         0.0       201.4       1
+Process Parameters: crc32_combine64              0.0         0.0       201.4       1
+Process Parameters: crc32_combine_gen            0.0         0.0       201.4       1
+Process Parameters: crc32_combine_gen64          0.0         0.0       201.4       1
+Process Parameters: crc32_combine_op             0.0         0.0       201.4       1
+Process Parameters: crc32_z                      0.3         0.3       201.7       1
+Process Parameters: deflate                      0.0         0.0       201.7       1
+Process Parameters: deflateBound                 0.0         0.0       201.7       1
+Process Parameters: deflateBound_z               0.0         0.0       201.7       1
+Process Parameters: deflateCopy                  0.0         0.0       201.7       1
+Process Parameters: deflateEnd                   0.0         0.0       201.7       1
+Process Parameters: deflateGetDictionary         0.0         0.0       201.7       1
+Process Parameters: deflateInit2_                0.0         0.0       201.7       1
+Process Parameters: deflateInit_                 0.0         0.0       201.7       1
+Process Parameters: deflateParams                0.0         0.0       201.7       1
+Process Parameters: deflatePending               0.0         0.0       201.7       1
+Process Parameters: deflatePrime                 0.0         0.0       201.7       1
+Process Parameters: deflateReset                 0.0         0.0       201.7       1
+Process Parameters: deflateResetKeep             0.0         0.0       201.7       1
+Process Parameters: deflateSetDictionary         3.1         3.1       204.8       1
+Process Parameters: deflateSetHeader             0.0         0.0       204.8       1
+Process Parameters: deflateTune                  0.0         0.0       204.8       1
+Process Parameters: deflateUsed                  0.0         0.0       204.8       1
+Process Parameters: get_crc_table                0.0         0.0       204.8       1
+Process Parameters: gzbuffer                     0.0         0.0       204.8       1
+Process Parameters: gzclearerr                   0.0         0.0       204.8       1
+Process Parameters: gzclose                      0.0         0.0       204.8       1
+Process Parameters: gzclose_r                    0.0         0.0       204.8       1
+Process Parameters: gzclose_w                    0.0         0.0       204.8       1
+Process Parameters: gzdirect                     0.0         0.0       204.8       1
+Process Parameters: gzdopen                      0.0         0.0       204.8       1
+Process Parameters: gzeof                        0.0         0.0       204.8       1
+Process Parameters: gzerror                      0.0         0.0       204.8       1
+Process Parameters: gzflush                      0.0         0.0       204.8       1
+Process Parameters: gzfread                      0.0         0.0       204.8       1
+Process Parameters: gzfwrite                     0.0         0.0       204.8       1
+Process Parameters: gzgetc                       0.0         0.0       204.8       1
+Process Parameters: gzgetc_                      0.0         0.0       204.8       1
+Process Parameters: gzgets                       0.0         0.0       204.8       1
+Process Parameters: gzoffset                     0.0         0.0       204.8       1
+Process Parameters: gzoffset64                   0.0         0.0       204.8       1
+Process Parameters: gzopen                       0.0         0.0       204.8       1
+Process Parameters: gzopen64                     0.0         0.0       204.8       1
+Process Parameters: gzprintf                     0.0         0.0       204.8       1
+Process Parameters: gzputc                       0.0         0.0       204.8       1
+Process Parameters: gzputs                       0.0         0.0       204.8       1
+Process Parameters: gzread                       0.0         0.0       204.8       1
+Process Parameters: gzrewind                     0.0         0.0       204.8       1
+Process Parameters: gzseek                       0.0         0.0       204.8       1
+Process Parameters: gzseek64                     0.0         0.0       204.8       1
+Process Parameters: gzsetparams                  0.0         0.0       204.8       1
+Process Parameters: gztell                       0.0         0.0       204.8       1
+Process Parameters: gztell64                     0.0         0.0       204.8       1
+Process Parameters: gzungetc                     0.0         0.0       204.8       1
+Process Parameters: gzvprintf                    0.0         0.0       204.8       1
+Process Parameters: gzwrite                      0.0         0.0       204.8       1
+Process Parameters: inflate                      0.0         0.0       204.8       1
+Process Parameters: inflateBack                  4.2         4.2       209.1       1
+Process Parameters: inflateBackEnd               0.0         0.0       209.1       1
+Process Parameters: inflateBackInit_             0.0         0.0       209.1       1
+Process Parameters: inflateCodesUsed             0.0         0.0       209.1       1
+Process Parameters: inflateCopy                  0.0         0.0       209.1       1
+Process Parameters: inflateEnd                   0.0         0.0       209.1       1
+Process Parameters: inflateGetDictionary         0.0         0.0       209.1       1
+Process Parameters: inflateGetHeader             0.0         0.0       209.1       1
+Process Parameters: inflateInit2_                0.0         0.0       209.1       1
+Process Parameters: inflateInit_                 0.0         0.0       209.1       1
+Process Parameters: inflateMark                  0.0         0.0       209.1       1
+Process Parameters: inflatePrime                 0.0         0.0       209.1       1
+Process Parameters: inflateReset                 0.0         0.0       209.1       1
+Process Parameters: inflateReset2                0.0         0.0       209.1       1
+Process Parameters: inflateResetKeep             0.0         0.0       209.1       1
+Process Parameters: inflateSetDictionary         0.0         0.0       209.1       1
+Process Parameters: inflateSync                  0.0         0.0       209.1       1
+Process Parameters: inflateSyncPoint             0.0         0.0       209.1       1
+Process Parameters: inflateUndermine             0.0         0.0       209.1       1
+Process Parameters: inflateValidate              0.0         0.0       209.1       1
+Process Parameters: uncompress                   0.0         0.0       209.1       1
+Process Parameters: uncompress2         gz_open
+gz_open
+gzdopen
+gzdopen
+gzdopen
+gz_avail
+gz_avail
+gz_look
+gz_look
+gz_load
+gz_load
+gz_error
+gz_error
+gzgets
+gzgets
+gzgets
+gzgets
+gzgets
+gzopen
+gz_open
+gz_open
+gz_open
+gz_open
+gzopen64
+         0.0         0.0       209.1       1
+Process Parameters: uncompress2_z                0.0         0.0       209.1       1
+Process Parameters: uncompress_z                 0.0         0.0       209.1       1
+Process Parameters: zError                       0.0         0.0       209.1       1
+Process Parameters: zlibCompileFlags             0.0         0.0       209.1       1
+Process Parameters: zlibVersion                  0.0         0.0       209.1       1
+Total Condition Extraction (all 4 functions total)         7.6         7.6       209.1       1
+
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+param_1=>param_2
+found: adler32_z
+param_1=>param_2
+found: adler32
+param_1=>param_2
+found: crc32
+param_1=>param_2
+found: crc32_z
+param_1=>param_2
+found: gzwrite
+param_1=>param_2
+found: gzread
++ ./analysis.sh
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/zlib/work
++ rm -rf /workspaces/libfuzz/analysis/zlib/work
++ mkdir -p /workspaces/libfuzz/analysis/zlib/work
++ mkdir -p /workspaces/libfuzz/analysis/zlib/work/lib /workspaces/libfuzz/analysis/zlib/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/bin
++ LLVM_COMPILER_PATH=/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/zlib/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/zlib/work/apipass
++ export CFLAGS=
++ CFLAGS=
++ mkdir -p /workspaces/libfuzz/analysis/zlib/work/apipass
++ echo 'make 1'
++ cd /workspaces/libfuzz/analysis/zlib/repo
++ echo cmake
++ cmake . -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/zlib/work -DBUILD_SHARED_LIBS=off -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0' -DBENCHMARK_ENABLE_GTEST_TESTS=off -DBENCHMARK_ENABLE_INSTALL=off
++ rm -rf /workspaces/libfuzz/analysis/zlib/work/apipass/apis.log
++ touch /workspaces/libfuzz/analysis/zlib/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/zlib/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/zlib/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/zlib/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/zlib/work/apipass/coerce.log
++ echo 'make clean'
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1
++ echo 'make install'
++ make install
++ extract-bc -b /workspaces/libfuzz/analysis/zlib/work/lib/libz.a
+Writing output to /workspaces/libfuzz/analysis/zlib/work/lib/libz.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/zlib/work/include -p /workspaces/libfuzz/targets/zlib/public_headers.txt -e /workspaces/libfuzz/analysis/zlib/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/zlib/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/zlib/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/zlib/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/zlib/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/zlib/work/lib/libz.a.bc -interface /workspaces/libfuzz/analysis/zlib/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/zlib/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/zlib/work/apipass/data_layout.txt
+Doing: zcfree
+Doing: zcalloc
+Doing: zError
+Doing: zlibCompileFlags
+Doing: zlibVersion
+Doing: uncompress
+Doing: uncompress_z
+Doing: uncompress2
+Doing: uncompress2_z
+Doing: _tr_tally
+Doing: gen_codes
+Doing: gen_bitlen
+Doing: pqdownheap
+Doing: scan_tree
+Doing: _tr_align
+Doing: _tr_flush_bits
+Doing: bi_windup
+Doing: init_block
+Doing: tr_static_init
+Doing: _tr_init
+Doing: inflate_fixed
+Doing: detect_data_type
+Doing: deflate_rle
+Doing: deflate
+Doing: longest_match
+Doing: inflate_fast
+Doing: deflateParams
+Doing: fill_window
+Doing: x2nmodp
+Doing: gzseek
+Doing: inflate_table
+Doing: gz_error
+Doing: deflate_stored
+Doing: gzbuffer
+Doing: inflateBackInit_
+Doing: flush_pending
+Doing: gzgetc_
+Doing: gzdopen
+Doing: gz_look
+Doing: get_crc_table
+Doing: gz_open
+Doing: gzsetparams
+Doing: compress2
+Doing: inflateReset
+Doing: adler32
+Doing: gzopen
+Doing: gz_reset
+Doing: gzflush
+Doing: deflateReset
+Doing: compressBound
+Doing: inflateUndermine
+Doing: deflate_fast
+Doing: gzrewind
+Doing: compress_z
+Doing: inflateReset2
+Doing: crc32_z
+Doing: inflateMark
+Doing: putShortMSB
+Doing: crc32_combine_gen
+Doing: multmodp
+Doing: gztell
+Doing: gzoffset
+Doing: build_tree
+Doing: deflateTune
+Doing: gz_comp
+Doing: crc_word
+Doing: deflateEnd
+Doing: inflateCopy
+Doing: compress_block
+Doing: read_buf
+Doing: deflateBound
+Doing: crc_word_big
+Doing: send_all_trees
+Doing: deflateCopy
+Doing: deflateStateCheck
+Doing: crc32
+Doing: _tr_flush_block
+Doing: deflate_huff
+Doing: gzeof
+Doing: adler32_combine
+Doing: gz_fetch
+Doing: inflateBack
+Doing: adler32_z
+Doing: gzgetc
+Doing: compressBound_z
+Doing: gzwrite
+Doing: inflateValidate
+Doing: crc32_combine_gen64
+Doing: deflatePending
+Doing: crc32_combine
+Doing: inflateGetHeader
+Doing: deflateGetDictionary
+Doing: crc32_combine_op
+Doing: gzungetc
+Doing: deflateSetDictionary
+Doing: gzvprintf
+Doing: inflateGetDictionary
+Doing: deflateSetHeader
+Doing: crc32_combine64
+Doing: gzgets
+Doing: _tr_stored_block
+Doing: gz_zero
+Doing: gz_vacate
+Doing: inflateSetDictionary
+Doing: send_tree
+Doing: gzclose
+Doing: deflate_slow
+Doing: gzseek64
+Doing: gz_load
+Doing: inflateBackEnd
+Doing: gzopen64
+Doing: deflateUsed
+Doing: deflateInit_
+Doing: inflateSync
+Doing: build_bl_tree
+Doing: deflateBound_z
+Doing: byte_swap
+Doing: slide_hash
+Doing: inflateCodesUsed
+Doing: deflatePrime
+Doing: deflateInit2_
+Doing: deflateResetKeep
+Doing: syncsearch
+Doing: gzoffset64
+Doing: bi_reverse
+Doing: gzerror
+Doing: gzdirect
+Doing: gzclearerr
+Doing: gzfwrite
+Doing: gz_intmax
+Doing: gzputc
+Doing: compress
+Doing: gzread
+Doing: gz_read
+Doing: gz_skip
+Doing: gz_decomp
+Doing: gzprintf
+Doing: gz_avail
+Doing: gzfread
+Doing: gzclose_r
+Doing: inflateInit_
+Doing: gz_init
+Doing: gzputs
+Doing: gztell64
+Doing: inflateEnd
+Doing: adler32_combine_
+Doing: gzclose_w
+Doing: adler32_combine64
+Doing: inflateResetKeep
+Doing: compress2_z
+Doing: inflateStateCheck
+Doing: gz_write
+Doing: inflateInit2_
+Doing: inflatePrime
+Doing: inflate
+Doing: bi_flush
+Doing: updatewindow
+Doing: lm_init
+Doing: inflateSyncPoint
+Doing: llvm.dbg.label
+Doing: llvm.va_end
+Doing: llvm.va_start
+Doing: llvm.memmove.p0i8.p0i8.i64
+Doing: write
+Doing: close
+Doing: llvm.memset.p0i8.i64
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: malloc
+Doing: strerror
+Doing: fcntl
+Doing: snprintf
+Doing: memchr
+Doing: llvm.dbg.declare
+Doing: strlen
+Doing: open
+Doing: lseek64
+Doing: free
+Doing: __errno_location
+Doing: vsnprintf
+Doing: read
+real 1.65
+user 1.53
+sys 0.11
+maxrss_kb 214040
++ APIS='adler32_z adler32 crc32 crc32_z gzwrite gzread'
++ for a in ${APIS}
++ /workspaces/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f adler32_z -c /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json
++ for a in ${APIS}
++ /workspaces/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f adler32 -c /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json
++ for a in ${APIS}
++ /workspaces/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f crc32 -c /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json
++ for a in ${APIS}
++ /workspaces/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f crc32_z -c /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json
++ for a in ${APIS}
++ /workspaces/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f gzwrite -c /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json
++ for a in ${APIS}
++ /workspaces/libfuzz/tool/misc/edit_constraints_2.py -v 'param_1=>param_2' -f gzread -c /workspaces/libfuzz/analysis/zlib/work/apipass/conditions.json
+
+real	0m11.387s
+user	0m6.119s
+sys	0m2.300s

@@ -1,0 +1,791 @@
++ ./analysis.sh
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/libplist/work
++ rm -rf /workspaces/libfuzz/analysis/libplist/work
++ mkdir -p /workspaces/libfuzz/analysis/libplist/work
++ mkdir -p /workspaces/libfuzz/analysis/libplist/work/lib /workspaces/libfuzz/analysis/libplist/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/usr/bin
++ LLVM_COMPILER_PATH=/usr/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libplist/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/libplist/work/apipass
++ wllvm --version
++ mkdir -p /workspaces/libfuzz/analysis/libplist/work/apipass
++ echo 'make 1'
++ cd /workspaces/libfuzz/analysis/libplist/repo
++ export CXX=g++
++ CXX=g++
++ find . -name CMakeLists.txt -exec sed -i s/SHARED//g '{}' ';'
++ rm -rf /workspaces/libfuzz/analysis/libplist/repo/build
++ mkdir -p /workspaces/libfuzz/analysis/libplist/repo/build
++ cd /workspaces/libfuzz/analysis/libplist/repo/build
++ cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/libplist/work -DBUILD_SHARED_LIBS=off -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0' -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_POLICY_VERSION_MINIMUM
+    ENABLE_STATIC
+
+
++ rm /workspaces/libfuzz/analysis/libplist/work/apipass/apis.log
+rm: cannot remove '/workspaces/libfuzz/analysis/libplist/work/apipass/apis.log': No such file or directory
++ true
++ touch /workspaces/libfuzz/analysis/libplist/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/libplist/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/libplist/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/libplist/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/libplist/work/apipass/coerce.log
++ echo 'make clean'
++ cd /workspaces/libfuzz/analysis/libplist/repo/build
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1
+In file included from /workspaces/libfuzz/analysis/libplist/repo/src/plist.c:25:
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.h:47:9: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        GTimeVal timeval;
+        ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:154:27: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    data->length = sizeof(GTimeVal);
+                          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:485:11: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        ((GTimeVal *) value)->tv_sec = data->timeval.tv_sec;
+          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:486:11: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        ((GTimeVal *) value)->tv_usec = data->timeval.tv_usec;
+          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:567:5: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    GTimeVal val = { 0, 0 };
+    ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:570:29: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    assert(length == sizeof(GTimeVal));
+                            ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:570:29: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    assert(length == sizeof(GTimeVal));
+                            ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:623:66: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        if (!memcmp(&(val_a->timeval), &(val_b->timeval), sizeof(GTimeVal)))
+                                                                 ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:684:34: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        data->timeval.tv_sec = ((GTimeVal *) value)->tv_sec;
+                                 ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:685:35: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        data->timeval.tv_usec = ((GTimeVal *) value)->tv_usec;
+                                  ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:714:35: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+            data->length = sizeof(GTimeVal);
+                                  ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:755:5: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    GTimeVal val = { sec, usec };
+    ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:756:58: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    plist_set_element_val(node, PLIST_DATE, &val, sizeof(GTimeVal));
+                                                         ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+13 warnings generated.
+In file included from /workspaces/libfuzz/analysis/libplist/repo/src/plist.c:25:
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.h:47:9: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        GTimeVal timeval;
+        ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:154:27: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    data->length = sizeof(GTimeVal);
+                          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:485:11: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        ((GTimeVal *) value)->tv_sec = data->timeval.tv_sec;
+          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:486:11: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        ((GTimeVal *) value)->tv_usec = data->timeval.tv_usec;
+          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:567:5: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    GTimeVal val = { 0, 0 };
+    ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:570:29: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    assert(length == sizeof(GTimeVal));
+                            ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:570:29: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    assert(length == sizeof(GTimeVal));
+                            ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:623:66: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        if (!memcmp(&(val_a->timeval), &(val_b->timeval), sizeof(GTimeVal)))
+                                                                 ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:684:34: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        data->timeval.tv_sec = ((GTimeVal *) value)->tv_sec;
+                                 ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:685:35: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        data->timeval.tv_usec = ((GTimeVal *) value)->tv_usec;
+                                  ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:714:35: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+            data->length = sizeof(GTimeVal);
+                                  ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:755:5: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    GTimeVal val = { sec, usec };
+    ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.c:756:58: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    plist_set_element_val(node, PLIST_DATE, &val, sizeof(GTimeVal));
+                                                         ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+13 warnings generated.
+In file included from /workspaces/libfuzz/analysis/libplist/repo/src/bplist.c:30:
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.h:47:9: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        GTimeVal timeval;
+        ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/bplist.c:222:27: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    data->length = sizeof(GTimeVal);
+                          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+2 warnings generated.
+In file included from /workspaces/libfuzz/analysis/libplist/repo/src/bplist.c:30:
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.h:47:9: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        GTimeVal timeval;
+        ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/bplist.c:222:27: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+    data->length = sizeof(GTimeVal);
+                          ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+2 warnings generated.
+In file included from /workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:34:
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.h:47:9: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        GTimeVal timeval;
+        ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:191:15: warning: 'g_time_val_to_iso8601' is deprecated: Use 'g_date_time_format' instead [-Wdeprecated-declarations]
+        val = g_time_val_to_iso8601(&node_data->timeval);
+              ^
+/usr/include/glib-2.0/glib/gtimer.h:72:1: note: 'g_time_val_to_iso8601' has been explicitly marked deprecated here
+GLIB_DEPRECATED_IN_2_62_FOR(g_date_time_format)
+^
+/usr/include/glib-2.0/glib/gversionmacros.h:903:49: note: expanded from macro 'GLIB_DEPRECATED_IN_2_62_FOR'
+# define GLIB_DEPRECATED_IN_2_62_FOR(f)         GLIB_DEPRECATED_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:981:32: note: expanded from macro 'GLIB_DEPRECATED_FOR'
+#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
+                               ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:299:13: warning: 'g_time_val_from_iso8601' is deprecated: Use 'g_date_time_new_from_iso8601' instead [-Wdeprecated-declarations]
+            g_time_val_from_iso8601((char *) strval, &data->timeval);
+            ^
+/usr/include/glib-2.0/glib/gtimer.h:69:1: note: 'g_time_val_from_iso8601' has been explicitly marked deprecated here
+GLIB_DEPRECATED_IN_2_62_FOR(g_date_time_new_from_iso8601)
+^
+/usr/include/glib-2.0/glib/gversionmacros.h:903:49: note: expanded from macro 'GLIB_DEPRECATED_IN_2_62_FOR'
+# define GLIB_DEPRECATED_IN_2_62_FOR(f)         GLIB_DEPRECATED_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:981:32: note: expanded from macro 'GLIB_DEPRECATED_FOR'
+#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
+                               ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:301:35: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+            data->length = sizeof(GTimeVal);
+                                  ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+4 warnings generated.
+In file included from /workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:34:
+/workspaces/libfuzz/analysis/libplist/repo/src/plist.h:47:9: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+        GTimeVal timeval;
+        ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:191:15: warning: 'g_time_val_to_iso8601' is deprecated: Use 'g_date_time_format' instead [-Wdeprecated-declarations]
+        val = g_time_val_to_iso8601(&node_data->timeval);
+              ^
+/usr/include/glib-2.0/glib/gtimer.h:72:1: note: 'g_time_val_to_iso8601' has been explicitly marked deprecated here
+GLIB_DEPRECATED_IN_2_62_FOR(g_date_time_format)
+^
+/usr/include/glib-2.0/glib/gversionmacros.h:903:49: note: expanded from macro 'GLIB_DEPRECATED_IN_2_62_FOR'
+# define GLIB_DEPRECATED_IN_2_62_FOR(f)         GLIB_DEPRECATED_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:981:32: note: expanded from macro 'GLIB_DEPRECATED_FOR'
+#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
+                               ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:299:13: warning: 'g_time_val_from_iso8601' is deprecated: Use 'g_date_time_new_from_iso8601' instead [-Wdeprecated-declarations]
+            g_time_val_from_iso8601((char *) strval, &data->timeval);
+            ^
+/usr/include/glib-2.0/glib/gtimer.h:69:1: note: 'g_time_val_from_iso8601' has been explicitly marked deprecated here
+GLIB_DEPRECATED_IN_2_62_FOR(g_date_time_new_from_iso8601)
+^
+/usr/include/glib-2.0/glib/gversionmacros.h:903:49: note: expanded from macro 'GLIB_DEPRECATED_IN_2_62_FOR'
+# define GLIB_DEPRECATED_IN_2_62_FOR(f)         GLIB_DEPRECATED_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:981:32: note: expanded from macro 'GLIB_DEPRECATED_FOR'
+#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
+                               ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+/workspaces/libfuzz/analysis/libplist/repo/src/xplist.c:301:35: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+            data->length = sizeof(GTimeVal);
+                                  ^
+/usr/include/glib-2.0/glib/gtypes.h:545:35: note: 'GTimeVal' has been explicitly marked deprecated here
+typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+                                  ^
+/usr/include/glib-2.0/glib/gversionmacros.h:909:49: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+# define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f)    GLIB_DEPRECATED_TYPE_FOR(f)
+                                                ^
+/usr/include/glib-2.0/glib/gmacros.h:1014:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+                                    ^
+/usr/include/glib-2.0/glib/gmacros.h:950:44: note: expanded from macro 'G_DEPRECATED_FOR'
+#define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+                                           ^
+4 warnings generated.
++ echo 'make install'
++ make install
++ extract-bc -b /workspaces/libfuzz/analysis/libplist/work/lib/libplist.a
+Writing output to /workspaces/libfuzz/analysis/libplist/work/lib/libplist.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/libplist/work/include -p /workspaces/libfuzz/targets/libplist/public_headers.txt -e /workspaces/libfuzz/analysis/libplist/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/libplist/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/libplist/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/libplist/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/libplist/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/libplist/work/lib/libplist.a.bc -interface /workspaces/libfuzz/analysis/libplist/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/libplist/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/libplist/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/libplist/work/apipass/data_layout.txt
+Doing: xml_to_node
+Doing: format_string
+Doing: free_index
+Doing: write_date
+Doing: write_array
+Doing: write_data
+Doing: write_string
+Doing: write_unicode
+Doing: serialize_plist
+Doing: float_byte_convert
+Doing: parse_dict_node
+Doing: parse_unicode_node
+Doing: new_xml_plist
+Doing: parse_real_node
+Doing: plist_array_remove_item
+Doing: byte_convert
+Doing: plist_array_set_item
+Doing: write_int
+Doing: plist_set_uint_val
+Doing: node_to_xml
+Doing: parse_string_node
+Doing: plist_array_get_item_index
+Doing: plist_dict_remove_item
+Doing: plist_dict_insert_item
+Doing: plist_get_key_val
+Doing: plist_get_node_type
+Doing: plist_free_data
+Doing: parse_array_node
+Doing: plist_get_parent
+Doing: plist_new_node
+Doing: plist_to_bin
+Doing: plist_get_data
+Doing: plist_set_bool_val
+Doing: plist_dict_new_iter
+Doing: parse_data_node
+Doing: plist_copy_node
+Doing: plist_get_uint_val
+Doing: plist_array_append_item
+Doing: write_real
+Doing: plist_set_real_val
+Doing: write_dict
+Doing: plist_new_string
+Doing: plist_new_dict
+Doing: plist_data_compare
+Doing: plist_to_xml
+Doing: parse_uint_node
+Doing: plist_array_get_size
+Doing: plist_new_array
+Doing: plist_dict_next_item
+Doing: plist_new_bool
+Doing: plist_set_type
+Doing: plist_new_uint
+Doing: plist_set_key_val
+Doing: plist_array_insert_item
+Doing: plist_set_data_val
+Doing: plist_new_plist_data
+Doing: plist_new_data
+Doing: plist_new_real
+Doing: plist_set_element_val
+Doing: plist_dict_get_size
+Doing: parse_date_node
+Doing: plist_array_get_item
+Doing: plist_copy
+Doing: plist_get_bool_val
+Doing: plist_data_hash
+Doing: plist_compare_node_value
+Doing: plist_get_type_and_value
+Doing: plist_set_string_val
+Doing: plist_dict_get_item_key
+Doing: plist_dict_set_item
+Doing: plist_new_key
+Doing: plist_access_pathv
+Doing: plist_access_path
+Doing: plist_dict_get_item
+Doing: plist_get_string_val
+Doing: plist_new_date
+Doing: plist_get_real_val
+Doing: plist_free
+Doing: plist_get_data_val
+Doing: plist_from_xml
+Doing: plist_free_node
+Doing: plist_get_date_val
+Doing: plist_set_date_val
+Doing: plist_from_bin
+Doing: uint24_from_be
+Doing: write_raw_data
+Doing: parse_bin_node
+Doing: copy_plist_data
+Doing: g_time_val_from_iso8601
+Doing: xmlStrcmp
+Doing: xmlParseMemory
+Doing: xmlNewChild
+Doing: xmlNodeAddContent
+Doing: g_base64_encode
+Doing: g_strdup
+Doing: g_strdup_printf
+Doing: xmlFreeDoc
+Doing: xmlDocDumpMemory
+Doing: setlocale
+Doing: g_hash_table_insert
+Doing: g_utf8_to_utf16
+Doing: xmlDetectCharEncoding
+Doing: calloc
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: g_ptr_array_add
+Doing: g_node_destroy
+Doing: __assert_fail
+Doing: llvm.memset.p0i8.i64
+Doing: g_hash_table_foreach_remove
+Doing: malloc
+Doing: g_malloc0
+Doing: g_node_insert
+Doing: xmlNewTextChild
+Doing: strcmp
+Doing: g_ascii_strtoull
+Doing: strdup
+Doing: g_free
+Doing: strlen
+Doing: g_node_insert_before
+Doing: g_ptr_array_new
+Doing: g_byte_array_append
+Doing: g_base64_decode
+Doing: xmlNodeGetContent
+Doing: g_node_new
+Doing: atof
+Doing: llvm.dbg.declare
+Doing: xmlDocGetRootElement
+Doing: g_node_n_children
+Doing: g_ptr_array_free
+Doing: g_node_unlink
+Doing: memcmp
+Doing: g_node_nth_child
+Doing: g_time_val_to_iso8601
+Doing: g_node_child_position
+Doing: g_byte_array_free
+Doing: g_node_children_foreach
+Doing: llvm.va_end
+Doing: g_node_copy_deep
+Doing: free
+Doing: g_utf16_to_utf8
+Doing: g_hash_table_destroy
+Doing: llvm.va_start
+Doing: g_hash_table_new
+Doing: g_hash_table_lookup
+Doing: g_byte_array_new
+real 0.48
+user 0.45
+sys 0.02
+maxrss_kb 77060
+
+real	0m11.521s
+user	0m4.200s
+sys	0m1.221s

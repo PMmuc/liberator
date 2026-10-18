@@ -1,0 +1,416 @@
++ ./analysis.sh
+++ realpath /workspaces/libfuzz/analysis/minijail/
++ export TARGET=/workspaces/libfuzz/analysis/minijail
++ TARGET=/workspaces/libfuzz/analysis/minijail
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/minijail/work
++ rm -rf /workspaces/libfuzz/analysis/minijail/work
++ mkdir -p /workspaces/libfuzz/analysis/minijail/work
++ mkdir -p /workspaces/libfuzz/analysis/minijail/work/lib /workspaces/libfuzz/analysis/minijail/work/include
++ export CC=wllvm
++ CC=wllvm
++ export 'CFLAGS= -Wno-unused-command-line-argument -g -O0'
++ CFLAGS=' -Wno-unused-command-line-argument -g -O0'
++ export CXX=wllvm++
++ CXX=wllvm++
++ export 'CXXFLAGS= -Wno-unused-command-line-argument -g -O0' export LLVM_COMPILER=clang
++ CXXFLAGS=' -Wno-unused-command-line-argument -g -O0'
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/bin
++ LLVM_COMPILER_PATH=/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/minijail/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/minijail/work/apipass
++ mkdir -p /workspaces/libfuzz/analysis/minijail/work/apipass
++ ls /workspaces/libfuzz/analysis/minijail/work/apipass
++ echo 'make 1'
++ export REPO=/workspaces/libfuzz/analysis/minijail/repo
++ REPO=/workspaces/libfuzz/analysis/minijail/repo
++ cd /workspaces/libfuzz/analysis/minijail/repo
++ sed -i 's/(SIGRTMAX|SIGRTMIN|SIG_|NULL)/(SIGRTMAX|SIGRTMIN|SIG_|NULL|BLKTRACESETUP2)/g' /workspaces/libfuzz/analysis/minijail/repo/gen_constants.sh
++ rm -rf /workspaces/libfuzz/analysis/minijail/work/apipass/apis.log
++ touch /workspaces/libfuzz/analysis/minijail/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/minijail/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/minijail/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/minijail/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/minijail/work/apipass/coerce.log
++ LIBNAME=libminijail.pie.a
++ LIBLOCATION=/workspaces/libfuzz/analysis/minijail/work/lib/libminijail.pie.a
++ echo 'make clean'
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1 OUT=/workspaces/libfuzz/analysis/minijail/work/lib 'CC_STATIC_LIBRARY(libminijail.pie.a)'
+WARNING:Did not recognize the compiler flag "-dD"
+WARNING:Did not recognize the compiler flag "-dD"
+WARNING:Did not recognize the compiler flag "-dD"
+WARNING:Did not recognize the compiler flag "-dD"
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:239: warning: overriding recipe for target 'libsyscalls.gen.pie.o'
+common.mk:623: warning: ignoring old recipe for target 'libsyscalls.gen.pie.o'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:239: warning: overriding recipe for target 'libsyscalls.gen.pic.o'
+common.mk:623: warning: ignoring old recipe for target 'libsyscalls.gen.pic.o'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:239: warning: overriding recipe for target 'libsyscalls.gen.o.depends'
+common.mk:623: warning: ignoring old recipe for target 'libsyscalls.gen.o.depends'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:239: warning: overriding recipe for target 'libsyscalls.gen.o'
+common.mk:623: warning: ignoring old recipe for target 'libsyscalls.gen.o'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:252: warning: overriding recipe for target 'libconstants.gen.pie.o'
+common.mk:623: warning: ignoring old recipe for target 'libconstants.gen.pie.o'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:252: warning: overriding recipe for target 'libconstants.gen.pic.o'
+common.mk:623: warning: ignoring old recipe for target 'libconstants.gen.pic.o'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:252: warning: overriding recipe for target 'libconstants.gen.o.depends'
+common.mk:623: warning: ignoring old recipe for target 'libconstants.gen.o.depends'
+/workspaces/libfuzz/analysis/minijail/repo/Makefile:252: warning: overriding recipe for target 'libconstants.gen.o'
+common.mk:623: warning: ignoring old recipe for target 'libconstants.gen.o'
+WARNING:Did not recognize the compiler flag "-dD"
+WARNING:Did not recognize the compiler flag "-dD"
+WARNING:Did not recognize the compiler flag "-dD"
+WARNING:Did not recognize the compiler flag "-dD"
++ cp /workspaces/libfuzz/analysis/minijail/repo/arch.h /workspaces/libfuzz/analysis/minijail/repo/bpf.h /workspaces/libfuzz/analysis/minijail/repo/config_parser.h /workspaces/libfuzz/analysis/minijail/repo/elfparse.h /workspaces/libfuzz/analysis/minijail/repo/gen_constants-inl.h /workspaces/libfuzz/analysis/minijail/repo/gen_syscalls-inl.h /workspaces/libfuzz/analysis/minijail/repo/landlock.h /workspaces/libfuzz/analysis/minijail/repo/landlock_util.h /workspaces/libfuzz/analysis/minijail/repo/libconstants.h /workspaces/libfuzz/analysis/minijail/repo/libminijail-private.h /workspaces/libfuzz/analysis/minijail/repo/libminijail.h /workspaces/libfuzz/analysis/minijail/repo/libsyscalls.h /workspaces/libfuzz/analysis/minijail/repo/minijail0_cli.h /workspaces/libfuzz/analysis/minijail/repo/scoped_minijail.h /workspaces/libfuzz/analysis/minijail/repo/signal_handler.h /workspaces/libfuzz/analysis/minijail/repo/syscall_filter.h /workspaces/libfuzz/analysis/minijail/repo/syscall_filter_unittest_macros.h /workspaces/libfuzz/analysis/minijail/repo/syscall_wrapper.h /workspaces/libfuzz/analysis/minijail/repo/system.h /workspaces/libfuzz/analysis/minijail/repo/test_util.h /workspaces/libfuzz/analysis/minijail/repo/unittest_util.h /workspaces/libfuzz/analysis/minijail/repo/util.h /workspaces/libfuzz/analysis/minijail/work/include
++ extract-bc -b /workspaces/libfuzz/analysis/minijail/work/lib/libminijail.pie.a
+Writing output to /workspaces/libfuzz/analysis/minijail/work/lib/libminijail.pie.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/minijail/work/include -p /workspaces/libfuzz/targets/minijail/public_headers.txt -e /workspaces/libfuzz/analysis/minijail/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/minijail/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/minijail/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/minijail/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/minijail/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/minijail/work/lib/libminijail.pie.a.bc -interface /workspaces/libfuzz/analysis/minijail/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/minijail/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/minijail/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/minijail/work/apipass/data_layout.txt
+Doing: parse_config_line
+Doing: clear_config_entry
+Doing: new_config_entry_list
+Doing: sys_seccomp
+Doing: is_canonical_path
+Doing: seccomp_filter_flags_available
+Doing: sys_set_no_new_privs
+Doing: seccomp_action_is_available
+Doing: lookup_group
+Doing: parse_config_file
+Doing: lookup_user
+Doing: setup_mount_destination
+Doing: get_mount_flags
+Doing: write_pid_to_path
+Doing: config_net_loopback
+Doing: cap_ambient_supported
+Doing: secure_noroot_set_and_locked
+Doing: minijail_copy_env
+Doing: minijail_free_env
+Doing: init_logging
+Doing: path_is_parent
+Doing: path_join
+Doing: parse_constant
+Doing: parse_single_constant
+Doing: lookup_syscall_name
+Doing: seccomp_ret_kill_process_available
+Doing: lookup_syscall
+Doing: mkdir_p
+Doing: do_log
+Doing: do_fatal_log
+Doing: populate_ruleset_internal
+Doing: landlock_restrict_self
+Doing: landlock_add_rule
+Doing: landlock_create_ruleset
+Doing: bpf_comp_jin
+Doing: bpf_comp_jset64
+Doing: bpf_comp_jgt64
+Doing: bpf_comp_jge32
+Doing: bpf_comp_jgt32
+Doing: getmultiline
+Doing: bpf_comp_jeq32
+Doing: bpf_allow_syscall_args
+Doing: bpf_validate_arch
+Doing: install_sigsys_handler
+Doing: log_sigsys_handler
+Doing: free_previous_syscalls
+Doing: flatten_block_list
+Doing: compile_filter
+Doing: compile_file
+Doing: free_block_list
+Doing: tokenize
+Doing: compile_policy_line
+Doing: compile_errno
+Doing: compile_atom
+Doing: is_implicit_relative_path
+Doing: success_lbl
+Doing: get_label_id
+Doing: insert_and_check_duplicate_syscall
+Doing: copy_parser_state
+Doing: append_allow_syscall
+Doing: append_ret_log
+Doing: extend_filter_block_list
+Doing: alias
+Doing: append_filter_block
+Doing: append_ret_kill_process
+Doing: minijail_gidmap
+Doing: parse_include_statement
+Doing: append_ret_kill
+Doing: minijail_uidmap
+Doing: minijail_namespace_user_disable_setgroups
+Doing: write_proc_file
+Doing: minijail_namespace_set_hostname
+Doing: lock_securebits
+Doing: minijail_namespace_uts
+Doing: minijail_remount_proc_readonly
+Doing: seccomp_ret_log_available
+Doing: minijail_add_fs_restriction_rw
+Doing: minijail_close_open_fds
+Doing: minijail_unsetenv
+Doing: minijail_namespace_pids_rw_proc
+Doing: minijail_namespace_cgroups
+Doing: minijail_mount_tmp_size
+Doing: minijail_namespace_enter_net
+Doing: minijail_change_group
+Doing: mount_one
+Doing: minijail_namespace_net
+Doing: bpf_allow_syscall
+Doing: minijail_set_enable_new_sessions
+Doing: minijail_set_using_minimalistic_mountns
+Doing: minijail_getenv
+Doing: minijail_namespace_pids
+Doing: minijail_skip_remount_private
+Doing: mount_has_bind_flag
+Doing: minijail_setenv
+Doing: minijail_set_enable_default_runtime
+Doing: minijail_mount_tmp
+Doing: minijail_remount_mode
+Doing: append_ret_trap
+Doing: minijail_inherit_usergroups
+Doing: get_last_valid_cap
+Doing: minijail_use_alt_syscall
+Doing: init_term
+Doing: minijail_add_fs_restriction_ro
+Doing: minijail_write_pid_file
+Doing: minijail_namespace_ipc
+Doing: minijail_use_seccomp
+Doing: minijail_namespace_user
+Doing: minijail_keep_supplementary_gids
+Doing: bpf_comp_jeq64
+Doing: init
+Doing: minijail_log_seccomp_filter_failures
+Doing: group_end_lbl
+Doing: minijail_namespace_net_loopback
+Doing: minijail_new
+Doing: minijail_new_session_keyring
+Doing: minijail_run
+Doing: free_config_entry_list
+Doing: minijail_change_user
+Doing: mount_has_readonly_flag
+Doing: minijail_is_fs_restriction_available
+Doing: minijail_no_new_privs
+Doing: bpf_load_arg
+Doing: minijail_reset_signal_handlers
+Doing: seccomp_should_use_filters
+Doing: minijail_add_minimalistic_mountns_fs_rules
+Doing: minijail_run_fd_env_pid_pipes
+Doing: free_label_strings
+Doing: minijail_preenter
+Doing: minijail_use_seccomp_filter
+Doing: minijail_change_gid
+Doing: minijail_set_seccomp_filter_tsync
+Doing: minijail_disable_fs_restrictions
+Doing: minijail_set_seccomp_filters
+Doing: minijail_rlimit
+Doing: minijail_namespace_enter_vfs
+Doing: minijail_run_env_pid_pipes
+Doing: consumebytes
+Doing: mount_events_allowed
+Doing: minijail_skip_setting_securebits
+Doing: minijail_set_enable_profile_fs_restrictions
+Doing: bpf_resolve_jumps
+Doing: minijail_bind
+Doing: minijail_add_fs_restriction_rx
+Doing: strip
+Doing: minijail_add_fs_restriction_advanced_rw
+Doing: minijail_capbset_drop
+Doing: minijail_preserve_fd
+Doing: minijail_set_supplementary_gids
+Doing: append_ret_errno
+Doing: minijail_enable_default_fs_restrictions
+Doing: minijail_run_as_init
+Doing: minijail_marshal_helper
+Doing: minijail_add_fs_restriction_edit
+Doing: minijail_enter_chroot
+Doing: minijail_marshal
+Doing: minijail_enter_pivot_root
+Doing: minijail_parse_seccomp_filters_from_fd
+Doing: minijail_unmarshal
+Doing: minijail_get_original_path
+Doing: minijail_add_to_cgroup
+Doing: minijail_namespace_vfs
+Doing: minijail_run_pid_pipes
+Doing: minijail_forward_signals
+Doing: parse_size
+Doing: minijail_create_session
+Doing: minijail_add_fs_restriction_access_rights
+Doing: minijail_is_fs_restriction_ruleset_initialized
+Doing: minijail_run_env_pid_pipes_no_preload
+Doing: minijail_mount_with_data
+Doing: minijail_reset_signal_mask
+Doing: minijail_parse_seccomp_filters
+Doing: bpf_arg_comp
+Doing: minijail_mount
+Doing: bpf_label_id
+Doing: minijail_add_remount
+Doing: minijail_use_caps
+Doing: minijail_add_hook
+Doing: minijail_set_ambient_caps
+Doing: minijail_set_preload_path
+Doing: minijail_free_run_state
+Doing: minijail_size
+Doing: drop_ugid
+Doing: minijail_set_seccomp_filter_allow_speculation
+Doing: drop_caps
+Doing: set_seccomp_filter
+Doing: bpf_comp_jge64
+Doing: minijail_copy_jail
+Doing: minijail_change_uid
+Doing: seccomp_can_softfail
+Doing: minijail_from_fd
+Doing: parse_seccomp_filters
+Doing: minijail_to_fd
+Doing: bpf_comp_jset32
+Doing: minijail_fd_is_open
+Doing: str_to_op
+Doing: minijail_run_internal
+Doing: apply_landlock_restrictions
+Doing: forward_signal
+Doing: minijail_mount_dev
+Doing: ensure_no_fd_conflict
+Doing: minijail_run_env
+Doing: minijail_run_pid
+Doing: minijail_run_pipe
+Doing: minijail_run_no_preload
+Doing: minijail_run_pid_pipes_no_preload
+Doing: minijail_fork
+Doing: minijail_kill
+Doing: minijail_wait_internal
+Doing: consumestr
+Doing: minijail_preexec
+Doing: minijail_wait
+Doing: minijail_destroy
+Doing: minijail_log_to_fd
+Doing: minijail_syscall_name
+Doing: minijail_get_enable_default_runtime
+Doing: new_instr_buf
+Doing: minijail_enter
+Doing: new_filter_block
+Doing: getgrnam_r
+Doing: __xstat64
+Doing: statvfs64
+Doing: mkdir
+Doing: __fprintf_chk
+Doing: __getdelim
+Doing: realloc
+Doing: sysconf
+Doing: __ctype_b_loc
+Doing: strstr
+Doing: strchr
+Doing: strtoul
+Doing: abort
+Doing: __vsnprintf_chk
+Doing: llvm.va_end
+Doing: __vdprintf_chk
+Doing: llvm.va_copy
+Doing: strndup
+Doing: llvm.usub.sat.i64
+Doing: strsep
+Doing: __strcpy_chk
+Doing: waitpid
+Doing: wait
+Doing: execve
+Doing: fexecve
+Doing: ioctl
+Doing: setsid
+Doing: isatty
+Doing: chown
+Doing: strtoull
+Doing: dup2
+Doing: llvm.stackrestore
+Doing: closedir
+Doing: strtol
+Doing: readdir64
+Doing: dirfd
+Doing: opendir
+Doing: llvm.stacksave
+Doing: strerror
+Doing: sigtimedwait
+Doing: __libc_current_sigrtmax
+Doing: sethostname
+Doing: syscall
+Doing: strdup
+Doing: mount
+Doing: realpath
+Doing: llvm.va_start
+Doing: signal
+Doing: cap_set_proc
+Doing: sigaction
+Doing: fdopen
+Doing: prctl
+Doing: __asprintf_chk
+Doing: getpwnam_r
+Doing: fopen64
+Doing: strlen
+Doing: close
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: sigprocmask
+Doing: free
+Doing: strtok_r
+Doing: llvm.memset.p0i8.i64
+Doing: unshare
+Doing: llvm.dbg.declare
+Doing: initgroups
+Doing: __libc_current_sigrtmin
+Doing: __isoc99_fscanf
+Doing: strnlen
+Doing: getpid
+Doing: llvm.lifetime.start.p0i8
+Doing: setresuid
+Doing: write
+Doing: __errno_location
+Doing: llvm.dbg.label
+Doing: open64
+Doing: llvm.lifetime.end.p0i8
+Doing: __vsyslog_chk
+Doing: mkdtemp
+Doing: kill
+Doing: llvm.dbg.value
+Doing: umask
+Doing: prlimit64
+Doing: setns
+Doing: __xmknodat
+Doing: sigemptyset
+Doing: symlinkat
+Doing: sigaddset
+Doing: calloc
+Doing: strncmp
+Doing: umount2
+Doing: mkdirat
+Doing: getline
+Doing: _exit
+Doing: setgroups
+Doing: chroot
+Doing: chdir
+Doing: __dprintf_chk
+Doing: fchdir
+Doing: read
+Doing: socket
+Doing: setresgid
+Doing: fcntl64
+Doing: __fxstat64
+Doing: fclose
+Doing: pipe
+Doing: __asan_init
+Doing: cap_clear
+Doing: __hwasan_init
+Doing: feof
+Doing: rmdir
+Doing: cap_set_flag
+Doing: cap_get_proc
+Doing: strcmp
+Doing: __snprintf_chk
+Doing: cap_free
+Doing: malloc
+Doing: fork
+real 1.12
+user 0.98
+sys 0.13
+maxrss_kb 160264
+
+real	0m14.981s
+user	0m8.018s
+sys	0m1.987s

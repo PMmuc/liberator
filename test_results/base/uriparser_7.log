@@ -1,0 +1,443 @@
++ ./analysis.sh
+rm: cannot remove '/workspaces/libfuzz/analysis/uriparser/work/apipass/apis.log': No such file or directory
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/Uri.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/Uri.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriBase.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriBase.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsAnsi.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsAnsi.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsConfig.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsConfig.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsUnicode.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsUnicode.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriIp4.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriIp4.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/doc/Mainpage.txt =~ \.txt$ ]]
+doc/preprocess.sh|# cat /workspaces/libfuzz/analysis/uriparser/repo/doc/Mainpage.txt
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/Uri.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/Uri.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriBase.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriBase.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsAnsi.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsAnsi.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsConfig.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsConfig.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsUnicode.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriDefsUnicode.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriIp4.h =~ \.txt$ ]]
+doc/preprocess.sh|# wllvm -E -DURI_DOXYGEN -DURI_NO_UNICODE -C -I ../include /workspaces/libfuzz/analysis/uriparser/repo/include/uriparser/UriIp4.h
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+doc/preprocess.sh|# [[ /workspaces/libfuzz/analysis/uriparser/repo/doc/Mainpage.txt =~ \.txt$ ]]
+doc/preprocess.sh|# cat /workspaces/libfuzz/analysis/uriparser/repo/doc/Mainpage.txt
+doc/preprocess.sh|# sed -e '/^$/d' -e s/COMMENT_HACK//g -e 's/URI_PUBLIC //g'
+Writing output to /workspaces/libfuzz/analysis/uriparser/work/lib/liburiparser.a.bc
+Doing: uriBaseRuntimeVersionW
+Doing: uriBaseRuntimeVersionA
+Doing: uriRemoveBaseUriImplW
+Doing: uriRemoveBaseUriMmW
+Doing: uriRemoveBaseUriW
+Doing: uriAppendSegmentA
+Doing: uriEqualsAuthorityA
+Doing: uriRemoveBaseUriImplA
+Doing: uriRemoveBaseUriMmA
+Doing: uriRemoveBaseUriA
+Doing: uriSetUserInfoW
+Doing: uriSetUserInfoMmW
+Doing: uriIsWellFormedUserInfoW
+Doing: uriSetUserInfoA
+Doing: uriIsWellFormedUserInfoA
+Doing: uriSetSchemeW
+Doing: uriSetSchemeMmW
+Doing: uriIsWellFormedSchemeW
+Doing: uriSetSchemeA
+Doing: uriSetSchemeMmA
+Doing: uriIsWellFormedSchemeA
+Doing: uriIsWellFormedQueryW
+Doing: uriSetQueryA
+Doing: uriSetQueryMmA
+Doing: uriIsWellFormedQueryA
+Doing: uriSetPortTextMmW
+Doing: uriIsWellFormedPortW
+Doing: uriSetPortTextA
+Doing: uriSetPortTextMmA
+Doing: uriIsWellFormedPortA
+Doing: uriSetPathW
+Doing: uriDropEmptyFirstPathSegmentW
+Doing: uriTransformEmptyLeadPathSegmentsW
+Doing: uriInternalSetPathW
+Doing: uriSetPathMmW
+Doing: uriTransformEmptyLeadPathSegmentsA
+Doing: uriSetPathMmA
+Doing: uriIsWellFormedPathA
+Doing: uriSetHostRegNameW
+Doing: uriSetHostRegNameMmW
+Doing: uriIsWellFormedHostRegNameW
+Doing: uriSetHostRegNameA
+Doing: uriSetHostRegNameMmA
+Doing: uriSetHostIpFutureW
+Doing: uriSetHostIpFutureMmW
+Doing: uriIsWellFormedHostIpFutureMmW
+Doing: uriSetHostIpFutureA
+Doing: uriSetHostIpFutureMmA
+Doing: uriIsWellFormedHostIpFutureA
+Doing: uriIsWellFormedHostIpFutureMmA
+Doing: uriSetHostIp6W
+Doing: uriIsWellFormedHostIp6W
+Doing: uriIsWellFormedHostIp6MmA
+Doing: uriParseIpSixAddressA
+Doing: uriSetHostIp4W
+Doing: uriSetHostIp4MmW
+Doing: uriSetHostAutoMmW
+Doing: uriSetHostAutoA
+Doing: uriSetHostAutoMmA
+Doing: uriIsWellFormedFragmentW
+Doing: uriSetFragmentA
+Doing: uriSetFragmentMmA
+Doing: uriMergePathW
+Doing: uriAddBaseUriExMmW
+Doing: uriAddBaseUriExW
+Doing: uriAddBaseUriExMmA
+Doing: uriAddBaseUriExA
+Doing: uriAddBaseUriA
+Doing: uriToStringW
+Doing: uriToStringEngineW
+Doing: uriToStringCharsRequiredW
+Doing: uriAddBaseUriW
+Doing: uriToStringA
+Doing: uriMergePathA
+Doing: uriToStringEngineA
+Doing: uriFreeQueryListMmW
+Doing: uriFreeQueryListW
+Doing: uriMakeOwnerEngineW
+Doing: uriParseIpSixAddressW
+Doing: uriParseDecOctetThreeW
+Doing: uriParsePcharA
+Doing: uriAdvancePastLeadingZerosW
+Doing: uriDropLeadingZerosInplaceW
+Doing: uriFixPercentEncodingMallocW
+Doing: uriIsWellFormedPathW
+Doing: uriFixPercentEncodingInplaceW
+Doing: uriSetPathA
+Doing: uriLowercaseMallocW
+Doing: uriLowercaseInplaceW
+Doing: uriEscapeExA
+Doing: uriSetHostIp4MmA
+Doing: uriParseUriExW
+Doing: uriOnExitPartHelperTwoW
+Doing: uriAdvancePastLeadingZerosA
+Doing: uriDropLeadingZerosInplaceA
+Doing: uriParseIpSixAddressMmA
+Doing: uriComposeQueryMallocExMmA
+Doing: uriLowercaseInplaceExceptPercentEncodingA
+Doing: uriNormalizeSyntaxMaskRequiredExW
+Doing: uri_TESTING_ONLY_ParseIpFourA
+Doing: uriLowercaseInplaceA
+Doing: uriSetFragmentW
+Doing: uriPrependNewDotSegmentA
+Doing: uriSetPortTextW
+Doing: uriDissectQueryMallocExMmW
+Doing: uriParseMustBeSegmentNzNcW
+Doing: uriSetQueryMmW
+Doing: uriNormalizeSyntaxEngineA
+Doing: uriNormalizeSyntaxMaskRequiredA
+Doing: uriEmulateReallocarray
+Doing: uriParseUriTailA
+Doing: uriDecorateFree
+Doing: uriComposeQueryCharsRequiredExW
+Doing: uriDecorateMalloc
+Doing: uriEmulateCalloc
+Doing: uriMemoryManagerIsComplete
+Doing: uriAddBaseUriImplW
+Doing: uriUnescapeInPlaceW
+Doing: uriDefaultReallocarray
+Doing: uriDefaultRealloc
+Doing: uriParsePathAbsNoLeadSlashA
+Doing: uriPastLeadingZerosA
+Doing: uriDefaultCalloc
+Doing: uriParsePathAbsEmptyA
+Doing: uriMakeOwnerEngineA
+Doing: uriIsWellFormedHostIp6MmW
+Doing: uriParseDecOctetFourW
+Doing: uriMakeRangeOwnerW
+Doing: uriOnExitPartHelperTwoA
+Doing: uriParseIpSixAddressMmW
+Doing: uriParseDecOctetTwoW
+Doing: uriFixPercentEncodingMallocA
+Doing: uriContainsUppercaseLettersA
+Doing: uriEqualsUriW
+Doing: uriStopSyntaxA
+Doing: uriParseOwnHostUserInfoNzA
+Doing: uriParseIpLit2A
+Doing: uriPrependNewDotSegmentW
+Doing: uriParseSegmentA
+Doing: uri_TESTING_ONLY_ParseIpFourW
+Doing: uriParseIpFourAddressA
+Doing: uriFixAmbiguityW
+Doing: uriPushToStack
+Doing: uriCopyAuthorityW
+Doing: uriTestMemoryManagerEx
+Doing: uriStackToOctet
+Doing: uriCopyPathW
+Doing: uriOnExitSegmentNzNcOrScheme2W
+Doing: uriUriStringToUnixFilenameW
+Doing: uriDefaultMalloc
+Doing: uriPastLeadingZerosW
+Doing: uriParseAuthorityA
+Doing: uriRemoveDotSegmentsExW
+Doing: uriPreventLeakageA
+Doing: uriCopyRangeAsNeededW
+Doing: uriHasHostW
+Doing: uriFixPathNoSchemeW
+Doing: uriNormalizeSyntaxMaskRequiredExA
+Doing: uriEqualsAuthorityW
+Doing: uriFreeUriPathW
+Doing: uriNormalizeSyntaxA
+Doing: uriParseSingleUriA
+Doing: uriParsePathAbsEmptyW
+Doing: uriHexdigToIntW
+Doing: uriParseHexZeroW
+Doing: uriRemoveDotSegmentsAbsoluteW
+Doing: uriAppendSegmentW
+Doing: uriRangeEqualsW
+Doing: uriIsUnreserved
+Doing: uriPreventLeakageW
+Doing: uriInternalSetHostMmW
+Doing: uriUriStringToFilenameW
+Doing: uriEscapeA
+Doing: uriParseIpFutureA
+Doing: uriResolveAbsolutePathFlagW
+Doing: uriUnescapeInPlaceExW
+Doing: uriDecorateRealloc
+Doing: uriRangeEqualsA
+Doing: uriMakeOwnerMmA
+Doing: uriParseSingleUriExA
+Doing: uriParsePathAbsNoLeadSlashW
+Doing: uriHexToLetterExW
+Doing: uriParseIpFutLoopW
+Doing: uriSetHostIp6MmW
+Doing: uriCopyRangeA
+Doing: uriParseZeroMoreSlashSegsW
+Doing: uriUriStringToFilenameA
+Doing: uriFixPercentEncodingInplaceA
+Doing: uriContainsUglyPercentEncodingW
+Doing: uriParsePctEncodedA
+Doing: uriSetQueryW
+Doing: uriEnsureThatPathIsNotMistakenForHostW
+Doing: uriParseSingleUriExW
+Doing: uriResetUriW
+Doing: uriCompleteMemoryManager
+Doing: uriFixEmptyTrailSegmentA
+Doing: uriPreventLeakageAfterCopyA
+Doing: uriFreeUriMembersA
+Doing: uriParsePortW
+Doing: uriRemoveDotSegmentsAbsoluteA
+Doing: uriHexdigToIntA
+Doing: uriCopyAuthorityA
+Doing: uriCopyUriMmW
+Doing: uriOnExitOwnPortUserInfoA
+Doing: uriIsWellFormedHostIp4A
+Doing: uriUriStringToWindowsFilenameW
+Doing: uriFixEmptyTrailSegmentW
+Doing: uriHexToLetterExA
+Doing: uriFreeUriPathA
+Doing: uriParseIpFutLoopA
+Doing: uriPushPathSegmentW
+Doing: uriMakeOwnerA
+Doing: uriCopyUriW
+Doing: uriParsePortA
+Doing: uriNormalizeSyntaxExMmA
+Doing: uriParseAuthorityW
+Doing: uriNormalizeSyntaxMaskRequiredW
+Doing: uriParseIpFutureW
+Doing: uri_TESTING_ONLY_ParseIpSixA
+Doing: uriContainsUglyPercentEncodingA
+Doing: uriDissectQueryMallocExW
+Doing: uriParseSegmentNzNcOrScheme2W
+Doing: uriFixPercentEncodingEngineA
+Doing: uriParseOwnHostA
+Doing: uriUnixFilenameToUriStringA
+Doing: uriResetUriA
+Doing: uriUriStringToUnixFilenameA
+Doing: uriLowercaseInplaceExceptPercentEncodingW
+Doing: uriParseOwnPortUserInfoA
+Doing: uriFreeQueryListA
+Doing: uriParseDecOctetThreeA
+Doing: uriParseAuthorityTwoA
+Doing: uriEqualsUriA
+Doing: uriComposeQueryA
+Doing: uriCopyRangeAsNeededA
+Doing: uriPreventLeakageAfterCopyW
+Doing: uriFixAmbiguityA
+Doing: uriCopyUriMmA
+Doing: uriOnExitOwnHostUserInfoA
+Doing: uriParseSingleUriExMmA
+Doing: uriWindowsFilenameToUriStringW
+Doing: uriParseOwnUserInfoW
+Doing: uriSetFragmentMmW
+Doing: uriFixPathNoSchemeA
+Doing: uriSetUserInfoMmA
+Doing: uriRemoveDotSegmentsExA
+Doing: uriSetHostIp6A
+Doing: uriParseDecOctetOneW
+Doing: uriCopyPathA
+Doing: uriCopyUriA
+Doing: uriOnExitOwnHost2A
+Doing: uriWindowsFilenameToUriStringA
+Doing: uriResolveAbsolutePathFlagA
+Doing: uriToStringCharsRequiredA
+Doing: uriParsePartHelperTwoW
+Doing: uriEnsureThatPathIsNotMistakenForHostA
+Doing: uriAddBaseUriImplA
+Doing: uriAppendQueryItemW
+Doing: uriParsePctEncodedW
+Doing: uriParseDecOctetOneA
+Doing: uriStopSyntaxW
+Doing: uriUnescapeInPlaceExA
+Doing: uriParseUriTailW
+Doing: uriParseDecOctetTwoA
+Doing: uriFreeUriMembersMmW
+Doing: uriEscapeW
+Doing: uriParseQueryFragW
+Doing: uriDissectQueryMallocW
+Doing: uriEscapeExW
+Doing: uriIsWellFormedFragmentA
+Doing: uriFilenameToUriStringA
+Doing: uriMakeRangeOwnerA
+Doing: uriCopyRangeW
+Doing: uriLowercaseMallocA
+Doing: uriOnExitOwnPortUserInfoW
+Doing: uriUriStringToWindowsFilenameA
+Doing: uriFixPercentEncodingEngineW
+Doing: uriFilenameToUriStringW
+Doing: uriParsePctSubUnresW
+Doing: uriComposeQueryMallocW
+Doing: uriNormalizeSyntaxExW
+Doing: uriNormalizeSyntaxExMmW
+Doing: uriSetHostAutoW
+Doing: uriParseOwnHostW
+Doing: uriHasHostA
+Doing: uriComposeQueryMallocExMmW
+Doing: uriNormalizeSyntaxW
+Doing: uriInternalSetHostMmA
+Doing: uriOnExitOwnHostUserInfoW
+Doing: uriIsWellFormedHostIpFutureW
+Doing: uriMakeOwnerMmW
+Doing: uriMakeOwnerW
+Doing: uriNormalizeSyntaxExA
+Doing: uriWriteQuadToDoubleByte
+Doing: uriIsWellFormedHostRegNameA
+Doing: uriGetOctetValue
+Doing: uriParseUriExA
+Doing: uriParseUriExMmA
+Doing: uriResetParserStateExceptUriA
+Doing: uriParseUriReferenceA
+Doing: uriFreeUriMembersMmA
+Doing: uriNormalizeSyntaxEngineW
+Doing: uriParseSegmentNzNcOrScheme2A
+Doing: uriInternalSetPathA
+Doing: uriContainsUppercaseLettersW
+Doing: uriParseMustBeSegmentNzNcA
+Doing: uriDropEmptyFirstPathSegmentA
+Doing: uriParsePartHelperTwoA
+Doing: uriParseQueryFragA
+Doing: uriStopMallocW
+Doing: uriOnExitSegmentNzNcOrScheme2A
+Doing: uriParseUriTailTwoA
+Doing: uriPushPathSegmentA
+Doing: uriStopMallocA
+Doing: uriParseZeroMoreSlashSegsA
+Doing: uriDefaultFree
+Doing: uriParsePctSubUnresA
+Doing: uriParseSegmentNzA
+Doing: uri_TESTING_ONLY_ParseIpSixW
+Doing: uriParseOwnHost2A
+Doing: uriParseOwnUserInfoA
+Doing: uriParseIPv6address2A
+Doing: uriParseHexZeroA
+Doing: uriParseIpLit2W
+Doing: uriParseHierPartA
+Doing: uriParsePcharW
+Doing: uriSetHostIp4A
+Doing: uriParseUriExMmW
+Doing: uriIsWellFormedHostIp4W
+Doing: uriResetParserStateExceptUriW
+Doing: uriParseDecOctetA
+Doing: uriUnescapeInPlaceA
+Doing: uriParseUriReferenceW
+Doing: uriParseUriTailTwoW
+Doing: uriParseSegmentNzW
+Doing: uriParseSegmentW
+Doing: uriParsePathRootlessA
+Doing: uriParseAuthorityTwoW
+Doing: uriParseUriA
+Doing: uriUnixFilenameToUriStringW
+Doing: uriParseOwnHostUserInfoNzW
+Doing: uriParseOwnPortUserInfoW
+Doing: uriComposeQueryMallocExW
+Doing: uriParseOwnHost2W
+Doing: uriOnExitOwnHost2W
+Doing: uriParseUriW
+Doing: uriTestMemoryManager
+Doing: uriParseSingleUriW
+Doing: uriComposeQueryCharsRequiredA
+Doing: uriParseSingleUriExMmW
+Doing: uriFreeUriMembersW
+Doing: uriParseIPv6address2W
+Doing: uriComposeQueryCharsRequiredExA
+Doing: uriComposeQueryEngineA
+Doing: uriComposeQueryExA
+Doing: uriParseHierPartW
+Doing: uriComposeQueryMallocA
+Doing: uriParsePathRootlessW
+Doing: uriComposeQueryMallocExA
+Doing: uriParseDecOctetFourA
+Doing: uriFreeQueryListMmA
+Doing: uriIsWellFormedHostIp6A
+Doing: uriParseIpFourAddressW
+Doing: uriDissectQueryMallocA
+Doing: uriSetHostIp6MmA
+Doing: uriParseDecOctetW
+Doing: uriDissectQueryMallocExA
+Doing: uriDissectQueryMallocExMmA
+Doing: uriAppendQueryItemA
+Doing: uriComposeQueryCharsRequiredW
+Doing: uriComposeQueryEngineW
+Doing: uriComposeQueryW
+Doing: uriComposeQueryExW
+Doing: llvm.dbg.label
+Doing: __errno_location
+Doing: malloc
+Doing: llvm.dbg.declare
+Doing: llvm.memset.p0i8.i64
+Doing: wcslen
+Doing: llvm.memmove.p0i8.p0i8.i64
+Doing: strncmp
+Doing: wcsncmp
+Doing: memcmp
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: strlen
+Doing: __assert_fail
+Doing: free
+Doing: realloc
+Doing: reallocarray
+Doing: calloc
+real 7.59
+user 7.09
+sys 0.27
+maxrss_kb 355088
+
+real	0m27.692s
+user	0m11.923s
+sys	0m2.788s

@@ -1,0 +1,947 @@
+++++ realpath run_analysis.sh
++++ dirname /data/paul2/liberator/docker/run_analysis.sh
+++ dirname /data/paul2/liberator/docker
++ ROOT_DIR=/data/paul2/liberator/
++ echo /data/paul2/liberator/
+/data/paul2/liberator/
++ IMG_NAME=libpp-analysis-org
++ LIBPP=../
++ '[' 1 '!=' 1 ']'
++ '[' 0 = 1 ']'
++ '[' -z cpu_features ']'
++ '[' -s ..//analysis/cpu_features/work/apipass/conditions.json ']'
++ echo libpp-analysis-org
+libpp-analysis-org
++ PROF_FLAG=()
++ [[ 0 -gt 0 ]]
++ CPUSET=0
++ [[ -n '' ]]
++ docker rm -f libpp-analysis-org-cpu_features
++ docker run --env PROF_FLAG= --rm --cpuset-cpus=0 --name libpp-analysis-org-cpu_features --user root --env TARGET=cpu_features -v /data/paul2/liberator/:/workspaces/libfuzz libpp-analysis-org
++ export TARGET_NAME=cpu_features
++ TARGET_NAME=cpu_features
++ export TARGET=/workspaces/libfuzz/analysis/cpu_features
++ TARGET=/workspaces/libfuzz/analysis/cpu_features
++ echo '[TOOLS_DIR] /home/libfuzz'
++ echo '[TARGET] /workspaces/libfuzz/analysis/cpu_features'
+[TOOLS_DIR] /home/libfuzz
+[TARGET] /workspaces/libfuzz/analysis/cpu_features
+++ which wllvm
++ echo '[WLLVM] /home/libfuzz/.local/bin/wllvm'
++ cd /workspaces/libfuzz/targets/cpu_features
++ sudo ./preinstall.sh
+[WLLVM] /home/libfuzz/.local/bin/wllvm
+[INFO] No need preinstall
++ ./fetch.sh
+HEAD is now at eca53ba Merge v0.9.0 into `main`. am: 3de70d0029 am: f66f3d320a am: d64300359d am: cc2079932d am: 085bd65bfb
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /workspaces/libfuzz/analysis/cpu_features/repo
+make clean
+make
+/usr/bin/cmake -P /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles/VerifyGlobs.cmake
+/usr/bin/cmake -S/workspaces/libfuzz/analysis/cpu_features/repo -B/workspaces/libfuzz/analysis/cpu_features/repo --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles/progress.marks
+make -f CMakeFiles/Makefile2 all
+make[1]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+make -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/depend
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+cd /workspaces/libfuzz/analysis/cpu_features/repo && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles/utils.dir/DependInfo.cmake --color=
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+make -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/build
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[  5%] Building C object CMakeFiles/utils.dir/src/filesystem.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/utils.dir/src/filesystem.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/filesystem.c
+[ 10%] Building C object CMakeFiles/utils.dir/src/stack_line_reader.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/utils.dir/src/stack_line_reader.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/stack_line_reader.c
+[ 15%] Building C object CMakeFiles/utils.dir/src/string_view.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/utils.dir/src/string_view.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/string_view.c
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[ 15%] Built target utils
+make -f CMakeFiles/cpu_features.dir/build.make CMakeFiles/cpu_features.dir/depend
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+cd /workspaces/libfuzz/analysis/cpu_features/repo && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles/cpu_features.dir/DependInfo.cmake --color=
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+make -f CMakeFiles/cpu_features.dir/build.make CMakeFiles/cpu_features.dir/build
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[ 20%] Building C object CMakeFiles/cpu_features.dir/src/impl_aarch64_linux_or_android.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_aarch64_linux_or_android.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_aarch64_linux_or_android.c
+[ 25%] Building C object CMakeFiles/cpu_features.dir/src/impl_aarch64_macos_or_iphone.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_aarch64_macos_or_iphone.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_aarch64_macos_or_iphone.c
+[ 30%] Building C object CMakeFiles/cpu_features.dir/src/impl_aarch64_windows.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_aarch64_windows.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_aarch64_windows.c
+[ 35%] Building C object CMakeFiles/cpu_features.dir/src/impl_arm_linux_or_android.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_arm_linux_or_android.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_arm_linux_or_android.c
+[ 40%] Building C object CMakeFiles/cpu_features.dir/src/impl_loongarch_linux.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_loongarch_linux.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_loongarch_linux.c
+[ 45%] Building C object CMakeFiles/cpu_features.dir/src/impl_mips_linux_or_android.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_mips_linux_or_android.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_mips_linux_or_android.c
+[ 50%] Building C object CMakeFiles/cpu_features.dir/src/impl_ppc_linux.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_ppc_linux.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_ppc_linux.c
+[ 55%] Building C object CMakeFiles/cpu_features.dir/src/impl_riscv_linux.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_riscv_linux.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_riscv_linux.c
+[ 60%] Building C object CMakeFiles/cpu_features.dir/src/impl_s390x_linux.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_s390x_linux.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_s390x_linux.c
+[ 65%] Building C object CMakeFiles/cpu_features.dir/src/impl_x86_freebsd.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_x86_freebsd.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_x86_freebsd.c
+[ 70%] Building C object CMakeFiles/cpu_features.dir/src/impl_x86_linux_or_android.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_x86_linux_or_android.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_x86_linux_or_android.c
+[ 75%] Building C object CMakeFiles/cpu_features.dir/src/impl_x86_macos.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_x86_macos.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_x86_macos.c
+[ 80%] Building C object CMakeFiles/cpu_features.dir/src/impl_x86_windows.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/cpu_features.dir/src/impl_x86_windows.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/impl_x86_windows.c
+[ 85%] Linking C static library libcpu_features.a
+/usr/bin/cmake -P CMakeFiles/cpu_features.dir/cmake_clean_target.cmake
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cpu_features.dir/link.txt --verbose=1
+/usr/bin/ar qc libcpu_features.a  CMakeFiles/cpu_features.dir/src/impl_aarch64_linux_or_android.c.o CMakeFiles/cpu_features.dir/src/impl_aarch64_macos_or_iphone.c.o CMakeFiles/cpu_features.dir/src/impl_aarch64_windows.c.o CMakeFiles/cpu_features.dir/src/impl_arm_linux_or_android.c.o CMakeFiles/cpu_features.dir/src/impl_loongarch_linux.c.o CMakeFiles/cpu_features.dir/src/impl_mips_linux_or_android.c.o CMakeFiles/cpu_features.dir/src/impl_ppc_linux.c.o CMakeFiles/cpu_features.dir/src/impl_riscv_linux.c.o CMakeFiles/cpu_features.dir/src/impl_s390x_linux.c.o CMakeFiles/cpu_features.dir/src/impl_x86_freebsd.c.o CMakeFiles/cpu_features.dir/src/impl_x86_linux_or_android.c.o CMakeFiles/cpu_features.dir/src/impl_x86_macos.c.o CMakeFiles/cpu_features.dir/src/impl_x86_windows.c.o CMakeFiles/utils.dir/src/filesystem.c.o CMakeFiles/utils.dir/src/stack_line_reader.c.o CMakeFiles/utils.dir/src/string_view.c.o
+/usr/bin/ranlib libcpu_features.a
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[ 85%] Built target cpu_features
+make -f CMakeFiles/list_cpu_features.dir/build.make CMakeFiles/list_cpu_features.dir/depend
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+cd /workspaces/libfuzz/analysis/cpu_features/repo && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles/list_cpu_features.dir/DependInfo.cmake --color=
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+make -f CMakeFiles/list_cpu_features.dir/build.make CMakeFiles/list_cpu_features.dir/build
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[ 90%] Building C object CMakeFiles/list_cpu_features.dir/src/utils/list_cpu_features.c.o
+/home/libfuzz/.local/bin/wllvm -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include  -g -O0   -std=gnu99 -o CMakeFiles/list_cpu_features.dir/src/utils/list_cpu_features.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/utils/list_cpu_features.c
+[ 95%] Linking C executable list_cpu_features
+/usr/bin/cmake -E cmake_link_script CMakeFiles/list_cpu_features.dir/link.txt --verbose=1
+/home/libfuzz/.local/bin/wllvm -g -O0   CMakeFiles/list_cpu_features.dir/src/utils/list_cpu_features.c.o  -o list_cpu_features  libcpu_features.a -ldl 
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[ 95%] Built target list_cpu_features
+make -f CMakeFiles/unix_based_hardware_detection.dir/build.make CMakeFiles/unix_based_hardware_detection.dir/depend
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+cd /workspaces/libfuzz/analysis/cpu_features/repo && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles/unix_based_hardware_detection.dir/DependInfo.cmake --color=
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+make -f CMakeFiles/unix_based_hardware_detection.dir/build.make CMakeFiles/unix_based_hardware_detection.dir/build
+make[2]: Entering directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[100%] Building C object CMakeFiles/unix_based_hardware_detection.dir/src/hwcaps.c.o
+/home/libfuzz/.local/bin/wllvm -DHAVE_DLFCN_H -DHAVE_STRONG_GETAUXVAL -DSTACK_LINE_READER_BUFFER_SIZE=1024 -I/workspaces/libfuzz/analysis/cpu_features/repo/include -I/workspaces/libfuzz/analysis/cpu_features/repo/include/internal  -g -O0   -std=gnu99 -o CMakeFiles/unix_based_hardware_detection.dir/src/hwcaps.c.o   -c /workspaces/libfuzz/analysis/cpu_features/repo/src/hwcaps.c
+make[2]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+[100%] Built target unix_based_hardware_detection
+make[1]: Leaving directory '/workspaces/libfuzz/analysis/cpu_features/repo'
+/usr/bin/cmake -E cmake_progress_start /workspaces/libfuzz/analysis/cpu_features/repo/CMakeFiles 0
+make install
+[ 15%] Built target utils
+[ 85%] Built target cpu_features
+[ 95%] Built target list_cpu_features
+[100%] Built target unix_based_hardware_detection
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/include/cpu_features/cpu_features_macros.h
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/include/cpu_features/cpu_features_cache_info.h
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/include/cpu_features/cpuinfo_x86.h
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/bin/list_cpu_features
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/lib/cmake/CpuFeatures/CpuFeaturesTargets.cmake
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/lib/cmake/CpuFeatures/CpuFeaturesTargets-debug.cmake
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/lib/cmake/CpuFeatures/CpuFeaturesConfig.cmake
+-- Installing: /workspaces/libfuzz/analysis/cpu_features/work/lib/cmake/CpuFeatures/CpuFeaturesConfigVersion.cmake
+/tmp/tmpqj23z28_.cc
+['cpu_features::X86Info']
+['cpu_features::CacheInfo']
+['cpu_features::X86Microarchitecture']
+['const', 'cpu_features::X86Info', '*']
+['void']
+['char', '*']
+['int']
+['const', 'cpu_features::X86Features', '*']
+['cpu_features::X86FeaturesEnum']
+['const', 'char', '*']
+['cpu_features::X86FeaturesEnum']
+['const', 'char', '*']
+['cpu_features::X86Microarchitecture']
+[INFO] Loading library...
+[INFO] Done
+[INFO] I analyze all the functions
+
+*********CallGraph Stats***************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+TotalNode           155
+TotalEdge           360
+TotalCycle          0
+MaxNodeInCycle      0
+NodeInCycle         0
+CalRetPairInCycle   0
+#######################################################
+
+*********General Stats***************
+################ (program : libcpu_features.a.bc)###############
+BBWith2Succ         140
+BBWith3Succ         9
+TotalPointers       8472
+TotalObjects        512
+TotalFieldObjects   327
+MaxStructSize       46
+TotalSVFStmts       9050
+TotalPTASVFStmts    4254
+FIObjNum            5
+FSObjNum            506
+AddrsNum            966
+LoadsNum            1237
+StoresNum           1771
+CopysNum            948
+GepsNum             1927
+CallsNum            532
+ReturnsNum          198
+FunctionObjs        155
+GlobalObjs          4
+HeapObjs            4
+StackObjs           347
+VarStructObj        87
+VarArrayObj         4
+ConstStructObj      0
+ConstArrayObj       3
+NonPtrObj           318
+ConstantObj         0
+IndCallSites        3
+TotalCallSite       289
+-------------------------------------------------------
+LLVMIRTime          0.03
+SymbolTableTime     0.007
+SVFIRTime           0.052
+#######################################################
+
+*********Constraint Graph Stats***************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+AvgIn/OutCopyEdge   0.784981
+AvgIn/OutLoadEdge   0.129664
+AvgIn/OutAddrEdge   0.156017
+AvgIn/OutEdge       1.19916
+LocalVarInRecur     0
+NumOfCGNode         9921
+TotalValidNode      4288
+TotalValidObjNode   572
+NumOfCGEdge         4473
+NumOfAddrs          669
+NumOfCopys          1439
+NumOfGeps           1927
+NumOfLoads          556
+NumOfStores         551
+MaxInCopyEdge       74
+MaxOutCopyEdge      743
+MaxInLoadEdge       1
+MaxOutLoadEdge      73
+MaxInStoreEdge      74
+MaxOutStoreEdge     1
+AvgIn/OutStoreEdge  0
+MaxInAddrEdge       1
+MaxOutAddrEdge      159
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.051
+UpdateCGTime        0
+AvgTopLvlPtsSize    0.862225
+SCCDetectTime       0
+SCCMergeTime        0
+LoadStoreTime       0
+CopyGepTime         0
+AvgPtsSetSize       0.321306
+CollapseTime        0
+Pointers            8424
+TotalPointers       8472
+TotalObjects        839
+IndCallSites        3
+MemObjects          512
+DummyFieldPtrs      48
+FieldObjs           327
+SolveIterations     4
+IndEdgeSolved       74
+NullPointer         214
+PointsToConstPtr    42
+PointsToBlkPtr      0
+AddrProcessed       669
+CopyProcessed       719
+GepProcessed        1857
+LoadProcessed       410
+StoreProcessed      407
+NumOfSFRs           0
+NumOfFieldExpand    0
+MaxPtsSetSize       74
+NumOfSCCDetect      4
+TotalCycleNum       0
+TotalPWCCycleNum    0
+NodesInCycles       0
+MaxNodesInSCC       0
+#######################################################
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : libcpu_features.a.bc)###############
+UniquePointsToSets       915
+TotalUnions              3520
+PropertyUnions           3265
+UniqueUnions             82
+LookupUnions             11
+PreemptiveUnions         162
+TotalComplements         39471
+PropertyComplements      39348
+UniqueComplements        22
+LookupComplements        79
+PreemptiveComplements    22
+TotalIntersections       954
+PropertyIntersections    910
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  44
+#######################################################
+
+*********Memory SSA Statistics***************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.2067
+SSARenameTime       0
+InsertPHITime       0.001
+GenMUCHITime        0.007
+GenRegionTime       0.011
+TotalMSSATime       0.019
+BBHasMSSAPhi        33
+MSSAPhi             122
+StoreHasChi         348
+LoadHasMu           556
+CSHasMu             46
+CSHasChi            16
+FunHasRetMu         145
+FunHasEntryChi      132
+StoreChiNode        311
+LoadMuNode          556
+CSMuNode            61
+CSChiNode           26
+FunRetMu            397
+FunEntryChi         397
+MemRegions          358
+MaxRegSize          26
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.003
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.001
+TLNodeTime          0
+ATNodeTime          0.002
+OptTime             0
+AvgWeight           1.1287
+TotalNode           5528
+FormalIn            397
+FormalOut           397
+FormalParam         151
+FormalRet           3
+ActualIn            61
+ActualOut           26
+ActualParam         254
+ActualRet           1
+TotalEdge           6149
+DirectEdge          4393
+IndirectEdge        1756
+IndirectEdgeLabels  1982
+IndCallEdge         133
+IndRetEdge          51
+DirectCallEdge      138
+DirectRetEdge       1
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         10
+MaxOutDegree        743
+AvgIndInDeg         1
+AvgIndOutDeg        1
+MaxIndInDeg         10
+MaxIndOutDeg        74
+MSSAPhi             122
+PHI                 3
+Addr                669
+Copy                409
+Gep                 1927
+Load                556
+Store               551
+#######################################################
+
+*********CallGraph Stats***************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+TotalNode           155
+TotalEdge           286
+TotalCycle          0
+MaxNodeInCycle      0
+NodeInCycle         0
+CalRetPairInCycle   0
+FIObjNum            5
+FSObjNum            507
+#######################################################
+
+*********General Stats***************
+################ (program : libcpu_features.a.bc)###############
+BBWith2Succ         140
+BBWith3Succ         9
+TotalPointers       8472
+TotalObjects        512
+TotalFieldObjects   327
+MaxStructSize       46
+TotalSVFStmts       9050
+TotalPTASVFStmts    4254
+FIObjNum            5
+FSObjNum            506
+AddrsNum            966
+LoadsNum            1237
+StoresNum           1771
+CopysNum            948
+GepsNum             1927
+CallsNum            532
+ReturnsNum          198
+FunctionObjs        155
+GlobalObjs          4
+HeapObjs            4
+StackObjs           347
+VarStructObj        87
+VarArrayObj         4
+ConstStructObj      0
+ConstArrayObj       3
+NonPtrObj           318
+ConstantObj         0
+IndCallSites        3
+TotalCallSite       289
+-------------------------------------------------------
+LLVMIRTime          0.03
+SymbolTableTime     0.007
+SVFIRTime           0.052
+#######################################################
+
+****Flow-Sensitive Pointer Analysis Statistics****
+
+************************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.125
+SolveTime           0.011
+SCCTime             0
+ProcessTime         0
+PropagationTime     0
+DirectPropaTime     0
+IndirectPropaTime   0
+Strong/WeakUpdTime  0
+AddrTime            0
+CopyTime            0
+LoadTime            0
+UpdateCGTime        0
+PhiTime             0
+AvgPtsSize          0.838227
+AvgTopLvlPtsSize    0.838227
+AvgAddrTakenVarPts  0.492453
+AvgINPtsSize        0
+AvgOUTPtsSize       0
+AverageSCCSize      5.125
+StoreTime           0
+GepTime             0
+Pointers            8424
+LocalVarInRecur     0
+TotalPointers       8472
+TotalObjects        839
+StoresNum           551
+CopysNum            409
+MemObjects          512
+DummyFieldPtrs      48
+FieldObjs           327
+SolveIterations     1
+IndEdgeSolved       0
+NullPointer         215
+PointsToConstPtr    0
+PointsToBlkPtr      42
+StrongUpdates       267
+FI_SNodesHaveIN     0
+FI_SNodesHaveOUT    0
+FO_SNodesHaveIN     0
+FO_SNodesHaveOUT    0
+AI_SNodesHaveIN     0
+AI_SNodesHaveOUT    0
+AO_SNodesHaveIN     0
+AO_SNodesHaveOUT    0
+LD_SNodesHaveIN     0
+SNodesHaveIN        0
+LD_SNodesHaveOUT    0
+SNodesHaveOUT       0
+ST_SNodesHaveIN     0
+ST_SNodesHaveOUT    0
+PHI_SNodesHaveIN    0
+PHI_SNodesHaveOUT   0
+PotentialVarHaveIN  0
+VarHaveIN           0
+PotentialVarHaveOUT 0
+VarHaveOUT          0
+VarHaveEmptyIN      0
+VarHaveEmptyOUT     0
+VarHaveIN_FI        0
+VarHaveOUT_FI       0
+VarHaveIN_FO        0
+VarHaveOUT_FO       0
+VarHaveIN_AI        0
+VarHaveOUT_AI       0
+VarHaveIN_AO        0
+VarHaveOUT_AO       0
+VarHaveIN_LD        0
+VarHaveOUT_LD       0
+VarHaveIN_ST        0
+VarHaveOUT_ST       0
+VarHaveIN_PHI       0
+VarHaveOUT_PHI      0
+MaxPtsSize          3
+MaxTopLvlPtsSize    3
+MaxINPtsSize        0
+MaxOUTPtsSize       0
+NumOfAddrTakenVar   530
+MaxAddrTakenVarPts  3
+ProcessedAddr       669
+ProcessedCopy       409
+ProcessedGep        1928
+ProcessedLoad       575
+ProcessedStore      569
+ProcessedPhi        3
+ProcessedAParam     0
+ProcessedFRet       0
+ProcessedMSSANode   1060
+NumOfNodesInSCC     205
+MaxSCCSize          33
+NumOfSCC            40
+#######################################################
+
+****Persistent Points-To Cache Statistics: flow-sensitive analysis bitvector****
+################ (program : libcpu_features.a.bc)###############
+UniquePointsToSets       819
+TotalUnions              3876
+PropertyUnions           3860
+UniqueUnions             5
+LookupUnions             1
+PreemptiveUnions         10
+TotalComplements         0
+PropertyComplements      0
+UniqueComplements        0
+LookupComplements        0
+PreemptiveComplements    0
+TotalIntersections       0
+PropertyIntersections    0
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  0
+#######################################################
+[INFO] Analysis done!
+
+*********Memory SSA Statistics***************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+AverageRegSize      1.23953
+SSARenameTime       0.002
+InsertPHITime       0.002
+GenMUCHITime        0.014
+GenRegionTime       0.019
+TotalMSSATime       0.031
+BBHasMSSAPhi        64
+MSSAPhi             258
+StoreHasChi         1568
+LoadHasMu           1237
+CSHasMu             53
+CSHasChi            19
+FunHasRetMu         145
+FunHasEntryChi      145
+StoreChiNode        1438
+LoadMuNode          1039
+CSMuNode            99
+CSChiNode           51
+FunRetMu            652
+FunEntryChi         652
+MemRegions          597
+MaxRegSize          22
+#######################################################
+
+****SVFG Statistics****
+
+************************
+################ (program : libcpu_features.a.bc)###############
+-------------------------------------------------------
+TotalTime           0.01
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0.006
+TLNodeTime          0
+ATNodeTime          0.004
+OptTime             0
+AvgWeight           1.08248
+TotalNode           11339
+FormalIn            652
+FormalOut           652
+FormalParam         227
+FormalRet           121
+ActualIn            99
+ActualOut           51
+ActualParam         752
+ActualRet           206
+TotalEdge           14801
+DirectEdge          9891
+IndirectEdge        4910
+IndirectEdgeLabels  5315
+IndCallEdge         215
+IndRetEdge          125
+DirectCallEdge      606
+DirectRetEdge       272
+AvgInDegree         1
+AvgOutDegree        1
+MaxInDegree         107
+MaxOutDegree        743
+AvgIndInDeg         1
+AvgIndOutDeg        1
+MaxIndInDeg         107
+MaxIndOutDeg        107
+MSSAPhi             258
+PHI                 136
+Addr                966
+Copy                948
+Gep                 1927
+Load                1237
+Store               1771
+#######################################################
+[INFO] running analysis...
+[INFO 1/7] processing params for: FillX86BrandString
+[INFO 2/7] processing params for: GetX86CacheInfo
+[INFO 3/7] processing params for: GetX86FeaturesEnumName
+[INFO 3/7] processing return for: GetX86FeaturesEnumName
+[INFO 4/7] processing params for: GetX86FeaturesEnumValue
+[INFO 4/7] processing return for: GetX86FeaturesEnumValue
+[INFO 5/7] processing params for: GetX86Info
+[INFO 6/7] processing params for: GetX86Microarchitecture
+[INFO 6/7] processing return for: GetX86Microarchitecture
+[INFO 7/7] processing params for: GetX86MicroarchitectureName
+[INFO 7/7] processing return for: GetX86MicroarchitectureName
+[INFO] Summary FillX86BrandString:
+param_0: 2 access types
+return: 0 access types
+[INFO] Summary GetX86CacheInfo:
+param_0: 5 access types
+return: 0 access types
+[INFO] Summary GetX86FeaturesEnumName:
+param_0: 1 access types
+return: 2 access types
+[INFO] Summary GetX86FeaturesEnumValue:
+param_0: 1 access types
+param_1: 1 access types
+return: 0 access types
+[INFO] Summary GetX86Info:
+param_0: 12 access types
+return: 0 access types
+[INFO] Summary GetX86Microarchitecture:
+param_0: 6 access types
+return: 0 access types
+[INFO] Summary GetX86MicroarchitectureName:
+param_0: 1 access types
+return: 2 access types
+
+Profiler Stats:
+Key                                                                             , Total(ms), Count, Avg(ms)
+----------------------------------------------------------------------
+1. LLVM Module Build                                                            , 36.65, 1, 36.65
+2. PAG Builder                                                                  , 61.64, 1, 61.64
+3. Points-to Analysis                                                           , 268.54, 1, 268.54
+4. Full SVFG Build                                                              , 121.62, 1, 121.62
+Function 1: extract_parameter_metadata                                          , 30.45, 8, 3.81
+Function 1: extract_parameter_metadata: FillX86BrandString                      , 0.11, 1, 0.11
+Function 1: extract_parameter_metadata: GetX86CacheInfo                         , 0.24, 1, 0.24
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumName                  , 0.08, 1, 0.08
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumValue                 , 15.62, 2, 7.81
+Function 1: extract_parameter_metadata: GetX86Info                              , 13.95, 1, 13.95
+Function 1: extract_parameter_metadata: GetX86Microarchitecture                 , 0.36, 1, 0.36
+Function 1: extract_parameter_metadata: GetX86MicroarchitectureName             , 0.09, 1, 0.09
+Function 2: extractLenDependencyParameter                                       , 0.15, 1, 0.15
+Function 2: extractLenDependencyParameter: FillX86BrandString                   , 0.15, 1, 0.15
+Function 3: my_extract_dependency_among_parameters                              , 0.94, 8, 0.12
+Function 3: my_extract_dependency_among_parameters: FillX86BrandString          , 0.07, 1, 0.07
+Function 3: my_extract_dependency_among_parameters: GetX86CacheInfo             , 0.08, 1, 0.08
+Function 3: my_extract_dependency_among_parameters: GetX86FeaturesEnumName      , 0.06, 1, 0.06
+Function 3: my_extract_dependency_among_parameters: GetX86FeaturesEnumValue     , 0.20, 2, 0.10
+Function 3: my_extract_dependency_among_parameters: GetX86Info                  , 0.40, 1, 0.40
+Function 3: my_extract_dependency_among_parameters: GetX86Microarchitecture     , 0.07, 1, 0.07
+Function 3: my_extract_dependency_among_parameters: GetX86MicroarchitectureName , 0.06, 1, 0.06
+Function 4: extract_return_metadata                                             , 0.96, 7, 0.14
+Function 4: extract_return_metadata: FillX86BrandString                         , 0.05, 1, 0.05
+Function 4: extract_return_metadata: GetX86CacheInfo                            , 0.05, 1, 0.05
+Function 4: extract_return_metadata: GetX86FeaturesEnumName                     , 0.37, 1, 0.37
+Function 4: extract_return_metadata: GetX86FeaturesEnumValue                    , 0.05, 1, 0.05
+Function 4: extract_return_metadata: GetX86Info                                 , 0.05, 1, 0.05
+Function 4: extract_return_metadata: GetX86Microarchitecture                    , 0.05, 1, 0.05
+Function 4: extract_return_metadata: GetX86MicroarchitectureName                , 0.34, 1, 0.34
+Process Function: FillX86BrandString                                            , 0.45, 1, 0.45
+Process Function: GetX86CacheInfo                                               , 0.43, 1, 0.43
+Process Function: GetX86FeaturesEnumName                                        , 0.57, 1, 0.57
+Process Function: GetX86FeaturesEnumValue                                       , 16.02, 1, 16.02
+Process Function: GetX86Info                                                    , 14.63, 1, 14.63
+Process Function: GetX86Microarchitecture                                       , 0.57, 1, 0.57
+Process Function: GetX86MicroarchitectureName                                   , 0.54, 1, 0.54
+Process Parameters: FillX86BrandString                                          , 0.37, 1, 0.37
+Process Parameters: GetX86CacheInfo                                             , 0.35, 1, 0.35
+Process Parameters: GetX86FeaturesEnumName                                      , 0.17, 1, 0.17
+Process Parameters: GetX86FeaturesEnumValue                                     , 15.89, 1, 15.89
+Process Parameters: GetX86Info                                                  , 14.47, 1, 14.47
+Process Parameters: GetX86Microarchitecture                                     , 0.48, 1, 0.48
+Process Parameters: GetX86MicroarchitectureName                                 , 0.18, 1, 0.18
+Total Condition Extraction (all 4 functions total)                              , 33.24, 1, 33.24
+
+
+Memory Stats (MB):
+Key                                                                             , AvgDelta, MaxDelta, MaxPeak, Count
+1. LLVM Module Build                                                            , 9.7, 9.7, 19.3, 1
+2. PAG Builder                                                                  , 15.8, 15.8, 35.3, 1
+3. Points-to Analysis                                                           , 24.9, 24.9, 60.2, 1
+4. Full SVFG Build                                                              , 10.7, 10.7, 71.0, 1
+Function 1: extract_parameter_metadata                                          , 0.1, 0.6, 71.6, 8
+Function 1: extract_parameter_metadata: FillX86BrandString                      , 0.0, 0.0, 71.0, 1
+Function 1: extract_parameter_metadata: GetX86CacheInfo                         , 0.0, 0.0, 71.0, 1
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumName                  , 0.0, 0.0, 71.0, 1
+Function 1: extract_parameter_metadata: GetX86FeaturesEnumValue                 , 0.3, 0.6, 71.6, 2
+Function 1: extract_parameter_metadata: GetX86Info                              , 0.0, 0.0, 71.6, 1
+Function 1: extract_parameter_metadata: GetX86Microarchitecture                 , 0.0, 0.0, 71.6, 1
+Function 1: extract_parameter_metadata: GetX86MicroarchitectureName             , 0.0, 0.0, 71.6, 1
+Function 2: extractLenDependencyParameter                                       , 0.0, 0.0, 71.0, 1
+Function 2: extractLenDependencyParameter: FillX86BrandString                   , 0.0, 0.0, 71.0, 1
+Function 3: my_extract_dependency_among_parameters                              , 0.0, 0.0, 71.6, 8
+Function 3: my_extract_dependency_among_parameters: FillX86BrandString          , 0.0, 0.0, 71.0, 1
+Function 3: my_extract_dependency_among_parameters: GetX86CacheInfo             , 0.0, 0.0, 71.0, 1
+Function 3: my_extract_dependency_among_parameters: GetX86FeaturesEnumName      , 0.0, 0.0, 71.0, 1
+Function 3: my_extract_dependency_among_parameters: GetX86FeaturesEnumValue     , 0.0, 0.0, 71.6, 2
+Function 3: my_extract_dependency_among_parameters: GetX86Info                  , 0.0, 0.0, 71.6, 1
+Function 3: my_extract_dependency_among_parameters: GetX86Microarchitecture     , 0.0, 0.0, 71.6, 1
+Function 3: my_extract_dependency_among_parameters: GetX86MicroarchitectureName , 0.0, 0.0, 71.6, 1
+Function 4: extract_return_metadata                                             , 0.0, 0.0, 71.6, 7
+Function 4: extract_return_metadata: FillX86BrandString                         , 0.0, 0.0, 71.0, 1
+Function 4: extract_return_metadata: GetX86CacheInfo                            , 0.0, 0.0, 71.0, 1
+Function 4: extract_return_metadata: GetX86FeaturesEnumName                     , 0.0, 0.0, 71.0, 1
+Function 4: extract_return_metadata: GetX86FeaturesEnumValue                    , 0.0, 0.0, 71.6, 1
+Function 4: extract_return_metadata: GetX86Info                                 , 0.0, 0.0, 71.6, 1
+Function 4: extract_return_metadata: GetX86Microarchitecture                    , 0.0, 0.0, 71.6, 1
+Function 4: extract_return_metadata: GetX86MicroarchitectureName                , 0.0, 0.0, 71.6, 1
+Process Function: FillX86BrandString                                            , 0.0, 0.0, 71.0, 1
+Process Function: GetX86CacheInfo                                               , 0.0, 0.0, 71.0, 1
+Process Function: GetX86FeaturesEnumName                                        , 0.0, 0.0, 71.0, 1
+Process Function: GetX86FeaturesEnumValue                                       , 0.6, 0.6, 71.6, 1
+Process Function: GetX86Info                                                    , 0.0, 0.0, 71.6, 1
+ProcesGetX86FeaturesEnumName
+GetX86MicroarchitectureName
+s Function: GetX86Microarchitecture                                       , 0.0, 0.0, 71.6, 1
+Process Function: GetX86MicroarchitectureName                                   , 0.0, 0.0, 71.6, 1
+Process Parameters: FillX86BrandString                                          , 0.0, 0.0, 71.0, 1
+Process Parameters: GetX86CacheInfo                                             , 0.0, 0.0, 71.0, 1
+Process Parameters: GetX86FeaturesEnumName                                      , 0.0, 0.0, 71.0, 1
+Process Parameters: GetX86FeaturesEnumValue                                     , 0.6, 0.6, 71.6, 1
+Process Parameters: GetX86Info                                                  , 0.0, 0.0, 71.6, 1
+Process Parameters: GetX86Microarchitecture                                     , 0.0, 0.0, 71.6, 1
+Process Parameters: GetX86MicroarchitectureName                                 , 0.0, 0.0, 71.6, 1
+Total Condition Extraction (all 4 functions total)                              , 0.6, 0.6, 71.6, 1
+
+
+[INFO] extract structs data layout!
+[INFO] struct data layout done!
+[NODES] baseline_processed=1803
++ ./analysis.sh
++ set -e
++ '[' -z /home/libfuzz ']'
++ WORK=/workspaces/libfuzz/analysis/cpu_features/work
++ rm -rf /workspaces/libfuzz/analysis/cpu_features/work
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features/work
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features/work/lib /workspaces/libfuzz/analysis/cpu_features/work/include
++ export CC=wllvm
++ CC=wllvm
++ export CXX=wllvm++
++ CXX=wllvm++
++ export LLVM_COMPILER=clang
++ LLVM_COMPILER=clang
++ export LLVM_COMPILER_PATH=/usr/bin
++ LLVM_COMPILER_PATH=/usr/bin
++ export LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cpu_features/work/apipass
++ LIBFUZZ_LOG_PATH=/workspaces/libfuzz/analysis/cpu_features/work/apipass
++ mkdir -p /workspaces/libfuzz/analysis/cpu_features/work/apipass
++ cd /workspaces/libfuzz/analysis/cpu_features/repo
++ cmake . -DCMAKE_INSTALL_PREFIX=/workspaces/libfuzz/analysis/cpu_features/work -DBUILD_SHARED_LIBS=off -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_TESTING=OFF '-DCMAKE_C_FLAGS_DEBUG=-g -O0' '-DCMAKE_CXX_FLAGS_DEBUG=-g -O0'
++ rm -rf /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis.log
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/exported_functions.txt
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/incomplete_types.txt
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_clang.json
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_llvm.json
++ touch /workspaces/libfuzz/analysis/cpu_features/work/apipass/coerce.log
++ echo 'make clean'
+++ nproc
++ make -j1 clean
++ echo make
+++ nproc
++ make -j1 VERBOSE=1
++ echo 'make install'
++ make install
++ extract-bc -b /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a
+Writing output to /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a.bc
++ /home/libfuzz/tool/misc/extract_included_functions.py -i /workspaces/libfuzz/analysis/cpu_features/work/include -p /workspaces/libfuzz/targets/cpu_features/public_headers.txt -e /workspaces/libfuzz/analysis/cpu_features/work/apipass/exported_functions.txt -t /workspaces/libfuzz/analysis/cpu_features/work/apipass/incomplete_types.txt -a /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_clang.json -n /workspaces/libfuzz/analysis/cpu_features/work/apipass/enum_types.txt
++ cd /workspaces/libfuzz/analysis/cpu_features/work/apipass
++ /usr/bin/time -f 'real %e\nuser %U\nsys %S\nmaxrss_kb %M' /home/libfuzz/condition_extractor/bin/extractor /workspaces/libfuzz/analysis/cpu_features/work/lib/libcpu_features.a.bc -interface /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_clang.json -output /workspaces/libfuzz/analysis/cpu_features/work/apipass/conditions.json -minimize_api /workspaces/libfuzz/analysis/cpu_features/work/apipass/apis_minimized.txt -v v0 -t json -do_indirect_jumps -data_layout /workspaces/libfuzz/analysis/cpu_features/work/apipass/data_layout.txt
+Doing: CpuFeatures_StringView_CopyString
+Doing: ParsePositiveNumberWithBase
+Doing: CpuFeatures_StringView_ParsePositiveNumber
+Doing: CpuFeatures_StringView_TrimWhitespace
+Doing: CpuFeatures_StringView_Back
+Doing: CpuFeatures_StringView_KeepFront
+Doing: CpuFeatures_StringView_IsEquals
+Doing: view.149
+Doing: equals.148
+Doing: CpuFeatures_StringView_StartsWith
+Doing: CpuFeatures_StringView_PopFront
+Doing: get_X86_HLE
+Doing: get_X86_VPCLMULQDQ
+Doing: HasYmmOsXSave
+Doing: get_X86_FMA4
+Doing: ExtractBitRange
+Doing: get_X86_ERMS
+Doing: get_X86_FS_REP_CMPSB_SCASB
+Doing: IsBitSet
+Doing: get_X86_AES
+Doing: FillX86BrandString
+Doing: ParseExtraAMDCpuId
+Doing: get_X86_MMX
+Doing: ParseCpuId
+Doing: get_X86_CLFSH
+Doing: get_X86_FS_REP_STOSB
+Doing: GetCacheLevelInfo
+Doing: get_X86_CX8
+Doing: get_X86_FZ_REP_MOVSB
+Doing: GetWaysLegacyAMD
+Doing: get_X86_TSC
+Doing: get_X86_FS_REP_MOV
+Doing: GetCacheSizeLegacyAMD
+Doing: GetX86FeaturesEnumValue
+Doing: get_X86_CLWB
+Doing: get_X86_MOVDIR64B
+Doing: ParseCacheInfoLegacyAMD
+Doing: get_X86_FPU
+Doing: ParseLeaf2
+Doing: get_X86_GFNI
+Doing: SetVendor
+Doing: IsVendor
+Doing: get_X86_MOVDIRI
+Doing: ParseCacheInfo
+Doing: copy
+Doing: ReadLeaves
+Doing: get_X86_VAES
+Doing: HasTmmOsXSave
+Doing: SafeCpuIdEx
+Doing: HasZmmOsXSave
+Doing: get_X86_FMA3
+Doing: get_X86_F16C
+Doing: HasXmmOsXSave
+Doing: get_X86_BMI2
+Doing: CreateLineResult
+Doing: CreateValidLineResult
+Doing: equals
+Doing: GetCpuidLeaf
+Doing: get_X86_LAM
+Doing: CpuFeatures_StringView_Front
+Doing: get_X86_SSE2
+Doing: get_X86_BMI1
+Doing: get_X86_DCA
+Doing: get_X86_AVX512F
+Doing: CpuFeatures_memchr
+Doing: OverrideOsPreserves
+Doing: get_X86_AVX512IFMA
+Doing: get_X86_PCLMULQDQ
+Doing: get_X86_SSE3
+Doing: HasSecondFMA
+Doing: BringToFrontAndLoadMore
+Doing: get_X86_RDSEED
+Doing: HasMask
+Doing: CpuFeatures_OpenFile
+Doing: get_X86_SSSE3
+Doing: DetectFeaturesFromOs
+Doing: CreateEOFLineResult
+Doing: get_X86_CLFLUSHOPT
+Doing: get_X86_SSE4_1
+Doing: str
+Doing: CreateTruncatedLineResult
+Doing: GetX86Info
+Doing: view
+Doing: IsVendorByX86Info
+Doing: GetX86Microarchitecture
+Doing: get_X86_RTM
+Doing: get_X86_LZCNT
+Doing: GetX86CacheInfo
+Doing: str.158
+Doing: get_X86_SHA
+Doing: get_X86_SSE4A
+Doing: GetXCR0Eax
+Doing: CpuFeatures_StringView_IndexOf
+Doing: get_X86_AMX_TILE
+Doing: get_X86_AVX512BW
+Doing: get_X86_AMX_INT8
+Doing: get_X86_AVX512DQ
+Doing: CpuFeatures_StringView_PopBack
+Doing: get_X86_AMX_FP16
+Doing: get_X86_AVX512VL
+Doing: get_X86_AVX512VNNI
+Doing: get_X86_AVX512BITALG
+Doing: get_X86_AVX512VPOPCNTDQ
+Doing: get_X86_AVX512_4VNNIW
+Doing: get_X86_AVX512_4VBMI2
+Doing: HexValue
+Doing: get_X86_AVX512_SECOND_FMA
+Doing: get_X86_AVX512_4FMAPS
+Doing: copy.159
+Doing: get_X86_AVX512_BF16
+Doing: CpuFeatures_StringView_HasWord
+Doing: get_X86_AVX512_VP2INTERSECT
+Doing: get_X86_AVX512PF
+Doing: get_X86_AMX_BF16
+Doing: get_X86_AVX512VBMI
+Doing: get_X86_SMX
+Doing: get_X86_AVX512VBMI2
+Doing: get_X86_SGX
+Doing: get_X86_AVX
+Doing: get_X86_POPCNT
+Doing: get_X86_AVX_VNNI
+Doing: get_X86_MOVBE
+Doing: get_X86_SSE4_2
+Doing: get_X86_CX16
+Doing: StackLineReader_NextLine
+Doing: get_X86_AVX2
+Doing: get_X86_RDRND
+Doing: get_X86_AVX512CD
+Doing: get_X86_SS
+Doing: CpuFeatures_StringView_GetAttributeKeyValue
+Doing: get_X86_AVX512ER
+Doing: get_X86_AVX512_FP16
+Doing: get_X86_ADX
+Doing: get_X86_UAI
+Doing: GetX86FeaturesEnumName
+Doing: GetX86MicroarchitectureName
+Doing: get_X86_SSE
+Doing: CpuFeatures_CloseFile
+Doing: IndexOfEol
+Doing: CpuFeatures_ReadFile
+Doing: StackLineReader_Initialize
+Doing: SkipToNextLine
+Doing: LoadMore
+Doing: LoadFullBuffer
+Doing: CpuFeatures_StringView_IndexOfChar
+Doing: __ctype_b_loc
+Doing: read
+Doing: close
+Doing: __errno_location
+Doing: open
+Doing: __assert_fail
+Doing: strlen
+Doing: llvm.memmove.p0i8.p0i8.i64
+Doing: llvm.memcpy.p0i8.p0i8.i64
+Doing: llvm.dbg.declare
+real 0.65
+user 0.34
+sys 0.04
+maxrss_kb 73288
+
+real	0m13.297s
+user	0m2.161s
+sys	0m1.092s

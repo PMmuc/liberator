@@ -1,0 +1,16 @@
+# 2026-10-09T00:58:15+02:00 NUM_IT=2
+cpu_features   ok=0/2 time=41s profiling_blocks(it1)=0
+libtiff        ok=0/2 time=20028s profiling_blocks(it1)=0
+minijail       ok=0/2 time=86s profiling_blocks(it1)=0
+pthreadpool    ok=0/2 time=42s profiling_blocks(it1)=0
+libaom         ok=0/2 time=10702s profiling_blocks(it1)=0
+libvpx         ok=0/2 time=14226s profiling_blocks(it1)=0
+libhtp         ok=0/2 time=310s profiling_blocks(it1)=0
+libpcap        ok=0/2 time=108s profiling_blocks(it1)=0
+c-ares         ok=0/2 time=256s profiling_blocks(it1)=0
+zlib           ok=2/2 time=88s profiling_blocks(it1)=0
+cjson          ok=1/2 time=79s profiling_blocks(it1)=0
+libdwarf       ok=0/2 time=10104s profiling_blocks(it1)=0
+libsndfile     ok=0/2 time=1868s profiling_blocks(it1)=0
+libplist       ok=0/2 time=175s profiling_blocks(it1)=0
+libucl         ok=0/2 time=5068s profiling_blocks(it1)=0
