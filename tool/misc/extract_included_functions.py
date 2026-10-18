@@ -17,6 +17,7 @@ function_declarations = [] # List of AST node objects that are function declarat
 type_incomplete = set()    # List of incomplete types
 apis_definition = []       # List of APIs with original argument types and extra info (e.g., const)
 type_enum = set()
+header_filter = None     # If set, only keep functions declared in these header files
 
 SCOPE_KINDS = (clang.cindex.CursorKind.NAMESPACE,
                clang.cindex.CursorKind.STRUCT_DECL,
@@ -230,8 +231,11 @@ def traverse(node, include_folder, namespace):
     except ValueError:
         node_type_kind = None
 
+    # Check if the function signature is still in the header file defined in public_header.txt
     if (node_type_kind == clang.cindex.TypeKind.FUNCTIONPROTO and 
-        include_folder in str(node.location.file)):
+        include_folder in str(node.location.file) and
+        (header_filter is None or
+         os.path.basename(str(node.location.file)) in header_filter)):
         function_declarations.append(node)
         api = get_api(node, namespace)
         if not find_api(api, apis_definition):
@@ -280,7 +284,7 @@ def get_stub_file(include_folder, public_headers):
 
         tmp.write(MAIN_STUB)
 
-    return stub_file
+    return stub_file, public_headers_lst
 
 def _main():
 
@@ -292,6 +296,7 @@ def _main():
     parser.add_argument('-apis_list', '-a', type=str, help='List of APIs with types from the AST', required=True)
     parser.add_argument('-public_headers', '-p', type=str, help='List of public header files', required=True)
     parser.add_argument('-enum_list', '-n', type=str, help='List of enum types', required=False)
+    parser.add_argument('-only_public_headers', action='store_true', help='Only keep functions declared in the public headers, not in headers they include')
 
     args = parser.parse_args()
 
@@ -306,7 +311,10 @@ def _main():
     if len(target) == 0:
         target = os.environ["TARGET_NAME"]
 
-    tmp_file = get_stub_file(include_folder, public_headers)
+    tmp_file, public_headers_lst = get_stub_file(include_folder, public_headers)
+    if args.only_public_headers:
+        global header_filter
+        header_filter = public_headers_lst
 
     print(tmp_file)
 
@@ -337,7 +345,8 @@ def _main():
     # Generate AST from filepath passed in the command line
     # Files are needed to find stddef.h. Otherwise clang will assume type
     # int for types it can not resolve such as "size_t" leading to mismatches in the driver generator.
-    include_paths = [f"-I{include_folder}", 
+    include_paths = [f"-I{include_folder}",
+                     "/home/mashmallow/lib/llvm-21.1.8/lib/clang/21",
                      "-I/home/libfuzz/llvm-21/lib/clang/21/include",
                      "-I/usr/include/x86_64-linux-gnu",
                      "-I/usr/include"]

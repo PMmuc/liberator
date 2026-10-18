@@ -3,8 +3,12 @@ REPO_URL="https://github.com/openssl/openssl.git"
 REPO_COMMIT="3bd5319b5d0df9ecf05c8baba2c401ad8e3ba130"
 BC_FILE_NAME="libssl.a"
 
-# OpenSSL headers are installed into include/openssl
-TARGET_INCLUDE_DIR="$WORK/include/openssl"
+# OpenSSL headers are installed into include/openssl. Point at the parent so
+# that the <openssl/...> includes inside the headers resolve to these headers
+TARGET_INCLUDE_DIR="$WORK/include"
+# Only keep the APIs declared in public_headers.txt (ssl.h), not the libcrypto
+# ones from the headers it includes
+EXTRA_INCLUDED_FUNCTIONS_FLAGS="-only_public_headers"
 
 target_preinstall() {
   # OpenSSL target copied abilist.txt
