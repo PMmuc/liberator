@@ -81,7 +81,8 @@ INCLUDE_DIR=${TARGET_INCLUDE_DIR:-"$WORK/include"}
   -e "$LIBFUZZ_LOG_PATH/exported_functions.txt" \
   -I "$LIBFUZZ_LOG_PATH/incomplete_types.txt" \
   -a "$LIBFUZZ_LOG_PATH/apis_clang.json" \
-  -n "$LIBFUZZ_LOG_PATH/enum_types.txt"
+  -n "$LIBFUZZ_LOG_PATH/enum_types.txt" \
+  ${EXTRA_INCLUDED_FUNCTIONS_FLAGS}
 
 if [ -n "$FUNCTION" ]; then
   API_LIST="$LIBFUZZ_LOG_PATH/apis_clang.json"
