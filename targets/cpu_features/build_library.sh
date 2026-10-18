@@ -33,7 +33,7 @@ cd "$TARGET/repo/cpu_features_build_cov"
 
 # Compile library for coverage
 cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Debug \
+        -DENABLE_STATIC=on -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=Debug \
         -DCMAKE_C_FLAGS_DEBUG="-fprofile-instr-generate -fcoverage-mapping -g" \
         -DCMAKE_CXX_FLAGS_DEBUG="-fprofile-instr-generate -fcoverage-mapping -g"
 
@@ -52,7 +52,7 @@ cd "$TARGET/repo/cpu_features_build_cluster"
 
 # Compile library for clustering
 cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=DEBUG \
+        -DENABLE_STATIC=on -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=DEBUG \
         -DCMAKE_C_FLAGS_DEBUG="-fsanitize=fuzzer-no-link,address -g" \
         -DCMAKE_CXX_FLAGS_DEBUG="-fsanitize=fuzzer-no-link,address -g"
 
@@ -71,7 +71,7 @@ cd "$TARGET/repo/cpu_features_build_fuzz"
 
 # Compile library for fuzzing
 cmake .. -DCMAKE_INSTALL_PREFIX=$WORK -DBUILD_SHARED_LIBS=off \
-        -DENABLE_STATIC=on -DCMAKE_BUILD_TYPE=Release \
+        -DENABLE_STATIC=on -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_C_FLAGS_RELEASE="-fsanitize=fuzzer-no-link,address" \
         -DCMAKE_CXX_FLAGS_RELEASE="-fsanitize=fuzzer-no-link,address"
 
